@@ -1,0 +1,644 @@
+﻿--[[
+This file contains the quantity class
+
+Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+]]--
+
+local prefix = ... and (...):match '(.-%.?)[^%.]+$' or ''
+local D = require(prefix..'dimension')
+local U = require(prefix..'unit')
+
+-- Quantity class
+local Quantity = {}
+Quantity.__index = Quantity
+
+-- make Quantity callable
+setmetatable(Quantity, {
+	__call = function(class, ...)
+		return Quantity.new(...)
+	end
+})
+
+
+-- registry for base units
+Quantity._base = {}
+
+-- registry for prefixes
+Quantity._prefixes = {}
+
+
+-- constructor
+function Quantity.new(q)
+	local p = {}
+	setmetatable(p, Quantity)
+	
+	-- copy constructor
+	if getmetatable(q) == Quantity then
+		p.dimension = q.dimension
+		p.value = q.value
+		p.unit = q.unit
+
+	-- create a dimensionless Quantity
+	else
+		p.dimension = D.new()
+		p.value = q or 1
+		p.unit = U.new()
+	end
+
+	return p
+end
+
+function Quantity.defineBase(symbol,name,dimension)
+
+	if rawget(_G,"_"..symbol) ~= nil then
+		print("Warning: Quantity '_"..symbol.."' does already exist. Overwrite current definition.")
+	end
+
+	local q = Quantity.new()
+	q.value = 1
+	q.dimension = dimension
+	q.unit = U.new(symbol,name)
+
+	table.insert(Quantity._base,q)
+
+	rawset(_G, "_"..symbol, q)
+
+	return q
+end
+
+
+function Quantity.define(symbol, name, o, tobase, frombase)
+
+	if rawget(_G,"_"..symbol) ~= nil then
+		print("Warning: Quantity '_"..symbol.."' does already exist. Overwrite current definition.")
+	end
+
+	if getmetatable(o) ~= Quantity then
+		o = Quantity.new(o)
+	end
+
+	--Todo: o = o:to()
+
+	local q = Quantity.new() 
+	q.value = 1
+	q.dimension = o.dimension
+	q.unit = U.new(symbol, name, o.unit, tobase, frombase) 
+	q.unit.basefactor = q.unit.basefactor * o.value
+
+	rawset(_G, "_"..symbol, q)
+
+	return q
+end
+
+
+function Quantity.definePrefix(symbol,name,factor)
+
+	if Quantity._prefixes[symbol] ~= nil then
+		print("Warning: Prefix '"..symbol.."' does already exist. Overwrite current definition.")
+	end
+
+	Quantity._prefixes[symbol] = {
+		symbol=symbol,
+		name=name, 
+		factor=factor
+	}
+end
+
+
+-- create prefixed versions of the given units.
+function Quantity.addPrefix(prefixes, units)
+	for i=1,#prefixes do
+		local prefix = Quantity._prefixes[prefixes[i]]
+
+		for j=1,#units do
+			local unit = units[j]
+
+			local q = Quantity.new(unit)
+
+			q.value = unit.value
+			q.dimension = unit.dimension
+			q.unit = U.new(unit.unit.symbol, unit.unit.name)
+			q.unit.basefactor = unit.unit.basefactor
+			q.unit.prefix = prefix
+			q.unit.prefixfactor = prefix.factor
+
+			-- assert that unit does not exist
+			local symbol = "_"..prefix.symbol..unit.unit.symbol
+			if rawget(_G,symbol) ~= nil then
+				print("Warning: Quantity '"..symbol.."' does already exist. Overwrite current definition.")
+			end
+
+			-- set unit as a global variable
+			rawset(_G, symbol, q)
+		end
+	end
+end
+
+
+
+
+-- Add two quantities
+function Quantity.__add(o1, o2)
+	
+	if getmetatable(o1) ~= Quantity then
+		o1 = Quantity.new(o1)
+	elseif getmetatable(o2) ~= Quantity then
+		o2 = Quantity.new(o2)
+	end
+
+	if o1.dimension ~= o2.dimension then
+		error("Error: Cannot add "..o2.." to "..o1..".")
+	end
+
+	-- convert o1 to o2 units
+	local q = o1:to(o2)
+	q.value =  q.value + o2.value
+
+	return 	q
+end
+
+-- subtract a dimension from another one
+function Quantity.__sub(o1, o2)
+
+	if getmetatable(o1) ~= Quantity then
+		o1 = Quantity.new(o1)
+	elseif getmetatable(o2) ~= Quantity then
+		o2 = Quantity.new(o2)
+	end
+
+	if o1.dimension ~= o2.dimension then
+		error("Error: Cannot subtract "..o2.." from "..o1..".")
+	end
+
+	-- convert o1 to o2 units
+	local q = o1:to(o2)
+	q.value =  q.value - o2.value
+
+	return 	q
+end
+
+-- unary minus
+function Quantity.__unm(o)
+	local q = Quantity.new(o)
+	
+	q.value = -q.value
+
+	return q
+end
+
+
+-- multiply a dimension by a number
+function Quantity.__mul(o1, o2)
+
+	if getmetatable(o1) ~= Quantity then
+		o1 = Quantity.new(o1)
+
+	elseif getmetatable(o2) ~= Quantity then
+		o2 = Quantity.new(o2)
+	end
+
+	local q = Quantity.new()
+	q.value = o1.value * o2.value
+	q.dimension = o1.dimension * o2.dimension
+	q.unit = o1.unit * o2.unit
+	return q
+end
+
+
+-- divide a quantity / number by a quantity / number
+function Quantity.__div(o1, o2)
+	
+	if getmetatable(o1) ~= Quantity then
+		o1 = Quantity.new(o1)
+	elseif getmetatable(o2) ~= Quantity then
+		o2 = Quantity.new(o2)
+	end
+
+	local q = Quantity.new()
+	q.value = o1.value / o2.value
+	q.dimension = o1.dimension / o2.dimension
+	q.unit = o1.unit / o2.unit
+	return q
+end
+
+-- power
+function Quantity.__pow(o1,o2)
+
+	if getmetatable(o1) ~= Quantity then
+		o1 = Quantity.new(o1)
+	elseif getmetatable(o2) ~= Quantity then
+		o2 = Quantity.new(o2)
+	end
+
+	if not o2.dimension:iszero() then
+		error("Error: Cannot take the power, because the exponent "..o2.." is not dimensionless.")
+	end
+
+	local q = Quantity.new()
+	local e = o2:to()
+
+	q.value = o1.value^e.value
+
+	e = e:__tonumber()
+	q.dimension = o1.dimension^e
+	q.unit = o1.unit^e
+	
+	return q
+end
+
+-- test if two quantities are equal
+function Quantity.__eq(o1,o2)
+
+	if getmetatable(o1) ~= Quantity then
+		o1 = Quantity.new(o1)
+	elseif getmetatable(o2) ~= Quantity then
+		o2 = Quantity.new(o2)
+	end
+	
+	local q = o1:to(o2)
+
+	if q.value ~= o2.value then
+		return false
+
+	elseif q.dimension ~= o2.dimension then
+		return false
+
+	elseif q.unit ~= o2.unit then
+		return false
+	end
+
+	return true
+end
+
+-- check if this quantity is less than another one
+function Quantity.__lt(o1,o2)
+
+	if getmetatable(o1) ~= Quantity then
+		o1 = Quantity.new(o1)
+	elseif getmetatable(o2) ~= Quantity then
+		o2 = Quantity.new(o2)
+	end
+
+	if o1.unit.dimension ~= o2.unit.dimension then
+		error("Error: Cannot compare "..o1.." to "..o2..".")
+	end
+
+	return o1:to().value < o2:to().value
+end
+
+
+
+
+-- convert quantity to another unit
+function Quantity:to(o)
+
+	local q = Quantity.new()
+
+	-- convert to base units
+	q.dimension = self.dimension
+	q.value = self.value * self.unit.prefixfactor
+	
+	-- call convertion function
+	if type(self.unit.tobase) == "function" then
+		q = self.unit.tobase(q)
+	else
+		q.value = q.value * self.unit.basefactor
+	end
+
+	-- convert to target units
+	if o ~= nil then
+		if self.dimension ~= o.dimension then
+			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(o).."'.")
+		end
+
+		-- call convertion function
+		if type(o.unit.frombase) == "function" then
+			q = o.unit.frombase(q)
+		else
+			q.value = q.value / o.unit.basefactor
+		end
+
+		q.value = q.value / o.unit.prefixfactor
+		q.unit = o.unit
+	
+	-- convert to base units
+	else
+		local unit = U.new()
+		local base = Quantity._base
+
+		for i=1,#base do
+			unit = unit * base[i].unit^self.dimension[i]
+		end
+
+		q.unit = unit
+	end
+	return q
+end
+
+
+
+
+
+-- convert quantity to a number
+function Quantity:__tonumber()
+	if type(self.value) == "number" then
+		return self.value
+	else
+		return self.value:__tonumber()
+	end
+end
+
+
+-- convert quantity to a string
+function Quantity:__tostring()
+	return tostring(self.value)..tostring(self.unit)
+end
+
+-- convert quantity to an siunitx expression
+function Quantity:tosiunitx(param)
+
+	local str = "\\SI"
+
+	if param ~= nil then
+		str = str.."["..param.."]"
+	end
+
+	return str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
+end
+
+
+
+function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         if getmetatable(v) == physical.Unit then
+            s = s .. '['..k..'] = ' .. v.symbol .. ','
+         else
+           s = s .. '['..k..'] = ' .. dump(v) .. ','
+         end
+      end
+      return s .. '}\n'
+   else
+      return tostring(o)
+   end
+end
+
+-- check if this quantity is close to another one. r is the maximal relative deviation.
+function Quantity:isclose(o, r)
+
+	if getmetatable(o) ~= Quantity then
+		o = Quantity.new(o)
+	end
+
+	if self.dimension ~= o.dimension then
+		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(o).."'.")
+	end
+	
+	local q1 = self:to()
+	local q2 = o:to()
+	
+	local delta = Quantity.abs(q1 - q2):__tonumber()
+	local min = Quantity.min(Quantity.abs(q1),Quantity.abs(q2)):__tonumber()
+	return  (delta / min) < r
+end
+
+
+
+
+
+-- minimum value
+function Quantity.min(o1,o2)
+
+	local q1 = Quantity.new(o1)
+	local q2 = Quantity.new(o2)
+
+	local value1, value2
+	if type(q1.value) == "number" then
+		value1 = q1.value
+	else
+		value1 = o1:__tonumber()
+	end
+
+	if type(q2.value) == "number" then
+		value2 = q2.value
+	else
+		value2 = o2:__tonumber()
+	end
+
+	if value1 < value2 then
+		return q1
+	else
+		return q2
+	end
+end
+
+-- minimum value
+function Quantity.max(o1,o2)
+
+	local q1 = Quantity.new(o1)
+	local q2 = Quantity.new(o2)
+
+	local value1, value2
+	if type(q1.value) == "number" then
+		value1 = q1.value
+	else
+		value1 = o1:__tonumber()
+	end
+
+	if type(q2.value) == "number" then
+		value2 = q2.value
+	else
+		value2 = o2:__tonumber()
+	end
+
+	if value1 > value2 then
+		return q1
+	else
+		return q2
+	end
+end
+
+
+-- absolute value
+function Quantity.abs(q)
+	if q.value < 0 then
+		return -q
+	else
+		return Quantity.new(q)
+	end
+end
+
+-- square root
+function Quantity.sqrt(q)
+	return q^0.5
+end
+
+-- logarithm
+function Quantity.log(q, base)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the logarithm function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		if base == nil then
+			p.value = math.log(q:to().value)
+		else
+			p.value = math.log(q:to().value,base)
+		end
+	else
+		p.value = q:to().value:log(base)
+	end
+
+	return p
+end
+
+
+-- exponential function
+function Quantity.exp(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the exponential function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.exp(q:to().value)
+	else
+		p.value = q:to().value:exp()
+	end
+
+	return p
+end
+
+
+-- TRIGONOMETRIC FUNCTIONS
+-- https://en.wikipedia.org/wiki/Trigonometric_functions
+
+-- sine
+function Quantity.sin(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the sine function is not unitless nor an angle.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.sin(q:to().value)
+	else
+		p.value = q:to().value:sin()
+	end
+
+	return p
+end
+
+-- cosine
+function Quantity.cos(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the cosine function is not unitless nor an angle.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.cos(q:to().value)
+	else
+		p.value = q:to().value:cos()
+	end
+
+	return p
+end
+
+-- tangent
+function Quantity.tan(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the tangent function is not unitless nor an angle.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.tan(q:to().value)
+	else
+		p.value = q:to().value:tan()
+	end
+	
+	return p
+end
+
+
+-- arcus sine
+function Quantity.asin(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the arcus sine function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.asin(q:to().value)
+	else
+		p.value = q:to().value:asin()
+	end
+	
+	return p
+end
+
+-- arcus cosine
+function Quantity.acos(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the arcus cosine function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.acos(q:to().value)
+	else
+		p.value = q:to().value:acos()
+	end
+	
+	return p
+end
+
+-- arcus tangent
+function Quantity.atan(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the arcus tangent function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.atan(q:to().value)
+	else
+		p.value = q:to().value:atan()
+	end
+	
+	return p
+end
+
+
+return Quantity
+
