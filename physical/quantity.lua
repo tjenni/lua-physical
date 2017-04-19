@@ -640,5 +640,124 @@ function Quantity.atan(q)
 end
 
 
+
+-- HYPERBOLIC FUNCTIONS
+-- https://en.wikipedia.org/wiki/Hyperbolic_function
+
+-- hyperbolic sine
+function Quantity.sinh(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the sine hyperbolicus function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = 0.5 * math.exp(q.value) - 0.5 / math.exp(q.value)
+	else
+		p.value = q:to().value:sinh()
+	end
+	
+	return p
+end
+
+-- hyperbolic cosine
+function Quantity.cosh(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the cosine hyperbolicus function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = 0.5 * math.exp(q.value) + 0.5 / math.exp(q.value)
+	else
+		p.value = q:to().value:cosh()
+	end
+	
+	return p
+end
+
+-- hyperbolic tangent
+function Quantity.tanh(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the tangent hyperbolicus function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = (math.exp(q.value) - math.exp(-q.value)) / (math.exp(q.value) + math.exp(-q.value))
+	else
+		p.value = q:to().value:tanh()
+	end
+	
+	return p
+end
+
+
+-- INVERS HYPERBOLIC FUNCTIONS
+-- https://en.wikipedia.org/wiki/Inverse_hyperbolic_function
+
+-- inverse hyperbolic sine
+-- (-inf < q < +inf)
+function Quantity.asinh(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the inverse sine hyperbolicus function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.log(q.value + math.sqrt(q.value^2 + 1))
+	else
+		p.value = q:to().value:asinh()
+	end
+	
+	return p
+end
+
+-- inverse hyperbolic cosine
+-- (1 < q)
+function Quantity.acosh(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the inverse cosine hyperbolicus function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.log(q.value + math.sqrt(q.value^2 - 1))
+	else
+		p.value = q:to().value:acosh()
+	end
+	
+	return p
+end
+
+-- inverse hyperbolic tangent
+-- (-1 < q < 1)
+function Quantity.atanh(q)
+	if not q.dimension:iszero() then
+		error("Error. The argument '"..tostring(q).."' of the inverse tangent hyperbolicus function is not unitless.")
+	end
+
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = 0.5 * math.log((1 + q.value)/(1 - q.value))
+	else
+		p.value = q:to().value:atanh()
+	end
+	
+	return p
+end
+
+
+
+
+
+
+
 return Quantity
 

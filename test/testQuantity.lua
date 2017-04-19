@@ -249,5 +249,88 @@ function TestQuantity:testAtan()
    lu.assertEquals( l.dimension, _rad.dimension )
 end
 
+-- test sinh function
+function TestQuantity.sinhError()
+   local l = (100 * _s):sinh()
+end
+function TestQuantity:testSinh()
+   lu.assertError( sinhError )
+
+   local l = (0.75 * _1):sinh()
+   lu.assertAlmostEquals( l.value, 0.82231673193583, 1e-9 )
+
+   local l = (N(0.75,0.01) * _1):sinh()
+   lu.assertAlmostEquals( l.value:__tonumber(), 0.82231673193583, 1e-9 )
+end
+
+-- test cosh function
+function TestQuantity.coshError()
+   local l = (100 * _s):cosh()
+end
+function TestQuantity:testCosh()
+   lu.assertError( coshError )
+
+   local l = (0.25 * _1):cosh()
+   lu.assertAlmostEquals( l.value, 1.031413099879573, 1e-9 )
+
+   local l = (N(0.25,0.01) * _1):cosh()
+   lu.assertAlmostEquals( l.value:__tonumber(), 1.031413099879573, 1e-9 )
+end
+
+-- test tanh function
+function TestQuantity.tanhError()
+   local l = (100 * _s):tanh()
+end
+function TestQuantity:testTanh()
+   lu.assertError( tanhError )
+
+   local l = (0.5 * _1):tanh()
+   lu.assertAlmostEquals( l.value, 0.46211715726001, 1e-9 )
+
+   local l = (N(0.5,0.01) * _1):tanh()
+   lu.assertAlmostEquals( l.value:__tonumber(), 0.46211715726001, 1e-9 )
+end
+
+-- test asinh function
+function TestQuantity.asinhError()
+   local l = (100 * _s):asinh()
+end
+function TestQuantity:testAsinh()
+   lu.assertError( asinhError )
+
+   local l = (2 * _1):asinh()
+   lu.assertAlmostEquals( l.value, 1.44363547517881, 1e-9 )
+
+   local l = (N(2,0.01) * _1):asinh()
+   lu.assertAlmostEquals( l.value:__tonumber(), 1.44363547517881, 1e-9 )
+end
+
+-- test acosh function
+function TestQuantity.acoshError()
+   local l = (100 * _s):acosh()
+end
+function TestQuantity:testAcosh()
+   lu.assertError( acoshError )
+
+   local l = (1.2 * _1):acosh()
+   lu.assertAlmostEquals( l.value, 0.622362503714779, 1e-9 )
+
+   local l = (N(1.2,0.01) * _1):acosh()
+   lu.assertAlmostEquals( l.value:__tonumber(), 0.622362503714779, 1e-9 )
+end
+
+-- test atanh function
+function TestQuantity.atanhError()
+   local l = (100 * _s):atanh()
+end
+function TestQuantity:testAtanh()
+   lu.assertError( atanhError )
+
+   local l = (0.9 * _1):atanh()
+   lu.assertAlmostEquals( l.value, 1.47221948958322, 1e-9 )
+
+   local l = (N(0.9,0.01) * _1):atanh()
+   lu.assertAlmostEquals( l.value:__tonumber(), 1.47221948958322, 1e-9 )
+end
 
 return TestQuantity
