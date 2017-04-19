@@ -863,16 +863,39 @@ function TestDefinition:testUSCup()
    lu.assertTrue( (2*_cup_US):isclose( 31.5450982 * _Tbsp ,1e-9) )
 end
 
--- Q.define("US_gi", "USgill", _US_pint/4)
--- Q.define("US_fl_oz", "USfluidounce", _US_gi/4)
--- Q.define("US_Tbsp", "UStablespoon", _US_fl_oz/2)
--- Q.define("US_tsp", "USteaspoon", _US_Tbsp/3)
--- Q.define("US_fl_dr", "USfluiddram", _US_fl_oz/8)
+function TestDefinition:testUSGill()
+   lu.assertTrue( (45*_gi_US):isclose( 5.3232353437499995 * _L ,1e-7) )
+end
+
+function TestDefinition:testUSFluidOunce()
+   lu.assertTrue( (22*_fl_oz_US):isclose( 650.617653125 * _mL ,1e-7) )
+end
+
+function TestDefinition:testUSTablespoon()
+   lu.assertTrue( (10*_Tbsp_US):isclose( 147.867648438 * _mL ,1e-7) )
+end
+
+function TestDefinition:testUSTeaspoon()
+   lu.assertTrue( (0.5*_tsp_US):isclose( 2464.46080729 * _uL ,1e-7) )
+end
+
+function TestDefinition:testUSFluidDram()
+   lu.assertTrue( (1*_fl_dr_US):isclose( 3.6966911953125 * _mL ,1e-7) )
+end
 
 -- Mass
--- Q.define("US_qtr", "USquarter", 25*_lb)
--- Q.define("US_cwt", "UShundredweight", 4*_US_qtr)
--- Q.define("US_ton", "USton", 20*_US_cwt)
+
+function TestDefinition:testUSQuarter()
+   lu.assertTrue( (23*_qtr_US):isclose( 260.81561275 * _kg ,1e-7) )
+end
+
+function TestDefinition:testUSHunderdWeight()
+   lu.assertTrue( (1.4*_cwt_US):isclose( 63.5029318 * _kg ,1e-7) )
+end
+
+function TestDefinition:testUSTon()
+   lu.assertTrue( (2*_ton_US):isclose( 1.81436948 * _t ,1e-7) )
+end
 
 return TestDefinition
 
