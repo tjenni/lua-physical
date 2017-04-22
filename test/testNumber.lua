@@ -65,7 +65,7 @@ function TestNumber:testNewCopyConstructor()
 end
 
 -- test construction by string in plus minus format
-function TestNumber:testNewByStringPlusMinus()
+function TestNumber:testNewByStringPlusMinusNotation()
    local n = N("2.2 +/- 0.3")
    lu.assertEquals( n._x, 2.2 )
    lu.assertEquals( n._dx, 0.3 )
@@ -84,7 +84,7 @@ function TestNumber:testNewByStringPlusMinus()
 end
 
 -- test construction by string in compact format
-function TestNumber:testNewByStringCompact()
+function TestNumber:testNewByString()
    local n = N("2.32(5)")
    lu.assertEquals( n._x, 2.32 )
    lu.assertEquals( n._dx, 0.05 )
@@ -129,25 +129,55 @@ function TestNumber:testNewByStringNumber()
    lu.assertEquals( n._dx, 0.0005 )
 end
 
--- test string conversion to compact format
-function TestNumber:testToStringCompact()
-   local n = N(1, 0.5)
-   lu.assertEquals( n:__tostring(true,0), "1" )
 
-   local n = N(1, 0.5)
-   lu.assertEquals( n:__tostring(true,1), "1.0(5)" )
 
-   local n = N(1234.56789, 0.00011)
-   lu.assertEquals( n:__tostring(true), "1.23456789(11)e3" )
+-- test string conversion to plus-minus format
+function TestNumber:testToStringPlusMinusNotation()
 
-   local n = N(15200000, 23000)
-   lu.assertEquals( n:__tostring(true), "1.5200(23)e7" )
+   N.seperateUncertainty = true
    
-   local n = N(5, 0.01)
-   lu.assertEquals( n:__tostring(true), "5.000(10)" )
+   N.format = N.DECIMAL
+   lu.assertEquals( tostring(N(1,0.5)), "1.0 +/- 0.5" )
+   lu.assertEquals( tostring(N(7,1)), "7 +/- 1" )
+   lu.assertEquals( tostring(N(0.005,0.0001)), "0.00500 +/- 0.00010" )
+   lu.assertEquals( tostring(N(500,2)), "500 +/- 2" )
+   lu.assertEquals( tostring(N(1023453838.0039,0.06)), "1023453838.00 +/- 0.06" )
+   lu.assertEquals( tostring(N(10234.0039, 0.00000000012)), "10234.00390000000 +/- 0.00000000012" )
+   lu.assertEquals( tostring(N(10234.0039e12, 0.00000000012e12)), "10234003900000000 +/- 120" )
+   lu.assertEquals( tostring(N(0, 0)), "0" )
+   lu.assertEquals( tostring(N(0, 0.01)), "0.000 +/- 0.010" )
 
-   local n = N(100, 5)
-   lu.assertEquals( n:__tostring(true), "1.000(50)e2" )
+   N.format = N.SCIENTIFIC
+   lu.assertEquals( tostring(N(7,1)), "7 +/- 1" )
+   lu.assertEquals( tostring(N(80,22)), "(8 +/- 2)e1" )
+   lu.assertEquals( tostring(N(40,100)), "(4 +/- 10)e1" )
+   lu.assertEquals( tostring(N(0.005,0.0001)), "(5.00 +/- 0.10)e-3" )
+   lu.assertEquals( tostring(N(500,2)), "(5.00 +/- 0.02)e2" )
+
+end
+
+-- test string conversion to plus-minus format
+function TestNumber:testToStringParenthesesNotation()
+
+   N.seperateUncertainty = false
+   N.omitUncertainty = false
+
+   N.format = N.DECIMAL
+   lu.assertEquals( tostring(N(1,0.5)), "1.0(5)" )
+   lu.assertEquals( tostring(N(100,13)), "100(13)" )
+   lu.assertEquals( tostring(N(26076,45)), "26076(45)" )
+   lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
+   lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
+   lu.assertEquals( tostring(N(1234.56789, 0.00011)), "1234.56789(11)" )
+   lu.assertEquals( tostring(N(15200000, 23000)), "15200000(23000)" )
+   lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
+   lu.assertEquals( tostring(N(100, 5)), "100(5)"  )
+   
+   N.format = N.SCIENTIFIC
+   
+
+    --[[
+
 
    local n = N(15.2e-6, 2.3e-8)
    lu.assertEquals( n:__tostring(true), "1.5200(23)e-5" )
@@ -160,28 +190,24 @@ function TestNumber:testToStringCompact()
 
    local n = N(15.2e-6, 0)
    lu.assertEquals( n:__tostring(true), "1.52e-05" )
+   ]]--
+
 end
 
--- test string conversion to plus minus format
-function TestNumber:testToStringPlusMinus()
-   local n = N(1,0.5)
-   lu.assertEquals( tostring(n), "1.0 +/- 0.5" )
 
-   local n = N(1023453838.0039,0.06)
-   lu.assertEquals( tostring(n), "1023453838.00 +/- 0.06" )
+--[[
+-- test string conversion to compact format
+function TestNumber:testToStringOmitUncertainty()
+   N.seperateUncertainty = false
+   N.omitUncertainty = true
 
-   local n = N(10234.0039, 0.00000000012)
-   lu.assertEquals( tostring(n), "10234.00390000000 +/- 0.00000000012" )
+   lu.assertEquals( tostring(N(1, 0.5)), "1" )
+   lu.assertEquals( tostring(N(1.2, 0.05)), "1.2" )
+   lu.assertEquals( tostring(N(1.2, 0.005)), "1.20" )
+   lu.assertEquals( tostring(N(1.2e27, 0.05e27)), "1.20e27" )
 
-   local n = N(10234.0039e12, 0.00000000012e12)
-   lu.assertEquals( tostring(n), "10234003900000000 +/- 120" )
-
-   local n = N(0, 0)
-   lu.assertEquals( tostring(n), "0" )
-
-   local n = N(0, 0.01)
-   lu.assertEquals( tostring(n), "0.000 +/- 0.010" )
 end
+
 
 -- test string conversion from compact to plus-minus format
 function TestNumber:testToStringPlusMinus()
@@ -461,6 +487,6 @@ function TestNumber:testQuantityMultiply()
 
    N.compact = false
 end
-
+]]--
 
 return TestNumber

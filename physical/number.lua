@@ -34,16 +34,25 @@ setmetatable(Number, {
 	end
 })
 
--- convert to compact string, i.e. 5.67(8)
--- if false, the plus-minus notation is used, i.e. 5.67 +/- 0.08
-Number.compact = true
 
--- number of digits of the uncertainty in the compact notation
--- i.e. 5.67(67) has two digits
-Number.udigits = 2
 
--- uncertainty if an integer is given as a string
-Number.integer_uncertainty = 0.5
+-- Switch for writing uncertainty or not
+Number.omitUncertainty = false
+
+-- If true, the plus-minus notation will be used, otherwise the uncertainty 
+-- will be appended to the value in parentheses.
+Number.seperateUncertainty = false
+
+-- If a number is given as a string and it has no uncertainty defined, this options 
+-- allows to set a default uncertainty, i.e. (5.6) will become (5.60 +/- 0.05)
+Number.defaultUncertainty = 0.5
+
+-- "decimal", "scientific", "engineering"
+Number.DECIMAL = 0
+Number.SCIENTIFIC = 1
+
+Number.format = Number.SCIENTIFIC
+
 
 
 -- constructor
@@ -84,7 +93,7 @@ function Number.new(x, dx)
 			end
 
 			-- calculate uncertainty
-			n._dx = Number.integer_uncertainty * 10^e
+			n._dx = Number.defaultUncertainty * 10^e
 			if m2 ~= "" then
 				n._dx = n._dx * 10^(-string.len(m2))
 			end
@@ -131,8 +140,15 @@ function Number.new(x, dx)
 
 end
 
+-- return the mean value
+function Number:mean()
+	return self._x
+end
 
-
+-- return the uncertainty
+function Number:uncertainty()
+	return self._dx
+end
 
 -- get mantissa and exponent in scientific notation
 function Number._frexp(x)
@@ -153,28 +169,99 @@ function Number:__tonumber()
 	return self._x
 end
 
--- convert number to a string
-function Number:__tostring(compact,udigits)
 
-	-- if the uncertainty is zero, print the exact number
-	if self._dx == 0 then
-		return tostring(self._x)
-	end 
+-- parentheses notation, i.e. 5.45(7)e-23
+	
+function Number:_notationPlusMinus()
 
-	if compact == nil then
-		compact = Number.compact
-	end
-	if udigits == nil then
-		udigits = Number.udigits
-	end
-
+	local m, e = self._frexp(self._x)
 	local dm, de = self._frexp(self._dx)
 
-	-- parentheses notation, i.e. 5.45(7)e-23
-	-- Source: http://physics.nist.gov/cgi-bin/cuu/Info/Constants/definitions.html
-	if compact == true then
-		local m, e = self._frexp(self._x)
-		local digits = -(de-e-udigits+1)
+	-- if the first digit of the uncetainty is a 1, give two digits of the uncertainty
+	local udigit = 0
+	if math.floor(dm) == 1 then
+		udigit = 1
+	end
+
+	if Number.format == Number.DECIMAL then
+		if de >= 0 then
+			return string.format("%.0f",self._x).." +/- "..string.format("%.0f",self._dx)
+		else
+			local digits = math.abs(-de + udigit)
+			return string.format("%."..digits.."f",self._x).." +/- "..string.format("%."..digits.."f",self._dx)
+		end
+
+	elseif Number.format == Number.SCIENTIFIC then
+
+		-- the uncertainty should have the same exponent as the value
+		dm = dm * 10^(de-e)
+		de = de - e
+
+		local str = ""
+
+		if de >= 0 then
+			str = str..string.format("%.0f",m).." +/- "..string.format("%.0f",dm)
+		else
+			local digits = math.abs(-de + udigit)
+			str = str..string.format("%."..digits.."f",m).." +/- "..string.format("%."..digits.."f",dm)
+		end
+
+		if e ~= 0 then
+			str = "("..str..")e"..e
+		end
+
+		return str
+	else
+		error("Unknown number format.")
+	end
+end
+
+-- generate a string representation in parenthesis notation, i.e. i.e. 5.45(7)e-23
+-- Source: http://physics.nist.gov/cgi-bin/cuu/Info/Constants/definitions.html
+
+function Number:_notationParenthesis()
+
+	local m, e = self._frexp(self._x)
+	local dm, de = self._frexp(self._dx)
+
+
+	-- if the first digit of the uncetainty is a 1, give two digits of the uncertainty
+	local udigit = 0
+	if math.floor(dm) == 1 then
+		udigit = 1
+		dm = dm * 10
+		de = de - 1
+	end
+
+
+
+	if Number.format == Number.DECIMAL then
+
+		local str = ""
+
+		if de >= 0 then
+			str = str..string.format("%.0f",self._x)
+
+			if not Number.omitUncertainty then
+				str = str.."("..string.format("%.0f",dm*10^de)..")"
+			end
+
+		else
+			local digits = math.abs(de)
+			str = str..string.format("%."..digits.."f",self._x)
+
+			if not Number.omitUncertainty then
+				str = str.."("..string.format("%.0f",dm)..")"
+			end
+		end
+
+		return str
+
+	
+	elseif Number.format == Number.SCIENTIFIC then
+
+		--[[
+		local digits = -(de-e-udigit+1)
 
 		local str = string.format("%."..math.abs(digits).."f",m)
 
@@ -187,21 +274,50 @@ function Number:__tostring(compact,udigits)
 		end
 
 		return str
+		]]--
 
-	-- +/- notation, i.e. 5.4e-3 +/- 2.4e-6
 	else
-		local digits = de
-		if math.floor(dm) == 1 then
-			digits = digits - 1
-		end
+		error("Unknown number format.")
+	end
 
-		if digits >= 0 then
-			return string.format("%.0f",self._x).." +/- "..string.format("%.0f",self._dx)
-		else
-			digits = -digits
-			return string.format("%."..digits.."f",self._x).." +/- "..string.format("%."..digits.."f",self._dx)
-		end
+	
+end
+
+
+-- generate a string representation of the number without the uncertainty
+function Number:_notationOmitUncertainty()
+
+	local m, e = self._frexp(self._x)
+	local dm, de = self._frexp(self._dx)
+
+	local digits = de + 1
+		
+	if digits >= 0 then
+		return string.format("%.0f",self._x)
+	else
+		digits = -digits
+		return string.format("%."..digits.."f",self._x)
+	end
+	
+end
+
+
+
+
+
+-- convert number to a string
+function Number:__tostring()
+	
+	if self._dx == 0 then
+		return tostring(self._x)
+	
+	elseif Number.seperateUncertainty then
+		return self:_notationPlusMinus()
+
+	else
+		return self:_notationParenthesis()
 	end 
+
 end
 
 
