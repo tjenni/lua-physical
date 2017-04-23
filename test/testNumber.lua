@@ -174,24 +174,10 @@ function TestNumber:testToStringParenthesesNotation()
    lu.assertEquals( tostring(N(100, 5)), "100(5)"  )
    
    N.format = N.SCIENTIFIC
-   
-
-    --[[
-
-
-   local n = N(15.2e-6, 2.3e-8)
-   lu.assertEquals( n:__tostring(true), "1.5200(23)e-5" )
-
-   local n = N(15.2e-6, 2.3e-8)
-   lu.assertEquals( n:__tostring(true,1), "1.520(2)e-5" )
-
-   local n = N(5, 0.01)
-   lu.assertEquals( n:__tostring(true,1), "5.00(1)" )
-
-   local n = N(15.2e-6, 0)
-   lu.assertEquals( n:__tostring(true), "1.52e-05" )
-   ]]--
-
+   lu.assertEquals( tostring(N(15.2e-6, 2.3e-8)), "1.520(2)e-5" )
+   lu.assertEquals( tostring(N(15.2e-6, 1.2e-8)), "1.5200(12)e-5" )
+   lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
+   lu.assertEquals( tostring(N(15.2e-6, 0)), "1.52e-05" )
 end
 
 

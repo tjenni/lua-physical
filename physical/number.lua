@@ -260,13 +260,16 @@ function Number:_notationParenthesis()
 	
 	elseif Number.format == Number.SCIENTIFIC then
 
-		--[[
-		local digits = -(de-e-udigit+1)
 
-		local str = string.format("%."..math.abs(digits).."f",m)
+		local str = ""
 
-		if udigits > 0 then
-			str = str.."("..string.format("%.0f",dm*10^(udigits-1))..")"
+		if Number.omitUncertainty then
+			-- TODO
+
+			
+		else
+			local digits = math.abs(de-e)
+			str = string.format("%."..digits.."f",m).."("..string.format("%.0f",dm)..")"
 		end
 
 		if e ~= 0 then
@@ -274,7 +277,6 @@ function Number:_notationParenthesis()
 		end
 
 		return str
-		]]--
 
 	else
 		error("Unknown number format.")
@@ -284,22 +286,6 @@ function Number:_notationParenthesis()
 end
 
 
--- generate a string representation of the number without the uncertainty
-function Number:_notationOmitUncertainty()
-
-	local m, e = self._frexp(self._x)
-	local dm, de = self._frexp(self._dx)
-
-	local digits = de + 1
-		
-	if digits >= 0 then
-		return string.format("%.0f",self._x)
-	else
-		digits = -digits
-		return string.format("%."..digits.."f",self._x)
-	end
-	
-end
 
 
 
