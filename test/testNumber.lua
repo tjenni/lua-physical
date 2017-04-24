@@ -28,12 +28,19 @@ package.path = "../?.lua;" .. package.path
 local physical = require("physical")
 
 local N = physical.Number
-N.compact = false
-N.udigits = 2
+
+
+function defaultformat()
+   N.seperateUncertainty = true
+   N.omitUncertainty = false
+   N.format = N.DECIMAL
+end
 
 
 TestNumber = {} 
 
+
+--[[
 -- test the default constructor
 function TestNumber:testNewDefault()
    local n = N()
@@ -132,13 +139,13 @@ end
 
 
 -- test string conversion to plus-minus format
-function TestNumber:testToStringPlusMinusNotation()
+function TestNumber:testToPlusMinusNotation()
 
    N.seperateUncertainty = true
    
    N.format = N.DECIMAL
    lu.assertEquals( tostring(N(1,0.5)), "1.0 +/- 0.5" )
-   lu.assertEquals( tostring(N(7,1)), "7 +/- 1" )
+   lu.assertEquals( tostring(N(7,1)), "7.0 +/- 1.0" )
    lu.assertEquals( tostring(N(0.005,0.0001)), "0.00500 +/- 0.00010" )
    lu.assertEquals( tostring(N(500,2)), "500 +/- 2" )
    lu.assertEquals( tostring(N(1023453838.0039,0.06)), "1023453838.00 +/- 0.06" )
@@ -155,48 +162,57 @@ function TestNumber:testToStringPlusMinusNotation()
    lu.assertEquals( tostring(N(500,2)), "(5.00 +/- 0.02)e2" )
 
 end
+]]--
 
 -- test string conversion to plus-minus format
-function TestNumber:testToStringParenthesesNotation()
+function TestNumber:testToParenthesesNotation()
 
    N.seperateUncertainty = false
    N.omitUncertainty = false
 
    N.format = N.DECIMAL
-   lu.assertEquals( tostring(N(1,0.5)), "1.0(5)" )
-   lu.assertEquals( tostring(N(100,13)), "100(13)" )
-   lu.assertEquals( tostring(N(26076,45)), "26076(45)" )
-   lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
-   lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
-   lu.assertEquals( tostring(N(1234.56789, 0.00011)), "1234.56789(11)" )
-   lu.assertEquals( tostring(N(15200000, 23000)), "15200000(23000)" )
-   lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
-   lu.assertEquals( tostring(N(100, 5)), "100(5)"  )
+   --lu.assertEquals( tostring(N(1,0.5)), "1.0(5)" )
+   --lu.assertEquals( tostring(N(100,13)), "100(13)" )
+   --lu.assertEquals( tostring(N(26076,45)), "26076(45)" )
+   --lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
+   --lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
+   --lu.assertEquals( tostring(N(1234.56789, 0.00011)), "1234.56789(11)" )
+   --lu.assertEquals( tostring(N(15200000, 23000)), "15200000(23000)" )
+   --lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
+   --lu.assertEquals( tostring(N(100, 5)), "100(5)"  )
    
    N.format = N.SCIENTIFIC
-   lu.assertEquals( tostring(N(15.2e-6, 2.3e-8)), "1.520(2)e-5" )
-   lu.assertEquals( tostring(N(15.2e-6, 1.2e-8)), "1.5200(12)e-5" )
-   lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
-   lu.assertEquals( tostring(N(15.2e-6, 0)), "1.52e-05" )
+   --lu.assertEquals( tostring(N(15.2e-6, 2.3e-8)), "1.520(2)e-5" )
+   --lu.assertEquals( tostring(N(15.2e-6, 1.2e-8)), "1.5200(12)e-5" )
+   --lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
+   --lu.assertEquals( tostring(N(15.2e-6, 0)), "1.52e-05" )
+
+
+   lu.assertEquals( tostring(N(1.9884e30, 2e26)/N(1.191e8,1.4e6)), "1.670(19)e22" )
 end
 
 
 --[[
 -- test string conversion to compact format
-function TestNumber:testToStringOmitUncertainty()
+function TestNumber:testToOmitUncertaintyNotation()
    N.seperateUncertainty = false
    N.omitUncertainty = true
 
+   N.format = N.DECIMAL
    lu.assertEquals( tostring(N(1, 0.5)), "1" )
    lu.assertEquals( tostring(N(1.2, 0.05)), "1.2" )
    lu.assertEquals( tostring(N(1.2, 0.005)), "1.20" )
+
+   N.format = N.SCIENTIFIC
    lu.assertEquals( tostring(N(1.2e27, 0.05e27)), "1.20e27" )
 
 end
 
 
 -- test string conversion from compact to plus-minus format
-function TestNumber:testToStringPlusMinus()
+function TestNumber:testParseParenthesesNotation()
+   defaultformat()
+
    local n = N("2.32(5)")
    lu.assertEquals( tostring(n), "2.32 +/- 0.05" )
 
@@ -211,7 +227,9 @@ function TestNumber:testToStringPlusMinus()
 end
 
 -- test string conversion from and to plus-minus format
-function TestNumber:testToStringPlusMinus()
+function TestNumber:testParsePlusMinusNotation()
+   defaultformat()
+
    local n = N("2.2 +/- 0.3")
    lu.assertEquals( tostring(n), "2.2 +/- 0.3" )
 
@@ -246,7 +264,8 @@ end
 
 -- test addition of numbers and other physical numbers
 function TestNumber:testAdd()
-   N.compact = false
+   defaultformat()
+
    local n1 = N(5, 0.5)
    local n2 = N(10, 0.2)
 
@@ -257,7 +276,8 @@ end
 
 -- test subtraction of numbers and other physical numbers
 function TestNumber:testSubtract()
-   N.compact = false
+   defaultformat()
+
    local n1 = N(5, 0.5)
    local n2 = N(10, 0.2)
 
@@ -268,7 +288,8 @@ end
 
 -- test unary minus operation
 function TestNumber:testUnaryMinus()
-   N.compact = false
+   defaultformat()
+
    local n = N(5.68, 0.2)
 
    lu.assertEquals( tostring(-n), "-5.7 +/- 0.2" )
@@ -277,7 +298,8 @@ end
 
 -- test multiplication with numbers and other physical numbers
 function TestNumber:testMultiplication()
-   N.compact = false
+   defaultformat()
+
    local n1 = N(4.52, 0.02)
    local n2 = N(2.0, 0.2)
 
@@ -289,7 +311,8 @@ end
 
 -- test division with numbers and other physical numbers
 function TestNumber:testDivision()
-   N.compact = false
+   defaultformat()
+
    local n1 = N(2.0, 0.2)
    local n2 = N(3.0, 0.6)
 
@@ -302,10 +325,11 @@ end
 -- uncertainty calculator physics
 -- http://ollyfg.github.io/Uncertainty-Calculator/
 function TestNumber:testPower()
-   N.compact = false
+   defaultformat()
+
    local n1 = N(3.0, 0.2)
    local n2 = N(2.5, 0.01)
-   
+
    lu.assertEquals( tostring(n1^2), "9.0 +/- 1.2" )
    lu.assertEquals( tostring(3^n2), "15.59 +/- 0.17" )
    lu.assertEquals( tostring(n1^n2), "16 +/- 3" )
@@ -313,7 +337,8 @@ end
 
 -- test the absolute value function
 function TestNumber:testAbs()
-   N.compact = false
+   defaultformat()
+
    local n = N(-5.0, 0.2)
    lu.assertEquals( tostring(n:abs()), "5.0 +/- 0.2" )
 
@@ -323,7 +348,8 @@ end
 
 -- test the logarithm function
 function TestNumber:testLog()
-   N.compact = false
+   defaultformat()
+
    local n = N(5.0, 0.2)
    lu.assertEquals( tostring(n:log()), "1.61 +/- 0.04" )
 
@@ -342,7 +368,8 @@ end
 
 -- test the exponential function
 function TestNumber:testExp()
-   N.compact = false
+   defaultformat()
+
    local n = N(7.0, 0.06)
    lu.assertEquals( tostring(n:exp()), "1097 +/- 66" )
 
@@ -352,7 +379,8 @@ end
 
 -- test the square root function
 function TestNumber:testSqrt()
-   N.compact = false
+   defaultformat()
+
    local n = N(104.2, 0.06)
    lu.assertEquals( tostring(n:sqrt()), "10.208 +/- 0.003" )
 
@@ -366,13 +394,16 @@ end
 -- https://en.wikipedia.org/wiki/Trigonometric_functions
 
 function TestNumber:testSin()
-   N.compact = false
+   defaultformat()
+
    local n = N(-math.pi/6, 0.02)
    lu.assertEquals( tostring(n:sin()), "-0.500 +/- 0.017" )
 end
 
 
 function TestNumber:testCos()
+   defaultformat()
+
    local n = N(math.pi/3, 0.01)
    lu.assertEquals( tostring(n:cos()), "0.500 +/- 0.009" )
 
@@ -384,6 +415,8 @@ function TestNumber:testCos()
 end
 
 function TestNumber:testTan()
+   defaultformat()
+
    local n = N(0, 0.01)
    lu.assertEquals( tostring(n:tan()), "0.000 +/- 0.010" )
 
@@ -399,17 +432,23 @@ end
 -- https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#arctan
 
 function TestNumber:testArcsin()
+   defaultformat()
+
    local n = N(0.5, 0.01)
    lu.assertEquals( tostring(n:asin()), "0.524 +/- 0.012" )
 end
 
 
 function TestNumber:testArccos()
+   defaultformat()
+
    local n = N(0.5, 0.01)
    lu.assertEquals( tostring(n:acos()), "1.047 +/- 0.012" )
 end
 
 function TestNumber:testArctan()
+   defaultformat()
+
    local n = N(0.5, 0.01)
    lu.assertEquals( tostring(n:atan()), "0.464 +/- 0.008" )
 end
@@ -419,16 +458,22 @@ end
 -- https://en.wikipedia.org/wiki/Hyperbolic_function
 
 function TestNumber:testSinh()
+   defaultformat()
+
    local n = N(10, 0.003)
    lu.assertEquals( tostring(n:sinh()), "11013 +/- 33" )
 end
 
 function TestNumber:testCosh()
+   defaultformat()
+
    local n = N(10, 0.003)
    lu.assertEquals( tostring(n:cosh()), "11013 +/- 33" )
 end
 
 function TestNumber:testTanh()
+   defaultformat()
+
    local n = N(1, 0.003)
    lu.assertEquals( tostring(n:tanh()), "0.7616 +/- 0.0013" )
 end
@@ -452,27 +497,6 @@ function TestNumber:testArctanh()
    lu.assertEquals( tostring(n:atanh()), "0.203 +/- 0.010" )
 end
 
-function TestNumber:testQuantityAdd()
-   N.compact = true
-   local l = _m * N(0.2, 0.01) + 5 * _m
-
-   lu.assertEquals( l:__tostring(true), "5.200(10) * _m" )
-   N.compact = false
-end
-
-function TestNumber:testQuantityMultiply()
-   N.compact = true
-   local l = _m * N(0.2, 0.01)
-   lu.assertEquals( l:__tostring(true), "2.00(10)e-1 * _m" )
-
-   local l = N(0.2, 0.01) * _m
-   lu.assertEquals( l:__tostring(true), "2.00(10)e-1 * _m" )
-
-   local T_H = N(76,1) * _a
-   lu.assertEquals( T_H:tosiunitx(), "\\SI{7.60(10)e1}{\\year}" )
-
-   N.compact = false
-end
 ]]--
 
 return TestNumber

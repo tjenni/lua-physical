@@ -24,12 +24,12 @@ SOFTWARE.
 
 local lu = require("luaunit")
 
---TestDimension = require("testDimension")
---TestUnit = require("testUnit")
---TestQuantity = require("testQuantity")
+TestDimension = require("testDimension")
+TestUnit = require("testUnit")
+TestQuantity = require("testQuantity")
 TestNumber = require("testNumber")
---TestDefinition = require("testDefinition")
---TestData = require("testData")
+TestDefinition = require("testDefinition")
+TestData = require("testData")
 
 lu.LuaUnit.verbosity = 2
 os.exit( lu.LuaUnit.run() )

@@ -77,7 +77,7 @@ Data.Astronomical.Jupiter = {
 Data.Astronomical.Saturn = {
 	
 	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(5.68455e26, 0.00057e26) * _kg,
+	mass = N(5.6846e26, 0.0006e26) * _kg,
 	
 	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
 	radius_eq = N(60268, 4) * _km
@@ -113,7 +113,7 @@ Data.Astronomical.Pluto = {
 Data.Astronomical.Eris = {
 	
 	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(1.670e22, 0.020e22) * _kg,
+	mass = N(1.670e22, 0.019e22) * _kg,
 	
 	--Source: http://meetingorganizer.copernicus.org/EPSC-DPS2011/EPSC-DPS2011-137-8.pdf
 	radius = N(1163, 6)*_km,
@@ -124,7 +124,7 @@ Data.Astronomical.Eris = {
 Data.Astronomical.Ceres = {
 	
 	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(9.385e20, 0.060e20) * _kg
+	mass = N(9.39e20, 0.060e20) * _kg
 }
 
 Data.Astronomical.Pallas = {

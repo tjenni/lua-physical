@@ -172,7 +172,11 @@ end
 
 -- parentheses notation, i.e. 5.45(7)e-23
 	
-function Number:_notationPlusMinus()
+function Number:toPlusMinusNotation(format)
+
+	if format == nil then
+		format = Number.format
+	end
 
 	local m, e = self._frexp(self._x)
 	local dm, de = self._frexp(self._dx)
@@ -183,43 +187,50 @@ function Number:_notationPlusMinus()
 		udigit = 1
 	end
 
-	if Number.format == Number.DECIMAL then
-		if de >= 0 then
-			return string.format("%.0f",self._x).." +/- "..string.format("%.0f",self._dx)
+	local str
+
+	-- In the decimal format, the numbers are given as decimals, i.e. (0.02 +/- 0.001) 
+	if format == Number.DECIMAL then
+		if de - udigit >= 0 then
+			str = string.format("%.0f",self._x).." +/- "..string.format("%.0f",self._dx)
 		else
 			local digits = math.abs(-de + udigit)
-			return string.format("%."..digits.."f",self._x).." +/- "..string.format("%."..digits.."f",self._dx)
+			str = string.format("%."..digits.."f",self._x).." +/- "..string.format("%."..digits.."f",self._dx)
 		end
 
-	elseif Number.format == Number.SCIENTIFIC then
+	
+	-- In the scientific format, the numbers are written with powers of ten, i.e. (2.0 +/- 0.1) e-2
+	elseif format == Number.SCIENTIFIC then
 
 		-- the uncertainty should have the same exponent as the value
 		dm = dm * 10^(de-e)
 		de = de - e
 
-		local str = ""
-
 		if de >= 0 then
-			str = str..string.format("%.0f",m).." +/- "..string.format("%.0f",dm)
+			str = string.format("%.0f",m).." +/- "..string.format("%.0f",dm)
 		else
 			local digits = math.abs(-de + udigit)
-			str = str..string.format("%."..digits.."f",m).." +/- "..string.format("%."..digits.."f",dm)
+			str = string.format("%."..digits.."f",m).." +/- "..string.format("%."..digits.."f",dm)
 		end
 
 		if e ~= 0 then
 			str = "("..str..")e"..e
 		end
-
-		return str
 	else
 		error("Unknown number format.")
 	end
+
+	return str
 end
+
 
 -- generate a string representation in parenthesis notation, i.e. i.e. 5.45(7)e-23
 -- Source: http://physics.nist.gov/cgi-bin/cuu/Info/Constants/definitions.html
+function Number:toParenthesisNotation(format)
 
-function Number:_notationParenthesis()
+	if format == nil then
+		format = Number.format
+	end
 
 	local m, e = self._frexp(self._x)
 	local dm, de = self._frexp(self._dx)
@@ -229,79 +240,86 @@ function Number:_notationParenthesis()
 	local udigit = 0
 	if math.floor(dm) == 1 then
 		udigit = 1
-		dm = dm * 10
+		dm = math.floor(dm * 10)
 		de = de - 1
 	end
 
+	local str
 
-
-	if Number.format == Number.DECIMAL then
-
-		local str = ""
-
-		if de >= 0 then
-			str = str..string.format("%.0f",self._x)
-
-			if not Number.omitUncertainty then
-				str = str.."("..string.format("%.0f",dm*10^de)..")"
-			end
-
+	-- In the decimal format, the numbers are given as decimals, i.e. 0.00343(12)
+	if format == Number.DECIMAL then
+		
+		if de - udigit >= 0 then
+			str = string.format("%.0f",self._x).."("..string.format("%.0f",dm*10^de)..")"
 		else
 			local digits = math.abs(de)
-			str = str..string.format("%."..digits.."f",self._x)
-
-			if not Number.omitUncertainty then
-				str = str.."("..string.format("%.0f",dm)..")"
-			end
+			str = string.format("%."..digits.."f",self._x).."("..string.format("%.0f",dm)..")"
 		end
 
-		return str
+	-- In the scientific format, the numbers are written with powers of ten, i.e. 3.43(12)e-3
+	elseif format == Number.SCIENTIFIC then
 
-	
-	elseif Number.format == Number.SCIENTIFIC then
-
-
-		local str = ""
-
-		if Number.omitUncertainty then
-			-- TODO
-
-			
-		else
-			local digits = math.abs(de-e)
-			str = string.format("%."..digits.."f",m).."("..string.format("%.0f",dm)..")"
-		end
+		local digits = math.abs(de-e)
+		str = string.format("%."..digits.."f",m).."("..string.format("%.0f",dm)..")"
 
 		if e ~= 0 then
 			str = str.."e"..e
 		end
 
-		return str
+	else
+		error("Unknown number format.")
+	end
+
+	return str
+end
+
+
+
+function Number:toOmitUncertaintyNotation(format)
+
+	local m, e = self._frexp(self._x)
+	local dm, de = self._frexp(self._dx)
+
+	local str = ""
+
+	if Number.format == Number.DECIMAL then
+		if de >= 0 then
+			str = string.format("%.0f",self._x)
+		else
+			local digits = math.abs(de+1)
+			str = string.format("%."..digits.."f",self._x)
+		end
+
+	elseif Number.format == Number.SCIENTIFIC then
+		local digits = math.abs(de-e)
+		str = string.format("%."..digits.."f",m)
+
+		if e ~= 0 then
+			str = str.."e"..e
+		end
 
 	else
 		error("Unknown number format.")
 	end
 
-	
+	return str
 end
-
-
-
-
-
 
 
 -- convert number to a string
 function Number:__tostring()
-	
+
 	if self._dx == 0 then
 		return tostring(self._x)
-	
+
+	elseif Number.omitUncertainty then
+		return self:toOmitUncertaintyNotation()
+
 	elseif Number.seperateUncertainty then
-		return self:_notationPlusMinus()
+		return self:toPlusMinusNotation()
 
 	else
-		return self:_notationParenthesis()
+		return self:toParenthesisNotation()
 	end 
 
 end

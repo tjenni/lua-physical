@@ -108,13 +108,11 @@ end
 
 function TestData:testEris()
    local m = Data.Astronomical.Sun.mass / N(1.191e8,1.4e6)
-
    lu.assertEquals( tostring(Data.Astronomical.Eris.mass), tostring(m) )
 end
 
 function TestData:testCeres()
    local m = N(4.72e-10,3e-12) * Data.Astronomical.Sun.mass
-
    lu.assertEquals( tostring(Data.Astronomical.Ceres.mass), tostring(m) )
 end
 
