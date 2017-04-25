@@ -35,6 +35,9 @@ setmetatable(Number, {
 })
 
 
+-- If a number is given as a string and it has no uncertainty defined, this options 
+-- allows to set a default uncertainty, i.e. (5.6) will become (5.60 +/- 0.05)
+Number.defaultUncertainty = 0.5
 
 -- Switch for writing uncertainty or not
 Number.omitUncertainty = false
@@ -43,11 +46,7 @@ Number.omitUncertainty = false
 -- will be appended to the value in parentheses.
 Number.seperateUncertainty = false
 
--- If a number is given as a string and it has no uncertainty defined, this options 
--- allows to set a default uncertainty, i.e. (5.6) will become (5.60 +/- 0.05)
-Number.defaultUncertainty = 0.5
-
--- "decimal", "scientific", "engineering"
+-- number format "decimal" or "scientific"
 Number.DECIMAL = 0
 Number.SCIENTIFIC = 1
 
@@ -170,7 +169,7 @@ function Number:__tonumber()
 end
 
 
--- parentheses notation, i.e. 5.45(7)e-23
+-- plus minus notation, i.e. (5.040 +/- 0.001)
 	
 function Number:toPlusMinusNotation(format)
 
@@ -198,6 +197,7 @@ function Number:toPlusMinusNotation(format)
 			str = string.format("%."..digits.."f",self._x).." +/- "..string.format("%."..digits.."f",self._dx)
 		end
 
+		str = "("..str..")"
 	
 	-- In the scientific format, the numbers are written with powers of ten, i.e. (2.0 +/- 0.1) e-2
 	elseif format == Number.SCIENTIFIC then
@@ -213,8 +213,10 @@ function Number:toPlusMinusNotation(format)
 			str = string.format("%."..digits.."f",m).." +/- "..string.format("%."..digits.."f",dm)
 		end
 
+		str = "("..str..")"
+
 		if e ~= 0 then
-			str = "("..str..")e"..e
+			str = str.."e"..e
 		end
 	else
 		error("Unknown number format.")

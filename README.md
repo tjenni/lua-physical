@@ -1,6 +1,7 @@
 # lua-physical
 
-With this module one can do calculations with physical units, i.e. 
+This lua module provides the classes and functions to do calculations with physical quantities. 
+
 ```
 > require("physical")
 > a = 1.4 * _m

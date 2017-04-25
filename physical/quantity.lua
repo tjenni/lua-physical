@@ -25,6 +25,7 @@ SOFTWARE.
 local prefix = ... and (...):match '(.-%.?)[^%.]+$' or ''
 local D = require(prefix..'dimension')
 local U = require(prefix..'unit')
+local N = require(prefix..'number')
 
 -- Quantity class
 local Quantity = {}
@@ -381,26 +382,17 @@ function Quantity:tosiunitx(param)
 		str = str.."["..param.."]"
 	end
 
-	return str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
-end
+	if type(self.value) == "number" then
+		str = str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
+	
+	elseif getmetatable(self.value) == N then
+		str = str.."{"..self.value:toParenthesisNotation().."}{"..self.unit:tosiunitx().."}"
+	
+	else
+		error("Can not convert quantity to an siunitx command.")
+	end
 
-
-
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         if getmetatable(v) == physical.Unit then
-            s = s .. '['..k..'] = ' .. v.symbol .. ','
-         else
-           s = s .. '['..k..'] = ' .. dump(v) .. ','
-         end
-      end
-      return s .. '}\n'
-   else
-      return tostring(o)
-   end
+	return str
 end
 
 -- check if this quantity is close to another one. r is the maximal relative deviation.
@@ -421,10 +413,6 @@ function Quantity:isclose(o, r)
 	local min = Quantity.min(Quantity.abs(q1),Quantity.abs(q2)):__tonumber()
 	return  (delta / min) < r
 end
-
-
-
-
 
 -- minimum value
 function Quantity.min(o1,o2)

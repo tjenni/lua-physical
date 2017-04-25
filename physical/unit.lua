@@ -79,12 +79,16 @@ function Unit.new(...)
 	return u
 end
 
-
+-- Equality Check. Two units considered to be equal, if they have equal  
+-- prefix- and base factors.
+-- @return 
 function Unit.__eq(o1,o2)
 	if o1.basefactor ~= o2.basefactor then
 		return false
+
 	elseif o1.prefixfactor ~= o2.prefixfactor then
 		return false
+
 	end
 
 	return true
@@ -227,8 +231,7 @@ function Unit:__tostring()
 	return str
 end
 
-
-
+-- convert the unit to a unit string which can be read from the latex package siunitx.
 function Unit:tosiunitx()
 
 	-- assemble unit strings
@@ -239,24 +242,22 @@ function Unit:tosiunitx()
 
 		for j=1,#units do
 			local unit = units[j]
-			local exponent = unit[2]
+			local e = unit[2]
 
-			if exponent ~= 0 then
-				local name = unit[1].name
-				--local prefix = unit[1]._prefix_symbol
-
+			if e ~= 0 then
+				
 				if i == 2 then
 					s = s.."\\per"
 				end
 
-				--if prefix ~= nil then
-				--	s = s.."\\"..Quantity._prefixes[prefix].name
-				--end
+				if unit[1].prefix ~= nil then
+					s = s.."\\"..unit[1].prefix.name
+				end
 
-				s = s.."\\"..name
+				s = s.."\\"..unit[1].name
 
-				if exponent ~= 1 then
-					s = s.."\\tothe{"..exponent.."}"
+				if e ~= 1 then
+					s = s.."\\tothe{"..e.."}"
 				end
 			end
 		end

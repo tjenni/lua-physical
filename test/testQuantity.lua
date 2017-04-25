@@ -49,6 +49,30 @@ end
 
 TestQuantity = {}
 
+function TestQuantity:testToString()
+   lu.assertEquals( tostring(5 * _m), "5 * _m" )
+   lu.assertEquals( tostring(5 * _m^2), "5 * _m^2" )
+   lu.assertEquals( tostring(5 * _km/_h), "5 * _km / _h" )
+
+   lu.assertEquals( tostring( N(2.7,0.04) * _g/_cm^3), "(2.70 +/- 0.04) * _g / _cm^3" )
+end
+
+
+function TestQuantity:testToSIUnitX()
+   lu.assertEquals( (5 * _m):tosiunitx(), "\\SI{5}{\\meter}" )
+   lu.assertEquals( (5 * _m^2):tosiunitx(), "\\SI{5}{\\meter\\tothe{2}}" )
+
+   lu.assertEquals( (56 * _km):tosiunitx(), "\\SI{56}{\\kilo\\meter}" )
+   lu.assertEquals( (5 * _km/_h):tosiunitx(), "\\SI{5}{\\kilo\\meter\\per\\hour}" )
+   lu.assertEquals( (4.81 * _J / (_kg * _K) ):tosiunitx(), "\\SI{4.81}{\\joule\\per\\kilogram\\per\\kelvin}" )
+
+   lu.assertEquals( (N(2.7,0.04) * _g/_cm^3):tosiunitx(), "\\SI{2.70(4)}{\\gram\\per\\centi\\meter\\tothe{3}}" )
+end
+
+
+
+
+
 function TestQuantity.addError()
    local l = 5*_m + 10*_s
 end
