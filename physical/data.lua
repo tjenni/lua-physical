@@ -6,138 +6,116 @@ local N = require(prefix..'number')
 local Data = {}
 Data.__index = Data
 
+
+-- return table with values
+function Data._getKeys(file)
+	local table = require(prefix..file)
+	local keys = {}
+
+	local n = #table.keys
+	for i=1,n do
+		local key = table.keys[i]
+
+		-- skip uncertainties
+		if key:sub(1,1) ~= "d" or table.keys[key:sub(2)] == nil then
+			keys[#keys+1] = key
+		end
+	end
+
+	return keys
+end
+
+-- get the i'th row of the datafile
+function Data._getRow(file, i)
+	local table = require(prefix..file)
+
+	local result = {}
+	local row = table.rows[i]
+
+	local keys = Data._getKeys(file)
+	
+	local n = #keys
+	for j=1,n do
+		local key = keys[j]
+		local x = row[j]
+			
+		-- number
+		if type(x) == "number" then
+			-- check if the number has an uncertainty
+			local dx = row[dkey]
+			if type(dx) == "number"  then
+				row[key] = N(x,dx)
+			else
+				row[key] = x
+			end
+
+			-- append unit to number
+			local unit = table.units[i]
+			if unit ~= "" then
+				row[key] = row[key] * _G["_"..unit]
+			end
+		
+		-- string
+		elseif x ~= nil and x ~= "" then
+			row[key] = x
+		end
+	end
+
+	return row
+end
+
+
+
+
+
+
+
 -- ASTRONOMICAL DATA
 Data.Astronomical = {}
 
-Data.Astronomical.Sun = {
+-- make the table callable
+setmetatable(Data.Astronomical, {
+	__call = function(class, ...)
+		return Data.Astronomical.get(...)
+	end
+})
 
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(1.9884e30, 0.0002e30) * _kg ,
+function Data.Astronomical.get(name, key)
+	local data = require(prefix..'astronomical')
 
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(695700, 100) * _km,
-}
+	-- return all names
+	if name == nil then
+		local names = {}
+		for name,_ in pairs(data) do
+			names[#names+1] = name
+		end
+		return names
+	end
 
-Data.Astronomical.Mercury = {
-	
-	-- Mazarico, E., A. Genova, S. Goossens, F. G. Lemoine, G. A. Neumann, M. T. Zuber, 
-	-- D. E. Smith, and S. C. Solomon (2014), The gravity field, orientation, and 
-	-- ephemeris of Mercury from MESSENGER observations after three years in orbit, 
-	-- J. Geophys. Res. Planets, 119, 2417–2436, doi:10.1002/2014JE004675.
-	mass = N(3.30111e23, 0.00015e23) * _kg,
+	if data[name] ~= nil then
+		local row = data[name]
 
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(2439.7, 1.0) * _km
-}
+		-- return all keys
+		if key == nil then
+			local keys = {}
+			for key,_ in pairs(row) do
+				keys[#keys+1] = key
+			end
+			return keys
+		end
 
-Data.Astronomical.Venus = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(4.86728e24, 0.00049e24) * _kg,
+		if row[key] ~= nil then
+			return row[key] 
+		end
+	end
 
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(6051.8, 1.0) * _km
-}
+	return nil
+end
 
-Data.Astronomical.Earth = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(5.9722e24, 0.0006e24) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(6378.1366, 0.0001) * _km
-}
 
-Data.Astronomical.Moon = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(7.34583e22, 0.00074e22) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(1737.4, 1) * _km
-}
 
-Data.Astronomical.Mars = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(6.41688e23, 0.00065e23) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(3396.19, 0.1) * _km
-}
 
-Data.Astronomical.Jupiter = {
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(1.89851e27, 0.00019e27) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(71492, 4) * _km
-}
 
-Data.Astronomical.Saturn = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(5.6846e26, 0.0006e26) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(60268, 4) * _km
-}
-
-Data.Astronomical.Uranus = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(8.68184e25, 0.00087e25) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(25559, 4) * _km
-}
-
-Data.Astronomical.Neptune = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(1.0243e26, 0.0001e26) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(24764, 15) * _km
-}
-
-Data.Astronomical.Pluto = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(1.45600e22, 0.00033e22) * _kg,
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	radius_eq = N(1195, 5) * _km
-}
-
-Data.Astronomical.Eris = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(1.670e22, 0.019e22) * _kg,
-	
-	--Source: http://meetingorganizer.copernicus.org/EPSC-DPS2011/EPSC-DPS2011-137-8.pdf
-	radius = N(1163, 6)*_km,
-	density = N(2.5, 0.05) * _g/_cm^3,
-	albedo = N(0.96, 0.09) * _1
-}
-
-Data.Astronomical.Ceres = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(9.39e20, 0.060e20) * _kg
-}
-
-Data.Astronomical.Pallas = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(2.048e20, 0.060e20) * _kg
-}
-
-Data.Astronomical.Vesta = {
-	
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	mass = N(2.684e20, 0.06e20) * _kg
-}
 
 
 
@@ -147,6 +125,13 @@ Data.Astronomical.Vesta = {
 -- ISOTOPE DATA
 --
 Data.Isotopes = {}
+
+-- make the table callable
+setmetatable(Data.Isotopes, {
+	__call = function(class, ...)
+		return Data.Isotopes.get(...)
+	end
+})
 
 
 function Data.Isotopes.get(a,b,c)
@@ -237,6 +222,7 @@ function Data.Isotopes._getValues(I)
 end
 
 -- find isotope
+-- todo: create an hash table 99_101
 function Data.Isotopes._getByAZ(A,Z)
 	local data = require(prefix..'isotope')
 
