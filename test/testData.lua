@@ -169,80 +169,45 @@ end
 
 
 
-
-
 -- Test isotope data
 
---[[
+function TestQuantity.isotopeGetByAZError()
+   local Z = Data.Isotope({56,55},"Z")
+end
+function TestData:testIsotopeGetByAZ()
+   lu.assertEquals( Data.Isotope({4,2},"A"), 4 )
+   lu.assertEquals( Data.Isotope({4,2},"Z"), 2 )
 
+   lu.assertTrue( (28667 * _keV):isclose(Data.Isotope({3,3},"MassExcess"),1e-9) )
 
-function TestData:testIsotope_getByAZ()
-   local o = Data.Isotopes._getByAZ(4,2)
-   lu.assertEquals( o[1], 4 )
-   lu.assertEquals( o[2], 2 )
+   lu.assertEquals( Data.Isotope({56,25},"A"), 56 )
+   lu.assertEquals( Data.Isotope({56,25},"Z"), 25 )
+  
+   lu.assertTrue( (-2267 * _keV):isclose(Data.Isotope({3,3},"BindingEnergyPerNucleon"),1e-9) )
 
-
-   local o = Data.Isotopes._getByAZ(56,25)
-   lu.assertEquals( o[1], 56 )
-   lu.assertEquals( o[2], 25 )
-
-   local o = Data.Isotopes._getByAZ(56,55)
-   lu.assertEquals( o, nil )
-
-   local o = Data.Isotopes._getByAZ(4,200)
-   lu.assertEquals( o, nil )
+   lu.assertError( TestQuantity.isotopeGetByAZError )
 end
 
-function TestData:testIsotope_getByName()
-   local o = Data.Isotopes._getByName("Helium-5")
-   lu.assertEquals( o[1], 5 )
-   lu.assertEquals( o[2], 2 )
-
-   local o = Data.Isotopes._getByName("Helium5")
-   lu.assertEquals( o, nil )
-
-   local o = Data.Isotopes._getByName(" Helium-5")
-   lu.assertEquals( o, nil )
-
-   local o = Data.Isotopes._getByName("Heelium-5")
-   lu.assertEquals( o, nil )
-
-   local o = Data.Isotopes._getByName("5He")
-   lu.assertEquals( o[1], 5 )
-   lu.assertEquals( o[2], 2 )
-
-   local o = Data.Isotopes._getByName("56Fe")
-   lu.assertEquals( o[1], 56 )
-   lu.assertEquals( o[2], 26 )
-
-   local o = Data.Isotopes._getByName("5-He")
-   lu.assertEquals( o, nil )
-
-   local o = Data.Isotopes._getByName("5HeL")
-   lu.assertEquals( o, nil )
-end
-
-function TestData:testIsotope_getValues()
-   local I = Data.Isotopes._getValues(Data.Isotopes._getByName("Helium-5"))
-   lu.assertEquals( I["Name"], "Helium" )
-   lu.assertEquals( I["A"], 5 )
-end
-
-function TestData:testIsotope_getValueByKey()
-   local name = Data.Isotopes._getValueByKey(Data.Isotopes._getByName("Helium-5"),"Name")
-   lu.assertEquals( name, "Helium" )
+function TestData:testIsotopeGetKeys()
+   local row = Data.Isotope({4,2})
+   lu.assertTrue( contains(row,"MassExcess") )
+   lu.assertTrue( contains(row,"Q_a") )
+   lu.assertTrue( contains(row,"Q_na") )
 end
 
 
-
--- http://nucleardata.nuclear.lu.se/toi/nuclide.asp?iZA=910231
-
-function TestData:testIsotope_get()
-   local name = Data.Isotopes.get("Helium-5","Name")
-   lu.assertEquals( name, "Helium" )
-
-   local ME = Data.Isotopes.get("Helium-5","MassExcess")
+function TestData:testIsotopeGetByName()
+   lu.assertEquals( Data.Isotope("Helium-5","A"), 5 )
+   lu.assertEquals( Data.Isotope("Helium-5","Z"), 2 )
+   lu.assertEquals( Data.Isotope("5He","A"), 5 )
+   lu.assertEquals( Data.Isotope("5He","Z"), 2 )
 end
-]]--
+
+function TestData:testIsotopeGet()
+   local isotopes = Data.Isotope()
+
+   lu.assertTrue( contains(isotopes,"6He") )
+end
+
 
 return TestData

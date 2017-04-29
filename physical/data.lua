@@ -7,70 +7,9 @@ local Data = {}
 Data.__index = Data
 
 
--- return table with values
-function Data._getKeys(file)
-	local table = require(prefix..file)
-	local keys = {}
-
-	local n = #table.keys
-	for i=1,n do
-		local key = table.keys[i]
-
-		-- skip uncertainties
-		if key:sub(1,1) ~= "d" or table.keys[key:sub(2)] == nil then
-			keys[#keys+1] = key
-		end
-	end
-
-	return keys
-end
-
--- get the i'th row of the datafile
-function Data._getRow(file, i)
-	local table = require(prefix..file)
-
-	local result = {}
-	local row = table.rows[i]
-
-	local keys = Data._getKeys(file)
-	
-	local n = #keys
-	for j=1,n do
-		local key = keys[j]
-		local x = row[j]
-			
-		-- number
-		if type(x) == "number" then
-			-- check if the number has an uncertainty
-			local dx = row[dkey]
-			if type(dx) == "number"  then
-				row[key] = N(x,dx)
-			else
-				row[key] = x
-			end
-
-			-- append unit to number
-			local unit = table.units[i]
-			if unit ~= "" then
-				row[key] = row[key] * _G["_"..unit]
-			end
-		
-		-- string
-		elseif x ~= nil and x ~= "" then
-			row[key] = x
-		end
-	end
-
-	return row
-end
-
-
-
-
-
-
-
+--
 -- ASTRONOMICAL DATA
+--
 Data.Astronomical = {}
 
 -- make the table callable
@@ -114,159 +53,154 @@ end
 
 
 
-
-
-
-
-
-
-
 --
 -- ISOTOPE DATA
 --
-Data.Isotopes = {}
+Data.Isotope = {}
 
 -- make the table callable
-setmetatable(Data.Isotopes, {
+setmetatable(Data.Isotope, {
 	__call = function(class, ...)
-		return Data.Isotopes.get(...)
+		return Data.Isotope.get(...)
 	end
 })
 
 
-function Data.Isotopes.get(a,b,c)
+-- return table with values
+function Data.Isotope.getKeys()
 	local data = require(prefix..'isotope')
 
-	-- A, Z, (key)
-	if type(a) == type(b) == "number" then
-		local I = Data.Isotopes._getByAZ(a,b)
+	local keys = {}
 
-		if I == nil then
-			return nil
-		end
-
-		if type(c) == "string" then
-			return Data.Isotopes._getValueByKey(I,c)
-		else
-			return Data.Isotopes._getValues(I)
-		end
-	end
-
-	-- name, (key)
-	if type(a) == "string" then
-		local I = Data.Isotopes._getByName(a)
-
-		if I == nil then
-			return nil
-		end
-
-		if type(b) == "string" then
-			return Data.Isotopes._getValueByKey(I,b)
-		else
-			return Data.Isotopes._getValues(I)
-		end
-	end
-end
-
--- return table 
-function Data.Isotopes._getValueByKey(I,key)
-	return Data.Isotopes._getValues(I)[key] 
-end
-
--- return table with isotope values
-function Data.Isotopes._getValues(I)
-	local data = require(prefix..'isotope')
-
-	local J = {}
-
-	local n = #data._keys
+	local n = #data.keys
 	for i=1,n do
-		
-		local key = data._keys[i]
-		local di = data._keys["d"..key]
+		local key = data.keys[i]
 
 		-- skip uncertainties
-		if key:sub(1,1) ~= "d" then
-
-			local x = I[i]
-			
-			-- number
-			if type(x) == "number" then
-				local dx = I[di]
-
-				if type(dx) == "number"  then
-					J[key] = N(x,dx)
-				else
-					J[key] = x
-				end
-
-				local unit = data._units[i]
-
-
-				if unit ~= "" then
-					J[key] = J[key] * _G["_"..unit]
-				end
-			
-			-- string
-			elseif x ~= nil and x ~= "" then
-				J[key] = x
-			end
+		if key:sub(1,1) ~= "d" or data.keys[key:sub(2)] == nil then
+			keys[#keys+1] = key
 		end
 	end
 
-	local Z_key = data._keys["Z"]
-	J.Symbol = data._symbols[I[Z_key]]
-	J.Name = data._names[I[Z_key]]
-
-	return J
+	return keys
 end
 
--- find isotope
--- todo: create an hash table 99_101
-function Data.Isotopes._getByAZ(A,Z)
+
+function Data.Isotope.getByName(isotope, key)
 	local data = require(prefix..'isotope')
 
-	local A_key = data._keys["A"]
-	local Z_key = data._keys["Z"]
+	local name, A   = string.match(isotope, "^([%a]+)%-([%d]+)$")
+    if A ~= nil and name ~= nil then
+    	A = tonumber(A)
+    	Z = data.names[name]
 
-	local I
+    	if A ~= nil and Z ~= nil then
+    		return Data.Isotope.getByAZ(A, Z, key)
+    	end
+    end
 
-	-- find isotope
-	local n = #data._data
-	for i=1,n do
-		I = data._data[i]
-		if I[A_key] == A and I[Z_key] == Z then
-			return I
+    local A,symbol   = string.match(isotope, "^([%d]+)([%a][%a])$")
+    if A ~= nil and symbol ~= nil then
+    	A = tonumber(A)
+    	Z = data.symbols[symbol]
+
+    	if A ~= nil and Z ~= nil then
+    		return Data.Isotope.getByAZ(A, Z, key)
+    	end
+    end
+
+    error("Isotope '"..isotope.."' not found in 'Data.Isotope'.")
+end
+
+function Data.Isotope.getByAZ(A, Z, key)
+	local data = require(prefix..'isotope')
+
+	-- get row number
+	local i = data.index[tostring(A)..tostring(Z)]
+
+	if i == nil then
+		error("Isotope with (A,Z) = ("..tostring(A)..","..tostring(Z)..")  not found in 'Data.Isotope'.")
+	end
+
+	-- get all keys
+	if key == nil then
+		return Data.Isotope.getKeys()
+	
+	elseif key == "name" then
+		if Z==0 then
+			return "Neutronium-"..A
+		else
+			return data.names[Z].."-"..A
 		end
+	
+	elseif key == "symbol" then
+		if Z==0 then
+			return "n-"..A
+		else
+			return data.symbols[Z].."-"..A
+		end
+	
+	end
+
+	-- other keys
+	local row = data.data[i]
+
+	local column = data.keys[key]
+	local dcolumn = data.keys["d"..key] -- uncertainty
+
+	if row[column] == nil then
+		error("Key "..key.." not found in 'Data.Isotope'.")
+	end
+
+	-- assemble value
+	local value = row[column]
+	if dcolumn ~= nil  then
+		value = N(row[column], row[dcolum])
+	end
+
+	local unit = data.units[column]
+	if unit ~= "" then
+		value = value * _G["_"..unit]
+	end
+
+	return value
+end
+
+function Data.Isotope.get(isotope,key)
+	local data = require(prefix..'isotope')
+
+
+	if type(isotope) == "string" then
+		return Data.Isotope.getByName(isotope, key)
+
+	elseif type(isotope) == "table" then
+		local A = isotope[1]
+		local Z = isotope[2]
+
+		if type(A) == type(Z) and type(A) == "number" then
+			return Data.Isotope.getByAZ(A, Z, key)
+		end
+
+	else
+
+		local Akey = data.keys["A"]
+		local Zkey = data.keys["Z"]
+		
+		local names = {}
+		for _,row in ipairs(data.data) do
+			local A = row[Akey]
+			local Z = row[Zkey]
+
+			if Z == 0 then
+				names[#names+1] = tostring(A).."n"
+			else
+				names[#names+1] = tostring(A)..data.symbols[Z]
+			end
+		end
+		return names 
 	end
 
 	return nil
-end
-
-function Data.Isotopes._getByName(str)
-	local data = require(prefix..'isotope')
-
-	local name, A   = string.match(str, "^([%a]+)%-([%d]+)$")
-    if A ~= nil and name ~= nil then
-    	A = tonumber(A)
-    	Z = data._names[name]
-
-    	if A ~= nil and Z ~= nil then
-    		return Data.Isotopes._getByAZ(A,Z)
-    	end
-    end
-
-    local A,symbol   = string.match(str, "^([%d]+)([%a][%a])$")
-    if A ~= nil and symbol ~= nil then
-    	A = tonumber(A)
-    	Z = data._symbols[symbol]
-
-    	if A ~= nil and Z ~= nil then
-    		return Data.Isotopes._getByAZ(A,Z)
-    	end
-    end
-
-   	return nil
 end
 
 return Data
