@@ -125,10 +125,10 @@ function Number.new(x, dx)
 			return n
 		end
 
-		print("Error: The string '".._x.."' cannot be converted to a physical.Number.")
+		print("Error: The string '"..tostring(_x).."' cannot be converted to a physical.Number.")
 
 		return nil
-
+		
 	-- default
 	else
 		n._x = 0

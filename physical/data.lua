@@ -1,3 +1,26 @@
+--[[
+This file contains the methods for accessing the physical data.
+
+Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+]]--
 local prefix = ... and (...):match '(.-%.?)[^%.]+$' or ''
 local N = require(prefix..'number')
 
@@ -5,6 +28,14 @@ local N = require(prefix..'number')
 -- N class
 local Data = {}
 Data.__index = Data
+
+
+
+
+
+
+
+
 
 
 --
@@ -65,122 +96,48 @@ setmetatable(Data.Isotope, {
 	end
 })
 
-
--- return table with values
-function Data.Isotope.getKeys()
-	local data = require(prefix..'isotope')
-
-	local keys = {}
-
-	local n = #data.keys
-	for i=1,n do
-		local key = data.keys[i]
-
-		-- skip uncertainties
-		if key:sub(1,1) ~= "d" or data.keys[key:sub(2)] == nil then
-			keys[#keys+1] = key
-		end
-	end
-
-	return keys
-end
-
-
-function Data.Isotope.getByName(isotope, key)
-	local data = require(prefix..'isotope')
-
-	local name, A   = string.match(isotope, "^([%a]+)%-([%d]+)$")
-    if A ~= nil and name ~= nil then
-    	A = tonumber(A)
-    	Z = data.names[name]
-
-    	if A ~= nil and Z ~= nil then
-    		return Data.Isotope.getByAZ(A, Z, key)
-    	end
-    end
-
-    local A,symbol   = string.match(isotope, "^([%d]+)([%a][%a])$")
-    if A ~= nil and symbol ~= nil then
-    	A = tonumber(A)
-    	Z = data.symbols[symbol]
-
-    	if A ~= nil and Z ~= nil then
-    		return Data.Isotope.getByAZ(A, Z, key)
-    	end
-    end
-
-    error("Isotope '"..isotope.."' not found in 'Data.Isotope'.")
-end
-
-function Data.Isotope.getByAZ(A, Z, key)
-	local data = require(prefix..'isotope')
-
-	-- get row number
-	local i = data.index[tostring(A)..tostring(Z)]
-
-	if i == nil then
-		error("Isotope with (A,Z) = ("..tostring(A)..","..tostring(Z)..")  not found in 'Data.Isotope'.")
-	end
-
-	-- get all keys
-	if key == nil then
-		return Data.Isotope.getKeys()
-	
-	elseif key == "name" then
-		if Z==0 then
-			return "Neutronium-"..A
-		else
-			return data.names[Z].."-"..A
-		end
-	
-	elseif key == "symbol" then
-		if Z==0 then
-			return "n-"..A
-		else
-			return data.symbols[Z].."-"..A
-		end
-	
-	end
-
-	-- other keys
-	local row = data.data[i]
-
-	local column = data.keys[key]
-	local dcolumn = data.keys["d"..key] -- uncertainty
-
-	if row[column] == nil then
-		error("Key "..key.." not found in 'Data.Isotope'.")
-	end
-
-	-- assemble value
-	local value = row[column]
-	if dcolumn ~= nil  then
-		value = N(row[column], row[dcolum])
-	end
-
-	local unit = data.units[column]
-	if unit ~= "" then
-		value = value * _G["_"..unit]
-	end
-
-	return value
-end
+-- get isotope data
+--
+-- 1) Get the mass excess of Helium-5 by the following commands
+-- Data.Isotope("5He","MassExcess") or
+-- Data.Isotope("5-He","MassExcess") or
+-- Data.Isotope("5Helium","MassExcess") or
+-- Data.Isotope("5-Helium","MassExcess") or
+-- Data.Isotope("He5","MassExcess") or
+-- Data.Isotope("He-5","MassExcess") or
+-- Data.Isotope("Helium5","MassExcess") or
+-- Data.Isotope("Helium-5","MassExcess")
+--
+-- 2) Get the mass excess of all helium isotopes
+-- Data.Isotope("He","MassExcess") or
+-- Data.Isotope("Helium","MassExcess")
+-- 
+-- 3) Get the half life of Lithium-3
+-- Data.Isotope({3,3},"HalfLife")
+--
+-- 4) Get the half life of all isotopes
+-- Data.Isotope(nil,"HalfLife")
+-- 
+-- 5) Get the names of all isotopes
+-- Data.Isotope(nil,nil)
 
 function Data.Isotope.get(isotope,key)
 	local data = require(prefix..'isotope')
 
-
+	-- match 1) and 2) or 4)
 	if type(isotope) == "string" then
 		return Data.Isotope.getByName(isotope, key)
 
+	-- match 3) or 4)
 	elseif type(isotope) == "table" then
 		local A = isotope[1]
 		local Z = isotope[2]
 
-		if type(A) == type(Z) and type(A) == "number" then
+		if type(A) == "number" and type(Z) == "number" then
 			return Data.Isotope.getByAZ(A, Z, key)
 		end
 
+	-- match 5)
 	else
 
 		local Akey = data.keys["A"]
@@ -191,17 +148,154 @@ function Data.Isotope.get(isotope,key)
 			local A = row[Akey]
 			local Z = row[Zkey]
 
-			if Z == 0 then
-				names[#names+1] = tostring(A).."n"
-			else
-				names[#names+1] = tostring(A)..data.symbols[Z]
-			end
+			names[#names + 1] = tostring(A)..data.symbols[Z+1]
 		end
 		return names 
 	end
 
 	return nil
 end
+
+
+-- returns isotope data by the isotope name.
+function Data.Isotope.getByName(isotope, key)
+	local data = require(prefix..'isotope')
+
+	-- match "Helium-5", "Helium5", "He-5" or "He5"
+	local name, A   = string.match(isotope, "^([%a]+)%-?([%d]+)$")
+    if name ~= nil then
+    	local Z = data.names[name]
+    	if Z == nil then
+    		Z = data.symbols[name]
+    	end
+
+    	A = tonumber(A)
+
+    	if A ~= nil and Z ~= nil then
+    		return Data.Isotope.getByAZ(A, Z, key)
+    	end
+    end 
+
+    -- match "5-Helium", "5Helium", "5-He" or "5He5"
+    local A,name   = string.match(isotope, "^([%d]+)%-?([%a]+)$")
+    if name ~= nil then
+    	local Z = data.names[name]
+    	if Z == nil then
+    		Z = data.symbols[name]
+    	end
+
+    	A = tonumber(A)
+
+    	if A ~= nil and Z ~= nil then
+    		return Data.Isotope.getByAZ(A, Z, key)
+    	end
+    end
+
+    local name   = string.match(isotope, "^([%a]+)$")
+    if name ~= nil then
+    	local Z = data.names[name]
+    	if Z == nil then
+    		Z = data.symbols[name]
+    	end
+
+    	if Z ~= nil then
+    		return Data.Isotope.getByZ(Z, key)
+    	end
+    end
+
+    return nil
+end
+
+
+-- return isotopes with a certain A and Z
+function Data.Isotope.getByAZ(A, Z, key)
+	local data = require(prefix..'isotope')
+
+	-- get row number
+	local i = data.indexAZ[tonumber(tostring(A)..tostring(Z))]
+	if i == nil then
+		error("Isotope with (A,Z) = ("..tostring(A)..","..tostring(Z)..")  not found in 'Data.Isotope'.")
+	end
+
+	return Data.Isotope._getValues(data.data[i],key)
+end
+
+
+-- return all isotope data with a certain Z
+function Data.Isotope.getByZ(Z, key)
+	local data = require(prefix..'isotope')
+
+	local result = {}
+	for _, i in ipairs(data.indexZ[Z+1]) do
+		result[#result + 1] = Data.Isotope._getValues(data.data[i],key)
+	end
+
+	return result
+end
+
+
+-- return key value pairs from a specific row
+function Data.Isotope._getValues(row, keys)
+	local data = require(prefix..'isotope')
+
+	if keys == nil then
+		keys = data.keys
+
+	elseif type(keys) == "string" then
+		keys = {keys}
+
+	elseif type(keys) ~= "table" then
+		error("Unknown key type '"..tostring(key).."'.")
+	end
+
+	local result = {}
+	for _,key in ipairs(keys) do
+
+		-- name and symbol
+		if key == "name" then
+			result["name"] =  data.names[row[data.keys["Z"]] + 1].."-"..row[data.keys["A"]]
+
+		elseif key == "symbol" then
+			result["symbol"] = row[data.keys["A"]]..data.symbols[row[data.keys["Z"]] + 1]
+		
+		elseif key ~= "" then
+
+			local i = data.keys[key]
+			local di = data.dkeys[key]
+
+			local x = row[i]
+			local dx = row[di]
+
+			-- invalid key
+			if x == nil then
+				error("Key "..key.." not found in 'Data.Isotope'.")
+			end
+
+			-- get value
+			local value = x
+
+			-- append uncertainty
+			if type(x) == "number" and type(dx) == "number" then
+				value = N(x, dx)
+			end
+
+			-- append unit
+			local unit = data.units[i]
+			if type(x)=="number" and unit ~= "" then
+				value = value * _G["_"..unit]
+			end
+
+			result[key] = value
+		end
+	end
+
+	if #keys == 1 then
+		return result[keys[1]]
+	else
+		return result
+	end
+end
+
 
 return Data
 

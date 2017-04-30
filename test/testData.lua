@@ -42,7 +42,7 @@ function dump(o)
       for k,v in pairs(o) do
          if type(k) ~= 'number' then k = '"'..k..'"' end
          if getmetatable(v) == physical.Unit then
-            s = s .. '['..k..'] = ' .. v.symbol .. ','
+            s = s .. '['..k..'] = ' .. tostring(v) .. ','
          else
            s = s .. '['..k..'] = ' .. dump(v) .. ','
          end
@@ -170,7 +170,6 @@ end
 
 
 -- Test isotope data
-
 function TestQuantity.isotopeGetByAZError()
    local Z = Data.Isotope({56,55},"Z")
 end
@@ -188,25 +187,41 @@ function TestData:testIsotopeGetByAZ()
    lu.assertError( TestQuantity.isotopeGetByAZError )
 end
 
-function TestData:testIsotopeGetKeys()
+function TestData:testIsotopeGetAllKeys()
    local row = Data.Isotope({4,2})
-   lu.assertTrue( contains(row,"MassExcess") )
-   lu.assertTrue( contains(row,"Q_a") )
-   lu.assertTrue( contains(row,"Q_na") )
+   lu.assertTrue( row["MassExcess"] ~= nil )
 end
 
 
-function TestData:testIsotopeGetByName()
+function TestData:testIsotopeGetByIsotopeName()
    lu.assertEquals( Data.Isotope("Helium-5","A"), 5 )
+
+   
    lu.assertEquals( Data.Isotope("Helium-5","Z"), 2 )
+   
+   lu.assertEquals( Data.Isotope("Lithium5","A"), 5 )
+   lu.assertEquals( Data.Isotope("Lithium5","Z"), 3 )
+
    lu.assertEquals( Data.Isotope("5He","A"), 5 )
    lu.assertEquals( Data.Isotope("5He","Z"), 2 )
 end
 
-function TestData:testIsotopeGet()
+function TestData:testIsotopeGetByElementName()
+   local list = Data.Isotope("Fe","symbol")
+   lu.assertEquals( #list, 30 )
+
+   print(dump(Data.Isotope("He",{"A","DecayModes","DecayModesIntensity"})))
+end
+
+
+
+function TestData:testIsotopeGetAll()
    local isotopes = Data.Isotope()
 
    lu.assertTrue( contains(isotopes,"6He") )
+   lu.assertTrue( contains(isotopes,"55K") )
+   lu.assertTrue( contains(isotopes,"209Rn") )
+   lu.assertTrue( contains(isotopes,"295Ei") )
 end
 
 
