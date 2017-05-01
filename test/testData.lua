@@ -63,6 +63,14 @@ local function contains(table, val)
    return false
 end
 
+local function count(table)
+   local n = 0
+   for k,v in pairs(table) do 
+      n = n + 1
+   end
+   return n
+end
+
 
 TestData = {}
 
@@ -208,12 +216,14 @@ end
 
 function TestData:testIsotopeGetByElementName()
    local list = Data.Isotope("Fe","symbol")
-   lu.assertEquals( #list, 30 )
 
-   print(dump(Data.Isotope("He",{"A","DecayModes","DecayModesIntensity"})))
+   lu.assertEquals( count(list), 30 )
+   lu.assertTrue( list["47Fe"] ~= nil )
+   lu.assertTrue( list["56Fe"] ~= nil )
+   lu.assertTrue( list["66Fe"] ~= nil )
+
+   --print(dump(Data.Isotope("He",{"DecayModes","DecayModesIntensity"})))
 end
-
-
 
 function TestData:testIsotopeGetAll()
    local isotopes = Data.Isotope()

@@ -30,14 +30,6 @@ local Data = {}
 Data.__index = Data
 
 
-
-
-
-
-
-
-
-
 --
 -- ASTRONOMICAL DATA
 --
@@ -225,11 +217,14 @@ end
 function Data.Isotope.getByZ(Z, key)
 	local data = require(prefix..'isotope')
 
+	local Akey = data.keys["A"]
+
 	local result = {}
 	for _, i in ipairs(data.indexZ[Z+1]) do
-		result[#result + 1] = Data.Isotope._getValues(data.data[i],key)
+		local name = tostring(data.data[i][Akey])..data.symbols[Z+1]
+		result[name] = Data.Isotope._getValues(data.data[i],key)
 	end
-
+	
 	return result
 end
 

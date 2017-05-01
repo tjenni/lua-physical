@@ -1,6 +1,11 @@
 # lua-physical
 
-This lua module provides the classes and functions to do calculations with physical quantities. 
+This lua module provides classes and functions for calculating with physical quantities. A physical quantity consists of a numerical value and a unit. There are restrictions to the allowed arithmetical operations with physical quantities. For example the quantity time can not be added to the quantity mass. Further more, new quantities can be optained by multiplication or divition of other physical quantities. The density is such an example. It can be calculated derived by dividing the mass of a body by its volume.
+
+
+## Basic Usage
+
+The module lua-physical can be imported with the command `require("physical")`. By executing this command, all physical units are created in the global namespace. Each unit starts with an underscore in order to distinguish them from other variables. A basic example is the following
 
 ```
 > require("physical")
@@ -11,8 +16,40 @@ This lua module provides the classes and functions to do calculations with physi
 2.8 * _m^2
 ```
 
+In this example two length a and b are defined and then multiplied together. The result is an area quantity and the unit is convertedt to square meter. Another, slightly more complicated example is 
 
-## The Base Units
+```
+> require("physical")
+> m1 = 22 * _kg
+> m2 = 5.972e24 * _kg
+> r = 6371 * _km
+> F_G = (_Gc * m1 * m2 / r^2):to(_N)
+> print(F_G)
+2.16032(10)e2 * _N
+```
+
+As one can see, in this example, the gravitational force on a mass on the surface of the earth is calculated. The result ist given with an uncertainty. This is because the gravitational constant is not exactly known and has an uncertainty too. One can give an uncertainty explicitly.
+
+```
+> physical = require("physical")
+> a = physical.Number(2,0.1) * _m
+> A = (a^2):to(_m^2)
+> V = (a^3):to(_m^3)
+> print(a)
+2.00(10) * _m
+> print(A)
+4.0(4) * _m^2
+> print(V)
+8.0(12) * _m^3
+```
+
+The uncertainty gets propagated by the gaussian rule for completely uncorrelated quantities. In the above example it is assumed, that the three sides of the cube were measured independently from each other and that the uncertainties of these measurements are not correlated.
+
+
+
+## List of Units and Prefixes
+
+### Base Units
 The SI defines seven base units. For dimensionless quantities the unit `_1` can be used.
 
 | Symbol | Name     | Dimension           |
@@ -29,7 +66,7 @@ The SI defines seven base units. For dimensionless quantities the unit `_1` can 
 Source: http://physics.nist.gov/cuu/Units/units.html
 
 
-## SI-Prefixes
+### SI-Prefixes
 Most of the SI Units can have prefixes, i.e. `_km, _hL, _ms, _uJ`.
 
 | Symbol | Name  | Factor |   | Symbol | Name  | Factor |
@@ -48,7 +85,7 @@ Most of the SI Units can have prefixes, i.e. `_km, _hL, _ms, _uJ`.
 Source: http://physics.nist.gov/cuu/Units/prefixes.html
 
 
-## Derived SI Units
+### Derived SI Units
 | Symbol  | Name           | Definition      | Dimension                   |
 | --------|----------------|-----------------|-----------------------------|
 | `_rad`  | Radian         | `_1`            | Plane Angle (Dimensionless) |
@@ -76,7 +113,7 @@ Source: http://physics.nist.gov/cuu/Units/prefixes.html
 
 Source: http://physics.nist.gov/cuu/Units/units.html
 
-## Mathematical Constants
+### Mathematical Constants
 
 | Symbol  | Name         | Definition                                            |
 | --------|--------------|-------------------------------------------------------|
@@ -110,7 +147,7 @@ Source: http://physics.nist.gov/cuu/Units/units.html
 
 Source: http://physics.nist.gov/cuu/Constants/
 
-## Non-SI Units accepted for use with the SI
+### Non-SI Units accepted for use with the SI
 
 | Symbol       | Name                            | Definition          | Dimension                   |
 | -------------|---------------------------------|---------------------|-----------------------------|
@@ -145,7 +182,7 @@ Source: http://physics.nist.gov/cuu/Constants/
 
 Source: http://physics.nist.gov/cuu/Units/outside.html
 
-## Other Metric Units
+### Other Metric Units
 
 | Symbol  | Name              | Definition         | Dimension                   |
 | --------|-------------------|--------------------|-----------------------------|
@@ -216,7 +253,7 @@ Source: http://physics.nist.gov/cuu/Units/outside.html
 
 Source: https://en.wikipedia.org/wiki/Imperial_units
 
-## US Customary and Survey Units
+### US Customary and Survey Units
 
 | Symbol      | Name              | Definition       | Dimension |
 | ------------|-------------------|------------------|-----------|
