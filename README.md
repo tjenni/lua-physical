@@ -18,7 +18,7 @@ The library can be loaded with the command `require("physical")`. Like probably 
 2.8 * _m^2
 ```
 
-In the above example, two length a and b are defined and then multiplied. The result is an area. The unit of this area is `_m*_m` and has to be explicitly converted to `_m^2` be the `:to()` command. The nexst example is slightly more complicated.
+In the above example, two length a and b are defined and then multiplied. The result is an area. The unit of this area is `_m*_m` and has to be explicitly converted to `_m^2` be the `:to()` command. The next example is slightly more complicated.
 
 ```
 > require("physical")
@@ -31,6 +31,8 @@ In the above example, two length a and b are defined and then multiplied. The re
 ```
 
 The goal of the above example is to calculate the gravitational force on a body with mass `22 kg` sitting on the surface of the earth. As one can see, the result is given with an uncertainty in parentheses. This is because the gravitational constant is not exactly known. Lua-physical can deal with uncertainties. One can give an uncertainty explicitly by instantiating `physical.Number()`.
+
+### Uncertainty
 
 ```
 > physical = require("physical")
@@ -48,7 +50,7 @@ The goal of the above example is to calculate the gravitational force on a body 
 The uncertainty gets propagated by the Gaussian rule for completely uncorrelated uncertainties, i.e. they are added in quadrature. In the above example it is assumed, that the three sides of the cube were measured independently from each other and that the uncertainties of these measurements are not correlated. If one prefers another way of printing uncertainties, there are a few formatting options.
 ```
 > physical = require("physical")
-> l = physical.Number(20.453,0.002) * _m
+> local l = physical.Number(20.453,0.002) * _m
 
 > physical.Number.format = physical.Number.SCIENTIFIC
 
@@ -70,7 +72,38 @@ The uncertainty gets propagated by the Gaussian rule for completely uncorrelated
 20.453(2) * _m
 ```
 
-One can define, if the uncertainty should be printed in the plus-minus notation or in the parentheses notation. 
+One can define, whether the uncertainty should be printed in the plus-minus notation or in the parentheses notation. 
+
+### Latex
+
+Since Latex now supports lua, this library is able to generate latex output. It uses the siunitx package notation, see [ctan.org](https://www.ctan.org/pkg/siunitx?lang=en).
+
+```
+> physical = require("physical")
+> E = 210 * _MeV
+> print(E:tosiunitx())
+\SI{210}{\mega\electronvolt}
+```
+
+
+
+
+### Physical Data
+Besides some physical constans, lua-physical has an isotope database. The data was taken from the [Chinese Atomic Mass Data Center](http://amdc.impcas.ac.cn). The data was parsed and converted into a Lua table. One can access the data via the command `physical.Data.Isotope(name,key)`.
+```
+> physical = require("physical")
+
+> E_b = physical.Data.Isotope("235U","BindingEnergyPerNucleon")
+> print(E_b)
+7.590906(8)e3 * _keV
+
+>  T_12 = physical.Data.Isotope("210Po","HalfLife")
+>  print(T_12:to(_d))
+1.38376(2)e2 * _d
+```
+
+
+
 
 
 ## List of Units and Prefixes
