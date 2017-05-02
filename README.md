@@ -1,11 +1,13 @@
 # lua-physical
 
-This lua module provides classes and functions for calculating with physical quantities. A physical quantity consists of a numerical value and a unit. There are restrictions to the allowed arithmetical operations with physical quantities. For example the quantity time can not be added to the quantity mass. Further more, new quantities can be optained by multiplication or divition of other physical quantities. The density is such an example. It can be calculated derived by dividing the mass of a body by its volume.
+This is a pure Lua library which provides functions and object for doing computation with physical quantities.
+
+In general, a physical quantity consists of a numerical value called magnitude and a unit. There are restrictions to the allowed mathematical operations with physical quantities. For example the quantity time cannot be added to the quantity mass. Furthermore, new quantities can be obtained by multiplication or division from other base quantities. The density is such an example. It can be calculated by dividing the mass of a body by its volume.
 
 
-## Basic Usage
+## Usage
 
-The module lua-physical can be imported with the command `require("physical")`. By executing this command, all physical units are created in the global namespace. Each unit starts with an underscore in order to distinguish them from other variables. A basic example is the following
+The library can be loaded with the command `require("physical")`. Like probably no other Lua library, lua-physical pollutes the global namespace with objects that represent physical units. This is in order to simplify the entry of physical quantities. By convention, each unit starts with an underscore in order to distinguish them from other variables. A basic example is the following:
 
 ```
 > require("physical")
@@ -16,7 +18,7 @@ The module lua-physical can be imported with the command `require("physical")`. 
 2.8 * _m^2
 ```
 
-In this example two length a and b are defined and then multiplied together. The result is an area quantity and the unit is convertedt to square meter. Another, slightly more complicated example is 
+In the above example, two length a and b are defined and then multiplied. The result is an area. The unit of this area is `_m*_m` and has to be explicitly converted to `_m^2` be the `:to()` command. The nexst example is slightly more complicated.
 
 ```
 > require("physical")
@@ -28,7 +30,7 @@ In this example two length a and b are defined and then multiplied together. The
 2.16032(10)e2 * _N
 ```
 
-As one can see, in this example, the gravitational force on a mass on the surface of the earth is calculated. The result ist given with an uncertainty. This is because the gravitational constant is not exactly known and has an uncertainty too. One can give an uncertainty explicitly.
+The goal of the above example is to calculate the gravitational force on a body with mass `22 kg` sitting on the surface of the earth. As one can see, the result is given with an uncertainty in parentheses. This is because the gravitational constant is not exactly known. Lua-physical can deal with uncertainties. One can give an uncertainty explicitly by instantiating `physical.Number()`.
 
 ```
 > physical = require("physical")
@@ -43,8 +45,32 @@ As one can see, in this example, the gravitational force on a mass on the surfac
 8.0(12) * _m^3
 ```
 
-The uncertainty gets propagated by the gaussian rule for completely uncorrelated quantities. In the above example it is assumed, that the three sides of the cube were measured independently from each other and that the uncertainties of these measurements are not correlated.
+The uncertainty gets propagated by the Gaussian rule for completely uncorrelated uncertainties, i.e. they are added in quadrature. In the above example it is assumed, that the three sides of the cube were measured independently from each other and that the uncertainties of these measurements are not correlated. If one prefers another way of printing uncertainties, there are a few formatting options.
+```
+> physical = require("physical")
+> l = physical.Number(20.453,0.002) * _m
 
+> physical.Number.format = physical.Number.SCIENTIFIC
+
+> physical.Number.seperateUncertainty = true
+> print(l)
+(2.0453 +/- 0.0002)e1 * _m
+
+> physical.Number.seperateUncertainty = false
+> print(l)
+2.0453(2)e1 * _m
+
+> physical.Number.format = physical.Number.DECIMAL
+
+> physical.Number.seperateUncertainty = true
+> print(l)
+(20.453 +/- 0.002) * _m
+
+> physical.Number.seperateUncertainty = false
+20.453(2) * _m
+```
+
+One can define, if the uncertainty should be printed in the plus-minus notation or in the parentheses notation. 
 
 
 ## List of Units and Prefixes
