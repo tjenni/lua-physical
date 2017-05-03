@@ -230,7 +230,25 @@ Q.define("R", "molargasconstant", N(8.3144598, 0.0000048) * _J/(_K*_mol))
 -- Others
 Q.define("sigma", "stefanboltzmannconstant", Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2))
 Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
-Q.define("r_sun", "nominalsolarradius", 695700 * _km)
+
+-- Nominal Astronomical Constants
+-- Source: Nominal values for selected solar and planetary quantities: IAU 2015 Resolution B3, 
+-- https://arxiv.org/pdf/1605.09788.pdf
+Q.define("R_sun", "nominalsolarradius", 6.957e8 * _m)
+Q.define("S_sun", "nominalsolarirradiance", 1361 * _W/_m^2)
+Q.define("L_sun", "nominalsolarluminosity", 3.828e26 * _W)
+Q.define("T_sun", "nominalsolareffectivetemperature", 5772 * _K)
+Q.define("GM_sun", "nominalsolarmassparameter", 1.3271244e20 * _m^3 * _s^-2)
+
+Q.define("Re_E", "nominalterrestrialequatorialradius", 6.3781e6 * _m)
+Q.define("Rp_E", "nominalterrestrialpolarradius", 6.3568e6 * _m)
+Q.define("GM_E", "nominalterrestrialmassparameter", 3.986004e14 * _m^3 * _s^-2)
+
+Q.define("Re_J", "nominaljovianequatorialradius", 7.1492e7 * _m)
+Q.define("Rp_J", "nominaljovianpolarradius", 6.6854e7 * _m)
+Q.define("GM_J", "nominaljovianmassparameter", 1.2668653e17 * _m^3 * _s^-2)
+
+
 
 
 

@@ -59,13 +59,13 @@ function Data.Astronomical.get(name, key)
 
 		-- return all keys
 		if key == nil then
-			local keys = {}
+			local result = {}
 			for key,_ in pairs(row) do
-				keys[#keys+1] = key
+				result[key] = row[key]
 			end
-			return keys
+			return result
 		end
-
+		
 		if row[key] ~= nil then
 			return row[key] 
 		end

@@ -181,28 +181,38 @@ Source: http://physics.nist.gov/cuu/Units/units.html
 
 ## Physical Constants
 
-| Symbol    | Name                             | Definition                          |
-| ----------|----------------------------------|-------------------------------------|
-| `_c`      | Speed of Light                   | `299792458 * _m/_s`                 |
-| `_Gc`     | Gravitational Constant           | `6.67408(31)e-11 * _m^3/(_kg*_s^2)` |
-| `_h_P`    | Planck Constant                  | `6.626070040(81)e-34 * _J*_s`       |       
-| `_h_Pbar` | Reduced Planck Constant          | `_hP/(2*Pi)`                        |
-| `_e`      | Elementary Charge                | `1.6021766208(98)e-19 * _C`         |
-| `_u_0`    | Vacuum Permeability              | `4e-7*Pi * _N*_A^2`                 |
-| `_e_0`    | Vacuum Permitivity               | `1/(_u0*_c^2)`                      |
-| `_u`      | Atomic Mass Unit                 | `1.66053904(2)e-27 * _kg`           |
-| `_m_e`    | Electron Rest Mass               | `9.10938356(11)e-31 * _kg`          |
-| `_m_p`    | Proton Mass                      | `1.672621898(21)e-27 * _kg`         |
-| `_m_n`    | Neutron Mass                     | `1.674927471(21)e-27 * _kg`         |
-| `_u_B`    | Bohr Magneton                    | `_e*_hPbar/(2*_m_e)`                |
-| `_u_N`    | Nuclear Magneton                 | `_e*_hPbar/(2*_m_p)`                |
-| `_alpha`  | Finestructure Constant           | `_u0*_e^2*_c/(2*_hP)`               |
-| `_Ry`     | Rydberg Constant                 | `_alpha^2*_m_e*_c/(2*_hP)`          |
-| `_N_A`    | Avogadro Constant                | `6.022140857(74)e23 /_mol`          |
-| `_R`      | Molar Gas Constant               | `8.3144598(48) * _J/(_K*_mol)`      |
-| `_sigma`  | Stefan-Boltzmann Constant        | `Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)`   |
-| `_g_0`    | Standard Acceleration of Gravity | `9.80665 * _m/_s^2`                 |
-| `_r_sun`  | Nominal Solar Radius             | `695700 * _km`                      |
+| Symbol    | Name                                  | Definition                          |
+| ----------|---------------------------------------|-------------------------------------|
+| `_c`      | Speed of Light                        | `299792458 * _m/_s`                 |
+| `_Gc`     | Gravitational Constant                | `6.67408(31)e-11 * _m^3/(_kg*_s^2)` |
+| `_h_P`    | Planck Constant                       | `6.626070040(81)e-34 * _J*_s`       |       
+| `_h_Pbar` | Reduced Planck Constant               | `_hP/(2*Pi)`                        |
+| `_e`      | Elementary Charge                     | `1.6021766208(98)e-19 * _C`         |
+| `_u_0`    | Vacuum Permeability                   | `4e-7*Pi * _N*_A^2`                 |
+| `_e_0`    | Vacuum Permitivity                    | `1/(_u0*_c^2)`                      |
+| `_u`      | Atomic Mass Unit                      | `1.66053904(2)e-27 * _kg`           |
+| `_m_e`    | Electron Rest Mass                    | `9.10938356(11)e-31 * _kg`          |
+| `_m_p`    | Proton Mass                           | `1.672621898(21)e-27 * _kg`         |
+| `_m_n`    | Neutron Mass                          | `1.674927471(21)e-27 * _kg`         |
+| `_u_B`    | Bohr Magneton                         | `_e*_hPbar/(2*_m_e)`                |
+| `_u_N`    | Nuclear Magneton                      | `_e*_hPbar/(2*_m_p)`                |
+| `_alpha`  | Finestructure Constant                | `_u0*_e^2*_c/(2*_hP)`               |
+| `_Ry`     | Rydberg Constant                      | `_alpha^2*_m_e*_c/(2*_hP)`          |
+| `_N_A`    | Avogadro Constant                     | `6.022140857(74)e23 /_mol`          |
+| `_R`      | Molar Gas Constant                    | `8.3144598(48) * _J/(_K*_mol)`      |
+| `_sigma`  | Stefan-Boltzmann Constant             | `Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)`   |
+| `_g_0`    | Standard Acceleration of Gravity      | `9.80665 * _m/_s^2`                 |
+| `_R_sun`  | Nominal Solar Radius                  | `6.957e8 * _m`                      |
+| `_S_sun`  | Nominal Solar Irradiance              | `1361 * _W/_m^2`                    |
+| `_L_sun`  | Nominal Solar Luminosity              | `3.828e26 * _W`                     |
+| `_T_sun`  | Nominal Solar Effective Temperature   | `5772 * _K`                         |
+| `_GM_sun` | Nominal Solar Mass Parameter          | `1.3271244e20 * _m^3 * _s^-2`       |
+| `_Re_E`   | Nominal Terrestrial Equatorial Radius | `6.3781e6 * _m`                     |
+| `_Rp_E`   | Nominal Terrestrial Polar Radius      | `6.3568e6 * _m`                     |
+| `_GM_J`   | Nominal Terrestrial Mass Parameter    | `3.986 004e14 * _m^3 * _s^-2`       |
+| `_Re_J`   | Nominal Jovian Equatorial Radius      | `7.1492e7 * _m`                     |
+| `_Rp_J`   | Nominal Jovian Polar Radius           | `6.6854e7 * _m`                     |
+| `_GM_J`   | Nominal Jovian Mass Parameter         | `1.2668653e17 * _m^3 * _s^-2`       |
 
 Source: http://physics.nist.gov/cuu/Constants/
 

@@ -342,7 +342,7 @@ function TestDefinition:testStandardGravity()
 end
 
 function TestDefinition:testNominalSolarRadius()
-   lu.assertTrue(_r_sun:isclose(695700*_km, 1e-6))
+   lu.assertTrue(_R_sun:isclose(695700*_km, 1e-6))
 end
 
 
