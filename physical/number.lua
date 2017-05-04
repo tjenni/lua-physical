@@ -1,6 +1,6 @@
 --[[
 This file contains the number class which allows to do 
-calcualtions with uncertainties.
+calculations with uncertainties.
 
 Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
 
@@ -288,12 +288,12 @@ function Number:toOmitUncertaintyNotation(format)
 		if de >= 0 then
 			str = string.format("%.0f",self._x)
 		else
-			local digits = math.abs(de+1)
+			local digits = math.abs(de + 1)
 			str = string.format("%."..digits.."f",self._x)
 		end
 
 	elseif Number.format == Number.SCIENTIFIC then
-		local digits = math.abs(de-e)
+		local digits = math.abs(de - e + 1)
 		str = string.format("%."..digits.."f",m)
 
 		if e ~= 0 then

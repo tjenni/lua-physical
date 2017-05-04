@@ -1,5 +1,5 @@
 --[[
-This file contains the methods for accessing the physical data.
+This file contains the methods for accessing physical data.
 
 Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
 

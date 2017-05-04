@@ -1,5 +1,5 @@
 --[[
-This file contains the quantity class
+This file contains the unit class.
 
 Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
 

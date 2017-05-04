@@ -1,6 +1,6 @@
 --[[
-This file contains the definitions for the dimensions, the prefixes,
-SI units, Imperial and US units
+This file contains the definitions for dimensions, prefixes,
+SI, Imperial and U.S. Survey units
 
 Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
 
@@ -331,6 +331,7 @@ Q.addPrefix({"k","M","G","T","P","E","Z","Y"},{_bit,_B,_bps})
 -- Others
 Q.define("percent", "percent", 0.01)
 Q.define("permille", "permille", 0.001)
+Q.define("dB", "decibel", _1)
 Q.define("t", "tonne", 1000*_kg)
 Q.define("barn", "barn", 1e-28*_m^2)
 Q.define("angstrom", "angstrom", 1e-10*_m)

@@ -386,7 +386,7 @@ function Quantity:tosiunitx(param)
 		str = str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
 	
 	elseif getmetatable(self.value) == N then
-		str = str.."{"..self.value:toParenthesisNotation().."}{"..self.unit:tosiunitx().."}"
+		str = str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
 	
 	else
 		error("Can not convert quantity to an siunitx command.")

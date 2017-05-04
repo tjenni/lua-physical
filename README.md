@@ -122,7 +122,7 @@ The SI defines seven base units. For dimensionless quantities the unit `_1` can 
 | `_mol` | Mole     | Amount of Substance |
 | `_cd`  | Candela  | Luminous Intensity  |
 
-Source: http://physics.nist.gov/cuu/Units/units.html
+Source: (NIST)[http://physics.nist.gov/cuu/Units/units.html]
 
 
 ### SI-Prefixes
@@ -141,7 +141,7 @@ Most of the SI Units can have prefixes, i.e. `_km, _hL, _ms, _uJ`.
 | `h`    | Hecto | 10^2   |   | `c`    | Centi | 10^-2  |
 | `da`   | Deca  | 10^1   |   | `d`    | Deci  | 10^-1  | 
 
-Source: http://physics.nist.gov/cuu/Units/prefixes.html
+Source: (NIST)[http://physics.nist.gov/cuu/Units/prefixes.html]
 
 
 ### Derived SI Units
@@ -170,7 +170,7 @@ Source: http://physics.nist.gov/cuu/Units/prefixes.html
 | `_kat`  | katal          | `_mol/_s`       | Catalytic Activity          |
 | `_degC` | Degree Celsius | `x/_K - 273.15` | Temperature                 |
 
-Source: http://physics.nist.gov/cuu/Units/units.html
+Source: (NIST)[http://physics.nist.gov/cuu/Units/units.html]
 
 ### Mathematical Constants
 
@@ -202,6 +202,11 @@ Source: http://physics.nist.gov/cuu/Units/units.html
 | `_R`      | Molar Gas Constant                    | `8.3144598(48) * _J/(_K*_mol)`      |
 | `_sigma`  | Stefan-Boltzmann Constant             | `Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)`   |
 | `_g_0`    | Standard Acceleration of Gravity      | `9.80665 * _m/_s^2`                 |
+
+Source: (NIST)[http://physics.nist.gov/cuu/Constants/]
+
+## Nominal Astronomical Units
+
 | `_R_sun`  | Nominal Solar Radius                  | `6.957e8 * _m`                      |
 | `_S_sun`  | Nominal Solar Irradiance              | `1361 * _W/_m^2`                    |
 | `_L_sun`  | Nominal Solar Luminosity              | `3.828e26 * _W`                     |
@@ -214,12 +219,15 @@ Source: http://physics.nist.gov/cuu/Units/units.html
 | `_Rp_J`   | Nominal Jovian Polar Radius           | `6.6854e7 * _m`                     |
 | `_GM_J`   | Nominal Jovian Mass Parameter         | `1.2668653e17 * _m^3 * _s^-2`       |
 
-Source: http://physics.nist.gov/cuu/Constants/
+Source: (IAU 2015 Resolution B3)[https://www.iau.org/static/resolutions/IAU2015_English.pdf]
 
 ### Non-SI Units accepted for use with the SI
 
 | Symbol       | Name                            | Definition          | Dimension                   |
 | -------------|---------------------------------|---------------------|-----------------------------|
+| `_percent`   | Percent                         | `0.01 * _1`         | Dimensionless               |
+| `_permille`  | Permille                        | `0.001 * _1`        | Dimensionless               |
+| `_dB`        | Decibel                         | `_1`                | Dimensionless               |
 | `_deg`       | Degree                          | `(Pi/180) * _rad`   | Plane Angle (Dimensionless) |
 | `_arcmin`    | Arc Minute                      | `_deg/60`           | Plane Angle (Dimensionless) |
 | `_arcsec`    | Arc Second                      | `_arcmin/60`        | Plane Angle (Dimensionless) |
@@ -249,7 +257,7 @@ Source: http://physics.nist.gov/cuu/Constants/
 | `_PS`        | Metric Horsepower               | `75*_g0*_kg*_m/_s`  | Power                       |
 | `_Ah`        | Ampere-Hour                     | `_A*_h`             | Electric Charge             |
 
-Source: http://physics.nist.gov/cuu/Units/outside.html
+Source: (NIST)[http://physics.nist.gov/cuu/Units/outside.html]
 
 ### Other Metric Units
 
@@ -266,7 +274,7 @@ Source: http://physics.nist.gov/cuu/Units/outside.html
 | `_rem`  | Rem               | `0.01 * _Sv`       | Equivalent Dose             |
 | `_Ro`   | Roentgen          | `2.58e-4 * _C/_kg` | Ionic Dose                  |
 
-Source: http://physics.nist.gov/cuu/Units/outside.html
+Source: (NIST)[http://physics.nist.gov/cuu/Units/outside.html]
 
 ## Imperial Units
 
@@ -320,7 +328,7 @@ Source: http://physics.nist.gov/cuu/Units/outside.html
 | `_BTU_th` | British Thermal Unit  | `(1897.83047608/1.8) * _J` | Energy      |
 | `_hp`     | Horsepower            | `33000*_ft*_lbf/_min`      | Power       |
 
-Source: https://en.wikipedia.org/wiki/Imperial_units
+Source: (Wikipedia)[https://en.wikipedia.org/wiki/Imperial_units]
 
 ### US Customary and Survey Units
 
@@ -349,10 +357,10 @@ Source: https://en.wikipedia.org/wiki/Imperial_units
 | `_tsp_US`   | US Teaspoon       | `_Tbsp_US/3`     | Volume    |
 | `_fl_dr_US` | US Fluid Dram     | `_fl_oz_US/8`    | Volume    |
 | `_qtr_US`   | US Quarter        | `25 * _lb`       | Mass      |
-| `_cwt_US`   | US Hundredweight  | `4 * _qtr_US` | Mass      |
-| `_ton_US`   | Short Ton         | `20*_cwt_US`  | Mass      |
+| `_cwt_US`   | US Hundredweight  | `4 * _qtr_US`    | Mass      |
+| `_ton_US`   | Short Ton         | `20*_cwt_US`     | Mass      |
 
-Source: https://en.wikipedia.org/wiki/United_States_customary_units
+Source: (Wikipedia)[https://en.wikipedia.org/wiki/United_States_customary_units]
 
 
 
