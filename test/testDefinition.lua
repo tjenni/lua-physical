@@ -349,6 +349,29 @@ end
 
 -- NON-SI UNITS BUT ACCEPTED FOR USE WITH THE SI
 
+-- Length
+function TestDefinition:testAngstrom()
+   lu.assertTrue( (1e10*_angstrom):isclose(1*_m,1e-6) )
+end
+
+function TestDefinition:testFermi()
+   lu.assertTrue( (23444 * _fermi):isclose(0.23444*_angstrom,1e-6) )
+end
+
+-- Area
+function TestDefinition:testBarn()
+   lu.assertTrue( (38940*_am^2):isclose(0.3894*_mbarn,1e-6) )
+end
+
+function TestDefinition:testAre()
+   lu.assertTrue( (200*_m^2):isclose(2*_are,1e-6) )
+end
+
+function TestDefinition:testHectare()
+   lu.assertTrue( (56000*_m^2):isclose(5.6*_hectare,1e-6) )
+end
+
+-- Volume
 function TestDefinition:testLiter()
    lu.assertTrue((1000*_L):isclose(1*_m^3, 1e-6))
    lu.assertTrue((1*_mL):isclose(1*_cm^3, 1e-6))
@@ -363,6 +386,9 @@ function TestDefinition:testMetricTablespoon()
 end
 
 -- Time
+function TestDefinition:testSvedberg()
+   lu.assertTrue((0.56*_ns):isclose(5600*_svedberg, 1e-6))
+end
 function TestDefinition:testMinute()
    lu.assertTrue((60*_s):isclose(_min, 1e-6))
 end
@@ -524,14 +550,6 @@ function TestDefinition:testTonne()
    lu.assertTrue( (2.3*_t):isclose(2.3e6*_g,1e-6) )
 end
 
-function TestDefinition:testBarn()
-   lu.assertTrue( (38940*_am^2):isclose(0.3894*_mbarn,1e-6) )
-end
-
-function TestDefinition:testAngstrom()
-   lu.assertTrue( (1e10*_angstrom):isclose(1*_m,1e-6) )
-end
-
 function TestDefinition:testElectronVolt()
    lu.assertTrue( (200 * _MeV):isclose(3.20435466e-11*_J,1e-6) )
 end
@@ -558,6 +576,16 @@ end
 
 function TestDefinition:testRoentgen()
    lu.assertTrue( (200 * _C/_kg):isclose(775193.7984496 * _Ro,1e-4) )
+end
+
+function TestDefinition:testPoiseuille()
+   local r = 2 * _mm 
+   local l = 10 * _cm 
+   local p = 400 * _Pa
+   local eta = 0.0027 * _PI
+
+   local Q = Pi*p*r^4/(8*eta*l)
+   lu.assertTrue( Q:isclose(9.3084226773031 * _mL/_s,1e-4) )
 end
 
 
@@ -738,6 +766,10 @@ end
 
 
 -- Time
+function TestDefinition:testSennight()
+   lu.assertTrue( (3*_sen):isclose(21 * _d,1e-6) )
+end
+
 function TestDefinition:testFortnight()
    lu.assertTrue( (2*_ftn):isclose(28 * _d,1e-6) )
 end

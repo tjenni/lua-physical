@@ -203,7 +203,7 @@ function TestNumber:testToOmitUncertaintyNotation()
    lu.assertEquals( tostring(N(1.2, 0.005)), "1.20" )
 
    N.format = N.SCIENTIFIC
-   lu.assertEquals( tostring(N(1.2e27, 0.05e27)), "1.20e27" )
+   lu.assertEquals( tostring(N(1.2e27, 0.05e27)), "1.2e27" )
 
 end
 

@@ -89,13 +89,14 @@ Since Latex now supports lua, this library is able to generate latex output. It 
 
 
 ### Physical Data
-Besides some physical constans, lua-physical has an isotope database. The data was taken from the [Chinese Atomic Mass Data Center](http://amdc.impcas.ac.cn). The data was parsed and converted into a Lua table. One can access the data via the command `physical.Data.Isotope(name,key)`.
+Besides some physical constans, lua-physical has an isotope database. The data was taken from the Atomic Mass Evaluation - AME2016 by the [Chinese Atomic Mass Data Center](https://www-nds.iaea.org/amdc/). The data was parsed and converted into a Lua table. One can access the data via the command `physical.Data.Isotope(name,key)`.
+
 ```
 > physical = require("physical")
 
 > E_b = physical.Data.Isotope("235U","BindingEnergyPerNucleon")
 > print(E_b)
-7.590906(8)e3 * _keV
+7.590914(5)e3 * _keV
 
 >  T_12 = physical.Data.Isotope("210Po","HalfLife")
 >  print(T_12:to(_d))
@@ -207,6 +208,8 @@ Source: (NIST)[http://physics.nist.gov/cuu/Constants/]
 
 ## Nominal Astronomical Units
 
+| Symbol    | Name                                  | Definition                          |
+| ----------|---------------------------------------|-------------------------------------|
 | `_R_sun`  | Nominal Solar Radius                  | `6.957e8 * _m`                      |
 | `_S_sun`  | Nominal Solar Irradiance              | `1361 * _W/_m^2`                    |
 | `_L_sun`  | Nominal Solar Luminosity              | `3.828e26 * _W`                     |
@@ -234,10 +237,14 @@ Source: (IAU 2015 Resolution B3)[https://www.iau.org/static/resolutions/IAU2015_
 | `_au`        | Astronomical Unit               | `149597870700 * _m` | Length                      |
 | `_ly`        | Lightyear                       | `_c*_a`             | Length                      |
 | `_pc`        | Parsec                          | `(648000/Pi)*_au`   | Length                      |
-| `__angstrom` | Angstrom                        | `1e-10 * _m`        | Length                      |
+| `_angstrom`  | Angstrom                        | `1e-10 * _m`        | Length                      |
+| `_fermi`     | Fermi                           | `1e-15 * _m`        | Length                      |
+| `_are`       | Are                             | `1e2 * _m^2`        | Area                        |
+| `_hectare`   | Hectare                         | `1e4 * _m^2`        | Area                        |
 | `_barn`      | Barn                            | `1e-28 * _m^2`      | Area                        |
 | `_L`         | Liter                           | `0.001 * _m^3`      | Volume                      |
 | `_t`         | Tonne                           | `1000 * _kg`        | Mass                        |
+| `_svedberg`  | Svedberg                        | `1e-13 * _s`        | Time                        |
 | `_min`       | Minute                          | `60 * _s`           | Time                        |
 | `_h`         | Hour                            | `60 * _min`         | Time                        |
 | `_d`         | Day                             | `24 * _h`           | Time                        |
@@ -256,6 +263,7 @@ Source: (IAU 2015 Resolution B3)[https://www.iau.org/static/resolutions/IAU2015_
 | `_VA`        | Volt-Ampere                     | `_V*_A`             | Power                       |
 | `_PS`        | Metric Horsepower               | `75*_g0*_kg*_m/_s`  | Power                       |
 | `_Ah`        | Ampere-Hour                     | `_A*_h`             | Electric Charge             |
+| `_PI`        | Poiseuille                      | `_Pa*_s`            | Dynamic Viscosity           |
 
 Source: (NIST)[http://physics.nist.gov/cuu/Units/outside.html]
 
@@ -316,6 +324,7 @@ Source: (NIST)[http://physics.nist.gov/cuu/Units/outside.html]
 | `_oz_t`   | Troy Ounce            | `_lb_t/12`                 | Mass        |
 | `_pwt`    | Pennyweight           | `24 * _gr`                 | Mass        |
 | `_fir`    | Firkin                | `56*_lb`                   | Mass        |
+| `_sen`    | Sennight              | `7*_d`                     | Time        |
 | `_ftn`    | Fortnight             | `14*_d`                    | Time        |
 | `_degF`   | Degree Fahrenheit     | `(x/_K + 459.67)*(5/9)`    | Temperature |
 | `_degR`   | Degree Rankine        | `(x/_K)*(5/9)`             | Temperature |

@@ -217,7 +217,7 @@ end
 function TestData:testIsotopeGetByElementName()
    local list = Data.Isotope("Fe","symbol")
 
-   lu.assertEquals( count(list), 30 )
+   lu.assertEquals( count(list), 31 )
    lu.assertTrue( list["47Fe"] ~= nil )
    lu.assertTrue( list["56Fe"] ~= nil )
    lu.assertTrue( list["66Fe"] ~= nil )

@@ -50,6 +50,8 @@ end
 TestQuantity = {}
 
 function TestQuantity:testToString()
+   N.seperateUncertainty = true
+
    lu.assertEquals( tostring(5 * _m), "5 * _m" )
    lu.assertEquals( tostring(5 * _m^2), "5 * _m^2" )
    lu.assertEquals( tostring(5 * _km/_h), "5 * _km / _h" )
@@ -59,6 +61,8 @@ end
 
 
 function TestQuantity:testToSIUnitX()
+   N.seperateUncertainty = false
+   
    lu.assertEquals( (5 * _m):tosiunitx(), "\\SI{5}{\\meter}" )
    lu.assertEquals( (5 * _m^2):tosiunitx(), "\\SI{5}{\\meter\\tothe{2}}" )
 

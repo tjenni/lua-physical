@@ -39,14 +39,15 @@ Astronomical.Sun = {
 	-- https://arxiv.org/pdf/1605.09788.pdf
 	Radius = N(695658, 100) * _km,
 
+	-- https://sites.google.com/site/mamajeksstarnotes/basic-astronomical-data-for-the-sun
 	MeanRadiativeLuminosity = N(3.8275,0.0014) * 1e26 * _W,
 
 	EffectiveTemperature = N(5772.0,0.8) * _K,
 
-	MassParameter = 1.3271244e20 * _m^3 * _s^-2,
+	SpectralType = "G2V",
 
-	-- https://sites.google.com/site/mamajeksstarnotes/basic-astronomical-data-for-the-sun
-
+	-- https://ssd.jpl.nasa.gov/?constants#pc
+	MassParameter = N(1.32712440018e20,8e9) * _m^3 * _s^-2,
 }
 
 Astronomical.Mercury = {

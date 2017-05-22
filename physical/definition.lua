@@ -207,7 +207,7 @@ Q.define("h_Pbar", "reducedplanckconstant", _h_P/(2*Pi))
 Q.define("e", "elementarycharge", N(1.6021766208e-19, 0.0000000098e-19) * _C)
 Q.define("u_0", "vacuumpermeability", 4e-7*Pi * _N/_A^2)
 Q.define("e_0", "vacuumpermitivity", 1/(_u_0*_c^2))
-Q.define("u", "atomicmass", N(1.66053904e-27, 0.00000002e-27) * _kg)
+Q.define("u", "atomicmassunit", N(1.66053904e-27, 0.00000002e-27) * _kg)
 Q.define("m_e", "electronmass", N(9.10938356e-31, 0.00000011e-31) * _kg)
 Q.define("m_p", "protonmass", N(1.672621898e-27, 0.000000021e-27) * _kg)
 Q.define("m_n", "neutronmass", N(1.674927471e-27, 0.000000021e-27) * _kg)
@@ -258,6 +258,15 @@ Q.define("GM_J", "nominaljovianmassparameter", 1.2668653e17 * _m^3 * _s^-2)
 -- http://m.convert-me.com/en/convert/area/township.html?u=township&v=1
 -- https://www.nist.gov/pml/nist-guide-si-appendix-b9-factors-units-listed-kind-quantity-or-field-science
 
+-- Length
+Q.define("angstrom", "angstrom", 1e-10*_m)
+Q.define("fermi", "fermi", 1e-15*_m)
+
+-- Area 
+Q.define("barn", "barn", 1e-28*_m^2)
+Q.define("are", "are", 1e2*_m^2)
+Q.define("hectare", "hectare", 1e4*_m^2)
+
 -- Volume
 Q.define("L", "liter", 0.001*_m^3)
 Q.define("tsp", "metricteaspoon", 0.005*_L)
@@ -266,6 +275,7 @@ Q.define("Tbsp", "metrictablespoon", 3*_tsp)
 Q.addPrefix(SI_prefixes,{_L})
 
 -- Time
+Q.define("svedberg", "svedberg", 1e-13*_s)
 Q.define("min", "minute", 60*_s)
 Q.define("h", "hour", 60*_min)
 Q.define("d", "day", 24*_h)
@@ -333,8 +343,6 @@ Q.define("percent", "percent", 0.01)
 Q.define("permille", "permille", 0.001)
 Q.define("dB", "decibel", _1)
 Q.define("t", "tonne", 1000*_kg)
-Q.define("barn", "barn", 1e-28*_m^2)
-Q.define("angstrom", "angstrom", 1e-10*_m)
 Q.define("eV", "electronvolt", _e*_V)
 Q.define("Wh", "watthour", _W * _h)
 Q.define("PS", "metrichorsepower", 75*_g_0*_kg*_m/_s)
@@ -342,6 +350,7 @@ Q.define("Ci", "curie", 3.7e10*_Bq)
 Q.define("Rad", "rad", 0.01*_Gy)
 Q.define("rem", "rem", 0.01*_Sv)
 Q.define("Ro", "roentgen", 2.58e-4*_C/_kg)
+Q.define("PI", "poiseuille", _Pa * _s)
 
 Q.addPrefix(SI_prefixes,{_eV, _Wh, _barn})
 
@@ -405,6 +414,7 @@ Q.define("dwt", "pennyweight", 24*_gr)
 Q.define("fir", "firkin", 56*_lb)
 
 -- Time
+Q.define("sen", "sennight", 7*_d)
 Q.define("ftn", "fortnight", 14*_d)
 
 -- Temperature
