@@ -124,6 +124,32 @@ local IEC_prefixes = {"Ki","Mi","Gi","Ti","Pi","Ei","Zi","Yi"}
 Pi 	 = 3.1415926535897932384626433832795028841971693993751
 e    = 2.7182818284590452353602874713526624977572470936999
 
+-- Mathematical Functions
+abs = Q.abs
+min = Q.min
+max = Q.max
+
+sqrt = Q.sqrt
+exp = Q.exp
+log = Q.log
+
+sin = Q.sin
+cos = Q.cos
+tan = Q.tan
+
+asin = Q.asin
+acos = Q.acos
+atan = Q.atan
+
+sinh = Q.sinh
+cosh = Q.cosh
+tanh = Q.tanh
+
+asinh = Q.asinh
+acosh = Q.acosh
+atanh = Q.atanh
+
+
 Q.define("1", "number", 1)
 
 -- SI Base Units
