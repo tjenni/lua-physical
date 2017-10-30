@@ -285,6 +285,18 @@ function TestNumber:testSubtract()
    lu.assertEquals( tostring(n1-n2), "(-5.0 +/- 0.5)" )
 end
 
+-- test mixed operations
+function TestNumber:testMixed()
+   defaultformat()
+
+   local d = N(5, 0.5)
+
+   l = d - d
+   m = l / d
+
+   lu.assertEquals( tostring(m), "0" )
+end
+
 -- test unary minus operation
 function TestNumber:testUnaryMinus()
    defaultformat()

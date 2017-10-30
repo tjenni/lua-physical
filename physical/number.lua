@@ -54,6 +54,7 @@ Number.format = Number.SCIENTIFIC
 
 
 
+
 -- constructor
 function Number.new(x, dx)
 
@@ -454,8 +455,12 @@ function Number.__mul(n1,n2)
 	-- o1 number , o2 number
 	else
 		m._x = n1._x * n2._x
-		m._dx = m._x * ((n1._dx/n1._x)^2 + (n2._dx/n2._x)^2)^0.5
 
+		if n1._x == 0 or n2._x == 0 then
+			m._dx = 0
+		else
+			m._dx = m._x * ((n1._dx/n1._x)^2 + (n2._dx/n2._x)^2)^0.5
+		end
 	end
 
 	return m
@@ -487,7 +492,12 @@ function Number.__div(n1,n2)
 	-- o1 number , o2 number
 	else
 		m._x = n1._x / n2._x
-		m._dx = m._x * ((n1._dx/n1._x)^2 + (n2._dx/n2._x)^2)^0.5
+
+		if n1._x == 0 or n2._x == 0 then
+			m._dx = 0
+		else
+			m._dx = m._x * ((n1._dx/n1._x)^2 + (n2._dx/n2._x)^2)^0.5
+		end
 	end
 
 	return m
