@@ -469,10 +469,11 @@ end
 
 -- absolute value
 function Quantity.abs(q)
-	if q.value < 0 then
-		return -q
+	p = Quantity.new(q)
+	if p.value < 0 then
+		return -p
 	else
-		return Quantity.new(q)
+		return p
 	end
 end
 
