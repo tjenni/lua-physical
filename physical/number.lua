@@ -456,11 +456,15 @@ function Number.__mul(n1,n2)
 	else
 		m._x = n1._x * n2._x
 
-		if n1._x == 0 or n2._x == 0 then
-			m._dx = 0
-		else
-			m._dx = m._x * ((n1._dx/n1._x)^2 + (n2._dx/n2._x)^2)^0.5
+		local dx = 0
+		if n1._x ~= 0 then
+			dx = (n1._dx/n1._x)^2
 		end
+		if n2._x ~= 0 then
+			dx = dx + (n2._dx/n2._x)^2
+		end
+
+		m._dx = m._x * dx^0.5
 	end
 
 	return m
@@ -493,11 +497,15 @@ function Number.__div(n1,n2)
 	else
 		m._x = n1._x / n2._x
 
-		if n1._x == 0 or n2._x == 0 then
-			m._dx = 0
-		else
-			m._dx = m._x * ((n1._dx/n1._x)^2 + (n2._dx/n2._x)^2)^0.5
+		local dx = 0
+		if n1._x ~= 0 then
+			dx = (n1._dx/n1._x)^2
 		end
+		if n2._x ~= 0 then
+			dx = dx + (n2._dx/n2._x)^2
+		end
+		
+		m._dx = m._x * dx^0.5
 	end
 
 	return m

@@ -294,7 +294,7 @@ function TestNumber:testMixed()
    l = d - d
    m = l / d
 
-   lu.assertEquals( tostring(m), "0" )
+   lu.assertEquals( tostring(m), "0.0" )
 end
 
 -- test unary minus operation
