@@ -373,4 +373,22 @@ function TestQuantity:testAtanh()
    lu.assertAlmostEquals( l.value:__tonumber(), 1.47221948958322, 1e-9 )
 end
 
+-- test less than
+function TestQuantity:testLessThan()
+   l_D = 5 * _m
+   d_D = N(0.25,0.001) * _mm
+
+   d = N(5,0.01) * _cm
+   l = N(10,0.01) * _cm
+
+   I_max = N(1,0.001) * _A
+   B = N(0.5,0.001) * _mT
+
+   Nw = ( B*l/(_u_0*I_max) ):to(_1)
+   N_max = (l/d_D):to(_1)
+   l_max = (Nw*Pi*d):to(_m)
+
+   lu.assertTrue(l_D < l_max)
+end
+
 return TestQuantity
