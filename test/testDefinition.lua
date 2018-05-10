@@ -216,6 +216,13 @@ function TestDefinition:testDegreeCelsius()
    r = r:to(_percent)
 
    lu.assertTrue( r:isclose(99.63*_percent, 0.1) )
+
+   local c = 1000 * _J/(_kg*_degC)
+   local m = 1 * _g
+   local dT = 20 * _degC
+
+   local Q = ( c * m * dT ):to(_J)
+   lu.assertTrue( Q == 20 * _J )
 end
 
 

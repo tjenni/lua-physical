@@ -83,12 +83,8 @@ end
 -- prefix- and base factors.
 -- @return 
 function Unit.__eq(o1,o2)
-	if o1.basefactor ~= o2.basefactor then
+	if o1.basefactor ~= o2.basefactor or o1.prefixfactor ~= o2.prefixfactor then
 		return false
-
-	elseif o1.prefixfactor ~= o2.prefixfactor then
-		return false
-
 	end
 
 	return true
@@ -103,14 +99,6 @@ function Unit.__mul(o1,o2)
 	u:_append(o1)
 	u:_append(o2)
 
-	if o1.tobase ~= nil and o1.frombase ~= nil and o2.tobase == nil and o2.frombase == nil then
-		u.tobase = o1.tobase
-		u.frombase = o1.frombase
-	elseif o1.tobase == nil and o1.frombase == nil and o2.tobase ~= nil and o2.frombase ~= nil then
-		u.tobase = o2.tobase
-		u.frombase = o2.frombase
-	end
-
 	return u
 end
 
@@ -122,9 +110,6 @@ function Unit.__div(o1,o2)
 	
 	u:_append(o1)
 	u:_append(o2, true)
-
-	u.tobase = nil
-	u.frombase = nil
 
 	return u
 end

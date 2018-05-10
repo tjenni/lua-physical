@@ -220,6 +220,16 @@ function Quantity.__mul(o1, o2)
 	q.value = o1.value * o2.value
 	q.dimension = o1.dimension * o2.dimension
 	q.unit = o1.unit * o2.unit
+
+	if o1.unit.tobase ~= nil and o1.unit.frombase ~= nil and q.dimension == o1.dimension then
+		q.unit.tobase = o1.unit.tobase
+		q.unit.frombase = o1.unit.frombase
+
+	elseif o2.unit.tobase ~= nil and o2.unit.frombase ~= nil and q.dimension == o2.dimension then
+		q.unit.tobase = o2.unit.tobase
+		q.unit.frombase = o2.unit.frombase
+	end
+
 	return q
 end
 
@@ -237,6 +247,7 @@ function Quantity.__div(o1, o2)
 	q.value = o1.value / o2.value
 	q.dimension = o1.dimension / o2.dimension
 	q.unit = o1.unit / o2.unit
+
 	return q
 end
 
