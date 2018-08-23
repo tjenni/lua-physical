@@ -393,12 +393,41 @@ function Quantity:tosiunitx(param)
 		str = str.."["..param.."]"
 	end
 
-	if type(self.value) == "number" then
+	if type(self.value) == "number" or getmetatable(self.value) == N then
 		str = str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
+	else
+		error("Can not convert quantity to an siunitx command.")
+	end
+
+	return str
+end
+
+-- convert quantity to an siunitx si expression
+function Quantity:tosiunitxsi(param)
+
+	local str = "\\si"
+
+	if param ~= nil then
+		str = str.."["..param.."]"
+	end
+
+	str = str.."{"..self.unit:tosiunitx().."}"
 	
-	elseif getmetatable(self.value) == N then
-		str = str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
-	
+	return str
+end
+
+
+-- convert quantity to an siunitx num expression
+function Quantity:tosiunitxnum(param)
+
+	local str = "\\num"
+
+	if param ~= nil then
+		str = str.."["..param.."]"
+	end
+
+	if type(self.value) == "number" or getmetatable(self.value) == N then
+		str = str.."{"..tostring(self.value).."}"
 	else
 		error("Can not convert quantity to an siunitx command.")
 	end
