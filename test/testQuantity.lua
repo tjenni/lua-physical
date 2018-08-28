@@ -119,16 +119,28 @@ end
 
 function TestQuantity:testMultiplyOfTemperatures()
    local m_1 = 5 * _kg
-   local m_2 = 5 * _kg
+   local m_2 = 3 * _kg
    local T_1 = 20 * _degC
    local T_2 = 40 * _degC
 
-   local T_m = ( (m_1*T_1 + m_2*T_2) / (m_1 + m_2) ):to(_degC,false)
+   -- if one multiplies a temperature by another quantity
+   -- the temperature will be interpreted as a temperature difference
+   local T_m = ( (m_1*T_1 + m_2*T_2) / (m_1 + m_2) ):to(_degC, false)
 
-   lu.assertEquals( T_m.value, 30 )
+   lu.assertEquals( T_m.value, 27.5 )
+
+
+   local m_1 = 5 * _kg
+   local m_2 = 3 * _kg
+   local T_1 = 20 * _degF
+   local T_2 = 40 * _degF
+
+   -- if one multiplies a temperature by another quantity
+   -- the temperature will be interpreted as a temperature difference.
+   local T_m = ( (m_1*T_1 + m_2*T_2) / (m_1 + m_2) ):to(_degC, false)
+
+   lu.assertAlmostEquals( T_m.value, 15.277777777778, 1e-3 )
 end
-
-
 
 
 function TestQuantity:testMultiplyWithNumber()
