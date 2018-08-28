@@ -445,7 +445,7 @@ Q.define("ftn", "fortnight", 14*_d)
 
 -- Temperature
 Q.define(
-	"degF", 
+	"degF",
 	"fahrenheit", 
 	(5/9)*_K,
 	function(q)

@@ -49,6 +49,8 @@ end
 
 TestQuantity = {}
 
+
+
 function TestQuantity:testToString()
    N.seperateUncertainty = true
 
@@ -113,6 +115,20 @@ function TestQuantity:testMultiply()
    lu.assertEquals( A.value, 50 )
    lu.assertEquals( A.dimension, (_m^2).dimension )
 end
+
+
+function TestQuantity:testMultiplyOfTemperatures()
+   local m_1 = 5 * _kg
+   local m_2 = 5 * _kg
+   local T_1 = 20 * _degC
+   local T_2 = 40 * _degC
+
+   local T_m = ( (m_1*T_1 + m_2*T_2) / (m_1 + m_2) ):to(_degC,false)
+
+   lu.assertEquals( T_m.value, 30 )
+end
+
+
 
 
 function TestQuantity:testMultiplyWithNumber()
@@ -390,5 +406,6 @@ function TestQuantity:testLessThan()
 
    lu.assertTrue(l_D < l_max)
 end
+
 
 return TestQuantity

@@ -215,19 +215,20 @@ function Quantity.__mul(o1, o2)
 	elseif getmetatable(o2) ~= Quantity then
 		o2 = Quantity.new(o2)
 	end
-
+	
 	local q = Quantity.new()
-	q.value = o1.value * o2.value
 	q.dimension = o1.dimension * o2.dimension
 	q.unit = o1.unit * o2.unit
+	q.value = o1.value * o2.value
 
-	if o1.unit.tobase ~= nil and o1.unit.frombase ~= nil and q.dimension == o1.dimension then
+	if o1.unit.tobase ~= nil and o2.dimension:iszero() then
 		q.unit.tobase = o1.unit.tobase
 		q.unit.frombase = o1.unit.frombase
-
-	elseif o2.unit.tobase ~= nil and o2.unit.frombase ~= nil and q.dimension == o2.dimension then
+		
+	elseif o2.unit.tobase ~= nil and o1.dimension:iszero() then
 		q.unit.tobase = o2.unit.tobase
 		q.unit.frombase = o2.unit.frombase
+
 	end
 
 	return q
@@ -244,9 +245,14 @@ function Quantity.__div(o1, o2)
 	end
 
 	local q = Quantity.new()
-	q.value = o1.value / o2.value
 	q.dimension = o1.dimension / o2.dimension
 	q.unit = o1.unit / o2.unit
+	q.value = o1.value / o2.value
+
+	if o1.unit.tobase ~= nil and o2.dimension:iszero() then
+		q.unit.tobase = o1.unit.tobase
+		q.unit.frombase = o1.unit.frombase
+	end
 
 	return q
 end
@@ -320,7 +326,11 @@ end
 
 
 -- convert quantity to another unit
-function Quantity:to(o)
+function Quantity:to(o, allowfunction)
+
+	if allowfunction == nil then
+		allowfunction = true
+	end
 
 	local q = Quantity.new()
 
@@ -329,7 +339,7 @@ function Quantity:to(o)
 	q.value = self.value * self.unit.prefixfactor
 	
 	-- call convertion function
-	if type(self.unit.tobase) == "function" then
+	if type(self.unit.tobase) == "function" and allowfunction then
 		q = self.unit.tobase(q)
 	else
 		q.value = q.value * self.unit.basefactor
@@ -342,7 +352,7 @@ function Quantity:to(o)
 		end
 
 		-- call convertion function
-		if type(o.unit.frombase) == "function" then
+		if type(o.unit.frombase) == "function" and allowfunction then
 			q = o.unit.frombase(q)
 		else
 			q.value = q.value / o.unit.basefactor

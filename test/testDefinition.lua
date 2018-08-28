@@ -205,10 +205,11 @@ function TestDefinition:testDegreeCelsius()
 
    T = 5*_degC + 3*_degC
    lu.assertTrue( T == 281.15*_K )
-
-   local dT = 5*_degC / _cm
+   
+   local dT = (5 * _degC) / _cm
    lu.assertTrue( dT == 5 * _K / _cm )
 
+  
    local T_1 = 0 * _degC
    local T_2 = 1 * _K
 
@@ -216,13 +217,15 @@ function TestDefinition:testDegreeCelsius()
    r = r:to(_percent)
 
    lu.assertTrue( r:isclose(99.63*_percent, 0.1) )
-
+    
    local c = 1000 * _J/(_kg*_degC)
    local m = 1 * _g
    local dT = 20 * _degC
 
+
    local Q = ( c * m * dT ):to(_J)
    lu.assertTrue( Q == 20 * _J )
+  
 end
 
 
