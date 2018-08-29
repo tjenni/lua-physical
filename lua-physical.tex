@@ -1,0 +1,130 @@
+%!TEX program = lualatex
+\documentclass{ltxdoc}
+
+\usepackage{url}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{luacode}
+\usepackage{framed}
+\usepackage{tcolorbox}
+\usepackage{siunitx}
+
+
+% siunitx config
+\sisetup{
+	output-decimal-marker = {.}, 
+	per-mode = symbol,
+	separate-uncertainty = false,
+	add-decimal-zero = true,
+	exponent-product = \cdot,
+	round-mode=off
+}
+
+% use listings
+\tcbuselibrary{listings,breakable}
+
+\lstset{
+  numberstyle=\footnotesize\color{vert},
+  keywordstyle=\ttfamily\bfseries\color{blue},
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\itshape\color{vert},
+  stringstyle=\ttfamily,
+  tabsize=2,
+  showstringspaces=false,
+  language=[LaTeX]TeX,
+  breaklines=true,
+  breakindent=30pt,
+  defaultdialect=[LaTeX]TeX,
+  morekeywords={}
+}
+
+\lstdefinelanguage{lua}
+{morekeywords={for,end,function,do,if,else,elseif,then,
+    tex.print,tex.sprint,io.read,io.open,string.find,string.explode,require},
+  morecomment=[l]{--},
+  morecomment=[s]{--[[}{]]},
+  morestring=[b]''
+}
+
+
+\newtcblisting{latexcode}{
+  arc=0pt,outer arc=0pt,
+  colback=red!2!white,
+  colframe=red!75!black,
+  breakable,
+  boxsep=0pt,left=5pt,right=5pt,top=5pt,bottom=5pt, bottomtitle =
+  3pt, toptitle=3pt,
+  boxrule=0pt,bottomrule=0.5pt,toprule=0.5pt, toprule at break =
+  0pt, bottomrule at break = 0pt,
+  listing only,boxsep=0pt,listing
+  options={breaklines}
+}
+
+\begin{luacode*}
+physical = require("physical")
+\end{luacode*}
+
+\newcommand{\q}[1]{%
+	\directlua{tex.print(physical.Quantity.tosiunitx(#1,"add-decimal-zero=true,scientific-notation=fixed,exponent-to-prefix=false"))}%
+}
+
+
+
+
+\begin{document}
+	\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 0.1}
+	\author{Thomas Jenni}
+	\date{\today}
+	\maketitle
+
+
+
+\begin{abstract}
+|lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. This package provides a lot of units of the SI-system and the imperial system. 
+\end{abstract}
+
+\tableofcontents
+
+
+
+
+
+
+\newpage
+\section{Introduction}
+
+A physical quantitiy is composed by a number and a unit. This lua-package provides the means to do calculations. 
+
+\begin{latexcode}
+\begin{luacode}
+	s = 10 * _m
+	t = 2 * _s
+	v = s/t
+\end{luacode}
+
+A car travels $\Q{s}$ in $\Q{t}$. Calculate its velocity.
+
+$$
+	v = \frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v}
+$$
+\end{latexcode}
+
+\begin{luacode*}
+s = 10 * _m
+t = 2 * _s
+v = s/t
+\end{luacode*}
+
+
+
+A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
+
+$$
+v = \frac{s}{t} 
+= \frac{\q{s}}{\q{t}}
+= \q{v}
+$$
+
+\newpage
+
+\end{document}
