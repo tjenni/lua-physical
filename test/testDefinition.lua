@@ -194,38 +194,36 @@ function TestDefinition:testKatal()
 end
 
 function TestDefinition:testDegreeCelsius()
-   local T = 0*_degC
-   lu.assertTrue( T == 273.15 * _K )
+   local T = 0 * _degC
+   lu.assertTrue( T:to(_K,true) == 273.15 * _K )
 
    T = 5*_degC
-   lu.assertTrue( T == 278.15*_K )
+   lu.assertTrue( T:to(_K,true) == 278.15*_K )
 
    T = _degC*5
-   lu.assertTrue( T == 278.15*_K )
+   lu.assertTrue( T:to(_K,true) == 278.15*_K )
 
    T = 5*_degC + 3*_degC
-   lu.assertTrue( T == 281.15*_K )
+   lu.assertTrue( T:to(_K,true) == 281.15*_K )
    
    local dT = (5 * _degC) / _cm
    lu.assertTrue( dT == 5 * _K / _cm )
 
-  
+   
    local T_1 = 0 * _degC
    local T_2 = 1 * _K
 
-   local r = (T_1-T_2)/T_1:to(_K)
-   r = r:to(_percent)
+   local r = (T_1:to(_K,true)-T_2)/T_1:to(_K,true)
 
+   r = r:to(_percent)
    lu.assertTrue( r:isclose(99.63*_percent, 0.1) )
-    
+      
    local c = 1000 * _J/(_kg*_degC)
    local m = 1 * _g
    local dT = 20 * _degC
 
-
    local Q = ( c * m * dT ):to(_J)
    lu.assertTrue( Q == 20 * _J )
-  
 end
 
 
@@ -786,16 +784,33 @@ end
 
 -- Temperature
 function TestDefinition:testFahrenheit()
-   lu.assertTrue( -459.67*_degF == 0*_K )
-   lu.assertTrue( (32*_degF):isclose(0*_degC, 0.001) )
-   lu.assertTrue( (69.8*_degF):isclose(21*_degC, 0.001) )
+   local T = -459.67*_degF
+   lu.assertTrue(  T:to(_K,true) == 0 * _K )
 
-   lu.assertTrue( (98.6*_degF):isclose(37*_degC, 0.001) )
-   lu.assertTrue( (212.0*_degF):isclose(100*_degC, 0.001) )
+   -- the isclose function treats temperature units as differences
+   local T_1 = 32 * _degF
+   local T_2 = 0 * _degC
+   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+  
+   local T_1 = 69.8*_degF
+   local T_2 = 21*_degC
+   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+  
+   local T_1 = 98.6*_degF
+   local T_2 = 37*_degC
+   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+  
+
+   local T_1 = 212.0*_degF
+   local T_2 = 100*_degC
+   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
 end
 
 function TestDefinition:testRankine()
-   lu.assertTrue( (55*_degR):isclose(-242.594 * _degC,1e-4) )
+   local T_1 = 55*_degR
+   local T_2 = -242.594 * _degC
+   
+   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
 end
 
 

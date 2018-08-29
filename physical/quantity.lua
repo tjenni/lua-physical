@@ -326,11 +326,9 @@ end
 
 
 -- convert quantity to another unit
-function Quantity:to(o, allowfunction)
+function Quantity:to(o, usefunction)
 
-	if allowfunction == nil then
-		allowfunction = true
-	end
+	usefunction = false or usefunction
 
 	local q = Quantity.new()
 
@@ -339,7 +337,7 @@ function Quantity:to(o, allowfunction)
 	q.value = self.value * self.unit.prefixfactor
 	
 	-- call convertion function
-	if type(self.unit.tobase) == "function" and allowfunction then
+	if type(self.unit.tobase) == "function" and usefunction then
 		q = self.unit.tobase(q)
 	else
 		q.value = q.value * self.unit.basefactor
@@ -352,7 +350,7 @@ function Quantity:to(o, allowfunction)
 		end
 
 		-- call convertion function
-		if type(o.unit.frombase) == "function" and allowfunction then
+		if type(o.unit.frombase) == "function" and usefunction then
 			q = o.unit.frombase(q)
 		else
 			q.value = q.value / o.unit.basefactor

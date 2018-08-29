@@ -32,6 +32,19 @@ In the above example, two length a and b are defined and then multiplied. The re
 
 The goal of the above example is to calculate the gravitational force on a body with mass `22 kg` sitting on the surface of the earth. As one can see, the result is given with an uncertainty in parentheses. This is because the gravitational constant is not exactly known. Lua-physical can deal with uncertainties. One can give an uncertainty explicitly by instantiating `physical.Number()`.
 
+### Temperature units
+Temperatur units as `_degC` or `_degF` are treated as temperature differences. An absolute conversion can be done and has to be called explicitly. The `:to()`-function has therefore a second argument, which is by default false. That means temperatures are by default treated as temperature differences. If it is true, absolute conversion is used.
+```
+> physical = require("physical")
+> T_1 = 15 * _degC
+> print(T_1)
+15 * _degC
+> print(T_1:to(_K))
+15.0 * _K
+> print(T_1:to(_K,true))
+288.15 * _K
+```
+
 ### Uncertainty
 
 ```
