@@ -9,6 +9,14 @@
 \usepackage{tcolorbox}
 \usepackage{siunitx}
 
+\begin{luacode*}
+  physical = require("physical")
+\end{luacode*}
+
+\newcommand{\q}[1]{%
+  \directlua{tex.print(physical.Quantity.tosiunitx(#1,"add-decimal-zero=true,scientific-notation=fixed,exponent-to-prefix=false"))}%
+}
+
 
 % siunitx config
 \sisetup{
@@ -21,15 +29,16 @@
 }
 
 % use listings
-\tcbuselibrary{listings,breakable}
+\tcbuselibrary{xparse,listings,breakable}
 
 \lstset{
-  numberstyle=\footnotesize\color{vert},
+  numberstyle=\footnotesize\color{gray},
   keywordstyle=\ttfamily\bfseries\color{blue},
   basicstyle=\ttfamily\footnotesize,
-  commentstyle=\itshape\color{vert},
+  commentstyle=\itshape\color{gray},
   stringstyle=\ttfamily,
   tabsize=2,
+  numbers=left,
   showstringspaces=false,
   language=[LaTeX]TeX,
   breaklines=true,
@@ -46,27 +55,19 @@
   morestring=[b]''
 }
 
-
-\newtcblisting{latexcode}{
-  arc=0pt,outer arc=0pt,
-  colback=red!2!white,
-  colframe=red!75!black,
+\DeclareTCBListing{example}{s O{} m}{%
+  colback=blue!2!white,
+  colframe=blue!75!black,
   breakable,
-  boxsep=0pt,left=5pt,right=5pt,top=5pt,bottom=5pt, bottomtitle =
-  3pt, toptitle=3pt,
-  boxrule=0pt,bottomrule=0.5pt,toprule=0.5pt, toprule at break =
-  0pt, bottomrule at break = 0pt,
-  listing only,boxsep=0pt,listing
-  options={breaklines}
+  boxsep=0pt,
+  left=25pt,
+  listing options={breaklines},
+  fonttitle=\bfseries,
+  title=#3,
+  #2
 }
 
-\begin{luacode*}
-physical = require("physical")
-\end{luacode*}
 
-\newcommand{\q}[1]{%
-	\directlua{tex.print(physical.Quantity.tosiunitx(#1,"add-decimal-zero=true,scientific-notation=fixed,exponent-to-prefix=false"))}%
-}
 
 
 
@@ -80,7 +81,9 @@ physical = require("physical")
 
 
 \begin{abstract}
-|lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. This package provides a lot of units of the SI-system and the imperial system. 
+|lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. This package provides a standard set of units of the SI and the imperial system. It is possible to give a number a mesurement uncertainty. 
+
+ is also integrated and is calculated by gaussian error propagation. The package includes some
 \end{abstract}
 
 \tableofcontents
@@ -93,37 +96,72 @@ physical = require("physical")
 \newpage
 \section{Introduction}
 
-A physical quantitiy is composed by a number and a unit. This lua-package provides the means to do calculations. 
+The author of this package is a teacher at the \emph{Kantonsschule Zug, Switzerland}, a high-school. The main use of this package is to write physics problem sets and integrate the calculation directly into the luatex-file. The package is now in use for more than two years and a lot of bugs have been found and crushed. Nevertheless it could be possible that some bugs are still there, living uncovered. Therefore I recommend not to use this library productively in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, please report them on github.com or directly to the author.
 
-\begin{latexcode}
+
+E-Mail: \url{thomas.jenni (at) ksz.ch}
+
+
+\section{Basic usage}
+Since this package is pure lua library one has to require it explicitly by calling 
+\lstinline{require("physical")}. For printing results the |siunitx| package is used. It's recommended to define a shortcut like \lstinline{\q} or \lstinline{\Qty} to convert the lua quantity object to a siunitx expression. An example preamble is shown in the following.
+
+
+
+\begin{example}[listing only]{basic preamble}
+  \usepackage{siunitx}
+
+  % configure siunitx
+  \sisetup{
+    output-decimal-marker = {.}, 
+    per-mode = symbol,
+    separate-uncertainty = false,
+    add-decimal-zero = true,
+    exponent-product = \cdot,
+    round-mode = off
+  }
+
+  % load lua-physical
+  \begin{luacode*}
+    physical = require("physical")
+  \end{luacode*}
+
+  % shortcut for printing physical quantities
+  \newcommand{\q}[1]{%
+    \directlua{tex.print(physical.Quantity.tosiunitx(#1,"scientific-notation=fixed,exponent-to-prefix=false"))}%
+  }
+\end{example}
+
+
+
+
+\newpage
+Given the preamble one can use now units in lua code and insert results in the latex code.
+
+\begin{example}{basic example}
 \begin{luacode}
-	s = 10 * _m
+  s = 10 * _m
 	t = 2 * _s
 	v = s/t
 \end{luacode}
 
-A car travels $\Q{s}$ in $\Q{t}$. Calculate its velocity.
-
+A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
 $$
-	v = \frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v}
+	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v} = \q{v:to(_km/_h)}
 $$
-\end{latexcode}
-
-\begin{luacode*}
-s = 10 * _m
-t = 2 * _s
-v = s/t
-\end{luacode*}
+\end{example}
 
 
 
-A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
 
-$$
-v = \frac{s}{t} 
-= \frac{\q{s}}{\q{t}}
-= \q{v}
-$$
+
+
+
+
+
+
+
+
 
 \newpage
 

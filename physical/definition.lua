@@ -365,8 +365,8 @@ Q.addPrefix(IEC_prefixes,{_bit,_B,_bps})
 Q.addPrefix({"k","M","G","T","P","E","Z","Y"},{_bit,_B,_bps})
 
 -- Others
-Q.define("percent", "percent", 0.01)
-Q.define("permille", "permille", 0.001)
+Q.define("percent", "percent", 0.01*_1)
+Q.define("permille", "permille", 0.001*_1)
 Q.define("dB", "decibel", _1)
 Q.define("t", "tonne", 1000*_kg)
 Q.define("eV", "electronvolt", _e*_V)
