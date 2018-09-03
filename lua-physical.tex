@@ -8,6 +8,7 @@
 \usepackage{framed}
 \usepackage{tcolorbox}
 \usepackage{siunitx}
+\usepackage{tabularx}
 
 \begin{luacode*}
   physical = require("physical")
@@ -98,7 +99,6 @@
 
 The author of this package is a teacher at the \emph{Kantonsschule Zug, Switzerland}, a high-school. The main use of this package is to write physics problem sets and integrate the calculation directly into the luatex-file. The package is now in use for more than two years and a lot of bugs have been found and crushed. Nevertheless it could be possible that some bugs are still there, living uncovered. Therefore I recommend not to use this library productively in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, please report them on github.com or directly to the author.
 
-
 E-Mail: \url{thomas.jenni (at) ksz.ch}
 
 
@@ -164,5 +164,293 @@ $$
 
 
 \newpage
+
+\section{Supported Units}
+
+\renewcommand{\arraystretch}{1.5}
+
+
+
+
+
+
+There are a few
+
+\begin{table}[h!]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  X%
+}
+
+Unit & Symbol & Definition \\\hline
+
+number & 
+|_1| & 
+The number one.  \\\hline
+
+
+percent \% &  
+|_percent| & 
+|1e-2*_1|  \\\hline
+
+
+permille \textperthousand & 
+|_permille| & 
+|1e-3*_1|  \\\hline
+
+parts-per-million & 
+|_ppm| &
+|1e-6*_1|  \\\hline
+
+parts-per-billion & 
+|_ppb| &
+|1e-9*_1|  \\\hline
+
+parts-per-trillion & 
+|_ppt| &
+|1e-12*_1|  \\\hline
+
+parts-per-quadrillion & 
+|_ppq| &
+|1e-15*_1|  \\\hline
+
+
+decibel & 
+|_dB| & 
+|_1|  \\\hline
+
+\end{tabularx}
+\caption{Dimensionless units}
+\end{table}
+
+
+
+
+
+
+\begin{table}[ht!]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{0.6\hsize}}X%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1.4\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dimension & Definition \\\hline
+
+length &
+meter & 
+|_m| & 
+L & 
+The distance light travels in vacuum during $1/ \num{299792458}$ second. \\\hline
+
+mass &
+kilogram  &  
+|_kg| & 
+M & 
+The mass of the international protoype of the kilogram.\\\hline
+
+time &
+second & |_s| & 
+T & 
+Is \num{9192631770} times the period of the radiation from the transition between the two hyperfine levels of the ground state of caesium-133.  \\\hline
+
+electric \newline current &
+ampere & 
+|_A| & 
+I & 
+Is the constant current which, if maintained in two straight parallel conductors of infinte length, of negligible circular crosss-section, and placed $\SI{1}{\m}$ apart in vacuum, would produce between these conductors a force equal to $\SI{2e-7}{\N\per\m}$.  \\\hline
+
+
+thermodynamic \newline temperature &
+kelvin  & 
+|_K| & 
+$\Theta$ & 
+Is the fraction $1/\num{273.16}$ of the thermodynamic temperature of the triple point of water.  \\\hline
+
+amount of \newline substance &
+mole  & 
+|_mol| &  
+$N$ & 
+Amount of substance that contains as many particles as there are atoms in $\SI{0.012}{\kg}$ of carbon-12. \\\hline
+
+luminous \newline intensity &
+candela & 
+|_cd| & 
+$J$ & 
+the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$
+
+\end{tabularx}
+\caption{Base units of the International System of Units (SI)}
+\end{table}
+
+
+
+\begin{table}[h!]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{1\hsize}}X%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dimension & Definition \\\hline
+
+plane angle & 
+radian &
+|_rad| & 
+$1$ & 
+|_1| \\\hline
+
+solid angle & 
+steradian &
+|_sr| & 
+$1$ & 
+|_rad^2| \\\hline
+
+frequency &
+hertz & 
+|_Hz| & 
+$T^{-1}$ & 
+|1/_s| \\\hline
+
+force &
+newton & 
+|_N| & 
+$M L T^{-2}$ & 
+|_kg * _m / _s^2| \\\hline
+
+pressure &
+pascal & 
+|_Pa| & 
+$M L^{-1} T^{-2}$ & 
+|_N/_m^2| \\\hline
+
+energy &
+joule & 
+|_J| & 
+$M L^2 T^{-2}$ & 
+|_N * _m| \\\hline
+
+
+power &
+watt & 
+|_W| & 
+$M L^2 T^{-3}$ & 
+|_J/_s| \\\hline
+
+electric charge &
+coulomb & 
+|_C| & 
+$T I$ & 
+|_A * _s| \\\hline
+
+electric potential difference &
+volt & 
+|_V| & 
+$M L^2 T^{-3} I^{-1}$ & 
+|_J / _C| \\\hline
+
+capacitance &
+farad & 
+|_F| & 
+$L^{-2}M^{-1} T^4 I^2$ & 
+|_C/_V| \\\hline
+
+electric resistance &
+ohm & 
+|_Ohm| & 
+$L^2 M T^{-3} I^{-2}$ & 
+|_V/_A| \\\hline
+
+electric conductance &
+siemens & 
+|_S| & 
+$L^{-2} M^{-1} T^{3} I^{2}$ & 
+|_A/_V| \\\hline
+
+magnetic flux &
+weber & 
+|_Wb| & 
+$L^2 M T^{-2} I^{-1}$ & 
+|_V*_s| \\\hline
+
+magnetic flux density &
+tesla & 
+|_T| & 
+$M T^{-2} I^{-2}$ & 
+|_V*_s| \\\hline
+
+inductance &
+henry & 
+|_H| & 
+$L^2 M T^{-2} I^{-2}$ & 
+|_Wb/_A| \\\hline
+
+Celsius temperature &
+degree Celsius & 
+|_degC| & 
+$\Theta$ & 
+|_K| \\\hline
+
+luminous flux &
+lumen & 
+|_lm| & 
+$J$ &
+|_cd * _sr| \\\hline
+
+illuminance &
+lux & 
+|_lux| & 
+$L^{-2} J$ &
+|_lm/_m^2| \\\hline
+
+activity &
+becquerel & 
+|_Bq| & 
+$T^{-1}$ &
+|1/_s| \\\hline
+
+absorbed dose &
+gray & 
+|_Gy| & 
+$L^{2} T^{-2}$ &
+|_J/_kg| \\\hline
+
+dose equivalent &
+sievert & 
+|_Sv| & 
+$L^{2} T^{-2}$ &
+|_J/_kg| \\\hline
+
+
+catalytic activity &
+katal & 
+|_kat| & 
+$T^{-1} N$ &
+|_mol/_s|
+
+
+
+
+
+
+
+\end{tabularx}
+\caption{Derived units of the International System of Units (SI)}
+\end{table}
+
+
+
+
+
+
+
 
 \end{document}

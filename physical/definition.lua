@@ -309,7 +309,7 @@ Q.define("wk", "week", 7*_d)
 Q.define("a", "year", 365.25*_d)
 
 -- Angular
-Q.define("rad", "radian", 1 )
+Q.define("rad", "radian", _1 )
 Q.define("sr", "steradian", _rad^2 )
 Q.define("deg", "degree", (Pi/180)*_rad)
 Q.define("arcmin", "arcminute", _deg/60)
@@ -365,8 +365,12 @@ Q.addPrefix(IEC_prefixes,{_bit,_B,_bps})
 Q.addPrefix({"k","M","G","T","P","E","Z","Y"},{_bit,_B,_bps})
 
 -- Others
-Q.define("percent", "percent", 0.01*_1)
-Q.define("permille", "permille", 0.001*_1)
+Q.define("percent", "percent", 1e-2*_1)
+Q.define("permille", "permille", 1e-3*_1)
+Q.define("ppm", "partspermillion", 1e-6*_1)
+Q.define("ppb", "partsperbillion", 1e-9*_1)
+Q.define("ppt", "partspertrillion", 1e-12*_1)
+Q.define("ppq", "partsperquadrillion", 1e-15*_1)
 Q.define("dB", "decibel", _1)
 Q.define("t", "tonne", 1000*_kg)
 Q.define("eV", "electronvolt", _e*_V)
