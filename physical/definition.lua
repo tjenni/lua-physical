@@ -365,8 +365,8 @@ Q.addPrefix(IEC_prefixes,{_bit,_B,_bps})
 Q.addPrefix({"k","M","G","T","P","E","Z","Y"},{_bit,_B,_bps})
 
 -- Others
-Q.define("percent", "percent", 1e-2*_1)
-Q.define("permille", "permille", 1e-3*_1)
+Q.define("percent", "percent", 0.01*_1)
+Q.define("permille", "permille", 0.001*_1)
 Q.define("ppm", "partspermillion", 1e-6*_1)
 Q.define("ppb", "partsperbillion", 1e-9*_1)
 Q.define("ppt", "partspertrillion", 1e-12*_1)

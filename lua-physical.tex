@@ -9,6 +9,7 @@
 \usepackage{tcolorbox}
 \usepackage{siunitx}
 \usepackage{tabularx}
+\usepackage{float}
 
 \begin{luacode*}
   physical = require("physical")
@@ -45,7 +46,8 @@
   breaklines=true,
   breakindent=30pt,
   defaultdialect=[LaTeX]TeX,
-  morekeywords={}
+  morekeywords={},
+  mathescape=true
 }
 
 \lstdefinelanguage{lua}
@@ -56,15 +58,27 @@
   morestring=[b]''
 }
 
-\DeclareTCBListing{example}{s O{} m}{%
-  colback=blue!2!white,
-  colframe=blue!75!black,
+\DeclareTCBListing[
+    auto counter,
+    number within=section
+  ]
+  {example}{s O{} m}{%
+  sharp corners,
+  colback=white!99!black,
+  colframe=white,
+  colbacktitle=white!95!black,
+  coltitle=black,
   breakable,
   boxsep=0pt,
+  boxrule=0pt,
+  toptitle=4pt,
+  bottomtitle=4pt,
   left=25pt,
+  before skip=\baselineskip,
   listing options={breaklines},
-  fonttitle=\bfseries,
-  title=#3,
+  fonttitle=\normalsize,
+  halign title=flush center,
+  title=Listing~\thetcbcounter: #3,
   #2
 }
 
@@ -102,11 +116,14 @@ The author of this package is a teacher at the \emph{Kantonsschule Zug, Switzerl
 E-Mail: \url{thomas.jenni (at) ksz.ch}
 
 
+
+
+
+
+
 \section{Basic usage}
 Since this package is pure lua library one has to require it explicitly by calling 
 \lstinline{require("physical")}. For printing results the |siunitx| package is used. It's recommended to define a shortcut like \lstinline{\q} or \lstinline{\Qty} to convert the lua quantity object to a siunitx expression. An example preamble is shown in the following.
-
-
 
 \begin{example}[listing only]{basic preamble}
   \usepackage{siunitx}
@@ -163,20 +180,38 @@ $$
 
 
 
-\newpage
 
-\section{Supported Units}
 
 \renewcommand{\arraystretch}{1.5}
 
 
+% define macros for dimensions
+
+\newcommand{\M}[1][]{\mathrm{M}^{#1}\,}
+
+\renewcommand{\L}[1][]{\mathrm{L}^{#1}\,}
+
+\newcommand{\T}[1][]{\mathrm{T}^{#1}\,}
+
+\newcommand{\I}[1][]{\mathrm{I}^{#1}\,}
+
+\renewcommand{\theta}[1][]{\mathrm{theta}^{#1}\,}
+
+\renewcommand{\N}[1][]{\mathrm{N}^{#1}\,}
+
+\renewcommand{\J}[1][]{\mathrm{J}^{#1}\,}
+
+\newcommand{\1}{\mathrm{1}}
 
 
 
 
-There are a few
+\newpage
+\section{Supported Units}
 
-\begin{table}[h!]
+There are a few units with dimension $\1$. The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
+
+\begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
   l%
@@ -229,41 +264,40 @@ decibel &
 
 
 
-
-\begin{table}[ht!]
+\begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{0.6\hsize}}X%
+  >{\setlength\hsize{0.5\hsize}}X%
   l%
   l%
-  l%
-  >{\setlength\hsize{1.4\hsize}}X%
+  c%
+  >{\setlength\hsize{1.5\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dimension & Definition \\\hline
+Quantity & Unit & Symbol & Dim. & Definition \\\hline
 
 length &
 meter & 
 |_m| & 
-L & 
+$\L$ &
 The distance light travels in vacuum during $1/ \num{299792458}$ second. \\\hline
 
 mass &
 kilogram  &  
 |_kg| & 
-M & 
+$\M$ & 
 The mass of the international protoype of the kilogram.\\\hline
 
 time &
 second & |_s| & 
-T & 
+$\T$ & 
 Is \num{9192631770} times the period of the radiation from the transition between the two hyperfine levels of the ground state of caesium-133.  \\\hline
 
 electric \newline current &
 ampere & 
 |_A| & 
-I & 
-Is the constant current which, if maintained in two straight parallel conductors of infinte length, of negligible circular crosss-section, and placed $\SI{1}{\m}$ apart in vacuum, would produce between these conductors a force equal to $\SI{2e-7}{\N\per\m}$.  \\\hline
+$\I$ & 
+The constant current which, if maintained in two straight parallel conductors of infinte length, of negligible circular crosss-section, and placed $\SI{1}{\m}$ apart in vacuum, would produce between these conductors a force equal to $\SI{2e-7}{\N\per\m}$.  \\\hline
 
 
 thermodynamic \newline temperature &
@@ -275,13 +309,13 @@ Is the fraction $1/\num{273.16}$ of the thermodynamic temperature of the triple 
 amount of \newline substance &
 mole  & 
 |_mol| &  
-$N$ & 
+$\N$ & 
 Amount of substance that contains as many particles as there are atoms in $\SI{0.012}{\kg}$ of carbon-12. \\\hline
 
 luminous \newline intensity &
 candela & 
 |_cd| & 
-$J$ & 
+$\J$ & 
 the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$
 
 \end{tabularx}
@@ -290,14 +324,14 @@ the luminous intensity, in a given direction, of a source that emits monochromat
 
 
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
+  >{\setlength\hsize{1.2\hsize}}X%
   l%
   l%
   l%
-  >{\setlength\hsize{1\hsize}}X%
+  >{\setlength\hsize{0.8\hsize}}X%
 }
 
 Quantity & Unit & Symbol & Dimension & Definition \\\hline
@@ -306,94 +340,94 @@ plane angle &
 radian &
 |_rad| & 
 $1$ & 
-|_1| \\\hline
+|\1| \\\hline
 
 solid angle & 
 steradian &
 |_sr| & 
-$1$ & 
+$\1$ & 
 |_rad^2| \\\hline
 
 frequency &
 hertz & 
 |_Hz| & 
-$T^{-1}$ & 
+$\T[-1]$ & 
 |1/_s| \\\hline
 
 force &
 newton & 
 |_N| & 
-$M L T^{-2}$ & 
-|_kg * _m / _s^2| \\\hline
+$\M \L \T[-2]$ & 
+|_kg*_m/_s^2| \\\hline
 
 pressure &
 pascal & 
 |_Pa| & 
-$M L^{-1} T^{-2}$ & 
+$\M \L[-1] \T[-2]$ & 
 |_N/_m^2| \\\hline
 
 energy &
 joule & 
 |_J| & 
-$M L^2 T^{-2}$ & 
-|_N * _m| \\\hline
+$\M \L[2] \T[-2]$ & 
+|_N*_m| \\\hline
 
 
 power &
 watt & 
 |_W| & 
-$M L^2 T^{-3}$ & 
+$\M \L[2] \T[-3]$ & 
 |_J/_s| \\\hline
 
-electric charge &
+electric \newline charge &
 coulomb & 
 |_C| & 
-$T I$ & 
-|_A * _s| \\\hline
+$\T \I$ & 
+|_A*_s| \\\hline
 
-electric potential difference &
+electric potential \newline difference &
 volt & 
 |_V| & 
-$M L^2 T^{-3} I^{-1}$ & 
-|_J / _C| \\\hline
+$\M \L[2] \T[-3] \I[-1]$ & 
+|_J/_C| \\\hline
 
 capacitance &
 farad & 
 |_F| & 
-$L^{-2}M^{-1} T^4 I^2$ & 
+$\L[-2] \M[-1] \T[4] \I[2]$ & 
 |_C/_V| \\\hline
 
-electric resistance &
+electric \newline resistance &
 ohm & 
 |_Ohm| & 
-$L^2 M T^{-3} I^{-2}$ & 
+$\L[2] M \T[-3] \I[-2]$ & 
 |_V/_A| \\\hline
 
-electric conductance &
+electric \newline conductance &
 siemens & 
 |_S| & 
-$L^{-2} M^{-1} T^{3} I^{2}$ & 
+$\L[-2] \M[-1] T^{3} I^{2}$ & 
 |_A/_V| \\\hline
 
-magnetic flux &
+magnetic \newline flux &
 weber & 
 |_Wb| & 
-$L^2 M T^{-2} I^{-1}$ & 
+$\L[2] \M \T[-2] \I[-1]$ & 
 |_V*_s| \\\hline
 
-magnetic flux density &
+magnetic flux \newline density &
 tesla & 
 |_T| & 
-$M T^{-2} I^{-2}$ & 
+$\M \T[-2] \I[-1]$ & 
 |_V*_s| \\\hline
 
 inductance &
 henry & 
 |_H| & 
-$L^2 M T^{-2} I^{-2}$ & 
+$\L[2] \M \T[-2] \I[-2]$ & 
 |_Wb/_A| \\\hline
 
-Celsius temperature &
+Celsius \newline temperature &
 degree Celsius & 
 |_degC| & 
 $\Theta$ & 
@@ -402,38 +436,38 @@ $\Theta$ &
 luminous flux &
 lumen & 
 |_lm| & 
-$J$ &
-|_cd * _sr| \\\hline
+$\J$ &
+|_cd*_sr| \\\hline
 
 illuminance &
 lux & 
 |_lux| & 
-$L^{-2} J$ &
+$\L[-2] \J$ &
 |_lm/_m^2| \\\hline
 
 activity &
 becquerel & 
 |_Bq| & 
-$T^{-1}$ &
+$\T[-1]$ &
 |1/_s| \\\hline
 
 absorbed dose &
 gray & 
 |_Gy| & 
-$L^{2} T^{-2}$ &
+$\L[2] \T[-2]$ &
 |_J/_kg| \\\hline
 
 dose equivalent &
 sievert & 
 |_Sv| & 
-$L^{2} T^{-2}$ &
+$\L[2] \T[-2]$ &
 |_J/_kg| \\\hline
 
 
-catalytic activity &
+catalytic \newline activity &
 katal & 
 |_kat| & 
-$T^{-1} N$ &
+$\T[-1] \N$ &
 |_mol/_s|
 
 
@@ -445,6 +479,471 @@ $T^{-1} N$ &
 \end{tabularx}
 \caption{Derived units of the International System of Units (SI)}
 \end{table}
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dim. & Definition \\\hline
+
+
+plane angle & 
+degree &
+|_deg| & 
+$1$ & 
+|(Pi/180)*_rad| \\\hline
+
+
+ & 
+arc minute &
+|_arcmin| & 
+$\1$ & 
+|_deg/60| \\\hline
+
+ & 
+arc second &
+|_arcsec| & 
+$\1$ & 
+|_arcmin/60| \\\hline
+
+ & 
+gradian &
+|_gon| & 
+$\1$ & 
+|(Pi/200)*_rad| \\\hline
+
+ & 
+turn &
+|_tr| & 
+$\1$ & 
+|2*Pi*_rad| \\\hline
+
+solid angle & 
+spat &
+|_sp| & 
+$\1$ & 
+|4*Pi*_sr| \\\hline
+
+
+
+
+length & 
+astronomical unit &
+|_au| & 
+$\L$ & 
+|149597870700*_m| \\\hline
+
+ &
+lightyear &
+|_ly| & 
+$\L$ & 
+|_c*_a| \\\hline
+
+ &
+parsec &
+|_pc| & 
+$\L$ & 
+|(648000/Pi)*_au| \\\hline
+
+
+ &
+angstrom &
+|_angstrom| & 
+$\L$ & 
+|1e-10*_m| \\\hline
+
+ & 
+fermi &
+|_fermi| & 
+$\L$ & 
+|1e-15*_m| \\\hline
+
+
+
+
+area & 
+are &
+|_ar| & 
+$\L[2]$ & 
+|1e2*_m^2| \\\hline
+
+
+ & 
+hectare &
+|_hectare| & 
+$\L[2]$ & 
+|1e4*_m^2| \\\hline
+
+
+ &
+barn &
+|_barn| & 
+$\L[2]$ &
+|1e-28*_m^2| \\\hline
+
+
+volume & 
+liter &
+|_L| & 
+$\L[3]$ & 
+|0.001*_m^3| \\\hline
+
+
+ & 
+metric teaspoon &
+|_tsp| & 
+$\L[3]$ & 
+|0.005*_L| \\\hline
+
+
+ & 
+metric tablespoon &
+|_Tbsp| & 
+$\L[3]$ & 
+|3*_tsp| \\\hline
+
+
+
+
+time & 
+minute &
+|_min| & 
+$\T$ & 
+|_60*_s| \\\hline
+
+
+ & 
+hour &
+|_h| & 
+$\T$ & 
+|_60*_min| \\\hline
+
+
+ & 
+day &
+|_d| & 
+$\T$ & 
+|_24*_h| \\\hline
+
+
+ & 
+week &
+|_wk| & 
+$\T$ & 
+|_7*_d| \\\hline
+
+ & 
+year &
+|_a| & 
+$\T$ & 
+|365.25*_d| \\\hline
+
+ & 
+svedberg &
+|_svedberg| & 
+$\T$ & 
+|1e-13*_s| \\\hline
+
+
+mass & 
+tonne &
+|_t| & 
+$\M$ & 
+|1000*_kg| \\\hline
+
+\end{tabularx}
+\caption{Units outside of the International System of Units (SI)}
+\end{table}
+
+
+
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dim. & Definition \\\hline
+
+
+length & 
+inch &
+|_in| & 
+$\L$ & 
+|0.0254*_m| \\\hline
+
+
+ & 
+thou &
+|_th| & 
+$\L$ & 
+|0.001*_in| \\\hline
+
+
+ & 
+pica &
+|_pica| & 
+$\L$ & 
+|_in/6| \\\hline
+
+
+ & 
+point &
+|_pt| & 
+$\L$ & 
+|_in/72| \\\hline
+
+
+ & 
+hand &
+|_hh| & 
+$\L$ & 
+|4*_in| \\\hline
+
+ & 
+foot &
+|_ft| & 
+$\L$ & 
+|12*_in| \\\hline
+
+ & 
+yard &
+|_yd| & 
+$\L$ & 
+|3*_ft| \\\hline
+
+ & 
+rod &
+|_rd| & 
+$\L$ & 
+|5.5*_yd| \\\hline
+
+
+ & 
+chain &
+|_ch| & 
+$\L$ & 
+|4*_rd| \\\hline
+
+
+ & 
+furlong &
+|_fur| & 
+$\L$ & 
+|10*_ch| \\\hline
+
+
+ & 
+mile &
+|_mi| & 
+$\L$ & 
+|8*_fur| \\\hline
+
+ & 
+league &
+|_lea| & 
+$\L$ & 
+|3*_mi| \\\hline
+
+
+\end{tabularx}
+\caption{Imperial units}
+\end{table}
+
+
+
+
+
+
+
+
+\newpage
+
+\section{Lua Documentation}
+
+\subsection{physical.Quantity}
+
+
+
+\subsubsection*{|Quantity.new(q=nil)|}
+\begin{quote}
+  The constuctor of the |Quantity| class. It takes an optional quantity as argument |q|. If it is given, the new quantity is a copy of |q|.
+
+  \begin{example}[listing only]{Example use of .defineBase()}
+    local Q = require(prefix..'quantity')
+
+    l = Q(10 * _m)
+    one = Q()
+  \end{example}
+
+\end{quote}
+
+
+
+\subsubsection*{|Quantity.defineBase(symbol,name,dimension)|}
+\begin{quote}
+  All unit systems need some base units. This function is used to define the base units, or base quantities of the unit system.
+
+  \begin{description}
+  \item |symbol| : |string|, Symbol of the base quantity
+
+  \item |name| : |string|, Name of the base quantity
+
+  \item |dimension| : |physical.Dimension|, Object which represents the base Dimension of the base Quantity
+
+  \item returns a |physical.Quantity| object.
+  \end{description}
+
+  \begin{example}[listing only]{}
+  local D = require(prefix..'dimension')
+  local Q = require(prefix..'quantity')
+
+  -- base dimensions
+  local L = D.defineBase("L", "Length")
+  local M = D.defineBase("M", "Mass")
+  -- ...
+
+  -- base quantities
+  Q.defineBase("m", "meter", L)
+  Q.defineBase("kg", "kilogram", M)
+  -- ...
+  \end{example}
+\end{quote}
+
+
+
+\newpage
+\subsubsection*{|Quantity.define(symbol, name, o, tobase, frombase)|}
+\begin{quote}
+  Creates a new derived unit.  
+
+  \begin{description}
+  \item |symbol| : |string|, Symbol of the base quantity
+
+  \item |name| : |string|, Name of the base quantity
+
+  \item |o| : |physical.Quantity|, Definition of the unit.
+
+  \item |tobase| : |function|, optional function to convert a quantity to base units.
+
+  \item |frombase| : |function|, optional function to convert a quantity from the base units.
+
+  \item returns a |physical.Quantity| object.
+  \end{description}
+
+
+  \begin{example}[listing only]{Example use of .define()}
+  -- define derived quantities
+  Q.define("L", "liter", _dm^3)
+  Q.define("Pa", "pascal", _N/_m^2)
+  Q.define("C", "coulomb", _A*_s)
+
+
+  Q.define(
+    "degC", 
+    "celsius",
+    _K, 
+    function(q)
+      q.value = q.value + 273.15
+      return q
+    end,
+    function(q)
+      q.value = q.value - 273.15
+      return q
+    end
+  )
+  \end{example}
+\end{quote}
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+By this 
+
+.definePrefix(symbol,name,factor)
+
+.addPrefix(prefixes, units)
+
+.min(o1,o2)
+
+.max(o1,o2)
+
+.abs(q)
+
+.sqrt(q)
+
+.log(q, base)
+
+.exp(q)
+
+.sin(q)
+
+.cos(q)
+
+.tan(q)
+
+.asin(q)
+
+.acos(q)
+
+.atan(q)
+
+.sinh(q)
+
+.cosh(q)
+
+.tanh(q)
+
+.asinh(q)
+
+.acosh(q)
+
+.atanh(q)
+
+:to(o, usefunction)
+
+:tosiunitx(param)
+
+:tosiunitxsi(param)
+
+:tosiunitxnum(param)
+
+:isclose(o, r)
+
+
+
+
+
+
+
+
+
 
 
 

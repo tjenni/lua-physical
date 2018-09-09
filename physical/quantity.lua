@@ -56,7 +56,7 @@ function Quantity.new(q)
 		p.dimension = q.dimension
 		p.value = q.value
 		p.unit = q.unit
-
+		
 	-- create a dimensionless Quantity
 	else
 		p.dimension = D.new()
@@ -79,7 +79,7 @@ function Quantity.defineBase(symbol,name,dimension)
 	q.unit = U.new(symbol,name)
 
 	table.insert(Quantity._base,q)
-
+	
 	rawset(_G, "_"..symbol, q)
 
 	return q
@@ -789,9 +789,6 @@ function Quantity.atanh(q)
 	
 	return p
 end
-
-
-
 
 
 
