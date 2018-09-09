@@ -149,8 +149,8 @@ asinh = Q.asinh
 acosh = Q.acosh
 atanh = Q.atanh
 
-
-Q.define("1", "number", 1)
+-- dimensionless base quantity
+Q.define("1", "number", Q(1))
 
 -- SI Base Units
 Q.defineBase("m", "meter", L)
@@ -357,7 +357,7 @@ Q.define("Ah", "amperehour", _A*_h)
 Q.addPrefix(SI_prefixes,{_VA,_Ah})
 
 -- Information units
-Q.define("bit", "bit", 1)
+Q.define("bit", "bit", _1)
 Q.define("bps", "bitpersecond", 1/_s)
 Q.define("B", "byte", 8*_bit)
 

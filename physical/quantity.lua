@@ -56,7 +56,7 @@ function Quantity.new(q)
 		p.dimension = q.dimension
 		p.value = q.value
 		p.unit = q.unit
-		
+
 	-- create a dimensionless Quantity
 	else
 		p.dimension = D.new()
@@ -88,15 +88,15 @@ end
 
 function Quantity.define(symbol, name, o, tobase, frombase)
 
+	-- check if quantity does already exist
 	if rawget(_G,"_"..symbol) ~= nil then
 		print("Warning: Quantity '_"..symbol.."' does already exist. Overwrite current definition.")
 	end
 
+	-- check if given value is a quantity
 	if getmetatable(o) ~= Quantity then
-		o = Quantity.new(o)
+		error("Error: The given value in the definition of '"..name.."' is no quantity.")
 	end
-
-	--Todo: o = o:to()
 
 	local q = Quantity.new() 
 	q.value = 1
@@ -112,10 +112,12 @@ end
 
 function Quantity.definePrefix(symbol,name,factor)
 
+	-- check if prefix does already exist
 	if Quantity._prefixes[symbol] ~= nil then
 		print("Warning: Prefix '"..symbol.."' does already exist. Overwrite current definition.")
 	end
 
+	-- append prefix to the _prefixes table
 	Quantity._prefixes[symbol] = {
 		symbol=symbol,
 		name=name, 
@@ -126,6 +128,8 @@ end
 
 -- create prefixed versions of the given units.
 function Quantity.addPrefix(prefixes, units)
+	-- todo: what if prefixes and units are no lists?
+
 	for i=1,#prefixes do
 		local prefix = Quantity._prefixes[prefixes[i]]
 
@@ -144,7 +148,7 @@ function Quantity.addPrefix(prefixes, units)
 			-- assert that unit does not exist
 			local symbol = "_"..prefix.symbol..unit.unit.symbol
 			if rawget(_G,symbol) ~= nil then
-				print("Warning: Quantity '"..symbol.."' does already exist. Overwrite current definition.")
+				error("Error: Cannot create prefixed Quantity, because '"..symbol.."' does already exist.")
 			end
 
 			-- set unit as a global variable

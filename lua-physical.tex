@@ -47,7 +47,8 @@
   breakindent=30pt,
   defaultdialect=[LaTeX]TeX,
   morekeywords={},
-  mathescape=true
+  mathescape=true,
+  escapeinside={(*}{*)}
 }
 
 \lstdefinelanguage{lua}
@@ -771,6 +772,9 @@ $\L$ &
 
 
 
+% shortcut for method definitions
+\newcommand{\method}[2]{\subsubsection*{\normalfont #1.|#2|}}
+
 
 
 
@@ -778,26 +782,30 @@ $\L$ &
 
 \section{Lua Documentation}
 
+In the following chapter, these shortcuts will be used.
+\begin{example}[listing only]{}
+local D = physical.Dimension
+local Q = physical.Quantity
+\end{example}
+
+
 \subsection{physical.Quantity}
 
 
-
-\subsubsection*{|Quantity.new(q=nil)|}
+\method{Quantity}{new(q=nil)}
 \begin{quote}
-  The constuctor of the |Quantity| class. It takes an optional quantity as argument |q|. If it is given, the new quantity is a copy of |q|.
+  The constuctor of the |Quantity| class. It takes an optional |quantity| or |number| as argument |q|. If it is given, the new quantity is a copy of |q|. If no argument ist given, a quantity |_1| is created.
 
-  \begin{example}[listing only]{Example use of .defineBase()}
-    local Q = require(prefix..'quantity')
-
-    l = Q(10 * _m)
-    one = Q()
-  \end{example}
+\begin{example}[listing only]{Create some quantities.}
+myNumber = Q(42)
+myLength = Q(73*_m)
+\end{example}
 
 \end{quote}
 
 
 
-\subsubsection*{|Quantity.defineBase(symbol,name,dimension)|}
+\method{Quantity}{defineBase(symbol,name,dimension)}
 \begin{quote}
   All unit systems need some base units. This function is used to define the base units, or base quantities of the unit system.
 
@@ -811,28 +819,16 @@ $\L$ &
   \item returns a |physical.Quantity| object.
   \end{description}
 
-  \begin{example}[listing only]{}
-  local D = require(prefix..'dimension')
-  local Q = require(prefix..'quantity')
-
-  -- base dimensions
-  local L = D.defineBase("L", "Length")
-  local M = D.defineBase("M", "Mass")
-  -- ...
-
-  -- base quantities
-  Q.defineBase("m", "meter", L)
-  Q.defineBase("kg", "kilogram", M)
-  -- ...
-  \end{example}
+\begin{example}[listing only]{Define some base quantities.}
+Q.defineBase("m", "meter", L)
+Q.defineBase("kg", "kilogram", M)
+\end{example}
 \end{quote}
 
 
-
-\newpage
-\subsubsection*{|Quantity.define(symbol, name, o, tobase, frombase)|}
+\method{Quantity}{define(symbol, name, o, tobase=nil, frombase=nil)}
 \begin{quote}
-  Creates a new derived unit.  
+  Creates a new unit from an expression of other units.
 
   \begin{description}
   \item |symbol| : |string|, Symbol of the base quantity
@@ -849,32 +845,71 @@ $\L$ &
   \end{description}
 
 
-  \begin{example}[listing only]{Example use of .define()}
-  -- define derived quantities
-  Q.define("L", "liter", _dm^3)
-  Q.define("Pa", "pascal", _N/_m^2)
-  Q.define("C", "coulomb", _A*_s)
+\begin{example}[listing only]{Create new quantities from others.}
+Q.define("L", "liter", _dm^3)
+Q.define("Pa", "pascal", _N/_m^2)
+Q.define("C", "coulomb", _A*_s)
 
 
-  Q.define(
-    "degC", 
-    "celsius",
-    _K, 
-    function(q)
-      q.value = q.value + 273.15
-      return q
-    end,
-    function(q)
-      q.value = q.value - 273.15
-      return q
-    end
-  )
-  \end{example}
+Q.define(
+  "degC", 
+  "celsius",
+  _K, 
+  function(q)
+    q.value = q.value + 273.15
+    return q
+  end,
+  function(q)
+    q.value = q.value - 273.15
+    return q
+  end
+)
+\end{example}
 \end{quote}
 
 
 
 
+
+
+\method{Quantity}{definePrefix(symbol,name,factor)}
+\begin{quote}
+  Defines a new prefix.
+
+  \begin{description}
+  \item |symbol| : |string|, Symbol of the base quantity
+
+  \item |name| : |string|, Name of the base quantity
+
+  \item |factor| : |number|, the factor which corresponds to the prefix
+  \end{description}
+
+
+\begin{example}[listing only]{Define a new prefix}
+Q.definePrefix("c", "centi", 1e-2)
+Q.definePrefix("a", "atto", 1e-18)
+\end{example}
+\end{quote}
+
+
+
+
+
+\method{Quantity}{addPrefix(prefixes, units)}
+\begin{quote}
+  Create units with prefixes from a given unit.
+
+  \begin{description}
+  \item |prefixes| : |{string}|, list of unit symbols
+
+  \item |units| : |{Quantity}|, list of quantities
+  \end{description}
+
+
+\begin{example}[listing only]{Add prefixes to some quantites.}
+Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
+\end{example}
+\end{quote}
 
 
 
@@ -886,7 +921,6 @@ $\L$ &
 \newpage
 By this 
 
-.definePrefix(symbol,name,factor)
 
 .addPrefix(prefixes, units)
 
