@@ -1,7 +1,7 @@
 ﻿--[[
 This file contains the quantity class
 
-Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
+Copyright (c) 2018 Thomas Jenni (tjenni@me.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ local N = require(prefix..'number')
 local Quantity = {}
 Quantity.__index = Quantity
 
--- make Quantity callable
+-- make Quantity table callable
 setmetatable(Quantity, {
 	__call = function(class, ...)
 		return Quantity.new(...)
@@ -48,6 +48,7 @@ Quantity._prefixes = {}
 
 -- constructor
 function Quantity.new(q)
+
 	local p = {}
 	setmetatable(p, Quantity)
 	
@@ -67,10 +68,12 @@ function Quantity.new(q)
 	return p
 end
 
+
+-- create base quantities
 function Quantity.defineBase(symbol,name,dimension)
 
 	if rawget(_G,"_"..symbol) ~= nil then
-		print("Warning: Quantity '_"..symbol.."' does already exist. Overwrite current definition.")
+		error("Error: Quantity '_"..symbol.."' does already exist.")
 	end
 
 	local q = Quantity.new()
@@ -86,16 +89,17 @@ function Quantity.defineBase(symbol,name,dimension)
 end
 
 
+-- create derived quantities
 function Quantity.define(symbol, name, o, tobase, frombase)
 
 	-- check if quantity does already exist
 	if rawget(_G,"_"..symbol) ~= nil then
-		print("Warning: Quantity '_"..symbol.."' does already exist. Overwrite current definition.")
+		error("Error: Quantity '_"..symbol.."' does already exist.")
 	end
 
 	-- check if given value is a quantity
 	if getmetatable(o) ~= Quantity then
-		error("Error: The given value in the definition of '"..name.."' is no quantity.")
+		error("Error: No quantity given in the definition of '"..name.."'.")
 	end
 
 	local q = Quantity.new() 
@@ -109,12 +113,12 @@ function Quantity.define(symbol, name, o, tobase, frombase)
 	return q
 end
 
-
+-- define a prefix
 function Quantity.definePrefix(symbol,name,factor)
 
 	-- check if prefix does already exist
 	if Quantity._prefixes[symbol] ~= nil then
-		print("Warning: Prefix '"..symbol.."' does already exist. Overwrite current definition.")
+		error("Error: Prefix '"..symbol.."' does already exist.")
 	end
 
 	-- append prefix to the _prefixes table
@@ -126,7 +130,7 @@ function Quantity.definePrefix(symbol,name,factor)
 end
 
 
--- create prefixed versions of the given units.
+-- create prefixed versions of the given units
 function Quantity.addPrefix(prefixes, units)
 	-- todo: what if prefixes and units are no lists?
 

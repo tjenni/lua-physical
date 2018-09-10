@@ -5,14 +5,14 @@
 \usepackage[english]{babel}
 \usepackage{hyperref}
 \usepackage{luacode}
-\usepackage{framed}
-\usepackage{tcolorbox}
+\usepackage{listings}
 \usepackage{siunitx}
 \usepackage{tabularx}
 \usepackage{float}
+\usepackage{framed}
 
 \begin{luacode*}
-  physical = require("physical")
+physical = require("physical")
 \end{luacode*}
 
 \newcommand{\q}[1]{%
@@ -30,8 +30,16 @@
 	round-mode=off
 }
 
-% use listings
-\tcbuselibrary{xparse,listings,breakable}
+\lstdefinelanguage{lua}
+{
+  morekeywords={
+    for,end,function,do,if,else,elseif,then,
+    tex.print,tex.sprint,io.read,io.open,string.find,string.explode,require
+  },
+  morecomment=[l]{--},
+  morecomment=[s]{--[[}{]]},
+  morestring=[b]''
+}
 
 \lstset{
   numberstyle=\footnotesize\color{gray},
@@ -42,46 +50,19 @@
   tabsize=2,
   numbers=left,
   showstringspaces=false,
-  language=[LaTeX]TeX,
   breaklines=true,
+  framexleftmargin=20pt,
+  framexrightmargin=3.5pt,
+  xleftmargin=23.5pt,
   breakindent=30pt,
-  defaultdialect=[LaTeX]TeX,
   morekeywords={},
-  mathescape=true,
-  escapeinside={(*}{*)}
+  frame=single,
+  mathescape=false,
+  captionpos=b
 }
 
-\lstdefinelanguage{lua}
-{morekeywords={for,end,function,do,if,else,elseif,then,
-    tex.print,tex.sprint,io.read,io.open,string.find,string.explode,require},
-  morecomment=[l]{--},
-  morecomment=[s]{--[[}{]]},
-  morestring=[b]''
-}
 
-\DeclareTCBListing[
-    auto counter,
-    number within=section
-  ]
-  {example}{s O{} m}{%
-  sharp corners,
-  colback=white!99!black,
-  colframe=white,
-  colbacktitle=white!95!black,
-  coltitle=black,
-  breakable,
-  boxsep=0pt,
-  boxrule=0pt,
-  toptitle=4pt,
-  bottomtitle=4pt,
-  left=25pt,
-  before skip=\baselineskip,
-  listing options={breaklines},
-  fonttitle=\normalsize,
-  halign title=flush center,
-  title=Listing~\thetcbcounter: #3,
-  #2
-}
+
 
 
 
@@ -120,13 +101,13 @@ E-Mail: \url{thomas.jenni (at) ksz.ch}
 
 
 
-
+\lstset{language=[LaTex]Tex}
 
 \section{Basic usage}
 Since this package is pure lua library one has to require it explicitly by calling 
 \lstinline{require("physical")}. For printing results the |siunitx| package is used. It's recommended to define a shortcut like \lstinline{\q} or \lstinline{\Qty} to convert the lua quantity object to a siunitx expression. An example preamble is shown in the following.
 
-\begin{example}[listing only]{basic preamble}
+\begin{lstlisting}[language=Tex, caption=basic preamble]
   \usepackage{siunitx}
 
   % configure siunitx
@@ -148,7 +129,7 @@ Since this package is pure lua library one has to require it explicitly by calli
   \newcommand{\q}[1]{%
     \directlua{tex.print(physical.Quantity.tosiunitx(#1,"scientific-notation=fixed,exponent-to-prefix=false"))}%
   }
-\end{example}
+\end{lstlisting}
 
 
 
@@ -156,7 +137,7 @@ Since this package is pure lua library one has to require it explicitly by calli
 \newpage
 Given the preamble one can use now units in lua code and insert results in the latex code.
 
-\begin{example}{basic example}
+\begin{lstlisting}[caption={basic usage}]
 \begin{luacode}
   s = 10 * _m
 	t = 2 * _s
@@ -167,9 +148,22 @@ A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
 $$
 	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v} = \q{v:to(_km/_h)}
 $$
-\end{example}
+\end{lstlisting}
 
 
+\begin{luacode}
+  s = 10 * _m
+  t = 2 * _s
+  v = s/t
+\end{luacode}
+
+\noindent
+\fbox{\begin{minipage}{\linewidth}
+A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
+$$
+  v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v} = \q{v:to(_km/_h)}
+$$
+\end{minipage}}
 
 
 
@@ -775,54 +769,70 @@ $\L$ &
 % shortcut for method definitions
 \newcommand{\method}[2]{\subsubsection*{\normalfont #1.|#2|}}
 
+% set listings language to lua
+\lstset{language=Lua}
+
 
 
 
 \newpage
-
 \section{Lua Documentation}
 
 In the following chapter, these shortcuts will be used.
-\begin{example}[listing only]{}
+\begin{lstlisting}
 local D = physical.Dimension
 local Q = physical.Quantity
-\end{example}
+\end{lstlisting}
 
 
 \subsection{physical.Quantity}
 
 
+
 \method{Quantity}{new(q=nil)}
 \begin{quote}
-  The constuctor of the |Quantity| class. It takes an optional |quantity| or |number| as argument |q|. If it is given, the new quantity is a copy of |q|. If no argument ist given, a quantity |_1| is created.
+  \begin{description}
+  \item |q| : |object|, Optional |Quantity| or |number|
 
-\begin{example}[listing only]{Create some quantities.}
+  \item |return| : The created |Quantity| object
+  \end{description}
+
+  The constuctor of the |Quantity| class. It takes an optional |quantity| or |number| for the argument |q|. If the argument |q| is given, the new quantity is a copy of it. If no argument ist given, a quantity |_1| is created.
+
+  \begin{lstlisting}
+myOne = Q()
 myNumber = Q(42)
 myLength = Q(73*_m)
-\end{example}
-
+  \end{lstlisting}
 \end{quote}
 
 
 
 \method{Quantity}{defineBase(symbol,name,dimension)}
 \begin{quote}
-  All unit systems need some base units. This function is used to define the base units, or base quantities of the unit system.
-
   \begin{description}
-  \item |symbol| : |string|, Symbol of the base quantity
+  \item |symbol| : |string|, symbol of the base quantity
 
-  \item |name| : |string|, Name of the base quantity
+  \item |name| : |string|, name of the base quantity
 
-  \item |dimension| : |physical.Dimension|, Object which represents the base Dimension of the base Quantity
+  \item |dimension| : physical.|Dimension|, object which represents the base Dimension of the base quantity
 
-  \item returns a |physical.Quantity| object.
+  \item |return| : The created physical.|Quantity| object
   \end{description}
 
-\begin{example}[listing only]{Define some base quantities.}
+  A unit system has some special units, called base units, where all other units are derived from. This function is used to declare the base units. Since in this library units are the same thing as quantities, one has to define base quantities (units). 
+
+  The function creates a global variable, an underscore concatenated with the |symbol| argument, e. g. |m| becomes the global variable |_m|.
+
+  The |name| is used for example in the siunitx conversion function, e.g |meter| will be converted to |\meter|. 
+
+  Each quantity has a dimension associated. The argument |dimension| allwos any dimension to be associated to base quantities. 
+
+  
+  \begin{lstlisting}
 Q.defineBase("m", "meter", L)
 Q.defineBase("kg", "kilogram", M)
-\end{example}
+  \end{lstlisting}
 \end{quote}
 
 
@@ -841,15 +851,14 @@ Q.defineBase("kg", "kilogram", M)
 
   \item |frombase| : |function|, optional function to convert a quantity from the base units.
 
-  \item returns a |physical.Quantity| object.
+  \item returns a physical.|Quantity| object.
   \end{description}
 
 
-\begin{example}[listing only]{Create new quantities from others.}
+\begin{lstlisting}
 Q.define("L", "liter", _dm^3)
 Q.define("Pa", "pascal", _N/_m^2)
 Q.define("C", "coulomb", _A*_s)
-
 
 Q.define(
   "degC", 
@@ -864,7 +873,7 @@ Q.define(
     return q
   end
 )
-\end{example}
+\end{lstlisting}
 \end{quote}
 
 
@@ -885,10 +894,10 @@ Q.define(
   \end{description}
 
 
-\begin{example}[listing only]{Define a new prefix}
+\begin{lstlisting}
 Q.definePrefix("c", "centi", 1e-2)
 Q.definePrefix("a", "atto", 1e-18)
-\end{example}
+\end{lstlisting}
 \end{quote}
 
 
@@ -906,9 +915,9 @@ Q.definePrefix("a", "atto", 1e-18)
   \end{description}
 
 
-\begin{example}[listing only]{Add prefixes to some quantites.}
+\begin{lstlisting}
 Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
-\end{example}
+\end{lstlisting}
 \end{quote}
 
 
@@ -919,10 +928,6 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 
 \newpage
-By this 
-
-
-.addPrefix(prefixes, units)
 
 .min(o1,o2)
 

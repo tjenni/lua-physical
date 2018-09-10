@@ -28,6 +28,7 @@ package.path = "../?.lua;" .. package.path
 local physical = require("physical")
 
 local N = physical.Number
+local Q = physical.Quantity
 
 function dump(o)
    if type(o) == 'table' then
@@ -48,6 +49,35 @@ end
 
 
 TestQuantity = {}
+
+-- Quantity.new(q=nil)
+function TestQuantity:testEmptyConstructor()
+   local q = Q()
+   lu.assertEquals( q.value, 1 )
+end
+function TestQuantity:testNumberConstructor()
+   local q = Q(42)
+   lu.assertEquals( q.value, 42 )
+   lu.assertTrue( q.dimension:iszero() )
+end
+function TestQuantity:testCopyConstructor()
+   local q = Q(73*_m)
+   lu.assertEquals( q.value, 73 )
+   lu.assertTrue( q.dimension == _m.dimension )
+end
+
+
+-- Quantity.defineBase(symbol,name,dimension)
+
+
+
+
+
+-- Quantity.define(symbol, name, o, tobase, frombase)
+
+
+
+
 
 
 
