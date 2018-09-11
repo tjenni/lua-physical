@@ -40,26 +40,30 @@ local J = D("J")
 
 TestDimension = {} --class
 
-function TestDimension:testNewDimensionless()
+
+-- Dimension.new(o=nil)
+function TestDimension:testEmptyConstructor()
    local d = D()
    lu.assertTrue( d:iszero() )
 end
 
-function TestDimension:testNewByName()
+function TestDimension:testConstructorByString()
    local d = D("Dimensionless")
    lu.assertTrue( d:iszero() )
 end
 
-function TestDimension:testNewCopy()
+function TestDimension:testCopyConstructor()
    local d1, d2
 
-   -- base dimensions
    d1 = D("Energy")
    lu.assertEquals( d1, M*L^2/T^2 )
 
    d2 = D(d1)
    lu.assertEquals( d2, M*L^2/T^2 )
 end
+
+
+
 
 function TestDimension:testDefine()
    local i1 = D("Force")^4

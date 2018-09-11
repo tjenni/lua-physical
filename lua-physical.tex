@@ -767,7 +767,9 @@ $\L$ &
 
 
 % shortcut for method definitions
-\newcommand{\method}[2]{\subsubsection*{\normalfont #1.|#2|}}
+\newcommand{\method}[2]{\subsection*{|#1.#2|}}
+
+\newcommand{\subtitle}[1]{\noindent \\\textbf{#1}}
 
 % set listings language to lua
 \lstset{language=Lua}
@@ -785,50 +787,104 @@ local Q = physical.Quantity
 \end{lstlisting}
 
 
-\subsection{physical.Quantity}
+
+\subsection{physical.Dimension}
+
+ All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used two check if two quantities can be added or subtraced and if they are equal. 
 
 
-
-\method{Quantity}{new(q=nil)}
+\method{Dimension}{new(o=nil)}
 \begin{quote}
-  \begin{description}
-  \item |q| : |object|, Optional |Quantity| or |number|
+  Constructor of the |Dimension| class.
 
-  \item |return| : The created |Quantity| object
+  \subtitle{Parameters}
+  \begin{description}
+  \item |o| : |Dimension| or |string|, optional\\
+    The name or symbol of the dimension. If |o| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
+
+  \item |return| : |Dimension|\\
+    The created |Quantity| object
   \end{description}
 
-  The constuctor of the |Quantity| class. It takes an optional |quantity| or |number| for the argument |q|. If the argument |q| is given, the new quantity is a copy of it. If no argument ist given, a quantity |_1| is created.
+  \subtitle{Notes}\\
+  --
 
+  \subtitle{Examples}
   \begin{lstlisting}
-myOne = Q()
-myNumber = Q(42)
-myLength = Q(73*_m)
+  V_1 = D("Velocity")
+  L = D("L")
+  V_2 = D(L/T)
   \end{lstlisting}
 \end{quote}
 
 
 
+
+
+
+
+
+
+
+
+
+\subsection{physical.Quantity}
+
+
+
+\method{Quantity}{new(o=nil)}
+\begin{quote}
+  Constuctor of the |Quantity| class.
+
+  \subtitle{Parameters}
+  \begin{description}
+    \item |o| : |Quantity| or \ |number|, optional\\
+      Optional argument for copying a |Quantity| or to create a |number| quantity
+
+    \item |return| : |Quantity|\\
+    The created |Quantity| object
+  \end{description}
+
+  \subtitle{Notes}\\
+  It takes an optional |quantity| or |number| for the argument |q|. If the argument |q| is given, the new quantity is a copy of it. If no argument ist given, a quantity |_1| is created.
+
+  \subtitle{Examples}
+  \begin{lstlisting}
+  myOne = Q()
+  myNumber = Q(42)
+  myLength = Q(73*_m)
+  \end{lstlisting}
+\end{quote}
+
+
+
+
 \method{Quantity}{defineBase(symbol,name,dimension)}
 \begin{quote}
+  A unit system has some special units, called base units. From those base units all other units are derived. This function is used to declare the base units. Since in this library units are the same thing as quantities, one has to define base quantities (units). 
+
+  \subtitle{Parameters}
   \begin{description}
-  \item |symbol| : |string|, symbol of the base quantity
+  \item |symbol| : |string|\\
+    symbol of the base quantity
 
-  \item |name| : |string|, name of the base quantity
+  \item |name| : |string|\\
+    name of the base quantity
 
-  \item |dimension| : physical.|Dimension|, object which represents the base Dimension of the base quantity
+  \item |dimension| : |Dimension|\\
+    object which represents the base Dimension of the base quantity
 
   \item |return| : The created physical.|Quantity| object
   \end{description}
 
-  A unit system has some special units, called base units, where all other units are derived from. This function is used to declare the base units. Since in this library units are the same thing as quantities, one has to define base quantities (units). 
-
+  \subtitle{Notes}\\
   The function creates a global variable, an underscore concatenated with the |symbol| argument, e. g. |m| becomes the global variable |_m|.
 
   The |name| is used for example in the siunitx conversion function, e.g |meter| will be converted to |\meter|. 
 
   Each quantity has a dimension associated. The argument |dimension| allwos any dimension to be associated to base quantities. 
 
-  
+  \subtitle{Examples}
   \begin{lstlisting}
 Q.defineBase("m", "meter", L)
 Q.defineBase("kg", "kilogram", M)
@@ -836,26 +892,35 @@ Q.defineBase("kg", "kilogram", M)
 \end{quote}
 
 
+
+
 \method{Quantity}{define(symbol, name, o, tobase=nil, frombase=nil)}
 \begin{quote}
   Creates a new unit from an expression of other units.
 
+  \subtitle{Parameters}
   \begin{description}
-  \item |symbol| : |string|, Symbol of the base quantity
+  \item |symbol| : |string|\\
+  Symbol of the base quantity
 
-  \item |name| : |string|, Name of the base quantity
+  \item |name| : |string|\\
+    Name of the base quantity
 
-  \item |o| : |physical.Quantity|, Definition of the unit.
+  \item |o| : |physical.Quantity|\\
+    Definition of the unit
 
-  \item |tobase| : |function|, optional function to convert a quantity to base units.
+  \item |tobase| : |function|, optional\\
+    to convert a quantity to base units
 
-  \item |frombase| : |function|, optional function to convert a quantity from the base units.
+  \item |frombase| : |function|, optional\\
+    to convert a quantity from the base units
 
-  \item returns a physical.|Quantity| object.
+  \item |return| : |Quantity|\\
+    The defined quantity
   \end{description}
 
-
-\begin{lstlisting}
+  \subtitle{Examples}
+  \begin{lstlisting}
 Q.define("L", "liter", _dm^3)
 Q.define("Pa", "pascal", _N/_m^2)
 Q.define("C", "coulomb", _A*_s)
@@ -873,7 +938,7 @@ Q.define(
     return q
   end
 )
-\end{lstlisting}
+  \end{lstlisting}
 \end{quote}
 
 

@@ -47,25 +47,25 @@ Quantity._prefixes = {}
 
 
 -- constructor
-function Quantity.new(q)
+function Quantity.new(o)
 
-	local p = {}
-	setmetatable(p, Quantity)
+	local q = {}
+	setmetatable(q, Quantity)
 	
 	-- copy constructor
-	if getmetatable(q) == Quantity then
-		p.dimension = q.dimension
-		p.value = q.value
-		p.unit = q.unit
+	if getmetatable(o) == Quantity then
+		q.dimension = o.dimension
+		q.value = o.value
+		q.unit = o.unit
 
 	-- create a dimensionless Quantity
 	else
-		p.dimension = D.new()
-		p.value = q or 1
-		p.unit = U.new()
+		q.dimension = D.new()
+		q.value = o or 1
+		q.unit = U.new()
 	end
 
-	return p
+	return q
 end
 
 

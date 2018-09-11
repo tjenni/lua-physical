@@ -40,10 +40,11 @@ Dimension._index = {}
 -- registry for base dimensions
 Dimension._base = {}
 
+
 -- constructor
 function Dimension.new(o)
 
-	--string
+	-- string
 	if type(o) == "string" then
 		return Dimension._index[o]
 	end
@@ -67,14 +68,19 @@ function Dimension.new(o)
 	return d
 end
 
+
 -- define a base new dimension
 function Dimension.defineBase(symbol, name)
 
-	if Dimension._index[name] ~= nil then
+	local index = Dimension._index
+
+	if index[name] ~= nil then
 		error("Error: Base dimension '"..name.."' does already exist.")
+	elseif index[symbol] ~= nil then
+		error("Error: Base dimension '"..symbol.."' does already exist.")
 	end
 
-
+	-- create new dimension
 	local base = Dimension._base
 
 	local n = #base + 1
@@ -89,12 +95,6 @@ function Dimension.defineBase(symbol, name)
 	for i=1, n-1 do
 		base[i][n] = 0
 	end
-	
-	-- create index entry
-	local index = Dimension._index
-	if index[symbol] ~= nil or index[name] ~= nil then
-		error("Error: Base dimension '"..name.."' does already exist.")
-	end
 
 	-- update index
 	index[symbol] = d
@@ -103,19 +103,59 @@ function Dimension.defineBase(symbol, name)
 	return d
 end
 
+
 -- define a new derived dimension
 function Dimension.define(name, o)
-
+	
 	local index = Dimension._index
 
 	if index[name] ~= nil then
 		error("Error. Dimension '"..name.."' is already defined.")
+	elseif getmetatable(o) ~= Dimension then
+		error("Error. Object in definition of '"..name.."' is no dimension.")
 	end
 
 	index[name] = o
 
 	return o
 end
+
+
+-- check if the dimension vector has length zero
+function Dimension.iszero(o)
+	for i=1,#Dimension._base do
+		if o[i] ~= 0 then
+			return false
+		end
+	end
+	
+	return true
+end
+
+
+-- test if two dimensions are equal
+function Dimension.__eq(o1, o2)
+	for i=1, #Dimension._base do
+		if o1[i] ~= o2[i] then
+			return false
+		end
+	end
+
+	return true
+end
+
+
+-- add two dimensions
+function Dimension.__add(o1,o2)
+	error("Error: Cannot add two dimension objects.")
+end
+
+
+-- subtract two dimensions
+function Dimension.__sub(o1,o2)
+	error("Error: Cannot subtract two dimension objects.")
+end
+
 
 -- multiply two dimensions
 function Dimension.__mul(o1,o2)
@@ -162,27 +202,6 @@ function Dimension.__pow(o, n)
 	return d
 end
 
--- test if two dimensions are equal
-function Dimension.__eq(o1, o2)
-	for i=1, #Dimension._base do
-		if o1[i] ~= o2[i] then
-			return false
-		end
-	end
-
-	return true
-end
-
--- check if the dimension vector has length zero
-function Dimension.iszero(o)
-	for i=1,#Dimension._base do
-		if o[i] ~= 0 then
-			return false
-		end
-	end
-	
-	return true
-end
 
 -- convert dimension to a string
 function Dimension.__tostring(o)

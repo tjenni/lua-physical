@@ -25,8 +25,11 @@ SOFTWARE.
 
 local prefix = ... and (...):match '(.-%.?)[^%.]+$' or ''
 local D = require(prefix..'dimension')
+local U = require(prefix..'unit')
+local Q = require(prefix..'quantity')
 
--- Base Dimensions
+
+-- define base dimensions
 local L = D.defineBase("L", "Length")
 local M = D.defineBase("M", "Mass")
 local T = D.defineBase("T", "Time")
@@ -35,7 +38,7 @@ local K = D.defineBase("θ", "Temperature")
 local N = D.defineBase("N", "Amount of Substance")
 local J = D.defineBase("J", "Luminous Intensity")
 
--- Other Dimensions
+-- define derived dimensions
 D.define("Dimensionless", D())
 D.define("Area", L^2)
 D.define("Volume", L^3)
@@ -77,13 +80,7 @@ D.define("Molar Heat Capacity", L^2 * M * T^-2 * K^-1 * N^-1)
 D.define("Illuminance", L^-2 * J)
 
 
-
-
-local Q = require(prefix..'quantity')
-local U = require(prefix..'unit')
-
-
--- SI Prefixes
+-- define SI prefixes
 Q.definePrefix("Y", "yotta", 1e24)
 Q.definePrefix("Z", "zetta", 1e21)
 Q.definePrefix("E", "exa", 1e18)
@@ -107,7 +104,7 @@ Q.definePrefix("y", "yocto", 1e-24)
 
 local SI_prefixes = {"y","z","a","f","p","n","u","m","c","d","da","h","k","M","G","T","P","E","Z","Y"}
 
--- IEC Prefixes
+-- define IEC prefixes
 Q.definePrefix("Yi", "yobi", 1208925819614629174706176)
 Q.definePrefix("Zi", "zebi", 1180591620717411303424)
 Q.definePrefix("Ei", "exbi", 1152921504606846976)
@@ -120,11 +117,11 @@ Q.definePrefix("Ki", "kibi", 1024)
 local IEC_prefixes = {"Ki","Mi","Gi","Ti","Pi","Ei","Zi","Yi"}
 
 
--- Mathematical Constants
+-- define mathematical constants
 Pi 	 = 3.1415926535897932384626433832795028841971693993751
 e    = 2.7182818284590452353602874713526624977572470936999
 
--- Mathematical Functions
+-- define mathematical functions
 abs = Q.abs
 min = Q.min
 max = Q.max
@@ -149,10 +146,10 @@ asinh = Q.asinh
 acosh = Q.acosh
 atanh = Q.atanh
 
--- dimensionless base quantity
+-- define dimensionless base quantity
 Q.define("1", "number", Q(1))
 
--- SI Base Units
+-- define SI Base Units
 Q.defineBase("m", "meter", L)
 Q.defineBase("kg", "kilogram", M)
 Q.defineBase("s", "second", T)
@@ -163,7 +160,7 @@ Q.defineBase("cd", "candela",  J)
 
 Q.addPrefix(SI_prefixes,{_m,_s,_A,_K,_mol,_cd})
 
--- SI Derived Units
+-- define SI derived units
 Q.define("g", "gram", 0.001*_kg)
 Q.define("Hz", "hertz", 1/_s)
 Q.define("N", "newton", _kg*_m/_s^2)
@@ -171,6 +168,7 @@ Q.define("Pa", "pascal", _N/_m^2)
 Q.define("J", "joule", _N*_m)
 Q.define("W", "watt", _J/_s)
 
+-- add prefixes
 -- Remark: Don't create the unit kilogram twice
 Q.addPrefix({"y","z","a","f","p","n","u","m","c","d","da","h","M","G","T","P","E","Z","Y"},{_g})
 Q.addPrefix(SI_prefixes,{_Hz,_N,_Pa,_J,_W})
@@ -184,11 +182,11 @@ Q.define("Wb", "weber", _V*_s)
 Q.define("T", "tesla", _Wb/_m^2)
 Q.define("H", "henry", _Wb/_A)
 
+-- add prefixes
 -- Remark: Don't create "peta siemens" because its symbol is the same for "Pferdestaerke", a common german unit for power.
 Q.addPrefix({"y","z","a","f","p","n","u","m","c","d","da","h","M","G","T","E","Z","Y"},{_S})
 Q.addPrefix(SI_prefixes,{_C,_V,_F,_Ohm,_Wb,_T,_H})
 
--- Others
 Q.define("lm", "lumen", _cd*_sr)
 Q.define("lx", "lux", _lm/_m^2)
 Q.define("Bq", "becquerel", 1/_s)
@@ -196,9 +194,10 @@ Q.define("Gy", "gray", _J/_kg)
 Q.define("Sv", "sievert", _J/_kg)
 Q.define("kat", "katal", _mol/_s)
 
+-- add prefixes
 Q.addPrefix(SI_prefixes,{_lm,_lx,_Bq,_Gy,_Sv,_kat})
 
--- Temperature
+-- define degree celsius
 Q.define(
 	"degC", 
 	"celsius",

@@ -50,7 +50,7 @@ end
 
 TestQuantity = {}
 
--- Quantity.new(q=nil)
+-- Quantity.new(o=nil)
 function TestQuantity:testEmptyConstructor()
    local q = Q()
    lu.assertEquals( q.value, 1 )
