@@ -320,6 +320,7 @@ Q.define("sp", "spat", 4*Pi*_sr)
 -- Astronomical
 Q.define("au", "astronomicalunit", 149597870700*_m)
 Q.define("ly", "lightyear", _c*_a)
+Q.define("ls", "lightsecond", _c*_s)
 Q.define("pc", "parsec", (648000/Pi)*_au)
 
 Q.addPrefix(SI_prefixes, {_ly,_pc})
