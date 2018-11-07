@@ -470,6 +470,7 @@ function Quantity:isclose(o, r)
 	return  (delta / min) < r
 end
 
+
 -- minimum value
 function Quantity.min(o1,o2)
 
@@ -540,20 +541,43 @@ end
 
 -- logarithm
 function Quantity.log(q, base)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+	if base ~= nil and getmetatable(base) ~= Quantity then
+		base = Quantity.new(base)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the logarithm function is not unitless.")
 	end
 
 	local p = Quantity.new()
-
-	if type(q.value) == "number" then
-		if base == nil then
+	
+	-- no base given
+	if base  == nil then
+		if type(q.value) == "number" then
 			p.value = math.log(q:to().value)
 		else
-			p.value = math.log(q:to().value,base)
+			p.value = q:to().value:log()
 		end
+
+	-- base.value has type number
+	elseif type(base.value) == "number" then
+		if type(q.value) == "number" then
+			p.value = math.log(q:to().value, base:to().value)
+		else
+			p.value = q:to().value:log(base)
+		end
+
+	-- base.value is not of type number
 	else
-		p.value = q:to().value:log(base)
+		if type(q.value) == "number" then
+			p.value = math.log(q:to().value, base:to().__tonumber())
+		else
+			p.value = q:to().value:log(base)
+		end
 	end
 
 	return p
@@ -562,10 +586,15 @@ end
 
 -- exponential function
 function Quantity.exp(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the exponential function is not unitless.")
 	end
-
+	
 	local p = Quantity.new()
 
 	if type(q.value) == "number" then
@@ -583,6 +612,11 @@ end
 
 -- sine
 function Quantity.sin(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the sine function is not unitless nor an angle.")
 	end
@@ -600,6 +634,11 @@ end
 
 -- cosine
 function Quantity.cos(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the cosine function is not unitless nor an angle.")
 	end
@@ -617,6 +656,11 @@ end
 
 -- tangent
 function Quantity.tan(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the tangent function is not unitless nor an angle.")
 	end
@@ -635,6 +679,11 @@ end
 
 -- arcus sine
 function Quantity.asin(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the arcus sine function is not unitless.")
 	end
@@ -652,6 +701,11 @@ end
 
 -- arcus cosine
 function Quantity.acos(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the arcus cosine function is not unitless.")
 	end
@@ -669,6 +723,11 @@ end
 
 -- arcus tangent
 function Quantity.atan(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the arcus tangent function is not unitless.")
 	end
@@ -691,6 +750,11 @@ end
 
 -- hyperbolic sine
 function Quantity.sinh(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the sine hyperbolicus function is not unitless.")
 	end
@@ -708,6 +772,11 @@ end
 
 -- hyperbolic cosine
 function Quantity.cosh(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the cosine hyperbolicus function is not unitless.")
 	end
@@ -725,6 +794,11 @@ end
 
 -- hyperbolic tangent
 function Quantity.tanh(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the tangent hyperbolicus function is not unitless.")
 	end
@@ -747,6 +821,11 @@ end
 -- inverse hyperbolic sine
 -- (-inf < q < +inf)
 function Quantity.asinh(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the inverse sine hyperbolicus function is not unitless.")
 	end
@@ -765,6 +844,11 @@ end
 -- inverse hyperbolic cosine
 -- (1 < q)
 function Quantity.acosh(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the inverse cosine hyperbolicus function is not unitless.")
 	end
@@ -783,6 +867,11 @@ end
 -- inverse hyperbolic tangent
 -- (-1 < q < 1)
 function Quantity.atanh(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the inverse tangent hyperbolicus function is not unitless.")
 	end

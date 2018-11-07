@@ -217,13 +217,39 @@ function TestQuantity:testisclose()
    lu.assertTrue( rho1:isclose(rho2,0.1) )
 end
 
+-- test min function
+function TestQuantity:testMin()
+   local l = Q.min(-2.5,5)
+   lu.assertEquals( l.value, -2.5 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
+   local l = (3 * _m):min(5 * _m)
+   lu.assertEquals( l.value, 3 )
+   lu.assertEquals( l.dimension, _m.dimension )
+end
+
+-- test max function
+function TestQuantity:testMax()
+   local l = Q.max(-2.5,5)
+   lu.assertEquals( l.value, 5 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
+   local l = (3 * _m):max(5 * _m)
+   lu.assertEquals( l.value, 5 )
+   lu.assertEquals( l.dimension, _m.dimension )
+end
+
 -- test absolute value function
 function TestQuantity:testAbs()
+   local l = Q.abs(-2.5)
+   lu.assertEquals( l.value, 2.5 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
    local l = (-45.3 * _m):abs()
    lu.assertEquals( l.value, 45.3 )
    lu.assertEquals( l.dimension, _m.dimension )
 
-   local l = (N(-233,3) * _m^2):abs()
+   local l = ( N(-233,3) * _m^2):abs()
    lu.assertEquals( l.value, N(233,3) )
    lu.assertEquals( l.dimension, (_m^2).dimension )
 end
@@ -246,6 +272,26 @@ function TestQuantity.logError()
 end
 function TestQuantity:testLog()
    lu.assertError( logError )
+
+   local l = Q.log(2)
+   lu.assertAlmostEquals( l.value, 0.693147180559945, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
+   local l = Q.log(3 * _1)
+   lu.assertAlmostEquals( l.value, 1.09861228866811, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
+   local l = Q.log(2, 10)
+   lu.assertAlmostEquals( l.value, 0.301029995663981, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
+   local l = Q.log(4, 10 * _1)
+   lu.assertAlmostEquals( l.value, 0.602059991327962, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
+   local l = Q.log(4 * _1, 8 * _1)
+   lu.assertAlmostEquals( l.value, 0.666666666666666, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
 
    local l = (100 * _1):log()
    lu.assertAlmostEquals( l.value, 4.605170185988091, 0.0001 )
@@ -270,6 +316,10 @@ function TestQuantity:testExp()
    local l = (-2*_m/(5*_m)):exp()
    lu.assertAlmostEquals( l.value, 0.670320046035639, 0.000001 )
    lu.assertEquals( l.dimension, _1.dimension )
+
+   local l = Q.exp(2)
+   lu.assertAlmostEquals( l.value, 7.38905609893065, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
 end
 
 -- test sine function
@@ -278,6 +328,10 @@ function TestQuantity.sinError()
 end
 function TestQuantity:testSin()
    lu.assertError( sinError )
+
+   local l = Q.sin(1.570796326794897)
+   lu.assertAlmostEquals( l.value, 1, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
 
    local l = (45 * _deg):sin()
    lu.assertAlmostEquals( l.value, 0.707106781186548, 0.000001 )
@@ -291,6 +345,10 @@ end
 function TestQuantity:testCos()
    lu.assertError( cosError )
 
+   local l = Q.cos(0)
+   lu.assertAlmostEquals( l.value, 1, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
    local l = (50 * _deg):cos()
    lu.assertAlmostEquals( l.value, 0.642787609686539, 0.000001 )
    lu.assertEquals( l.dimension, _1.dimension )
@@ -302,6 +360,10 @@ function TestQuantity.tanError()
 end
 function TestQuantity:testTan()
    lu.assertError( tanError )
+
+   local l = Q.tan(0.785398163397448)
+   lu.assertAlmostEquals( l.value, 1, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
    
    local l = (50 * _deg):tan()
    lu.assertAlmostEquals( l.value, 1.19175359259421, 0.000001 )
@@ -316,6 +378,10 @@ end
 function TestQuantity:testAsin()
    lu.assertError( asinError )
 
+   local l = Q.asin(0.785398163397448)
+   lu.assertAlmostEquals( l.value, 0.903339110766512, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
    local l = (0.5 * _1):asin()
    lu.assertAlmostEquals( l.value, 0.523598775598299, 0.000001 )
    lu.assertEquals( l.dimension, _rad.dimension )
@@ -328,6 +394,10 @@ function TestQuantity.acosError()
 end
 function TestQuantity:testAcos()
    lu.assertError( acosError )
+
+   local l = Q.acos(0.785398163397448)
+   lu.assertAlmostEquals( l.value, 0.667457216028384, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
 
    local l = (0.5 * _1):acos()
    lu.assertAlmostEquals( l.value, 1.047197551196598, 0.000001 )
@@ -342,6 +412,10 @@ end
 function TestQuantity:testAtan()
    lu.assertError( atanError )
 
+   local l = Q.atan(0.785398163397448)
+   lu.assertAlmostEquals( l.value, 0.665773750028354, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
    local l = (0.5 * _1):atan()
    lu.assertAlmostEquals( l.value, 0.463647609000806, 0.000001 )
    lu.assertEquals( l.dimension, _rad.dimension )
@@ -353,6 +427,10 @@ function TestQuantity.sinhError()
 end
 function TestQuantity:testSinh()
    lu.assertError( sinhError )
+
+   local l = Q.sinh(2)
+   lu.assertAlmostEquals( l.value, 3.626860407847019, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
 
    local l = (0.75 * _1):sinh()
    lu.assertAlmostEquals( l.value, 0.82231673193583, 1e-9 )
@@ -368,6 +446,10 @@ end
 function TestQuantity:testCosh()
    lu.assertError( coshError )
 
+   local l = Q.cosh(2)
+   lu.assertAlmostEquals( l.value, 3.762195691083631, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
    local l = (0.25 * _1):cosh()
    lu.assertAlmostEquals( l.value, 1.031413099879573, 1e-9 )
 
@@ -381,6 +463,10 @@ function TestQuantity.tanhError()
 end
 function TestQuantity:testTanh()
    lu.assertError( tanhError )
+
+   local l = Q.tanh(2)
+   lu.assertAlmostEquals( l.value, 0.964027580075817, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
 
    local l = (0.5 * _1):tanh()
    lu.assertAlmostEquals( l.value, 0.46211715726001, 1e-9 )
@@ -396,6 +482,10 @@ end
 function TestQuantity:testAsinh()
    lu.assertError( asinhError )
 
+   local l = Q.asinh(1)
+   lu.assertAlmostEquals( l.value, 0.881373587019543, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
    local l = (2 * _1):asinh()
    lu.assertAlmostEquals( l.value, 1.44363547517881, 1e-9 )
 
@@ -410,6 +500,10 @@ end
 function TestQuantity:testAcosh()
    lu.assertError( acoshError )
 
+   local l = Q.acosh(1.5)
+   lu.assertAlmostEquals( l.value, 0.962423650119207, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
+
    local l = (1.2 * _1):acosh()
    lu.assertAlmostEquals( l.value, 0.622362503714779, 1e-9 )
 
@@ -423,6 +517,10 @@ function TestQuantity.atanhError()
 end
 function TestQuantity:testAtanh()
    lu.assertError( atanhError )
+
+   local l = Q.atanh(0.5)
+   lu.assertAlmostEquals( l.value, 0.549306144334055, 0.000001 )
+   lu.assertEquals( l.dimension, _1.dimension )
 
    local l = (0.9 * _1):atanh()
    lu.assertAlmostEquals( l.value, 1.47221948958322, 1e-9 )
