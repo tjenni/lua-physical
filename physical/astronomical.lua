@@ -52,14 +52,13 @@ Astronomical.Sun = {
 
 Astronomical.Mercury = {
 	
-	-- Mazarico, E., A. Genova, S. Goossens, F. G. Lemoine, G. A. Neumann, M. T. Zuber, 
-	-- D. E. Smith, and S. C. Solomon (2014), The gravity field, orientation, and 
-	-- ephemeris of Mercury from MESSENGER observations after three years in orbit, 
-	-- J. Geophys. Res. Planets, 119, 2417–2436, doi:10.1002/2014JE004675.
-	Mass = N(3.30111e23, 0.00015e23) * _kg,
+	-- Mohr et al. 2016
+	Mass = N(3.301110e23, 0.00015e23) * _kg,
 
-	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	EquatorialRadius = N(2439.7, 1.0) * _km
+	-- Perry et al. 2015
+	AverageRadius = N(2439.36, 0.02) * _km,
+
+	Density = N(5429.30, 0.28) * _kg/_m^3
 }
 
 Astronomical.Venus = {

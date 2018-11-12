@@ -306,6 +306,15 @@ function TestQuantity:testLog()
    lu.assertEquals( l.dimension, _1.dimension )
 end
 
+function TestQuantity:testLogAdvanced()
+   local L_I1 = N(125,0.1) * _dB
+   local I_0 = 1e-12 * _W/_m^2
+   local I_1 = ( I_0 * 10^(L_I1/10) ):to(_W/_m^2)
+
+   local l = (I_1/I_0):log(10)
+   lu.assertAlmostEquals( l.value._x, 12.5, 0.001 )
+end
+
 -- test exponential function
 function TestQuantity.expError()
    local l = (100 * _s):log()

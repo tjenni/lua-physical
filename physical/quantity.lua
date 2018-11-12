@@ -568,7 +568,7 @@ function Quantity.log(q, base)
 		if type(q.value) == "number" then
 			p.value = math.log(q:to().value, base:to().value)
 		else
-			p.value = q:to().value:log(base)
+			p.value = q:to().value:log(base.value)
 		end
 
 	-- base.value is not of type number
@@ -576,7 +576,7 @@ function Quantity.log(q, base)
 		if type(q.value) == "number" then
 			p.value = math.log(q:to().value, base:to().__tonumber())
 		else
-			p.value = q:to().value:log(base)
+			p.value = q:to().value:log(base:to().__tonumber())
 		end
 	end
 
