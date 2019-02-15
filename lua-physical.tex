@@ -896,7 +896,7 @@ Q.defineBase("kg", "kilogram", M)
 
 \method{Quantity}{define(symbol, name, o, tobase=nil, frombase=nil)}
 \begin{quote}
-  Creates a new unit from an expression of other units.
+  Creates a new derived unit from an expression of other units. For affine quantities like the temperature in celcius, one can give convertion functions to and from base units.
 
   \subtitle{Parameters}
   \begin{description}
@@ -971,12 +971,12 @@ Q.definePrefix("a", "atto", 1e-18)
 
 \method{Quantity}{addPrefix(prefixes, units)}
 \begin{quote}
-  Create units with prefixes from a given unit.
+  Create several units with prefixes from a given unit.
 
   \begin{description}
-  \item |prefixes| : |{string}|, list of unit symbols
+  \item |prefixes| : |string|, list of unit symbols
 
-  \item |units| : |{Quantity}|, list of quantities
+  \item |units| : |Quantity|, list of quantities
   \end{description}
 
 
@@ -987,6 +987,105 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 
 
+\method{Quantity}{min(o1, o2)}
+\begin{quote}
+  Compares two quantities and returns the smaller one. The function returns |o1| if the two Quantities are equal.
+
+  \begin{description}
+  \item |o1| : |Quantity,Number|, first argument
+
+  \item |o2| : |Quantity,Number|, second argument
+  \end{description}
+
+
+\begin{lstlisting}
+s_1 = 15 * _m
+s_2 = 5 * _m
+print(Quantity.min(s_1,s_2))
+print(s_1:min(s_2))
+\end{lstlisting}
+\end{quote}
+
+
+\method{Quantity}{max(o1, o2)}
+\begin{quote}
+  Compares two quantities and returns the bigger one.  The function returns |o1| if the two Quantities are equal.
+
+  \begin{description}
+  \item |o1| : |Quantity,Number|, first argument
+
+  \item |o2| : |Quantity,Number|, second argument
+  \end{description}
+
+
+\begin{lstlisting}
+s_1 = 15 * _m
+s_2 = 5 * _m
+print(Quantity.max(s_1,s_2))
+print(s_1:max(s_2))
+\end{lstlisting}
+\end{quote}
+
+
+
+
+\method{Quantity}{abs(o)}
+\begin{quote}
+  Calculates and returns the absolute value of the given quantity.
+
+  \begin{description}
+  \item |o| : |Quantity,Number|
+  \end{description}
+
+
+\begin{lstlisting}
+U = -5 * _V
+print(U)
+print(U:abs())
+\end{lstlisting}
+\end{quote}
+
+
+
+
+\method{Quantity}{sqrt(o)}
+\begin{quote}
+  Calculates and returns the square root of the given quantity.
+
+  \begin{description}
+  \item |o| : |Quantity,Number|
+  \end{description}
+
+
+\begin{lstlisting}
+U = -5 * _V
+print(U)
+print(U:abs())
+\end{lstlisting}
+\end{quote}
+
+
+
+\method{Quantity}{log(o, base)}
+\begin{quote}
+  Calculates and returns the logarithm of the given quantitiy. If no base is given, the natural logarithm is calculated.
+
+  \begin{description}
+  \item |o| : |Quantity,Number|
+  \item |base| : |Quantity,Number|
+  \end{description}
+
+
+\begin{lstlisting}
+I = -2 * _W/_m^2
+I_0 = 1e-15 * _W/_m^2
+print(10 * (I/I_0):log() )
+\end{lstlisting}
+\end{quote}
+
+
+
+
 
 
 
@@ -994,17 +1093,12 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 \newpage
 
-.min(o1,o2)
 
-.max(o1,o2)
 
-.abs(q)
 
-.sqrt(q)
 
-.log(q, base)
 
-.exp(q)
+.exp(o)
 
 .sin(q)
 

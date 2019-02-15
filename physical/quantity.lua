@@ -477,46 +477,20 @@ function Quantity.min(o1,o2)
 	local q1 = Quantity.new(o1)
 	local q2 = Quantity.new(o2)
 
-	local value1, value2
-	if type(q1.value) == "number" then
-		value1 = q1.value
-	else
-		value1 = o1:__tonumber()
-	end
-
-	if type(q2.value) == "number" then
-		value2 = q2.value
-	else
-		value2 = o2:__tonumber()
-	end
-
-	if value1 < value2 then
+	if q1:__tonumber() <= q2:__tonumber() then
 		return q1
 	else
 		return q2
 	end
 end
 
--- minimum value
+-- maximum value
 function Quantity.max(o1,o2)
 
 	local q1 = Quantity.new(o1)
 	local q2 = Quantity.new(o2)
 
-	local value1, value2
-	if type(q1.value) == "number" then
-		value1 = q1.value
-	else
-		value1 = o1:__tonumber()
-	end
-
-	if type(q2.value) == "number" then
-		value2 = q2.value
-	else
-		value2 = o2:__tonumber()
-	end
-
-	if value1 > value2 then
+	if q1:__tonumber() >= q2:__tonumber() then
 		return q1
 	else
 		return q2
@@ -525,59 +499,42 @@ end
 
 
 -- absolute value
-function Quantity.abs(q)
-	p = Quantity.new(q)
-	if p.value < 0 then
-		return -p
+function Quantity.abs(o)
+	q = Quantity.new(o)
+	if q.value < 0 then
+		return -q
 	else
-		return p
+		return q
 	end
 end
 
 -- square root
-function Quantity.sqrt(q)
+function Quantity.sqrt(o)
+	q = Quantity.new(o)
 	return q^0.5
 end
 
 -- logarithm
-function Quantity.log(q, base)
+function Quantity.log(o, base)
 
-	if getmetatable(q) ~= Quantity then
-		q = Quantity.new(q)
-	end
-	if base ~= nil and getmetatable(base) ~= Quantity then
-		base = Quantity.new(base)
-	end
-
+	local q = Quantity.new(o)
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the logarithm function is not unitless.")
 	end
 
-	local p = Quantity.new()
 	
-	-- no base given
-	if base  == nil then
-		if type(q.value) == "number" then
-			p.value = math.log(q:to().value)
-		else
-			p.value = q:to().value:log()
-		end
+	local b = nil
+	if base ~= nil then
+		b = Quantity.new(base):to():__tonumber()
+	end
 
-	-- base.value has type number
-	elseif type(base.value) == "number" then
-		if type(q.value) == "number" then
-			p.value = math.log(q:to().value, base:to().value)
-		else
-			p.value = q:to().value:log(base.value)
-		end
 
-	-- base.value is not of type number
+	local p = Quantity.new()
+
+	if type(q.value) == "number" then
+		p.value = math.log(q:to().value, b)
 	else
-		if type(q.value) == "number" then
-			p.value = math.log(q:to().value, base:to().__tonumber())
-		else
-			p.value = q:to().value:log(base:to().__tonumber())
-		end
+		p.value = q:to().value:log(b)
 	end
 
 	return p
@@ -585,12 +542,9 @@ end
 
 
 -- exponential function
-function Quantity.exp(q)
+function Quantity.exp(o)
 
-	if getmetatable(q) ~= Quantity then
-		q = Quantity.new(q)
-	end
-
+	local q = Quantity.new(o)
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the exponential function is not unitless.")
 	end

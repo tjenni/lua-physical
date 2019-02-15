@@ -226,6 +226,10 @@ function TestQuantity:testMin()
    local l = (3 * _m):min(5 * _m)
    lu.assertEquals( l.value, 3 )
    lu.assertEquals( l.dimension, _m.dimension )
+
+   local q1 = N(10,1) * _s
+   local q2 = N(9,1) * _s
+   lu.assertEquals( q1:min(q2), q2 )
 end
 
 -- test max function
@@ -237,6 +241,10 @@ function TestQuantity:testMax()
    local l = (3 * _m):max(5 * _m)
    lu.assertEquals( l.value, 5 )
    lu.assertEquals( l.dimension, _m.dimension )
+
+   local q1 = N(10,1) * _s
+   local q2 = N(9,1) * _s
+   lu.assertEquals( q1:max(q2), q1 )
 end
 
 -- test absolute value function
