@@ -472,10 +472,14 @@ end
 
 
 -- minimum value
-function Quantity.min(o1,o2)
+function Quantity.min(q1,q2)
 
-	local q1 = Quantity.new(o1)
-	local q2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	end
+	if getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
+	end
 
 	if q1:__tonumber() <= q2:__tonumber() then
 		return q1
@@ -485,10 +489,14 @@ function Quantity.min(o1,o2)
 end
 
 -- maximum value
-function Quantity.max(o1,o2)
+function Quantity.max(q1,q2)
 
-	local q1 = Quantity.new(o1)
-	local q2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	end
+	if getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
+	end
 
 	if q1:__tonumber() >= q2:__tonumber() then
 		return q1
@@ -499,8 +507,12 @@ end
 
 
 -- absolute value
-function Quantity.abs(o)
-	q = Quantity.new(o)
+function Quantity.abs(q)
+	
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if q.value < 0 then
 		return -q
 	else
@@ -509,15 +521,22 @@ function Quantity.abs(o)
 end
 
 -- square root
-function Quantity.sqrt(o)
-	q = Quantity.new(o)
+function Quantity.sqrt(q)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	return q^0.5
 end
 
 -- logarithm
-function Quantity.log(o, base)
+function Quantity.log(q, base)
 
-	local q = Quantity.new(o)
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the logarithm function is not unitless.")
 	end
@@ -525,7 +544,11 @@ function Quantity.log(o, base)
 	
 	local b = nil
 	if base ~= nil then
-		b = Quantity.new(base):to():__tonumber()
+		if getmetatable(base) ~= Quantity then
+			base = Quantity.new(base)
+		end
+
+		b = base:to():__tonumber()
 	end
 
 
@@ -542,9 +565,12 @@ end
 
 
 -- exponential function
-function Quantity.exp(o)
+function Quantity.exp(q)
 
-	local q = Quantity.new(o)
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
 	if not q.dimension:iszero() then
 		error("Error. The argument '"..tostring(q).."' of the exponential function is not unitless.")
 	end

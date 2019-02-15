@@ -987,14 +987,14 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 
 
-\method{Quantity}{min(o1, o2)}
+\method{Quantity}{min(q1, q2)}
 \begin{quote}
-  Compares two quantities and returns the smaller one. The function returns |o1| if the two Quantities are equal.
+  Returns the smaller one of two given quantities. The function returns |q1| if the two Quantities are equal.
 
   \begin{description}
-  \item |o1| : |Quantity,Number|, first argument
+  \item |q1| : |Quantity,Number|, first quantity
 
-  \item |o2| : |Quantity,Number|, second argument
+  \item |q2| : |Quantity,Number|, second quantity
   \end{description}
 
 
@@ -1007,14 +1007,14 @@ print(s_1:min(s_2))
 \end{quote}
 
 
-\method{Quantity}{max(o1, o2)}
+\method{Quantity}{max(q1, q2)}
 \begin{quote}
-  Compares two quantities and returns the bigger one.  The function returns |o1| if the two Quantities are equal.
+  Returns the bigger one of two given quantities.  The function returns |q1| if the two Quantities are equal.
 
   \begin{description}
-  \item |o1| : |Quantity,Number|, first argument
+  \item |q1| : |Quantity,Number|, first quantity
 
-  \item |o2| : |Quantity,Number|, second argument
+  \item |q2| : |Quantity,Number|, second quantity
   \end{description}
 
 
@@ -1029,12 +1029,12 @@ print(s_1:max(s_2))
 
 
 
-\method{Quantity}{abs(o)}
+\method{Quantity}{abs(q)}
 \begin{quote}
-  Calculates and returns the absolute value of the given quantity.
+  Returns the absolute value of the given quantity |q|.
 
   \begin{description}
-  \item |o| : |Quantity,Number|
+  \item |q| : |Quantity,Number|, argument
   \end{description}
 
 
@@ -1048,12 +1048,12 @@ print(U:abs())
 
 
 
-\method{Quantity}{sqrt(o)}
+\method{Quantity}{sqrt(q)}
 \begin{quote}
-  Calculates and returns the square root of the given quantity.
+  Returns the square root of the given quantity.
 
   \begin{description}
-  \item |o| : |Quantity,Number|
+  \item |q| : |Quantity,Number|
   \end{description}
 
 
@@ -1066,12 +1066,12 @@ print(U:abs())
 
 
 
-\method{Quantity}{log(o, base)}
+\method{Quantity}{log(q, base)}
 \begin{quote}
-  Calculates and returns the logarithm of the given quantitiy. If no base is given, the natural logarithm is calculated.
+  Returns the logarithm of the given quantitiy. If no base is given, the natural logarithm is calculated.
 
   \begin{description}
-  \item |o| : |Quantity,Number|
+  \item |q| : |Quantity,Number|
   \item |base| : |Quantity,Number|
   \end{description}
 
@@ -1080,6 +1080,23 @@ print(U:abs())
 I = -2 * _W/_m^2
 I_0 = 1e-15 * _W/_m^2
 print(10 * (I/I_0):log() )
+\end{lstlisting}
+\end{quote}
+
+
+
+\method{Quantity}{exp(q)}
+\begin{quote}
+  Returns the value of the exponential function of the given quantitiy.
+
+  \begin{description}
+  \item |q| : |Quantity,Number| quantity
+  \end{description}
+
+
+\begin{lstlisting}
+x = 2 * _1
+print( x:exp() )
 \end{lstlisting}
 \end{quote}
 
@@ -1098,7 +1115,6 @@ print(10 * (I/I_0):log() )
 
 
 
-.exp(o)
 
 .sin(q)
 
