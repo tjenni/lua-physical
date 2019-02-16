@@ -47,25 +47,25 @@ Quantity._prefixes = {}
 
 
 -- constructor
-function Quantity.new(o)
+function Quantity.new(q)
 
-	local q = {}
-	setmetatable(q, Quantity)
+	local p = {}
+	setmetatable(p, Quantity)
 	
 	-- copy constructor
-	if getmetatable(o) == Quantity then
-		q.dimension = o.dimension
-		q.value = o.value
-		q.unit = o.unit
+	if getmetatable(q) == Quantity then
+		p.dimension = q.dimension
+		p.value = q.value
+		p.unit = q.unit
 
 	-- create a dimensionless Quantity
 	else
-		q.dimension = D.new()
-		q.value = o or 1
-		q.unit = U.new()
+		p.dimension = D.new()
+		p.value = q or 1
+		p.unit = U.new()
 	end
 
-	return q
+	return p
 end
 
 
@@ -76,21 +76,21 @@ function Quantity.defineBase(symbol,name,dimension)
 		error("Error: Quantity '_"..symbol.."' does already exist.")
 	end
 
-	local q = Quantity.new()
-	q.value = 1
-	q.dimension = dimension
-	q.unit = U.new(symbol,name)
+	local p = Quantity.new()
+	p.value = 1
+	p.dimension = dimension
+	p.unit = U.new(symbol,name)
 
-	table.insert(Quantity._base,q)
+	table.insert(Quantity._base,p)
 	
-	rawset(_G, "_"..symbol, q)
+	rawset(_G, "_"..symbol, p)
 
-	return q
+	return p
 end
 
 
 -- create derived quantities
-function Quantity.define(symbol, name, o, tobase, frombase)
+function Quantity.define(symbol, name, q, tobase, frombase)
 
 	-- check if quantity does already exist
 	if rawget(_G,"_"..symbol) ~= nil then
@@ -98,19 +98,19 @@ function Quantity.define(symbol, name, o, tobase, frombase)
 	end
 
 	-- check if given value is a quantity
-	if getmetatable(o) ~= Quantity then
+	if getmetatable(q) ~= Quantity then
 		error("Error: No quantity given in the definition of '"..name.."'.")
 	end
 
-	local q = Quantity.new() 
-	q.value = 1
-	q.dimension = o.dimension
-	q.unit = U.new(symbol, name, o.unit, tobase, frombase) 
-	q.unit.basefactor = q.unit.basefactor * o.value
+	local p = Quantity.new() 
+	p.value = 1
+	p.dimension = q.dimension
+	p.unit = U.new(symbol, name, q.unit, tobase, frombase) 
+	p.unit.basefactor = p.unit.basefactor * q.value
 
-	rawset(_G, "_"..symbol, q)
+	rawset(_G, "_"..symbol, p)
 
-	return q
+	return p
 end
 
 -- define a prefix
@@ -132,6 +132,7 @@ end
 
 -- create prefixed versions of the given units
 function Quantity.addPrefix(prefixes, units)
+
 	-- todo: what if prefixes and units are no lists?
 
 	for i=1,#prefixes do
@@ -165,169 +166,173 @@ end
 
 
 -- Add two quantities
-function Quantity.__add(o1, o2)
+function Quantity.__add(q1, q2)
 	
-	if getmetatable(o1) ~= Quantity then
-		o1 = Quantity.new(o1)
-	elseif getmetatable(o2) ~= Quantity then
-		o2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	end
+	if getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
 	end
 
-	if o1.dimension ~= o2.dimension then
-		error("Error: Cannot add "..o2.." to "..o1..".")
+	if q1.dimension ~= q2.dimension then
+		error("Error: Cannot add "..q2.." to "..q1..".")
 	end
 
-	-- convert o1 to o2 units
-	local q = o1:to(o2)
-	q.value =  q.value + o2.value
+	-- convert o1 to q2 units
+	local p = q1:to(q2)
+	p.value =  p.value + q2.value
 
-	return 	q
+	return 	p
 end
 
 -- subtract a dimension from another one
-function Quantity.__sub(o1, o2)
+function Quantity.__sub(q1, q2)
 
-	if getmetatable(o1) ~= Quantity then
-		o1 = Quantity.new(o1)
-	elseif getmetatable(o2) ~= Quantity then
-		o2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	elseif getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
 	end
 
-	if o1.dimension ~= o2.dimension then
-		error("Error: Cannot subtract "..o2.." from "..o1..".")
+	if q1.dimension ~= q2.dimension then
+		error("Error: Cannot subtract "..q2.." from "..q1..".")
 	end
 
-	-- convert o1 to o2 units
-	local q = o1:to(o2)
-	q.value =  q.value - o2.value
+	-- convert q1 to q2 units
+	local p = q1:to(q2)
+	p.value =  p.value - q2.value
 
-	return 	q
+	return 	p
 end
 
 -- unary minus
-function Quantity.__unm(o)
-	local q = Quantity.new(o)
-	
-	q.value = -q.value
-
-	return q
+function Quantity.__unm(q)
+	local p = Quantity.new(q)
+	p.value = -p.value
+	return p
 end
 
 
 -- multiply a dimension by a number
-function Quantity.__mul(o1, o2)
+function Quantity.__mul(q1, q2)
 
-	if getmetatable(o1) ~= Quantity then
-		o1 = Quantity.new(o1)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
 
-	elseif getmetatable(o2) ~= Quantity then
-		o2 = Quantity.new(o2)
+	elseif getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
 	end
 	
-	local q = Quantity.new()
-	q.dimension = o1.dimension * o2.dimension
-	q.unit = o1.unit * o2.unit
-	q.value = o1.value * o2.value
+	local p = Quantity.new()
+	p.dimension = q1.dimension * q2.dimension
+	p.unit = q1.unit * q2.unit
+	p.value = q1.value * q2.value
 
-	if o1.unit.tobase ~= nil and o2.dimension:iszero() then
-		q.unit.tobase = o1.unit.tobase
-		q.unit.frombase = o1.unit.frombase
+	if q1.unit.tobase ~= nil and q2.dimension:iszero() then
+		p.unit.tobase = q1.unit.tobase
+		p.unit.frombase = q1.unit.frombase
 		
-	elseif o2.unit.tobase ~= nil and o1.dimension:iszero() then
-		q.unit.tobase = o2.unit.tobase
-		q.unit.frombase = o2.unit.frombase
+	elseif q2.unit.tobase ~= nil and q1.dimension:iszero() then
+		p.unit.tobase = q2.unit.tobase
+		p.unit.frombase = q2.unit.frombase
 
 	end
 
-	return q
+	return p
 end
 
 
 -- divide a quantity / number by a quantity / number
-function Quantity.__div(o1, o2)
+function Quantity.__div(q1, q2)
 	
-	if getmetatable(o1) ~= Quantity then
-		o1 = Quantity.new(o1)
-	elseif getmetatable(o2) ~= Quantity then
-		o2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	end
+	if getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
 	end
 
-	local q = Quantity.new()
-	q.dimension = o1.dimension / o2.dimension
-	q.unit = o1.unit / o2.unit
-	q.value = o1.value / o2.value
+	local p = Quantity.new()
+	p.dimension = q1.dimension / q2.dimension
+	p.unit = q1.unit / q2.unit
+	p.value = q1.value / q2.value
 
-	if o1.unit.tobase ~= nil and o2.dimension:iszero() then
-		q.unit.tobase = o1.unit.tobase
-		q.unit.frombase = o1.unit.frombase
+	if q1.unit.tobase ~= nil and q2.dimension:iszero() then
+		p.unit.tobase = q1.unit.tobase
+		p.unit.frombase = q1.unit.frombase
 	end
 
-	return q
+	return p
 end
 
 -- power
-function Quantity.__pow(o1,o2)
+function Quantity.__pow(q1,q2)
 
-	if getmetatable(o1) ~= Quantity then
-		o1 = Quantity.new(o1)
-	elseif getmetatable(o2) ~= Quantity then
-		o2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	end
+	if getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
 	end
 
-	if not o2.dimension:iszero() then
-		error("Error: Cannot take the power, because the exponent "..o2.." is not dimensionless.")
+	if not q2.dimension:iszero() then
+		error("Error: Cannot take the power, because the exponent "..q2.." is not dimensionless.")
 	end
 
-	local q = Quantity.new()
-	local e = o2:to()
+	local p = Quantity.new()
+	local e = q2:to()
 
-	q.value = o1.value^e.value
+	p.value = q1.value^e.value
 
 	e = e:__tonumber()
-	q.dimension = o1.dimension^e
-	q.unit = o1.unit^e
+	p.dimension = q1.dimension^e
+	p.unit = q1.unit^e
 	
-	return q
+	return p
 end
 
 -- test if two quantities are equal
-function Quantity.__eq(o1,o2)
+function Quantity.__eq(q1,q2)
 
-	if getmetatable(o1) ~= Quantity then
-		o1 = Quantity.new(o1)
-	elseif getmetatable(o2) ~= Quantity then
-		o2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	end
+	if getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
 	end
 	
-	local q = o1:to(o2)
+	local p = q1:to(q2)
 
-	if q.value ~= o2.value then
+	if p.value ~= q2.value then
 		return false
 
-	elseif q.dimension ~= o2.dimension then
+	elseif p.dimension ~= q2.dimension then
 		return false
 
-	elseif q.unit ~= o2.unit then
+	elseif p.unit ~= q2.unit then
 		return false
+
 	end
 
 	return true
 end
 
 -- check if this quantity is less than another one
-function Quantity.__lt(o1,o2)
+function Quantity.__lt(q1,q2)
 
-	if getmetatable(o1) ~= Quantity then
-		o1 = Quantity.new(o1)
-	elseif getmetatable(o2) ~= Quantity then
-		o2 = Quantity.new(o2)
+	if getmetatable(q1) ~= Quantity then
+		q1 = Quantity.new(q1)
+	end
+	if getmetatable(q2) ~= Quantity then
+		q2 = Quantity.new(q2)
 	end
 
-	if o1.unit.dimension ~= o2.unit.dimension then
-		error("Error: Cannot compare "..o1.." to "..o2..".")
+	if q1.unit.dimension ~= q2.unit.dimension then
+		error("Error: Cannot compare "..q1.." to "..q2..".")
 	end
 
-	return o1:to().value < o2:to().value
+	return q1:to().value < q2:to().value
 end
 
 
@@ -412,7 +417,7 @@ function Quantity:tosiunitx(param)
 	if type(self.value) == "number" or getmetatable(self.value) == N then
 		str = str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
 	else
-		error("Can not convert quantity to an siunitx command.")
+		error("Cannot convert quantity to an siunitx command.")
 	end
 
 	return str
@@ -452,18 +457,18 @@ function Quantity:tosiunitxnum(param)
 end
 
 -- check if this quantity is close to another one. r is the maximal relative deviation.
-function Quantity:isclose(o, r)
+function Quantity:isclose(q, r)
 
-	if getmetatable(o) ~= Quantity then
-		o = Quantity.new(o)
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
 	end
 
-	if self.dimension ~= o.dimension then
-		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(o).."'.")
+	if self.dimension ~= q.dimension then
+		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q).."'.")
 	end
 	
 	local q1 = self:to()
-	local q2 = o:to()
+	local q2 = q:to()
 	
 	local delta = Quantity.abs(q1 - q2):__tonumber()
 	local min = Quantity.min(Quantity.abs(q1),Quantity.abs(q2)):__tonumber()
