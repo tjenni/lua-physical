@@ -58,7 +58,8 @@ physical = require("physical")
   morekeywords={},
   frame=single,
   mathescape=false,
-  captionpos=b
+  captionpos=b,
+  escapechar=`
 }
 
 
@@ -1001,8 +1002,14 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 \begin{lstlisting}
 s_1 = 15 * _m
 s_2 = 5 * _m
-print(Quantity.min(s_1,s_2))
 print(s_1:min(s_2))
+`
+\begin{luacode}
+s_1 = 15 * _m
+s_2 = 5 * _m
+tex.write(tostring(s_1:min(s_2)))
+\end{luacode}
+`
 \end{lstlisting}
 \end{quote}
 
@@ -1021,8 +1028,14 @@ print(s_1:min(s_2))
 \begin{lstlisting}
 s_1 = 15 * _m
 s_2 = 5 * _m
-print(Quantity.max(s_1,s_2))
 print(s_1:max(s_2))
+`
+\begin{luacode}
+s_1 = 15 * _m
+s_2 = 5 * _m
+tex.write(tostring(s_1:max(s_2)))
+\end{luacode}
+`
 \end{lstlisting}
 \end{quote}
 
@@ -1041,7 +1054,19 @@ print(s_1:max(s_2))
 \begin{lstlisting}
 U = -5 * _V
 print(U)
+`
+\begin{luacode}
+U = -5 * _V
+tex.write(tostring(U))
+\end{luacode}
+`
 print(U:abs())
+`
+\begin{luacode}
+U = -5 * _V
+tex.write(tostring(U:abs()))
+\end{luacode}
+`
 \end{lstlisting}
 \end{quote}
 
@@ -1058,9 +1083,16 @@ print(U:abs())
 
 
 \begin{lstlisting}
-U = -5 * _V
-print(U)
-print(U:abs())
+A = 25 * _m^2
+s = sqrt(A)
+print(s)
+`
+\begin{luacode}
+A = 25 * _m^2
+s = sqrt(A)
+tex.write(tostring(s))
+\end{luacode}
+`
 \end{lstlisting}
 \end{quote}
 
@@ -1077,11 +1109,19 @@ print(U:abs())
 
 
 \begin{lstlisting}
-I = -2 * _W/_m^2
-I_0 = 1e-15 * _W/_m^2
-print(10 * (I/I_0):log() )
+I = 1 * _W/_m^2
+I_0 = 1e-12 * _W/_m^2
+print(10 * (I/I_0):log(10) * _dB )
+`
+\begin{luacode}
+I = 1 * _W/_m^2
+I_0 = 1e-12 * _W/_m^2
+tex.write(tostring(10 * (I/I_0):log(10.0) *_dB ))
+\end{luacode}
+`
 \end{lstlisting}
 \end{quote}
+
 
 
 
@@ -1093,30 +1133,46 @@ print(10 * (I/I_0):log() )
   \item |q| : |Quantity,Number| quantity
   \end{description}
 
-
 \begin{lstlisting}
 x = 2 * _1
 print( x:exp() )
+`
+\begin{luacode}
+x = 2 * _1
+tex.write(tostring(x:exp()))
+\end{luacode}
+`
 \end{lstlisting}
+
 \end{quote}
 
 
 
+\method{Quantity}{sin(q)}
+\begin{quote}
+  Returns the value of the sinus function of the given quantitiy.
 
+  \begin{description}
+  \item |q| : |Quantity,Number| quantity
+  \end{description}
 
+\begin{lstlisting}
+alpha = 30 * _deg
+print( alpha:sin() )
+`
+\begin{luacode}
+alpha = 30 * _deg
+tex.write(tostring(alpha:sin()))
+\end{luacode}
+`
+\end{lstlisting}
 
-
+\end{quote}
 
 
 \newpage
 
 
-
-
-
-
-
-.sin(q)
 
 .cos(q)
 
