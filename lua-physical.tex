@@ -794,14 +794,14 @@ local Q = physical.Quantity
  All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used two check if two quantities can be added or subtraced and if they are equal. 
 
 
-\method{Dimension}{new(o=nil)}
+\method{Dimension}{new(q=nil)}
 \begin{quote}
   Constructor of the |Dimension| class.
 
   \subtitle{Parameters}
   \begin{description}
-  \item |o| : |Dimension| or |string|, optional\\
-    The name or symbol of the dimension. If |o| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
+  \item |q| : |Dimension| or |string|, optional\\
+    The name or symbol of the dimension. If |q| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
 
   \item |return| : |Dimension|\\
     The created |Quantity| object
@@ -833,13 +833,13 @@ local Q = physical.Quantity
 
 
 
-\method{Quantity}{new(o=nil)}
+\method{Quantity}{new(q=nil)}
 \begin{quote}
   Constuctor of the |Quantity| class.
 
   \subtitle{Parameters}
   \begin{description}
-    \item |o| : |Quantity| or \ |number|, optional\\
+    \item |q| : |Quantity| or \ |number|, optional\\
       Optional argument for copying a |Quantity| or to create a |number| quantity
 
     \item |return| : |Quantity|\\
@@ -883,7 +883,7 @@ local Q = physical.Quantity
 
   The |name| is used for example in the siunitx conversion function, e.g |meter| will be converted to |\meter|. 
 
-  Each quantity has a dimension associated. The argument |dimension| allwos any dimension to be associated to base quantities. 
+  Each quantity has a dimension associated. The argument |dimension| allows any dimension to be associated to base quantities. 
 
   \subtitle{Examples}
   \begin{lstlisting}
@@ -895,7 +895,7 @@ Q.defineBase("kg", "kilogram", M)
 
 
 
-\method{Quantity}{define(symbol, name, o, tobase=nil, frombase=nil)}
+\method{Quantity}{define(symbol, name, q, tobase=nil, frombase=nil)}
 \begin{quote}
   Creates a new derived unit from an expression of other units. For affine quantities like the temperature in celcius, one can give convertion functions to and from base units.
 
@@ -907,7 +907,7 @@ Q.defineBase("kg", "kilogram", M)
   \item |name| : |string|\\
     Name of the base quantity
 
-  \item |o| : |physical.Quantity|\\
+  \item |q| : |physical.Quantity|\\
     Definition of the unit
 
   \item |tobase| : |function|, optional\\
@@ -993,9 +993,9 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
   Returns the smaller one of two given quantities. The function returns |q1| if the two Quantities are equal.
 
   \begin{description}
-  \item |q1| : |Quantity,Number|, first quantity
+  \item |q1| : |Quantity,Number|, first argument
 
-  \item |q2| : |Quantity,Number|, second quantity
+  \item |q2| : |Quantity,Number|, second argument
   \end{description}
 
 
@@ -1019,9 +1019,9 @@ tex.write(tostring(s_1:min(s_2)))
   Returns the bigger one of two given quantities.  The function returns |q1| if the two Quantities are equal.
 
   \begin{description}
-  \item |q1| : |Quantity,Number|, first quantity
+  \item |q1| : |Quantity,Number|, first argument
 
-  \item |q2| : |Quantity,Number|, second quantity
+  \item |q2| : |Quantity,Number|, second argument
   \end{description}
 
 
@@ -1078,7 +1078,7 @@ tex.write(tostring(U:abs()))
   Returns the square root of the given quantity.
 
   \begin{description}
-  \item |q| : |Quantity,Number|
+  \item |q| : |Quantity,Number| argument
   \end{description}
 
 
@@ -1103,8 +1103,8 @@ tex.write(tostring(s))
   Returns the logarithm of the given quantitiy. If no base is given, the natural logarithm is calculated.
 
   \begin{description}
-  \item |q| : |Quantity,Number|
-  \item |base| : |Quantity,Number|
+  \item |q| : |Quantity,Number| dimensionless argument
+  \item |base| : |Quantity,Number| dimensionless argument
   \end{description}
 
 
@@ -1130,7 +1130,7 @@ tex.write(tostring(10 * (I/I_0):log(10.0) *_dB ))
   Returns the value of the exponential function of the given quantitiy.
 
   \begin{description}
-  \item |q| : |Quantity,Number| quantity
+  \item |q| : |Quantity,Number| dimensionless argument
   \end{description}
 
 \begin{lstlisting}
@@ -1153,7 +1153,7 @@ tex.write(tostring(x:exp()))
   Returns the value of the sinus function of the given quantitiy.
 
   \begin{description}
-  \item |q| : |Quantity,Number| quantity
+  \item |q| : |Quantity,Number| dimensionless argument
   \end{description}
 
 \begin{lstlisting}
@@ -1170,31 +1170,290 @@ tex.write(tostring(alpha:sin()))
 \end{quote}
 
 
+
+\method{Quantity}{cos(q)}
+\begin{quote}
+  Returns the value of the cosinus function of the given quantity. The quantity has to be dimensionless.
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+alpha = 60 * _deg
+print( alpha:cos() )
+`
+\begin{luacode}
+alpha = 60 * _deg
+tex.write(tostring(alpha:cos()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{tan(q)}
+\begin{quote}
+  Returns the value of the tangent function of the given quantity. The quantity has to be dimensionless.
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+alpha = 45 * _deg
+print( alpha:tan() )
+`
+\begin{luacode}
+alpha = 45 * _deg
+tex.write(tostring(alpha:tan()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{asin(q)}
+\begin{quote}
+  Returns the value of the arcus sinus function of the given quantity. The quantity has to be dimensionless.
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+x = 0.5 * _1
+print( x:asin():to(_deg) )
+`
+\begin{luacode}
+x = 0.5 * _1
+tex.write(tostring(x:asin():to(_deg)))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{acos(q)}
+\begin{quote}
+  Returns the value of the arcus cosinus function of the given quantity. The quantity has to be dimensionless.
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+x = 0.5 * _1
+print( x:acos():to(_deg) )
+`
+\begin{luacode}
+x = 0.5 * _1
+tex.write(tostring(x:acos():to(_deg)))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
+\method{Quantity}{atan(q)}
+\begin{quote}
+  Returns the value of the arcus tangent function of the given quantity. The quantity has to be dimensionless.
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+x = 1 * _1
+print( x:atan():to(_deg) )
+`
+\begin{luacode}
+x = 1 * _1
+tex.write(tostring(x:atan():to(_deg)))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
+\method{Quantity}{sinh(q)}
+\begin{quote}
+  Returns the value of the hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  $$
+    \sinh(x) = 0.5 \cdot e^x - 0.5 / e^x  \quad.
+  $$
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+x = 1 * _1
+print( x:sinh() )
+`
+\begin{luacode}
+x = 1 * _1
+tex.write(tostring(x:sinh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{cosh(q)}
+\begin{quote}
+  Returns the value of the hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  $$
+    \cosh(x) = 0.5 \cdot e^x + 0.5 / e^x  \quad.
+  $$
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+x = 1 * _1
+print( x:cosh() )
+`
+\begin{luacode}
+x = 1 * _1
+tex.write(tostring(x:cosh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{tanh(q)}
+\begin{quote}
+  Returns the value of the hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  $$
+    \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \quad.
+  $$
+
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+x = 1 * _1
+print( x:tanh() )
+`
+\begin{luacode}
+x = 1 * _1
+tex.write(tostring(x:tanh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
+\method{Quantity}{asinh(q)}
+\begin{quote}
+  Returns the value of the inverse hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  $$
+    \text{asinh}(x) = \ln\left( x + \sqrt{x^2 + 1} \right)  \quad.
+  $$
+
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument
+  \end{description}
+
+\begin{lstlisting}
+x = 1 * _1
+print( x:asinh() )
+`
+\begin{luacode}
+x = 1 * _1
+tex.write(tostring(x:asinh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{acosh(q)}
+\begin{quote}
+  Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  $$
+    \text{acosh}(x) = \ln\left( x + \sqrt{x^2 - 1} \right)  \quad, x > 1 \quad.
+  $$
+
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument bigger than or equal to one.
+  \end{description}
+
+\begin{lstlisting}
+x = 2 * _1
+print( x:acosh() )
+`
+\begin{luacode}
+x = 2 * _1
+tex.write(tostring(x:acosh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{atanh(q)}
+\begin{quote}
+  Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  $$
+    \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, \mid x\mid < 1 \quad.
+  $$
+
+  0.5 * math.log((1 + q.value)/(1 - q.value))
+
+  \begin{description}
+  \item |q| : |Quantity,Number| dimensionless argument with magnitude smaller than one.
+  \end{description}
+
+\begin{lstlisting}
+x = 0.5 * _1
+print( x:atanh() )
+`
+\begin{luacode}
+x = 0.5 * _1
+tex.write(tostring(x:atanh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
 \newpage
 
 
-
-.cos(q)
-
-.tan(q)
-
-.asin(q)
-
-.acos(q)
-
-.atan(q)
-
-.sinh(q)
-
-.cosh(q)
-
-.tanh(q)
-
-.asinh(q)
-
-.acosh(q)
-
-.atanh(q)
 
 :to(o, usefunction)
 
