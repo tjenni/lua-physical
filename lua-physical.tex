@@ -988,9 +988,44 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 
 
-\method{Quantity}{min(q1, q2)}
+\method{Quantity}{isclose(self,q,r)}
 \begin{quote}
-  Returns the smaller one of two given quantities. The function returns |q1| if the two Quantities are equal.
+  Checks if this quantity is close to another one. The argument |r| is the maximal relative deviation.
+
+  \begin{description}
+  \item |self| : |Quantity| 
+  \item |q| : |Quantity,Number| 
+  \item |r| : |Number| 
+  \end{description}
+
+\begin{lstlisting}
+s_1 = 1.9 * _m
+s_2 = 2.0 * _m
+print( s_1:isclose(s_2,0.1) )
+`
+\begin{luacode}
+s_1 = 1.9 * _m
+s_2 = 2.0 * _m
+tex.write(tostring(s_1:isclose(s_2,10 * _percent)) )
+\end{luacode}
+`
+print( s_1:isclose(s_2,0.01) )
+`
+\begin{luacode}
+s_1 = 1.9 * _m
+s_2 = 2.0 * _m
+tex.write(tostring(s_1:isclose(s_2,1 * _percent)) )
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{min(q1, q2, ...)}
+\begin{quote}
+  Returns the smallest quantity of several given ones. The function returns |q1| if the Quantities are equal.
 
   \begin{description}
   \item |q1| : |Quantity,Number|, first argument
@@ -1014,9 +1049,9 @@ tex.write(tostring(s_1:min(s_2)))
 \end{quote}
 
 
-\method{Quantity}{max(q1, q2)}
+\method{Quantity}{max(q1, q2, ...)}
 \begin{quote}
-  Returns the bigger one of two given quantities.  The function returns |q1| if the two Quantities are equal.
+  Returns the biggest quantity of several given ones. The function returns |q1| if the Quantities are equal.
 
   \begin{description}
   \item |q1| : |Quantity,Number|, first argument
@@ -1426,10 +1461,8 @@ tex.write(tostring(x:acosh()))
 \begin{quote}
   Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
   $$
-    \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, \mid x\mid < 1 \quad.
+    \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, -1 < x < 1 \quad.
   $$
-
-  0.5 * math.log((1 + q.value)/(1 - q.value))
 
   \begin{description}
   \item |q| : |Quantity,Number| dimensionless argument with magnitude smaller than one.

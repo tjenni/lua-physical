@@ -463,51 +463,49 @@ function Quantity:isclose(q, r)
 		q = Quantity.new(q)
 	end
 
+	if getmetatable(r) ~= Quantity then
+		r = Quantity.new(r)
+	end
+
 	if self.dimension ~= q.dimension then
 		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q).."'.")
 	end
+	if not r.dimension:iszero() then
+		error("Error. The argument '"..tostring(r).."' of the isclose function is not unitless.")
+	end
 	
-	local q1 = self:to()
-	local q2 = q:to()
+	local q1 = self:to():__tonumber()
+	local q2 = q:to():__tonumber()
+	local r = r:to():__tonumber()
 	
-	local delta = Quantity.abs(q1 - q2):__tonumber()
-	local min = Quantity.min(Quantity.abs(q1),Quantity.abs(q2)):__tonumber()
+	local delta = math.abs(q1 - q2)
+	local min = math.min(math.abs(q1),math.abs(q2))
 	return  (delta / min) < r
 end
 
 
 -- minimum value
-function Quantity.min(q1,q2)
+function Quantity.min(q,...)
+	
+	for _,p in ipairs({...}) do
+		if p < q then
+			q = p
+		end
+    end
 
-	if getmetatable(q1) ~= Quantity then
-		q1 = Quantity.new(q1)
-	end
-	if getmetatable(q2) ~= Quantity then
-		q2 = Quantity.new(q2)
-	end
-
-	if q1:__tonumber() <= q2:__tonumber() then
-		return q1
-	else
-		return q2
-	end
+    return Quantity.new(q)
 end
 
 -- maximum value
-function Quantity.max(q1,q2)
+function Quantity.max(q,...)
+	
+	for _,p in ipairs({...}) do
+		if p > q then
+			q = p
+		end
+    end
 
-	if getmetatable(q1) ~= Quantity then
-		q1 = Quantity.new(q1)
-	end
-	if getmetatable(q2) ~= Quantity then
-		q2 = Quantity.new(q2)
-	end
-
-	if q1:__tonumber() >= q2:__tonumber() then
-		return q1
-	else
-		return q2
-	end
+    return Quantity.new(q)
 end
 
 
@@ -603,7 +601,7 @@ function Quantity.sin(q)
 	end
 
 	if not q.dimension:iszero() then
-		error("Error. The argument '"..tostring(q).."' of the sine function is not unitless nor an angle.")
+		error("Error. The argument '"..tostring(q).."' of the sine function is not unitless.")
 	end
 
 	local p = Quantity.new()
@@ -625,7 +623,7 @@ function Quantity.cos(q)
 	end
 
 	if not q.dimension:iszero() then
-		error("Error. The argument '"..tostring(q).."' of the cosine function is not unitless nor an angle.")
+		error("Error. The argument '"..tostring(q).."' of the cosine function is not unitless.")
 	end
 
 	local p = Quantity.new()
@@ -647,7 +645,7 @@ function Quantity.tan(q)
 	end
 
 	if not q.dimension:iszero() then
-		error("Error. The argument '"..tostring(q).."' of the tangent function is not unitless nor an angle.")
+		error("Error. The argument '"..tostring(q).."' of the tangent function is not unitless.")
 	end
 
 	local p = Quantity.new()

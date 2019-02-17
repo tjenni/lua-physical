@@ -215,6 +215,8 @@ function TestQuantity:testisclose()
    local rho2 = 19.2 * _g / _cm^3
 
    lu.assertTrue( rho1:isclose(rho2,0.1) )
+   lu.assertTrue( rho1:isclose(rho2,10 * _percent) )
+   lu.assertFalse( rho1:isclose(rho2,0.1 * _percent) )
 end
 
 -- test min function
@@ -223,9 +225,17 @@ function TestQuantity:testMin()
    lu.assertEquals( l.value, -2.5 )
    lu.assertEquals( l.dimension, _1.dimension )
 
-   local l = (3 * _m):min(5 * _m)
+   local l = (3 * _cm):min(5 * _dm)
    lu.assertEquals( l.value, 3 )
    lu.assertEquals( l.dimension, _m.dimension )
+
+   local q1 = 20 * _cm
+   local q2 = 10 * _dm
+   local q3 = 1 * _m
+   lu.assertEquals( Q.min(q1,q2,q3), q1 )
+
+   local q1 = 20 * _A
+   lu.assertEquals( Q.min(q1), q1 )
 
    local q1 = N(10,1) * _s
    local q2 = N(9,1) * _s
@@ -241,6 +251,14 @@ function TestQuantity:testMax()
    local l = (3 * _m):max(5 * _m)
    lu.assertEquals( l.value, 5 )
    lu.assertEquals( l.dimension, _m.dimension )
+
+   local q1 = 20 * _cm
+   local q2 = 10 * _dm
+   local q3 = 1 * _m
+   lu.assertEquals( Q.max(q1,q2,q3), q2 )
+
+   local q1 = 20 * _A
+   lu.assertEquals( Q.max(q1), q1 )
 
    local q1 = N(10,1) * _s
    local q2 = N(9,1) * _s
