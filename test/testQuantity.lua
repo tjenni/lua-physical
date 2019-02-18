@@ -96,6 +96,11 @@ function TestQuantity:testToSIUnitX()
    N.seperateUncertainty = false
    
    lu.assertEquals( (5 * _m):tosiunitx(), "\\SI{5}{\\meter}" )
+   lu.assertEquals( (5 * _m):tosiunitx("x=1"), "\\SI[x=1]{5}{\\meter}" )
+
+   lu.assertEquals( (5 * _m):tosiunitx("x=5",1), "\\num[x=5]{5}" )
+   lu.assertEquals( (5 * _m):tosiunitx("x=5",2), "\\si[x=5]{\\meter}" )
+
    lu.assertEquals( (5 * _m^2):tosiunitx(), "\\SI{5.0}{\\meter\\tothe{2}}" )
 
    lu.assertEquals( (56 * _km):tosiunitx(), "\\SI{56}{\\kilo\\meter}" )

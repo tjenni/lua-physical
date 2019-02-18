@@ -988,6 +988,90 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 
 
+\method{Quantity}{to(self,q,usefunction=false)}
+\begin{quote}
+  Converts the quantity self to the unit of the quantity |q|. If the boolean |usefunction| is true, the convertion function is used for conversion.
+
+  \begin{description}
+  \item |self| : |Quantity| 
+  \item |q| : |Quantity|
+  \item |usefunction| : |Bool| 
+  \end{description}
+
+\begin{lstlisting}
+s = 1.9 * _km
+print( s:to(_m) )
+`
+\begin{luacode}
+s = 1.9 * _km
+tex.write(tostring(s:to(_m)) )
+\end{luacode}
+`
+
+T = 10 * _degC
+print( T:to(_K) )
+`
+\begin{luacode}
+T = 10 * _degC
+tex.write(tostring(T:to(_K)) )
+\end{luacode}
+`
+print( T:to(_K,true) )
+`
+\begin{luacode}
+T = 10 * _degC
+tex.write(tostring(T:to(_K,true)) )
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Quantity}{tosiunitx(self,param,mode)}
+\begin{quote}
+  Converts the quantity into a siunitx string.
+
+  \begin{description}
+  \item |self| : |Quantity| 
+  \item |param| : |string|
+  \item |mode| : |Number|, 0:\textbackslash SI, 1:\textbackslash num, 2:\textbackslash si
+  \end{description}
+
+\begin{lstlisting}
+s = 1.9 * _km
+
+print( s:tosiunitx() )
+`
+\begin{luacode}
+s = 1.9 * _km
+tex.write(tostring(s:tosiunitx()) )
+\end{luacode}
+`
+
+print( s:tosiunitx(nil,1) )
+`
+\begin{luacode}
+tex.write(tostring(s:tosiunitx(nil,1)) )
+\end{luacode}
+`
+
+print( s:tosiunitx(nil,2) )
+`
+\begin{luacode}
+tex.write(tostring(s:tosiunitx(nil,2)) )
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
+
+
 \method{Quantity}{isclose(self,q,r)}
 \begin{quote}
   Checks if this quantity is close to another one. The argument |r| is the maximal relative deviation.
@@ -1480,35 +1564,6 @@ tex.write(tostring(x:atanh()))
 \end{lstlisting}
 
 \end{quote}
-
-
-
-
-\newpage
-
-
-
-:to(o, usefunction)
-
-:tosiunitx(param)
-
-:tosiunitxsi(param)
-
-:tosiunitxnum(param)
-
-:isclose(o, r)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

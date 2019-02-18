@@ -339,38 +339,42 @@ end
 
 
 -- convert quantity to another unit
-function Quantity:to(o, usefunction)
+function Quantity:to(q, usefunction)
 
 	usefunction = false or usefunction
 
-	local q = Quantity.new()
+	local p = Quantity.new()
 
 	-- convert to base units
-	q.dimension = self.dimension
-	q.value = self.value * self.unit.prefixfactor
+	p.dimension = self.dimension
+	p.value = self.value * self.unit.prefixfactor
 	
 	-- call convertion function
 	if type(self.unit.tobase) == "function" and usefunction then
-		q = self.unit.tobase(q)
+		p = self.unit.tobase(p)
 	else
-		q.value = q.value * self.unit.basefactor
+		p.value = p.value * self.unit.basefactor
 	end
 
 	-- convert to target units
-	if o ~= nil then
-		if self.dimension ~= o.dimension then
-			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(o).."'.")
+	if q ~= nil then
+		if getmetatable(q) ~= Quantity then
+			q = Quantity.new(q)
+		end
+
+		if self.dimension ~= q.dimension then
+			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(q).."'.")
 		end
 
 		-- call convertion function
-		if type(o.unit.frombase) == "function" and usefunction then
-			q = o.unit.frombase(q)
+		if type(q.unit.frombase) == "function" and usefunction then
+			p = q.unit.frombase(p)
 		else
-			q.value = q.value / o.unit.basefactor
+			p.value = p.value / q.unit.basefactor
 		end
 
-		q.value = q.value / o.unit.prefixfactor
-		q.unit = o.unit
+		p.value = p.value / q.unit.prefixfactor
+		p.unit = q.unit
 	
 	-- convert to base units
 	else
@@ -381,9 +385,10 @@ function Quantity:to(o, usefunction)
 			unit = unit * base[i].unit^self.dimension[i]
 		end
 
-		q.unit = unit
+		p.unit = unit
 	end
-	return q
+
+	return p
 end
 
 
@@ -406,54 +411,27 @@ function Quantity:__tostring()
 end
 
 -- convert quantity to an siunitx expression
-function Quantity:tosiunitx(param)
+function Quantity:tosiunitx(param,mode)
 
-	local str = "\\SI"
+	mode = mode or 0
+	param = param or ""
 
-	if param ~= nil then
-		str = str.."["..param.."]"
+	if param ~= "" then
+		param = "["..param.."]"
 	end
 
-	if type(self.value) == "number" or getmetatable(self.value) == N then
-		str = str.."{"..tostring(self.value).."}{"..self.unit:tosiunitx().."}"
-	else
-		error("Cannot convert quantity to an siunitx command.")
+	if mode == 0 then
+		return "\\SI"..param.."{"..tostring(self.value).."}".."{"..self.unit:tosiunitx().."}"
+
+	elseif mode == 1 then
+		return "\\num"..param.."{"..tostring(self.value).."}"
+
+	elseif mode == 2 then
+		return "\\si"..param.."{"..self.unit:tosiunitx().."}"
+
 	end
 
-	return str
-end
-
--- convert quantity to an siunitx si expression
-function Quantity:tosiunitxsi(param)
-
-	local str = "\\si"
-
-	if param ~= nil then
-		str = str.."["..param.."]"
-	end
-
-	str = str.."{"..self.unit:tosiunitx().."}"
-	
-	return str
-end
-
-
--- convert quantity to an siunitx num expression
-function Quantity:tosiunitxnum(param)
-
-	local str = "\\num"
-
-	if param ~= nil then
-		str = str.."["..param.."]"
-	end
-
-	if type(self.value) == "number" or getmetatable(self.value) == N then
-		str = str.."{"..tostring(self.value).."}"
-	else
-		error("Can not convert quantity to an siunitx command.")
-	end
-
-	return str
+	error("Error: Unknown mode '"..tostring(mode).."'.")
 end
 
 -- check if this quantity is close to another one. r is the maximal relative deviation.
