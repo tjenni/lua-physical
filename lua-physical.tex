@@ -197,6 +197,8 @@ $$
 
 \renewcommand{\J}[1][]{\mathrm{J}^{#1}\,}
 
+\newcommand{\C}[1][]{\mathrm{C}^{#1}\,}
+
 \newcommand{\1}{\mathrm{1}}
 
 
@@ -317,6 +319,8 @@ the luminous intensity, in a given direction, of a source that emits monochromat
 \end{tabularx}
 \caption{Base units of the International System of Units (SI)}
 \end{table}
+
+
 
 
 
@@ -758,10 +762,367 @@ league &
 $\L$ & 
 |3*_mi| \\\hline
 
+ & 
+nautical mile &
+|_nmi| & 
+$\L$ & 
+|1852 * _m| \\\hline
+
+ & 
+nautical league &
+|_nlea| & 
+$\L$ & 
+|3*_nmi| \\\hline
+
+ & 
+cable &
+|_cbl| & 
+$\L$ & 
+|_nmi/10| \\\hline
+
+ & 
+fathom &
+|_ftm| & 
+$\L$ & 
+|6*_ft| \\\hline
+
+
+velocity & 
+knot &
+|_kn| & 
+$\L[1] \T[-1]$ & 
+|_nmi/_h| \\\hline
+
+
+area & 
+acre &
+|_ac| & 
+$\L[2]$ & 
+|43560*_ft^2| \\\hline
+
+
+volume & 
+gallon &
+|_gal| & 
+$\L[3]$ & 
+|4.54609*_L| \\\hline
+
+ & 
+quart &
+|_qt| & 
+$\L[3]$ & 
+|_gal/4| \\\hline
+
+ & 
+pint &
+|_pint| & 
+$\L[3]$ & 
+|_qt/2| \\\hline
+
+ & 
+cup &
+|_cup| & 
+$\L[3]$ & 
+|_pint/2| \\\hline
+
+ & 
+gill &
+|_gi| & 
+$\L[3]$ & 
+|_pint/4| \\\hline
+
+ & 
+fluid ounce &
+|_fl_oz| & 
+$\L[3]$ & 
+|_gi/5| \\\hline
+
+ & 
+fluid dram &
+|_fl_dr| & 
+$\L[3]$ & 
+|_fl_oz/8| \\\hline
 
 \end{tabularx}
 \caption{Imperial units}
 \end{table}
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dim. & Definition \\\hline
+
+
+mass & 
+grain &
+|_gr| & 
+$\M$ & 
+|64.79891*_mg| \\\hline
+
+ & 
+pound &
+|_lb| & 
+$\M$ & 
+|7000*_gr| \\\hline
+
+ & 
+ounce &
+|_oz| & 
+$\M$ & 
+|_lb/16| \\\hline
+
+ & 
+dram &
+|_dr| & 
+$\M$ & 
+|_lb/256| \\\hline
+
+ & 
+stone &
+|_st| & 
+$\M$ & 
+|14*_lb| \\\hline
+
+ & 
+quarter &
+|_qtr| & 
+$\M$ & 
+|2*_st| \\\hline
+
+ & 
+hundredweight &
+|_cwt| & 
+$\M$ & 
+|4*_qtr| \\\hline
+
+ & 
+long ton &
+|_ton| & 
+$\M$ & 
+|20*_cwt| \\\hline
+
+
+\end{tabularx}
+\caption{Imperial units}
+\end{table}
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dim. & Definition \\\hline
+
+
+length & 
+U.S. survey inch &
+|_in_US| & 
+$\L$ & 
+|_m/39.37| \\\hline
+
+ & 
+U.S. survey hand &
+|_hh_US| & 
+$\L$ & 
+|4*_in_US| \\\hline
+
+ & 
+U.S. survey foot &
+|_ft_US| & 
+$\L$ & 
+|3*_hh_US| \\\hline
+
+ & 
+U.S. survey link &
+|_li_US| & 
+$\L$ & 
+|0.66*_ft_US| \\\hline
+
+ & 
+U.S. survey yard &
+|_yd_US| & 
+$\L$ & 
+|3*_ft_US| \\\hline
+
+ & 
+U.S. survey rod &
+|_rd_US| & 
+$\L$ & 
+|5.5*_yd_US| \\\hline
+
+
+ & 
+U.S. survey chain &
+|_ch_US| & 
+$\L$ & 
+|4*_rd_US| \\\hline
+
+
+ & 
+U.S. survey furlong &
+|_fur_US| & 
+$\L$ & 
+|10*_ch_US| \\\hline
+
+
+ & 
+U.S. survey mile &
+|_mi_US| & 
+$\L$ & 
+|8*_fur_US| \\\hline
+
+ & 
+U.S. survey league &
+|_lea_US| & 
+$\L$ & 
+|3*_mi_US| \\\hline
+
+ & 
+U.S. survey fathom &
+|_ftm_US| & 
+$\L$ & 
+|72*_in_US| \\\hline
+
+ & 
+U.S. survey cable &
+|_cbl_US| & 
+$\L$ &
+|120*_ftm_US| \\\hline
+
+
+\end{tabularx}
+\caption{U. S. customary units}
+\end{table}
+
+
+
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{0.5\hsize}}X%
+  l%
+  l%
+  c%
+  >{\setlength\hsize{1.5\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dim. & Definition \\\hline
+
+currency &
+Euro & 
+|_EUR| & 
+$\L$ &
+The value of one Euro. \\\hline
+
+\end{tabularx}
+\caption{Base unit of Currency}
+\end{table}
+
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+Quantity & Unit & Symbol & Dim. & Definition \\\hline
+
+
+currency &
+U.S. dollar &
+|_USD| & 
+$\C$ & 
+|0.89*_EUR| \\\hline
+
+ &
+Japanese yen &
+|_JPY| & 
+$\C$ & 
+|0.008*_EUR| \\\hline
+
+ &
+British pound &
+|_GBP| & 
+$\C$ & 
+|1.17*_EUR| \\\hline
+
+ &
+Australian dollar &
+|_AUD| & 
+$\C$ & 
+|0.63*_EUR| \\\hline
+
+ &
+Canadian dollar &
+|_CAD| & 
+$\C$ & 
+|0.66*_EUR| \\\hline
+
+ &
+Swiss franc &
+|_CHF| & 
+$\C$ & 
+|0.88*_EUR| \\\hline
+
+ &
+Chinese yuan &
+|_CNY| & 
+$\C$ & 
+|0.13*_EUR| \\\hline
+
+ &
+Swedish krona &
+|_SEK| & 
+$\C$ & 
+|0.094*_EUR| \\\hline
+
+ &
+New Zealand dollar &
+|_NZD| & 
+$\C$ & 
+|0.60*_EUR| \\\hline
+
+
+\end{tabularx}
+\caption{Currency units based on exchange rates from 7.3.2019, 21:00 UTC.}
+\end{table}
+
+
+
+
+
+
+
+
+
 
 
 

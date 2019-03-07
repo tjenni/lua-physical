@@ -548,8 +548,8 @@ Q.define("cCNY", "chinesefen", 0.01*_CNY)
 Q.define("SEK", "swedishkrona", 0.094*_EUR)
 Q.define("cSEK", "swedishoere", 0.01*_SEK)
 
-Q.define("NZD", "newzeelanddollar", 0.60*_EUR)
-Q.define("cNZD", "newzeelandcent", 0.01*_NZD)
+Q.define("NZD", "newzealanddollar", 0.60*_EUR)
+Q.define("cNZD", "newzealandcent", 0.01*_NZD)
 
 
 
