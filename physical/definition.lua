@@ -37,6 +37,7 @@ local I = D.defineBase("I", "Electric Current")
 local K = D.defineBase("θ", "Temperature")
 local N = D.defineBase("N", "Amount of Substance")
 local J = D.defineBase("J", "Luminous Intensity")
+local C = D.defineBase("C", "Currency")
 
 -- define derived dimensions
 D.define("Dimensionless", D())
@@ -159,6 +160,10 @@ Q.defineBase("mol", "mole", N)
 Q.defineBase("cd", "candela",  J)
 
 Q.addPrefix(SI_prefixes,{_m,_s,_A,_K,_mol,_cd})
+
+-- define the euro as the base currency unit
+Q.defineBase("EUR", "euro",  C)
+Q.define("cEUR", "eurocent", 0.01*_EUR)
 
 -- define SI derived units
 Q.define("g", "gram", 0.001*_kg)
@@ -517,37 +522,34 @@ Q.define("ton_US", "uston", 20*_cwt_US)
 -- CURRENCIES
 -- **********
 -- Source: https://en.wikipedia.org/wiki/List_of_circulating_currencies
--- Exchange rates from 7.3.2019
+-- Exchange rates from 7.3.2019, 21:00 UTC
 
-Q.define("USD", "usdollar", _1)
-Q.define("USDc", "uscent", 0.01*_USD)
+Q.define("USD", "usdollar", 0.89*_EUR)
+Q.define("cUSD", "uscent", 0.01*_USD)
 
-Q.define("EUR", "euro", 1.12*_USD)
-Q.define("EURc", "eurocent", 0.01*_EUR)
+Q.define("JPY", "japaneseyen", 0.008*_EUR)
+Q.define("cJPY", "japanesesen", 0.01*_JPY)
 
-Q.define("JPY", "japaneseyen", 0.009*_USD)
-Q.define("JPYc", "japanesesen", 0.01*_JPY)
+Q.define("GBP", "britishpound", 1.17*_EUR)
+Q.define("cGBP", "britishpenny", 0.01*_GBP)
 
-Q.define("GBP", "poundsterling", 1.31*_USD)
-Q.define("GBPc", "poundsterlingpenny", 0.01*_GBP)
+Q.define("AUD", "australiandollar", 0.63*_EUR)
+Q.define("cAUD", "australiancent", 0.01*_AUD)
 
-Q.define("AUD", "australiandollar", 0.7*_USD)
-Q.define("AUDc", "australiancent", 0.01*_AUD)
+Q.define("CAD", "canadiandollar", 0.66*_EUR)
+Q.define("cCAD", "canadiancent", 0.01*_CAD)
 
-Q.define("CAD", "canadiandollar", 0.74*_USD)
-Q.define("CADc", "canadiancent", 0.01*_CAD)
+Q.define("CHF", "swissfranc", 0.88*_EUR)
+Q.define("cCHF", "swissrappen", 0.01*_CHF)
 
-Q.define("CHF", "swissfranc", 0.99*_USD)
-Q.define("CHFc", "swissrappen", 0.01*_CHF)
+Q.define("CNY", "chineseyuan", 0.13*_EUR)
+Q.define("cCNY", "chinesefen", 0.01*_CNY)
 
-Q.define("CNY", "chineseyuan", 0.15*_USD)
-Q.define("CNYc", "chinesefen", 0.01*_CNY)
+Q.define("SEK", "swedishkrona", 0.094*_EUR)
+Q.define("cSEK", "swedishoere", 0.01*_SEK)
 
-Q.define("SEK", "swedishkrona", 0.11*_USD)
-Q.define("SEKc", "swedishoere", 0.01*_SEK)
-
-Q.define("NZD", "newzeelanddollar", 0.68*_USD)
-Q.define("NZDc", "newzeelandcent", 0.01*_NZD)
+Q.define("NZD", "newzeelanddollar", 0.60*_EUR)
+Q.define("cNZD", "newzeelandcent", 0.01*_NZD)
 
 
 
