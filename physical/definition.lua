@@ -514,4 +514,42 @@ Q.define("ton_US", "uston", 20*_cwt_US)
 
 
 
+-- CURRENCIES
+-- **********
+-- Source: https://en.wikipedia.org/wiki/List_of_circulating_currencies
+-- Exchange rates from 7.3.2019
+
+Q.define("USD", "usdollar", _1)
+Q.define("USDc", "uscent", 0.01*_USD)
+
+Q.define("EUR", "euro", 1.12*_USD)
+Q.define("EURc", "eurocent", 0.01*_EUR)
+
+Q.define("JPY", "japaneseyen", 0.009*_USD)
+Q.define("JPYc", "japanesesen", 0.01*_JPY)
+
+Q.define("GBP", "poundsterling", 1.31*_USD)
+Q.define("GBPc", "poundsterlingpenny", 0.01*_GBP)
+
+Q.define("AUD", "australiandollar", 0.7*_USD)
+Q.define("AUDc", "australiancent", 0.01*_AUD)
+
+Q.define("CAD", "canadiandollar", 0.74*_USD)
+Q.define("CADc", "canadiancent", 0.01*_CAD)
+
+Q.define("CHF", "swissfranc", 0.99*_USD)
+Q.define("CHFc", "swissrappen", 0.01*_CHF)
+
+Q.define("CNY", "chineseyuan", 0.15*_USD)
+Q.define("CNYc", "chinesefen", 0.01*_CNY)
+
+Q.define("SEK", "swedishkrona", 0.11*_USD)
+Q.define("SEKc", "swedishoere", 0.01*_SEK)
+
+Q.define("NZD", "newzeelanddollar", 0.68*_USD)
+Q.define("NZDc", "newzeelandcent", 0.01*_NZD)
+
+
+
+
 

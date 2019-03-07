@@ -113,6 +113,7 @@ function Quantity.define(symbol, name, q, tobase, frombase)
 	return p
 end
 
+
 -- define a prefix
 function Quantity.definePrefix(symbol,name,factor)
 
@@ -163,8 +164,6 @@ function Quantity.addPrefix(prefixes, units)
 end
 
 
-
-
 -- Add two quantities
 function Quantity.__add(q1, q2)
 	
@@ -186,6 +185,7 @@ function Quantity.__add(q1, q2)
 	return 	p
 end
 
+
 -- subtract a dimension from another one
 function Quantity.__sub(q1, q2)
 
@@ -205,6 +205,7 @@ function Quantity.__sub(q1, q2)
 
 	return 	p
 end
+
 
 -- unary minus
 function Quantity.__unm(q)
@@ -336,8 +337,6 @@ function Quantity.__lt(q1,q2)
 end
 
 
-
-
 -- convert quantity to another unit
 function Quantity:to(q, usefunction)
 
@@ -392,9 +391,6 @@ function Quantity:to(q, usefunction)
 end
 
 
-
-
-
 -- convert quantity to a number
 function Quantity:__tonumber()
 	if type(self.value) == "number" then
@@ -409,6 +405,7 @@ end
 function Quantity:__tostring()
 	return tostring(self.value)..tostring(self.unit)
 end
+
 
 -- convert quantity to an siunitx expression
 function Quantity:tosiunitx(param,mode)
@@ -433,6 +430,7 @@ function Quantity:tosiunitx(param,mode)
 
 	error("Error: Unknown mode '"..tostring(mode).."'.")
 end
+
 
 -- check if this quantity is close to another one. r is the maximal relative deviation.
 function Quantity:isclose(q, r)
@@ -474,6 +472,7 @@ function Quantity.min(q,...)
     return Quantity.new(q)
 end
 
+
 -- maximum value
 function Quantity.max(q,...)
 	
@@ -501,6 +500,7 @@ function Quantity.abs(q)
 	end
 end
 
+
 -- square root
 function Quantity.sqrt(q)
 
@@ -510,6 +510,7 @@ function Quantity.sqrt(q)
 
 	return q^0.5
 end
+
 
 -- logarithm
 function Quantity.log(q, base)
@@ -593,6 +594,7 @@ function Quantity.sin(q)
 	return p
 end
 
+
 -- cosine
 function Quantity.cos(q)
 
@@ -614,6 +616,7 @@ function Quantity.cos(q)
 
 	return p
 end
+
 
 -- tangent
 function Quantity.tan(q)
@@ -660,6 +663,7 @@ function Quantity.asin(q)
 	return p
 end
 
+
 -- arcus cosine
 function Quantity.acos(q)
 
@@ -682,6 +686,7 @@ function Quantity.acos(q)
 	return p
 end
 
+
 -- arcus tangent
 function Quantity.atan(q)
 
@@ -703,7 +708,6 @@ function Quantity.atan(q)
 	
 	return p
 end
-
 
 
 -- HYPERBOLIC FUNCTIONS
@@ -731,6 +735,7 @@ function Quantity.sinh(q)
 	return p
 end
 
+
 -- hyperbolic cosine
 function Quantity.cosh(q)
 
@@ -752,6 +757,7 @@ function Quantity.cosh(q)
 	
 	return p
 end
+
 
 -- hyperbolic tangent
 function Quantity.tanh(q)
@@ -802,6 +808,7 @@ function Quantity.asinh(q)
 	return p
 end
 
+
 -- inverse hyperbolic cosine
 -- (1 < q)
 function Quantity.acosh(q)
@@ -824,6 +831,7 @@ function Quantity.acosh(q)
 	
 	return p
 end
+
 
 -- inverse hyperbolic tangent
 -- (-1 < q < 1)
@@ -849,7 +857,4 @@ function Quantity.atanh(q)
 end
 
 
-
-
 return Quantity
-

@@ -76,8 +76,10 @@ function Dimension.defineBase(symbol, name)
 
 	if index[name] ~= nil then
 		error("Error: Base dimension '"..name.."' does already exist.")
+
 	elseif index[symbol] ~= nil then
 		error("Error: Base dimension '"..symbol.."' does already exist.")
+
 	end
 
 	-- create new dimension
@@ -111,8 +113,10 @@ function Dimension.define(name, o)
 
 	if index[name] ~= nil then
 		error("Error. Dimension '"..name.."' is already defined.")
+
 	elseif getmetatable(o) ~= Dimension then
 		error("Error. Object in definition of '"..name.."' is no dimension.")
+
 	end
 
 	index[name] = o
@@ -134,9 +138,9 @@ end
 
 
 -- test if two dimensions are equal
-function Dimension.__eq(o1, o2)
+function Dimension.__eq(d1, d2)
 	for i=1, #Dimension._base do
-		if o1[i] ~= o2[i] then
+		if d1[i] ~= d2[i] then
 			return false
 		end
 	end
@@ -146,23 +150,23 @@ end
 
 
 -- add two dimensions
-function Dimension.__add(o1,o2)
+function Dimension.__add(d1,d2)
 	error("Error: Cannot add two dimension objects.")
 end
 
 
 -- subtract two dimensions
-function Dimension.__sub(o1,o2)
+function Dimension.__sub(d1,d2)
 	error("Error: Cannot subtract two dimension objects.")
 end
 
 
 -- multiply two dimensions
-function Dimension.__mul(o1,o2)
-	local d = Dimension.new(o1)
+function Dimension.__mul(d1,d2)
+	local d = Dimension.new(d1)
 
 	for i=1, #Dimension._base do
-		d[i] = o1[i] + o2[i]
+		d[i] = d1[i] + d2[i]
 	end
 
 	return d
@@ -170,16 +174,16 @@ end
 
 
 -- divide two dimensions
-function Dimension.__div(o1,o2)
-	local d = Dimension.new(o1)
+function Dimension.__div(d1,d2)
+	local d = Dimension.new(d1)
 
-	if type(o1) == "number" then
+	if type(d1) == "number" then
 		for i=1, #Dimension._base do
-			d[i] = 0 - o2[i]
+			d[i] = 0 - d2[i]
 		end
 	else
 		for i=1, #Dimension._base do
-			d[i] = o1[i] - o2[i]
+			d[i] = d1[i] - d2[i]
 		end
 	end
 
@@ -188,7 +192,7 @@ end
 
 
 -- raise a dimension to the power 
-function Dimension.__pow(o, n)
+function Dimension:__pow(n)
 	if type(n) ~= "number" then
 		error("Error: The exponent of the power operation has to be a number.")
 	end
@@ -196,7 +200,7 @@ function Dimension.__pow(o, n)
 	local d = Dimension.new()
 
 	for i=1, #Dimension._base do
-		d[i] = o[i] * n
+		d[i] = self[i] * n
 	end
 
 	return d
@@ -204,13 +208,13 @@ end
 
 
 -- convert dimension to a string
-function Dimension.__tostring(o)
+function Dimension:__tostring()
 
 	local result = {}
 
 	-- search for the name of the dimension
 	for name,d in pairs(Dimension._index) do
-		if d == o then
+		if d == self then
 			result[#result + 1] = name
 		end
 	end
@@ -222,11 +226,11 @@ function Dimension.__tostring(o)
 	-- assemble dimension from base dimensions
 	local base = Dimension._base
 	for i=1,#base do
-		if o[i] ~= 0 then
+		if self[i] ~= 0 then
 			local dim = "["..base[i].symbol.."]"
 
-			if o[i] ~= 1 then
-				dim = dim.."^"..o[i]
+			if self[i] ~= 1 then
+				dim = dim.."^"..self[i]
 			end
 
 			result[#result + 1]= dim
