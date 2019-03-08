@@ -524,32 +524,507 @@ Q.define("ton_US", "uston", 20*_cwt_US)
 -- Source: https://en.wikipedia.org/wiki/List_of_circulating_currencies
 -- Exchange rates from 7.3.2019, 21:00 UTC
 
-Q.define("USD", "usdollar", 0.89*_EUR)
-Q.define("cUSD", "uscent", 0.01*_USD)
+Q.define("AED", "uaedirham", 0.24*_EUR)
+Q.define("cAED", "uaefils", 0.01*_AED)
 
-Q.define("JPY", "japaneseyen", 0.008*_EUR)
-Q.define("cJPY", "japanesesen", 0.01*_JPY)
+Q.define("AFN", "afghanafghani", 0.012*_EUR)
+Q.define("cAFN", "afghanpul", 0.01*_AFN)
 
-Q.define("GBP", "britishpound", 1.17*_EUR)
-Q.define("cGBP", "britishpenny", 0.01*_GBP)
+Q.define("ALL", "albanianlek", 0.008*_EUR)
+Q.define("cALL", "albanianqindarke", 0.01*_ALL)
+
+Q.define("AMD", "armeniandram", 0.0018*_EUR)
+Q.define("cAMD", "armenianluma", 0.01*_AMD)
+
+Q.define("ANG", "netherlandsantilleanguilder", 0.49*_EUR)
+Q.define("cANG", "netherlandsantilleancent", 0.01*_ANG)
+
+Q.define("AOA", "angolankwanza", 0.0028*_EUR)
+Q.define("cAOA", "angolacentimo", 0.01*_AOA)
+
+Q.define("ARS", "argentinepeso", 0.021*_EUR)
+Q.define("cARS", "argentinecentavo", 0.01*_ARS)
 
 Q.define("AUD", "australiandollar", 0.63*_EUR)
 Q.define("cAUD", "australiancent", 0.01*_AUD)
 
+Q.define("AWG", "arubanflorin", 0.5*_EUR)
+Q.define("cAWG", "arubancent", 0.01*_AWG)
+
+Q.define("AZN", "azerbaijanimanat", 0.52*_EUR)
+Q.define("cAZN", "azerbaijaniqepik", 0.01*_AZN)
+
+
+
+Q.define("BAM", "bosnianmark", 0.51*_EUR)
+Q.define("cBAM", "bosnianfening", 0.01*_BAM)
+
+Q.define("BBD", "barbadiandollar", 0.44*_EUR)
+Q.define("cBBD", "barbadiancent", 0.01*_BBD)
+
+Q.define("BDT", "bangladeshitaka", 0.01*_EUR)
+Q.define("cBDT", "bangladeshipoisha", 0.01*_BDT)
+
+Q.define("BGN", "bulgarianlev", 0.51*_EUR)
+Q.define("cBGN", "bulgarianstotinka", 0.01*_BGN)
+
+Q.define("BHD", "bahrainidinar", 2.37*_EUR)
+Q.define("mBHD", "bahrainifils", 0.001*_BHD)
+
+Q.define("BIF", "burundianfranc", 0.00049*_EUR)
+Q.define("cBIF", "burundiancentime", 0.01*_BIF)
+
+Q.define("BMD", "bermudiandollar", 0.89*_EUR)
+Q.define("cBMD", "bermudiancent", 0.01*_BMD)
+
+Q.define("BND", "bruneidollar", 0.65*_EUR)
+Q.define("cBND", "bruneisen", 0.01*_BND)
+
+Q.define("BOB", "bolivianboliviano", 0.13*_EUR)
+Q.define("cBOB", "boliviancentavo", 0.01*_BOB)
+
+Q.define("BRL", "brazilianreal", 0.23*_EUR)
+Q.define("cBRL", "braziliancentavo", 0.01*_BRL)
+
+Q.define("BSD", "bahamiandollar", 0.88*_EUR)
+Q.define("cBSD", "bahamiancent", 0.01*_BSD)
+
+Q.define("BTN", "bhutanesengultrum", 0.013*_EUR)
+Q.define("cBTN", "bhutanesechetrum", 0.01*_BTN)
+
+Q.define("BWP", "botswanapula", 0.083*_EUR)
+Q.define("cBWP", "botswanathebe", 0.01*_BWP)
+
+Q.define("BYN", "belarusianruble", 0.41*_EUR)
+Q.define("cBYN", "belarusiankapyeyka", 0.01*_BYN)
+
+Q.define("BZD", "belizedollar", 0.44*_EUR)
+Q.define("cBZD", "belizecent", 0.01*_BZD)
+
+
+
 Q.define("CAD", "canadiandollar", 0.66*_EUR)
 Q.define("cCAD", "canadiancent", 0.01*_CAD)
+
+Q.define("CDF", "congolesefranc", 0.00054*_EUR)
+Q.define("cCDF", "congolesecentime", 0.01*_CDF)
 
 Q.define("CHF", "swissfranc", 0.88*_EUR)
 Q.define("cCHF", "swissrappen", 0.01*_CHF)
 
+Q.define("CLP", "chileanpeso", 0.0013*_EUR)
+Q.define("cCLP", "chileancentavo", 0.01*_CLP)
+
 Q.define("CNY", "chineseyuan", 0.13*_EUR)
 Q.define("cCNY", "chinesefen", 0.01*_CNY)
+
+Q.define("COP", "colombianpeso", 0.00028*_EUR)
+Q.define("cCOP", "colombiancentavo", 0.01*_COP)
+
+Q.define("CRC", "costaricancolon", 0.60*_EUR)
+Q.define("cCRC", "costaricancentimo", 0.01*_CRC)
+
+Q.define("CUC", "cubanconvertiblepeso", 0.88*_EUR)
+Q.define("cCUC", "cubanconvertiblecentavo", 0.01*_CUC)
+
+Q.define("CUP", "cubanpeso", 0.034*_EUR)
+Q.define("cCUP", "cubancentavo", 0.01*_CUP)
+
+Q.define("CVE", "capeverdeanescudo", 0.0091*_EUR)
+Q.define("cCVE", "capeverdeancentavo", 0.01*_CVE)
+
+Q.define("CZK", "czechkoruna", 0.039*_EUR)
+Q.define("cCZK", "czechhaler", 0.01*_CZK)
+
+
+
+Q.define("DJF", "djiboutianfranc", 0.005*_EUR)
+Q.define("cDJF", "djiboutiancentime", 0.01*_DJF)
+
+Q.define("DKK", "danishkrone", 0.13*_EUR)
+Q.define("cDKK", "danishore", 0.01*_DKK)
+
+Q.define("DOP", "dominicanpeso", 0.018*_EUR)
+Q.define("cDOP", "dominicancentavo", 0.01*_DOP)
+
+Q.define("DZD", "algeriandinar", 0.0075*_EUR)
+Q.define("cDZD", "algeriansanteem", 0.01*_DZD)
+
+
+
+Q.define("EGP", "egyptianpound", 0.051*_EUR)
+Q.define("cEGP", "egyptianpiastre", 0.01*_EGP)
+
+Q.define("ERN", "eritreannakfa", 0.059*_EUR)
+Q.define("cERN", "eritreancent", 0.01*_ERN)
+
+Q.define("ETB", "ethiopianbirr", 0.031*_EUR)
+Q.define("cETB", "ethiopiansantim", 0.01*_ETB)
+
+
+Q.define("FJD", "fijiandollar", 0.42*_EUR)
+Q.define("cFJD", "fijiancent", 0.01*_FJD)
+
+Q.define("FKP", "falklandislandspound", 1.17*_EUR)
+Q.define("cFKP", "falklandislandspenny", 0.01*_FKP)
+
+
+
+Q.define("GBP", "britishpound", 1.17*_EUR)
+Q.define("cGBP", "britishpenny", 0.01*_GBP)
+
+Q.define("GEL", "georgianlari", 0.33*_EUR)
+Q.define("cGEL", "georgiantetri", 0.01*_GEL)
+
+Q.define("GGP", "guernseypound", 1.17*_EUR)
+Q.define("cGGP", "guernseypenny", 0.01*_GGP)
+
+Q.define("GHS", "ghanaiancedi", 0.16*_EUR)
+Q.define("cGHS", "ghanaianpesewa", 0.01*_GHS)
+
+Q.define("GIP", "gibraltarpound", 1.17*_EUR)
+Q.define("cGIP", "gibraltarpenny", 0.01*_GIP)
+
+Q.define("GMD", "gambiandalasi", 0.018*_EUR)
+Q.define("cGMD", "gambianbutut", 0.01*_GMD)
+
+Q.define("GNF", "guineanfranc", 0.000097*_EUR)
+Q.define("cGNF", "guineancentime", 0.01*_GNF)
+
+Q.define("GTQ", "guatemalanquetzal", 0.11*_EUR)
+Q.define("cGTQ", "guatemalancentavo", 0.01*_GTQ)
+
+Q.define("GYD", "guyanesedollar", 0.0042*_EUR)
+Q.define("cGYD", "guyanesecent", 0.01*_GYD)
+
+
+
+Q.define("HKD", "hongkongdollar", 0.11*_EUR)
+Q.define("cHKD", "hongkongcent", 0.01*_HKD)
+
+Q.define("HNL", "hondurianlempira", 0.036*_EUR)
+Q.define("cHNL", "honduriancentavo", 0.01*_HNL)
+
+Q.define("HRK", "croatiankuna", 0.13*_EUR)
+Q.define("cHRK", "croatianlipa", 0.01*_HRK)
+
+Q.define("HTG", "haitiangourde", 0.011*_EUR)
+Q.define("cHTG", "haitiancentime", 0.01*_HTG)
+
+Q.define("HUF", "hungarianforint", 0.0032*_EUR)
+Q.define("cHUF", "hungarianfiller", 0.01*_HUF)
+
+
+
+Q.define("IDR", "indonesianrupiah", 0.000062*_EUR)
+Q.define("cIDR", "indonesiansen", 0.01*_IDR)
+
+Q.define("ILS", "israelinewshekel", 0.25*_EUR)
+Q.define("cILS", "israelinewagora", 0.01*_ILS)
+
+Q.define("IMP", "manxpound", 0.856*_EUR)
+Q.define("cIMP", "manxpenny", 0.01*_IMP)
+
+Q.define("INR", "indianrupee", 0.013*_EUR)
+Q.define("cINR", "indianpaisa", 0.01*_INR)
+
+Q.define("IQD", "iraqidinar", 0.00074*_EUR)
+Q.define("mIQD", "iraqifils", 0.001*_IQD)
+
+Q.define("IRR", "iranianrial", 0.000021*_EUR)
+Q.define("cIRR", "iraniandinar", 0.01*_IRR)
+
+Q.define("ISK", "icelandickrona", 0.0073*_EUR)
+Q.define("cISK", "icelandiceyrir", 0.01*_ISK)
+
+
+
+Q.define("JEP", "jerseypound", 0.856*_EUR)
+Q.define("cJEP", "jerseypenny", 0.01*_JEP)
+
+Q.define("JMD", "jamaicandollar", 0.0070*_EUR)
+Q.define("cJMD", "jamaicancent", 0.01*_JMD)
+
+Q.define("JOD", "jordaniandinar", 1.26*_EUR)
+Q.define("cJOD", "jordanianpiastre", 0.01*_JOD)
+
+Q.define("JPY", "japaneseyen", 0.008*_EUR)
+Q.define("cJPY", "japanesesen", 0.01*_JPY)
+
+
+
+Q.define("KES", "kenyanshilling", 0.0090*_EUR)
+Q.define("cKES", "kenyancent", 0.01*_KES)
+
+Q.define("KGS", "kyrgyzstanisom", 0.013*_EUR)
+Q.define("cKGS", "kyrgyzstanityiyn", 0.01*_KGS)
+
+Q.define("KHR", "cambodianriel", 0.00022*_EUR)
+Q.define("cKHR", "cambodiansen", 0.01*_KHR)
+
+Q.define("KID", "kiribatidollar", 0.00022*_EUR)
+Q.define("cKID", "kiribaticent", 0.01*_KID)
+
+Q.define("KMF", "comorianfranc", 0.0020*_EUR)
+Q.define("cKMF", "comoriancentime", 0.01*_KMF)
+
+Q.define("KPW", "northkoreanwon", 0.00099*_EUR)
+Q.define("cKPW", "northkoreanjeon", 0.01*_KPW)
+
+Q.define("KRW", "southkoreanwon", 0.00079*_EUR)
+Q.define("cKRW", "southkoreanjeon", 0.01*_KRW)
+
+Q.define("KWD", "kuwaitidinar", 0.00079*_EUR)
+Q.define("mKWD", "kuwaitifils", 0.001*_KWD)
+
+Q.define("KYD", "caymanislandsdollar", 1.06*_EUR)
+Q.define("cKYD", "caymanislandscent", 0.01*_KYD)
+
+Q.define("KZT", "kazakhstanitenge", 0.0024*_EUR)
+Q.define("cKZT", "kazakhstanitiin", 0.01*_KZT)
+
+
+
+Q.define("LAK", "laokip", 0.00010*_EUR)
+Q.define("cLAK", "laoatt", 0.01*_LAK)
+
+Q.define("LBP", "lebanesepound", 0.00059*_EUR)
+Q.define("cLBP", "lebanesepiastre", 0.01*_LBP)
+
+Q.define("LKR", "srilankanrupee", 0.0050*_EUR)
+Q.define("cLKR", "srilankancent", 0.01*_LKR)
+
+Q.define("LRD", "liberiandollar", 0.0055*_EUR)
+Q.define("cLRD", "liberiancent", 0.01*_LRD)
+
+Q.define("LYD", "libyandinar", 0.0055*_EUR)
+Q.define("mLYD", "libyandirham", 0.001*_LYD)
+
+
+
+Q.define("MAD", "moroccandirham", 0.092*_EUR)
+Q.define("cMAD", "moroccancentime", 0.01*_MAD)
+
+Q.define("MDL", "moldovanleu", 0.052*_EUR)
+Q.define("cMDL", "moldovancentime", 0.01*_MDL)
+
+Q.define("MGA", "malagasyariary", 0.00025*_EUR)
+Q.define("iMGA", "malagasyiraimbilanja", 0.2*_MGA)
+
+Q.define("MKD", "macedoniandenar", 0.016*_EUR)
+Q.define("cMKD", "macedoniandeni", 0.01*_MKD)
+
+Q.define("MMK", "burmesekyat", 0.00058*_EUR)
+Q.define("cMMK", "burmesepya", 0.01*_MMK)
+
+Q.define("MNT", "mongoliantogrog", 0.00034*_EUR)
+Q.define("cMNT", "mongolianmongo", 0.01*_MNT)
+
+Q.define("MOP", "macanesepataca", 0.11*_EUR)
+Q.define("cMOP", "macaneseavo", 0.01*_MOP)
+
+Q.define("MRU", "mauritanianouguiya", 0.026*_EUR)
+Q.define("kMRU", "mauritaniankhoums", 0.2*_MRU)
+
+Q.define("MUR", "mauritianrupee", 0.026*_EUR)
+Q.define("cMUR", "mauritiancent", 0.01*_MUR)
+
+Q.define("MVR", "maldivianrufiyaa", 0.058*_EUR)
+Q.define("cMVR", "maldivianlaari", 0.01*_MVR)
+
+Q.define("MWK", "malawiankwacha", 0.0012*_EUR)
+Q.define("cMWK", "malawiantambala", 0.01*_MWK)
+
+Q.define("MXN", "mexicanpeso", 0.046*_EUR)
+Q.define("cMXN", "mexicancentavo", 0.01*_MXN)
+
+Q.define("MYR", "malaysianringgit", 0.22*_EUR)
+Q.define("cMYR", "malaysiansen", 0.01*_MYR)
+
+Q.define("MZN", "mozambicanmetical", 0.014*_EUR)
+Q.define("cMZN", "mozambicancentavo", 0.01*_MZN)
+
+
+
+Q.define("NAD", "namibiandollar", 0.063*_EUR)
+Q.define("cNAD", "namibiancent", 0.01*_NAD)
+
+Q.define("NGN", "nigeriannaira", 0.0024*_EUR)
+Q.define("cNGN", "nigeriankobo", 0.01*_NGN)
+
+Q.define("NIO", "nicaraguancordoba", 0.027*_EUR)
+Q.define("cNIO", "nicaraguancentavo", 0.01*_NIO)
+
+Q.define("NOK", "norwegiankrone", 0.1*_EUR)
+Q.define("cNOK", "norwegianore", 0.01*_NOK)
+
+Q.define("NPR", "nepaleserupee", 0.0079*_EUR)
+Q.define("cNPR", "nepalesepaisa", 0.01*_NPR)
+
+Q.define("NZD", "newzealanddollar", 0.61*_EUR)
+Q.define("cNZD", "newzealandcent", 0.01*_NZD)
+
+
+
+Q.define("OMR", "omanirial", 2.32*_EUR)
+Q.define("mNZD", "omanibaisa", 0.001*_NZD)
+
+
+
+Q.define("PAB", "panamanianbalboa", 0.89*_EUR)
+Q.define("cPAB", "panamaniancentesimo", 0.01*_PAB)
+
+Q.define("PEN", "peruviansol", 0.27*_EUR)
+Q.define("cPEN", "peruviansolcentimo", 0.01*_PEN)
+
+Q.define("PGK", "papauanewguineankina", 0.26*_EUR)
+Q.define("cPGK", "papauanewguineantoea", 0.01*_PGK)
+
+Q.define("PHP", "philippinepeso", 0.017*_EUR)
+Q.define("cPHP", "philippinesentimo", 0.01*_PHP)
+
+Q.define("PKR", "pakistanirupee", 0.0064*_EUR)
+Q.define("cPKR", "pakistanipaisa", 0.01*_PKR)
+
+Q.define("PLN", "polishzloty", 0.23*_EUR)
+Q.define("cPLN", "polishgrosz", 0.01*_PLN)
+
+Q.define("PRB", "transnistrianruble", 0.055*_EUR)
+Q.define("cPRB", "transnistriankopek", 0.01*_PRB)
+
+Q.define("PYG", "paraguayanguarani", 0.00014*_EUR)
+Q.define("cPYG", "paraguayancentimo", 0.01*_PYG)
+
+
+
+Q.define("QAR", "qataririyal", 0.24*_EUR)
+Q.define("cQAR", "qataridirham", 0.01*_QAR)
+
+
+
+Q.define("RON", "romanianleu", 0.21*_EUR)
+Q.define("cRON", "romanianban", 0.01*_RON)
+
+Q.define("RSD", "serbiandinar", 0.0085*_EUR)
+Q.define("cRSD", "serbianpara", 0.01*_RSD)
+
+Q.define("RUB", "russianruble", 0.013*_EUR)
+Q.define("cRUB", "russiankopek", 0.01*_RUB)
+
+Q.define("RWF", "rwandanfranc", 0.00098*_EUR)
+Q.define("cRWF", "rwandancentime", 0.01*_RWF)
+
+
+
+Q.define("SAR", "saudiriyal", 0.24*_EUR)
+Q.define("cSAR", "saudihalala", 0.01*_SAR)
+
+Q.define("SBD", "solomonislandsdollar", 0.11*_EUR)
+Q.define("cSBD", "solomonislandscent", 0.01*_SBD)
+
+Q.define("SCR", "seychelloisrupee", 0.065*_EUR)
+Q.define("cSCR", "seychelloiscent", 0.01*_SCR)
+
+Q.define("SDG", "sudanesepound", 0.019*_EUR)
+Q.define("cSDG", "sudanesepiastre", 0.01*_SDG)
 
 Q.define("SEK", "swedishkrona", 0.094*_EUR)
 Q.define("cSEK", "swedishoere", 0.01*_SEK)
 
-Q.define("NZD", "newzealanddollar", 0.60*_EUR)
-Q.define("cNZD", "newzealandcent", 0.01*_NZD)
+Q.define("SGD", "singaporedollar", 0.66*_EUR)
+Q.define("cSGD", "singaporecent", 0.01*_SGD)
+
+Q.define("SHP", "sainthelenapound", 0.86*_EUR)
+Q.define("cSHP", "sainthelenapenny", 0.01*_SHP)
+
+Q.define("SLL", "sierraleoneanleone", 0.00010*_EUR)
+Q.define("cSLL", "sierraleoneancent", 0.01*_SLL)
+
+Q.define("SLS", "somalilandshilling", 0.13*_EUR)
+Q.define("cSLS", "somalilandcent", 0.01*_SLS)
+
+Q.define("SOS", "somalishilling", 0.0015*_EUR)
+Q.define("cSOS", "somalicent", 0.01*_SOS)
+
+Q.define("SRD", "surinamesedollar", 0.12*_EUR)
+Q.define("cSRD", "surinamesecent", 0.01*_SRD)
+
+Q.define("SSP", "southsudanesepound", 0.0068*_EUR)
+Q.define("cSSP", "southsudanesepiastre", 0.01*_SSP)
+
+Q.define("STN", "saotomeandprincipedobra", 0.04*_EUR)
+Q.define("cSTN", "saotomeandprincipecentimo", 0.01*_SSP)
+
+Q.define("SYP", "syrianpound", 0.0017*_EUR)
+Q.define("cSYP", "syrianpiastre", 0.01*_SYP)
+
+Q.define("SZL", "swazililangeni", 0.062*_EUR)
+Q.define("cSZL", "swazicent", 0.01*_SZL)
+
+
+
+Q.define("THB", "thaibaht", 0.028*_EUR)
+Q.define("cTHB", "thaisatang", 0.01*_THB)
+
+Q.define("TJS", "tajikistanisomoni", 0.093*_EUR)
+Q.define("cTJS", "tajikistanidiram", 0.01*_TJS)
+
+Q.define("TMT", "turkmenistanimanat", 0.25*_EUR)
+Q.define("cTMT", "turkmenistanitennesi", 0.01*_TMT)
+
+Q.define("TOP", "tonganpaanga", 0.397*_EUR)
+Q.define("cTOP", "tonganseniti", 0.01*_TOP)
+
+Q.define("TRY", "turkishlira", 0.16*_EUR)
+Q.define("cTRY", "turkishkurus", 0.01*_TRY)
+
+Q.define("TTD", "trinidadandtobagodollar", 0.13*_EUR)
+Q.define("cTTD", "trinidadandtobagocent", 0.01*_TTD)
+
+Q.define("TVD", "tuvaluandollar", 1.597*_EUR)
+Q.define("cTVD", "tuvaluancent", 0.01*_TVD)
+
+Q.define("TWD", "newtaiwandollar", 0.029*_EUR)
+Q.define("cTWD", "newtaiwancent", 0.01*_TWD)
+
+Q.define("TZS", "tanzanianshilling", 0.00038*_EUR)
+Q.define("cTZS", "tanzaniancent", 0.01*_TZS)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Q.define("USD", "usdollar", 0.89*_EUR)
+Q.define("cUSD", "uscent", 0.01*_USD)
+
+Q.define("XAF", "centralafricanfranc", 0.0015*_EUR)
+Q.define("cXAF", "centralafricancentime", 0.01*_XAF)
+
+Q.define("XCD", "easterncaribbeandollar", 0.33*_EUR)
+Q.define("cXCD", "easterncaribbeancent", 0.01*_XCD)
+
+Q.define("XOF", "westafricanfranc", 0.0015*_EUR)
+Q.define("cXOF", "westafricancentime", 0.01*_XOF)
+
+
+
+
+
+
+
+
 
 
 
