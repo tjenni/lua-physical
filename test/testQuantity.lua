@@ -122,8 +122,11 @@ function TestQuantity:testAdd()
    lu.assertEquals( l.value, 15 )
    lu.assertEquals( l.dimension, _m.dimension )
 
-   lu.assertError( addError )
+   local msg = "Error: Cannot add '5 * _m' to '10 * _s', because they have different dimensions."
+   lu.assertErrorMsgContains(msg, TestQuantity.addError )
 end
+
+
 
 
 function TestQuantity.subtractError()
@@ -134,7 +137,8 @@ function TestQuantity:testSubtract()
    lu.assertEquals( l.value, -10 )
    lu.assertEquals( l.dimension, _m.dimension )
 
-   lu.assertError( subtractError )
+   local msg = "Error: Cannot subtract '10 * _s' from '5 * _m', because they have different dimensions."
+   lu.assertErrorMsgContains(msg, TestQuantity.subtractError )
 end
 
 

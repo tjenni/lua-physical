@@ -1291,6 +1291,7 @@ function M.assertErrorMsgEquals( expectedMsg, func, ... )
     if no_error then
         failure( 'No error generated when calling function but expected error: "'..expectedMsg..'"', 2 )
     end
+
     if error_msg ~= expectedMsg then
         error_msg, expectedMsg = prettystrPairs(error_msg, expectedMsg)
         fail_fmt(2, 'Exact error message expected: %s\nError message received: %s\n',

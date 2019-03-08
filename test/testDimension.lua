@@ -106,13 +106,13 @@ function TestDimension:testDivide()
    local d1 = D("Force")
    local d2 = D("Energy")
 
-   lu.assertEquals( d1, {1,1,-2,0,0,0,0,0})
-   lu.assertEquals( d2, {2,1,-2,0,0,0,0,0})
+   lu.assertEquals( d1, {1,1,-2,0,0,0,0,0,0})
+   lu.assertEquals( d2, {2,1,-2,0,0,0,0,0,0})
    
    local d3 = d1 / d2
    local d4 = d2 / d1
 
-   lu.assertEquals( d3, {-1,0,0,0,0,0,0,0})
+   lu.assertEquals( d3, {-1,0,0,0,0,0,0,0,0})
    lu.assertNotEquals( d3, d4)
 end
 

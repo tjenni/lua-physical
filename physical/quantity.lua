@@ -56,13 +56,21 @@ function Quantity.new(q)
 	if getmetatable(q) == Quantity then
 		p.dimension = q.dimension
 		p.value = q.value
-		p.unit = q.unit
+		p.prefixfactor = q.prefixfactor
+		p.basefactor = q.basefactor
+		p.tobase = q.tobase
+		p.frombase = q.frombase
+		p.unit = U(q.unit)
 
 	-- create a dimensionless Quantity
 	else
 		p.dimension = D.new()
 		p.value = q or 1
-		p.unit = U.new()
+		p.prefixfactor = 1
+		p.basefactor = 1
+		p.tobase = nil
+		p.frombase = nil
+		p.unit = U()
 	end
 
 	return p
@@ -102,11 +110,13 @@ function Quantity.define(symbol, name, q, tobase, frombase)
 		error("Error: No quantity given in the definition of '"..name.."'.")
 	end
 
-	local p = Quantity.new() 
+	local p = Quantity.new(q)
+	
 	p.value = 1
-	p.dimension = q.dimension
-	p.unit = U.new(symbol, name, q.unit, tobase, frombase) 
-	p.unit.basefactor = p.unit.basefactor * q.value
+	p.basefactor = p.basefactor * q.value
+	p.tobase = tobase
+	p.frombase = frombase
+	p.unit = U.new(symbol, name)
 
 	rawset(_G, "_"..symbol, p)
 
@@ -132,33 +142,28 @@ end
 
 
 -- create prefixed versions of the given units
-function Quantity.addPrefix(prefixes, units)
-
+function Quantity.addPrefix(prefixes, qs)
+	
 	-- todo: what if prefixes and units are no lists?
 
 	for i=1,#prefixes do
 		local prefix = Quantity._prefixes[prefixes[i]]
 
-		for j=1,#units do
-			local unit = units[j]
+		for j=1,#qs do
+			local q = qs[j]
 
-			local q = Quantity.new(unit)
-
-			q.value = unit.value
-			q.dimension = unit.dimension
-			q.unit = U.new(unit.unit.symbol, unit.unit.name)
-			q.unit.basefactor = unit.unit.basefactor
-			q.unit.prefix = prefix
-			q.unit.prefixfactor = prefix.factor
+			local p = Quantity.new(q)
+			p.unit = U.new(q.unit.symbol, q.unit.name, prefix.symbol, prefix.name)
+			p.prefixfactor = prefix.factor
 
 			-- assert that unit does not exist
-			local symbol = "_"..prefix.symbol..unit.unit.symbol
+			local symbol = "_"..prefix.symbol..q.unit.symbol
 			if rawget(_G,symbol) ~= nil then
 				error("Error: Cannot create prefixed Quantity, because '"..symbol.."' does already exist.")
 			end
 
 			-- set unit as a global variable
-			rawset(_G, symbol, q)
+			rawset(_G, symbol, p)
 		end
 	end
 end
@@ -175,7 +180,7 @@ function Quantity.__add(q1, q2)
 	end
 
 	if q1.dimension ~= q2.dimension then
-		error("Error: Cannot add "..q2.." to "..q1..".")
+		error("Error: Cannot add '"..tostring(q1).."' to '"..tostring(q2).."', because they have different dimensions.")
 	end
 
 	-- convert o1 to q2 units
@@ -191,12 +196,13 @@ function Quantity.__sub(q1, q2)
 
 	if getmetatable(q1) ~= Quantity then
 		q1 = Quantity.new(q1)
-	elseif getmetatable(q2) ~= Quantity then
+	end
+	if getmetatable(q2) ~= Quantity then
 		q2 = Quantity.new(q2)
 	end
 
 	if q1.dimension ~= q2.dimension then
-		error("Error: Cannot subtract "..q2.." from "..q1..".")
+		error("Error: Cannot subtract '"..tostring(q2).."' from '"..tostring(q1).."', because they have different dimensions.")
 	end
 
 	-- convert q1 to q2 units
@@ -220,23 +226,26 @@ function Quantity.__mul(q1, q2)
 
 	if getmetatable(q1) ~= Quantity then
 		q1 = Quantity.new(q1)
-
-	elseif getmetatable(q2) ~= Quantity then
+	end
+	if getmetatable(q2) ~= Quantity then
 		q2 = Quantity.new(q2)
 	end
 	
 	local p = Quantity.new()
-	p.dimension = q1.dimension * q2.dimension
-	p.unit = q1.unit * q2.unit
-	p.value = q1.value * q2.value
 
-	if q1.unit.tobase ~= nil and q2.dimension:iszero() then
-		p.unit.tobase = q1.unit.tobase
-		p.unit.frombase = q1.unit.frombase
+	p.dimension = q1.dimension * q2.dimension
+	p.value = q1.value * q2.value
+	p.prefixfactor = q1.prefixfactor * q2.prefixfactor
+	p.basefactor = q1.basefactor * q2.basefactor
+	p.unit = q1.unit * q2.unit
+
+	if q1.tobase ~= nil and q2.dimension:iszero() then
+		p.tobase = q1.tobase
+		p.frombase = q1.frombase
 		
-	elseif q2.unit.tobase ~= nil and q1.dimension:iszero() then
-		p.unit.tobase = q2.unit.tobase
-		p.unit.frombase = q2.unit.frombase
+	elseif q2.tobase ~= nil and q1.dimension:iszero() then
+		p.tobase = q2.tobase
+		p.frombase = q2.frombase
 
 	end
 
@@ -256,12 +265,14 @@ function Quantity.__div(q1, q2)
 
 	local p = Quantity.new()
 	p.dimension = q1.dimension / q2.dimension
-	p.unit = q1.unit / q2.unit
 	p.value = q1.value / q2.value
+	p.prefixfactor = q1.prefixfactor / q2.prefixfactor
+	p.basefactor = q1.basefactor / q2.basefactor
+	p.unit = q1.unit / q2.unit
 
-	if q1.unit.tobase ~= nil and q2.dimension:iszero() then
-		p.unit.tobase = q1.unit.tobase
-		p.unit.frombase = q1.unit.frombase
+	if q1.tobase ~= nil and q2.dimension:iszero() then
+		p.tobase = q1.tobase
+		p.frombase = q1.frombase
 	end
 
 	return p
@@ -278,16 +289,18 @@ function Quantity.__pow(q1,q2)
 	end
 
 	if not q2.dimension:iszero() then
-		error("Error: Cannot take the power, because the exponent "..q2.." is not dimensionless.")
+		error("Error: Cannot take the power of '"..tostring(q1).."', because the exponent '"..tostring(q2).."' is not dimensionless.")
 	end
 
 	local p = Quantity.new()
 	local e = q2:to()
 
 	p.value = q1.value^e.value
-
+	
 	e = e:__tonumber()
 	p.dimension = q1.dimension^e
+	p.prefixfactor = q1.prefixfactor^e
+	p.basefactor = q1.basefactor^e
 	p.unit = q1.unit^e
 	
 	return p
@@ -307,13 +320,12 @@ function Quantity.__eq(q1,q2)
 
 	if p.value ~= q2.value then
 		return false
-
 	elseif p.dimension ~= q2.dimension then
 		return false
-
-	elseif p.unit ~= q2.unit then
+	elseif p.prefixfactor ~= q2.prefixfactor then
 		return false
-
+	elseif p.basefactor ~= q2.basefactor then
+		return false
 	end
 
 	return true
@@ -329,8 +341,8 @@ function Quantity.__lt(q1,q2)
 		q2 = Quantity.new(q2)
 	end
 
-	if q1.unit.dimension ~= q2.unit.dimension then
-		error("Error: Cannot compare "..q1.." to "..q2..".")
+	if q1.dimension ~= q2.dimension then
+		error("Error: Cannot compare '"..tostring(q1).."' to '"..tostring(q2).."', because they have different dimensions.")
 	end
 
 	return q1:to().value < q2:to().value
@@ -346,13 +358,13 @@ function Quantity:to(q, usefunction)
 
 	-- convert to base units
 	p.dimension = self.dimension
-	p.value = self.value * self.unit.prefixfactor
-	
+	p.value = self.value * self.prefixfactor
+
 	-- call convertion function
-	if type(self.unit.tobase) == "function" and usefunction then
-		p = self.unit.tobase(p)
+	if type(self.tobase) == "function" and usefunction then
+		p = self.tobase(p)
 	else
-		p.value = p.value * self.unit.basefactor
+		p.value = p.value * self.basefactor
 	end
 
 	-- convert to target units
@@ -362,18 +374,22 @@ function Quantity:to(q, usefunction)
 		end
 
 		if self.dimension ~= q.dimension then
-			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(q).."'.")
+			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(q).."', because they have different dimensions.")
 		end
 
 		-- call convertion function
-		if type(q.unit.frombase) == "function" and usefunction then
-			p = q.unit.frombase(p)
+		if type(q.frombase) == "function" and usefunction then
+			p = q.frombase(p)
 		else
-			p.value = p.value / q.unit.basefactor
+			p.value = p.value / q.basefactor
 		end
 
-		p.value = p.value / q.unit.prefixfactor
-		p.unit = q.unit
+		p.value = p.value / q.prefixfactor
+		p.basefactor = q.basefactor
+		p.prefixfactor = q.prefixfactor
+		p.tobase = q.tobase
+		p.frombase = q.frombase
+		p.unit = U(q.unit)
 	
 	-- convert to base units
 	else
@@ -426,9 +442,10 @@ function Quantity:tosiunitx(param,mode)
 	elseif mode == 2 then
 		return "\\si"..param.."{"..self.unit:tosiunitx().."}"
 
+	else
+		error("Error: Unknown mode '"..tostring(mode).."'.")
 	end
 
-	error("Error: Unknown mode '"..tostring(mode).."'.")
 end
 
 
@@ -444,7 +461,7 @@ function Quantity:isclose(q, r)
 	end
 
 	if self.dimension ~= q.dimension then
-		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q).."'.")
+		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q)..", because they have different dimensions.")
 	end
 	if not r.dimension:iszero() then
 		error("Error. The argument '"..tostring(r).."' of the isclose function is not unitless.")
