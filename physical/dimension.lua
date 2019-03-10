@@ -151,13 +151,13 @@ end
 
 -- add two dimensions
 function Dimension.__add(d1,d2)
-	error("Error: Cannot add two dimension objects.")
+	error("Error: Cannot add dimension objects.")
 end
 
 
 -- subtract two dimensions
 function Dimension.__sub(d1,d2)
-	error("Error: Cannot subtract two dimension objects.")
+	error("Error: Cannot subtract dimension objects.")
 end
 
 

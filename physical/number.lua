@@ -220,7 +220,7 @@ function Number:toPlusMinusNotation(format)
 			str = str.."e"..e
 		end
 	else
-		error("Unknown number format.")
+		error("Unknown number format: '"..format.."'")
 	end
 
 	return str
@@ -270,7 +270,7 @@ function Number:toParenthesisNotation(format)
 		end
 
 	else
-		error("Unknown number format.")
+		error("Unknown number format: '"..format.."'")
 	end
 
 	return str
@@ -302,7 +302,7 @@ function Number:toOmitUncertaintyNotation(format)
 		end
 
 	else
-		error("Unknown number format.")
+		error("Unknown number format: '"..format.."'")
 	end
 
 	return str

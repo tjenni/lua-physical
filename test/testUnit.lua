@@ -83,7 +83,7 @@ end
 
 function TestUnit:testNewDerivedUnit()
    local _m = U.new("m","meter")
-   local _m2 = U.new("m2","squaremeter", _m*_m)
+   local _m2 = U.new("m2","squaremeter")
 
    lu.assertEquals(_m2.symbol, "m2")
    lu.assertEquals(_m2.name, "squaremeter")
@@ -91,14 +91,5 @@ function TestUnit:testNewDerivedUnit()
    lu.assertEquals(_m2._term[1][1][2], 1)
 end
 
-function TestUnit:testNewDerivedUnit()
-   local _m = U.new("m","meter")
-   local _m2 = U.new("m2","squaremeter", _m*_m)
-
-   lu.assertEquals(_m2.symbol, "m2")
-   lu.assertEquals(_m2.name, "squaremeter")
-   lu.assertEquals(_m2._term[1][1][1], _m2)
-   lu.assertEquals(_m2._term[1][1][2], 1)
-end
 
 return TestUnit

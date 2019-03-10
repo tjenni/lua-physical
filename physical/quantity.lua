@@ -143,7 +143,7 @@ end
 
 -- create prefixed versions of the given units
 function Quantity.addPrefix(prefixes, qs)
-
+	
 	-- todo: what if prefixes and units are no lists?
 
 	for i=1,#prefixes do
@@ -153,9 +153,7 @@ function Quantity.addPrefix(prefixes, qs)
 			local q = qs[j]
 
 			local p = Quantity.new(q)
-
-			p.unit = U.new(q.unit.symbol, q.unit.name)
-			p.unit.prefix = prefix
+			p.unit = U.new(q.unit.symbol, q.unit.name, prefix.symbol, prefix.name)
 			p.prefixfactor = prefix.factor
 
 			-- assert that unit does not exist
@@ -182,7 +180,7 @@ function Quantity.__add(q1, q2)
 	end
 
 	if q1.dimension ~= q2.dimension then
-		error("Error: Cannot add "..q2.." to "..q1..".")
+		error("Error: Cannot add '"..tostring(q1).."' to '"..tostring(q2).."', because they have different dimensions.")
 	end
 
 	-- convert o1 to q2 units
@@ -198,12 +196,13 @@ function Quantity.__sub(q1, q2)
 
 	if getmetatable(q1) ~= Quantity then
 		q1 = Quantity.new(q1)
-	elseif getmetatable(q2) ~= Quantity then
+	end
+	if getmetatable(q2) ~= Quantity then
 		q2 = Quantity.new(q2)
 	end
 
 	if q1.dimension ~= q2.dimension then
-		error("Error: Cannot subtract "..q2.." from "..q1..".")
+		error("Error: Cannot subtract '"..tostring(q2).."' from '"..tostring(q1).."', because they have different dimensions.")
 	end
 
 	-- convert q1 to q2 units
@@ -227,12 +226,13 @@ function Quantity.__mul(q1, q2)
 
 	if getmetatable(q1) ~= Quantity then
 		q1 = Quantity.new(q1)
-
-	elseif getmetatable(q2) ~= Quantity then
+	end
+	if getmetatable(q2) ~= Quantity then
 		q2 = Quantity.new(q2)
 	end
 	
 	local p = Quantity.new()
+
 	p.dimension = q1.dimension * q2.dimension
 	p.value = q1.value * q2.value
 	p.prefixfactor = q1.prefixfactor * q2.prefixfactor
@@ -289,7 +289,7 @@ function Quantity.__pow(q1,q2)
 	end
 
 	if not q2.dimension:iszero() then
-		error("Error: Cannot take the power, because the exponent "..q2.." is not dimensionless.")
+		error("Error: Cannot take the power of '"..tostring(q1).."', because the exponent '"..tostring(q2).."' is not dimensionless.")
 	end
 
 	local p = Quantity.new()
@@ -320,16 +320,12 @@ function Quantity.__eq(q1,q2)
 
 	if p.value ~= q2.value then
 		return false
-
 	elseif p.dimension ~= q2.dimension then
 		return false
-
 	elseif p.prefixfactor ~= q2.prefixfactor then
 		return false
-
 	elseif p.basefactor ~= q2.basefactor then
 		return false
-
 	end
 
 	return true
@@ -346,7 +342,7 @@ function Quantity.__lt(q1,q2)
 	end
 
 	if q1.dimension ~= q2.dimension then
-		error("Error: Cannot compare "..q1.." to "..q2..".")
+		error("Error: Cannot compare '"..tostring(q1).."' to '"..tostring(q2).."', because they have different dimensions.")
 	end
 
 	return q1:to().value < q2:to().value
@@ -378,7 +374,7 @@ function Quantity:to(q, usefunction)
 		end
 
 		if self.dimension ~= q.dimension then
-			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(q).."'.")
+			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(q).."', because they have different dimensions.")
 		end
 
 		-- call convertion function
@@ -446,9 +442,10 @@ function Quantity:tosiunitx(param,mode)
 	elseif mode == 2 then
 		return "\\si"..param.."{"..self.unit:tosiunitx().."}"
 
+	else
+		error("Error: Unknown mode '"..tostring(mode).."'.")
 	end
 
-	error("Error: Unknown mode '"..tostring(mode).."'.")
 end
 
 
@@ -464,7 +461,7 @@ function Quantity:isclose(q, r)
 	end
 
 	if self.dimension ~= q.dimension then
-		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q).."'.")
+		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q)..", because they have different dimensions.")
 	end
 	if not r.dimension:iszero() then
 		error("Error. The argument '"..tostring(r).."' of the isclose function is not unitless.")

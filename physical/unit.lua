@@ -43,20 +43,42 @@ function Unit.new(...)
 	local u = {}
 	setmetatable(u, Unit)
 
+	-- Unit.new()
+	if #arg == 0 then
+		u._term = {{},{}}
+		u.prefixsymbol = nil
+		u.prefixname = nil
+
 	-- copy constructor
-	if #arg == 1 then
+	elseif #arg == 1 then
 		local o = arg[1]
+
+		-- check if given object is a unit
+		if getmetatable(o) ~= Unit then
+			error("Error: Cannot create a copy of the object, because it's not a unit.")
+		end
+
+		u.prefixsymbol = o.prefixsymbol
+		u.prefixname = o.prefixname
 		u._term = o._term
 
-	-- Unit.new(symbol, name, o)
+	-- Unit.new(symbol, name)
+	elseif #arg == 2 then
+		u.symbol = arg[1]
+		u.name = arg[2]
+		u._term = {{{u,1}},{}}
+
+	-- Unit.new(symbol, name, prefixsymbol, prefixname)
+	elseif #arg == 4 then
+		u.symbol = arg[1]
+		u.name = arg[2]
+		u.prefixsymbol = arg[3]
+		u.prefixname = arg[4]
+		u._term = {{{u,1}},{}}
+
 	else
-		if #arg > 1 then
-			u.symbol = arg[1]
-			u.name = arg[2]
-			u._term = {{{u,1}},{}}
-		else
-			u._term = {{},{}}
-		end
+		error("Wrong number of arguments. Cannot create the unit.")
+
 	end
 
 	return u
@@ -123,8 +145,6 @@ function Unit:_append(u, inversed)
 	end
 end
 
-
-
 -- convert quantity to a string
 function Unit:__tostring()
 
@@ -143,8 +163,8 @@ function Unit:__tostring()
 
 				local s = "_"
 
-				if unit[1].prefix ~= nil then
-					s = s..unit[1].prefix.symbol
+				if unit[1].prefixsymbol ~= nil then
+					s = s..unit[1].prefixsymbol
 				end
 
 				if symbol ~= nil then
@@ -185,7 +205,6 @@ end
 -- convert the unit to a unit string which can be read from the latex package siunitx.
 function Unit:tosiunitx()
 
-	-- assemble unit strings
 	local s = ""
 
 	for i=1,2 do
@@ -201,8 +220,8 @@ function Unit:tosiunitx()
 					s = s.."\\per"
 				end
 
-				if unit[1].prefix ~= nil then
-					s = s.."\\"..unit[1].prefix.name
+				if unit[1].prefixname ~= nil then
+					s = s.."\\"..unit[1].prefixname
 				end
 
 				s = s.."\\"..unit[1].name
