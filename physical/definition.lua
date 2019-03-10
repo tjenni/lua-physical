@@ -538,7 +538,7 @@ function defineCurrency(iso,prefix,name,unit,minorname,minorvalue)
 	end
 end
 
--- Exchange rates from fixer.io, 03/08/19 - 14:29:06
+-- Exchange rates 03/08/19 - 14:29:06
 defineCurrency("AFN", "Afghan", "Afghani", 0.01191315543188*_EUR, "Pul", 0.01)
 defineCurrency("ALL", "Albanian", "Lek", 0.00804192040802*_EUR, nil, nil)
 defineCurrency("AMD", "Armenian", "Dram", 0.0018244867368052*_EUR, "Luma", 0.01)
