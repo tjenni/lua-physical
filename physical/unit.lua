@@ -1,5 +1,7 @@
 --[[
-This file contains the unit class.
+This file contains the unit class. This class is a 
+helper class for the quantity class. It manages the 
+prefix and base factors and the unit terms.
 
 Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
 

@@ -64,7 +64,7 @@ function Quantity.new(q)
 		p.value = q or 1
 		p.unit = U.new()
 	end
-
+	
 	return p
 end
 
@@ -146,6 +146,7 @@ function Quantity.addPrefix(prefixes, units)
 
 			q.value = unit.value
 			q.dimension = unit.dimension
+
 			q.unit = U.new(unit.unit.symbol, unit.unit.name)
 			q.unit.basefactor = unit.unit.basefactor
 			q.unit.prefix = prefix
@@ -329,7 +330,7 @@ function Quantity.__lt(q1,q2)
 		q2 = Quantity.new(q2)
 	end
 
-	if q1.unit.dimension ~= q2.unit.dimension then
+	if q1.dimension ~= q2.dimension then
 		error("Error: Cannot compare "..q1.." to "..q2..".")
 	end
 
