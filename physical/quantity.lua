@@ -56,15 +56,23 @@ function Quantity.new(q)
 	if getmetatable(q) == Quantity then
 		p.dimension = q.dimension
 		p.value = q.value
-		p.unit = q.unit
+		p.prefixfactor = q.prefixfactor
+		p.basefactor = q.basefactor
+		p.tobase = q.tobase
+		p.frombase = q.frombase
+		p.unit = U(q.unit)
 
 	-- create a dimensionless Quantity
 	else
 		p.dimension = D.new()
 		p.value = q or 1
-		p.unit = U.new()
+		p.prefixfactor = 1
+		p.basefactor = 1
+		p.tobase = nil
+		p.frombase = nil
+		p.unit = U()
 	end
-	
+
 	return p
 end
 
@@ -102,11 +110,13 @@ function Quantity.define(symbol, name, q, tobase, frombase)
 		error("Error: No quantity given in the definition of '"..name.."'.")
 	end
 
-	local p = Quantity.new() 
+	local p = Quantity.new(q)
+	
 	p.value = 1
-	p.dimension = q.dimension
-	p.unit = U.new(symbol, name, q.unit, tobase, frombase) 
-	p.unit.basefactor = p.unit.basefactor * q.value
+	p.basefactor = p.basefactor * q.value
+	p.tobase = tobase
+	p.frombase = frombase
+	p.unit = U.new(symbol, name)
 
 	rawset(_G, "_"..symbol, p)
 
@@ -132,34 +142,30 @@ end
 
 
 -- create prefixed versions of the given units
-function Quantity.addPrefix(prefixes, units)
+function Quantity.addPrefix(prefixes, qs)
 
 	-- todo: what if prefixes and units are no lists?
 
 	for i=1,#prefixes do
 		local prefix = Quantity._prefixes[prefixes[i]]
 
-		for j=1,#units do
-			local unit = units[j]
+		for j=1,#qs do
+			local q = qs[j]
 
-			local q = Quantity.new(unit)
+			local p = Quantity.new(q)
 
-			q.value = unit.value
-			q.dimension = unit.dimension
-
-			q.unit = U.new(unit.unit.symbol, unit.unit.name)
-			q.unit.basefactor = unit.unit.basefactor
-			q.unit.prefix = prefix
-			q.unit.prefixfactor = prefix.factor
+			p.unit = U.new(q.unit.symbol, q.unit.name)
+			p.unit.prefix = prefix
+			p.prefixfactor = prefix.factor
 
 			-- assert that unit does not exist
-			local symbol = "_"..prefix.symbol..unit.unit.symbol
+			local symbol = "_"..prefix.symbol..q.unit.symbol
 			if rawget(_G,symbol) ~= nil then
 				error("Error: Cannot create prefixed Quantity, because '"..symbol.."' does already exist.")
 			end
 
 			-- set unit as a global variable
-			rawset(_G, symbol, q)
+			rawset(_G, symbol, p)
 		end
 	end
 end
@@ -228,16 +234,18 @@ function Quantity.__mul(q1, q2)
 	
 	local p = Quantity.new()
 	p.dimension = q1.dimension * q2.dimension
-	p.unit = q1.unit * q2.unit
 	p.value = q1.value * q2.value
+	p.prefixfactor = q1.prefixfactor * q2.prefixfactor
+	p.basefactor = q1.basefactor * q2.basefactor
+	p.unit = q1.unit * q2.unit
 
-	if q1.unit.tobase ~= nil and q2.dimension:iszero() then
-		p.unit.tobase = q1.unit.tobase
-		p.unit.frombase = q1.unit.frombase
+	if q1.tobase ~= nil and q2.dimension:iszero() then
+		p.tobase = q1.tobase
+		p.frombase = q1.frombase
 		
-	elseif q2.unit.tobase ~= nil and q1.dimension:iszero() then
-		p.unit.tobase = q2.unit.tobase
-		p.unit.frombase = q2.unit.frombase
+	elseif q2.tobase ~= nil and q1.dimension:iszero() then
+		p.tobase = q2.tobase
+		p.frombase = q2.frombase
 
 	end
 
@@ -257,12 +265,14 @@ function Quantity.__div(q1, q2)
 
 	local p = Quantity.new()
 	p.dimension = q1.dimension / q2.dimension
-	p.unit = q1.unit / q2.unit
 	p.value = q1.value / q2.value
+	p.prefixfactor = q1.prefixfactor / q2.prefixfactor
+	p.basefactor = q1.basefactor / q2.basefactor
+	p.unit = q1.unit / q2.unit
 
-	if q1.unit.tobase ~= nil and q2.dimension:iszero() then
-		p.unit.tobase = q1.unit.tobase
-		p.unit.frombase = q1.unit.frombase
+	if q1.tobase ~= nil and q2.dimension:iszero() then
+		p.tobase = q1.tobase
+		p.frombase = q1.frombase
 	end
 
 	return p
@@ -286,9 +296,11 @@ function Quantity.__pow(q1,q2)
 	local e = q2:to()
 
 	p.value = q1.value^e.value
-
+	
 	e = e:__tonumber()
 	p.dimension = q1.dimension^e
+	p.prefixfactor = q1.prefixfactor^e
+	p.basefactor = q1.basefactor^e
 	p.unit = q1.unit^e
 	
 	return p
@@ -312,7 +324,10 @@ function Quantity.__eq(q1,q2)
 	elseif p.dimension ~= q2.dimension then
 		return false
 
-	elseif p.unit ~= q2.unit then
+	elseif p.prefixfactor ~= q2.prefixfactor then
+		return false
+
+	elseif p.basefactor ~= q2.basefactor then
 		return false
 
 	end
@@ -347,13 +362,13 @@ function Quantity:to(q, usefunction)
 
 	-- convert to base units
 	p.dimension = self.dimension
-	p.value = self.value * self.unit.prefixfactor
-	
+	p.value = self.value * self.prefixfactor
+
 	-- call convertion function
-	if type(self.unit.tobase) == "function" and usefunction then
-		p = self.unit.tobase(p)
+	if type(self.tobase) == "function" and usefunction then
+		p = self.tobase(p)
 	else
-		p.value = p.value * self.unit.basefactor
+		p.value = p.value * self.basefactor
 	end
 
 	-- convert to target units
@@ -367,14 +382,18 @@ function Quantity:to(q, usefunction)
 		end
 
 		-- call convertion function
-		if type(q.unit.frombase) == "function" and usefunction then
-			p = q.unit.frombase(p)
+		if type(q.frombase) == "function" and usefunction then
+			p = q.frombase(p)
 		else
-			p.value = p.value / q.unit.basefactor
+			p.value = p.value / q.basefactor
 		end
 
-		p.value = p.value / q.unit.prefixfactor
-		p.unit = q.unit
+		p.value = p.value / q.prefixfactor
+		p.basefactor = q.basefactor
+		p.prefixfactor = q.prefixfactor
+		p.tobase = q.tobase
+		p.frombase = q.frombase
+		p.unit = U(q.unit)
 	
 	-- convert to base units
 	else

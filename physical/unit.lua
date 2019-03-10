@@ -1,7 +1,6 @@
 --[[
 This file contains the unit class. This class is a 
-helper class for the quantity class. It manages the 
-prefix and base factors and the unit terms.
+helper class. It keeps track of the unit terms.
 
 Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
 
@@ -47,15 +46,10 @@ function Unit.new(...)
 	-- copy constructor
 	if #arg == 1 then
 		local o = arg[1]
-		u.basefactor = o.basefactor
-		u.prefixfactor = o.prefixfactor
-		u.tobase = o.tobase
-		u.frombase = o.frombase
 		u._term = o._term
 
-	-- Unit.new(symbol, name, o, tobase, frombase)
+	-- Unit.new(symbol, name, o)
 	else
-
 		if #arg > 1 then
 			u.symbol = arg[1]
 			u.name = arg[2]
@@ -63,40 +57,13 @@ function Unit.new(...)
 		else
 			u._term = {{},{}}
 		end
-
-		if #arg > 2 then
-			u.prefixfactor = arg[3].prefixfactor
-			u.basefactor = arg[3].basefactor
-		else
-			u.prefixfactor = 1
-			u.basefactor = 1
-		end
-
-		if #arg > 3 then
-			u.tobase = arg[4]
-			u.frombase = arg[5]
-		end
 	end
 
 	return u
 end
 
--- Equality Check. Two units considered to be equal, if they have equal  
--- prefix- and base factors.
--- @return 
-function Unit.__eq(o1,o2)
-	if o1.basefactor ~= o2.basefactor or o1.prefixfactor ~= o2.prefixfactor then
-		return false
-	end
-
-	return true
-end
-
 function Unit.__mul(o1,o2)
 	local u = Unit.new()
-
-	u.prefixfactor = o1.prefixfactor * o2.prefixfactor
-	u.basefactor = o1.basefactor * o2.basefactor
 
 	u:_append(o1)
 	u:_append(o2)
@@ -106,10 +73,7 @@ end
 
 function Unit.__div(o1,o2)
 	local u = Unit.new()
-	
-	u.prefixfactor = o1.prefixfactor / o2.prefixfactor
-	u.basefactor = o1.basefactor / o2.basefactor
-	
+
 	u:_append(o1)
 	u:_append(o2, true)
 
@@ -118,9 +82,6 @@ end
 
 function Unit.__pow(o,n)
 	local u = Unit.new()
-	
-	u.prefixfactor = o.prefixfactor^n
-	u.basefactor = o.basefactor^n
 
 	-- invert the term
 	if n < 0 then

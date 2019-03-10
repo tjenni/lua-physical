@@ -35,8 +35,7 @@ TestUnit = {}
 
 function TestUnit:testNewDefault()
    local u = U.new()
-   lu.assertEquals(u.prefixfactor, 1)
-   lu.assertEquals(u.basefactor, 1)
+   lu.assertEquals(u._term, {{},{}})
 end
 
 function TestUnit:testNewBaseUnit()
@@ -52,8 +51,6 @@ function TestUnit:testMultiply()
 
    lu.assertEquals(_m2.symbol, nil)
    lu.assertEquals(_m2.name, nil)
-   lu.assertEquals(_m2.basefactor, 1)
-   lu.assertEquals(_m2.prefixfactor, 1)
    lu.assertEquals(_m2._term[1][1][1], _m)
    lu.assertEquals(_m2._term[1][1][2], 1)
    lu.assertEquals(_m2._term[1][2][1], _m)
@@ -67,8 +64,6 @@ function TestUnit:testDivide()
 
    lu.assertEquals(_m2.symbol, nil)
    lu.assertEquals(_m2.name, nil)
-   lu.assertEquals(_m2.basefactor, 1)
-   lu.assertEquals(_m2.prefixfactor, 1)
    lu.assertEquals(_m2._term[1][1][1], _m)
    lu.assertEquals(_m2._term[1][1][2], 1)
    lu.assertEquals(_m2._term[2][1][1], _m)
@@ -82,8 +77,6 @@ function TestUnit:testPower()
 
    lu.assertEquals(_m2.symbol, nil)
    lu.assertEquals(_m2.name, nil)
-   lu.assertEquals(_m2.basefactor, 1)
-   lu.assertEquals(_m2.prefixfactor, 1)
    lu.assertEquals(_m2._term[1][1][1], _m)
    lu.assertEquals(_m2._term[1][1][2], 4)
 end
@@ -94,8 +87,6 @@ function TestUnit:testNewDerivedUnit()
 
    lu.assertEquals(_m2.symbol, "m2")
    lu.assertEquals(_m2.name, "squaremeter")
-   lu.assertEquals(_m2.basefactor, 1)
-   lu.assertEquals(_m2.prefixfactor, 1)
    lu.assertEquals(_m2._term[1][1][1], _m2)
    lu.assertEquals(_m2._term[1][1][2], 1)
 end
@@ -106,8 +97,6 @@ function TestUnit:testNewDerivedUnit()
 
    lu.assertEquals(_m2.symbol, "m2")
    lu.assertEquals(_m2.name, "squaremeter")
-   lu.assertEquals(_m2.basefactor, 1)
-   lu.assertEquals(_m2.prefixfactor, 1)
    lu.assertEquals(_m2._term[1][1][1], _m2)
    lu.assertEquals(_m2._term[1][1][2], 1)
 end
