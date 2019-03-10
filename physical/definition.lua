@@ -538,8 +538,6 @@ function defineCurrency(iso,prefix,name,unit,minorname,minorvalue)
 	end
 end
 
--- variable currencies
-
 -- Exchange rates from fixer.io, 03/08/19 - 14:29:06
 defineCurrency("AFN", "Afghan", "Afghani", 0.01191315543188*_EUR, "Pul", 0.01)
 defineCurrency("ALL", "Albanian", "Lek", 0.00804192040802*_EUR, nil, nil)
@@ -606,7 +604,7 @@ defineCurrency("MGA", "Malagasy", "Ariary", 0.0002510056677622*_EUR, "Iraimbilan
 defineCurrency("MKD", "Macedonian", "Denar", 0.016248670168212*_EUR, "Deni", 0.01)
 defineCurrency("MMK", "Burmese", "Kyat", 0.00058626967742208*_EUR, "Pya", 0.01)
 defineCurrency("MNT", "Mongolian", "Togrog", 0.00033837161368563*_EUR, "Mongo", 0.01)
-defineCurrency("MRO", "Mauritanian", "Ouguiya", 0.002495992459467*_EUR, "Khoums", 0.2)
+defineCurrency("MRU", "Mauritanian", "Ouguiya", 0.002495992459467*_EUR, "Khoums", 0.2)
 defineCurrency("MUR", "Mauritian", "Rupee", 0.025437507319643*_EUR, "Cent", 0.01)
 defineCurrency("MVR", "Maldivian", "Rufiyaa", 0.057674321067985*_EUR, "Laari", 0.01)
 defineCurrency("MWK", "Malawian", "Kwacha", 0.0012236945682636*_EUR, "Tambala", 0.01)
@@ -657,7 +655,7 @@ defineCurrency("YER", "Yemeni", "Rial", 0.00356008950834*_EUR, "Dinar", 0.01)
 defineCurrency("ZAR", "SouthAfrican", "Rand", 0.061299645663528*_EUR, "Cent", 0.01)
 defineCurrency("ZMW", "Zambian", "Kwacha", 0.074107372987003*_EUR, "Ngwee", 0.01)
 
--- fixed exchange currencies
+-- pegged currencies
 defineCurrency("AED", "UnitedArabEmirates", "Dirham", (1/3.6725)*_USD, "Fils", 0.01)
 defineCurrency("ANG", "NetherlandsAntillean", "Guilder", (1/1.79)*_USD, "Cent", 0.01)
 defineCurrency("AWG", "Aruban", "Florin", (1/1.79)*_USD, "Cent", 0.01)
