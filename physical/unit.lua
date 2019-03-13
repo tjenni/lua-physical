@@ -1,6 +1,6 @@
 --[[
-This file contains the unit class. This class is a 
-helper class. It keeps track of the unit terms.
+This file contains the unit class. It task is keeping 
+track of the unit terms.
 
 Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
 
@@ -25,11 +25,11 @@ SOFTWARE.
 
 local prefix = ... and (...):match '(.-%.?)[^%.]+$' or ''
 
--- Quantity class
+-- Unit class
 local Unit = {}
 Unit.__index = Unit
 
--- make Quantity callable
+-- make Unit callable
 setmetatable(Unit, {
 	__call = function(class, ...)
 		return Unit.new(...)

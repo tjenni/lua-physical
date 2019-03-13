@@ -37,7 +37,6 @@ local I = D.defineBase("I", "Electric Current")
 local K = D.defineBase("θ", "Temperature")
 local N = D.defineBase("N", "Amount of Substance")
 local J = D.defineBase("J", "Luminous Intensity")
-
 local B = D.defineBase("B", "Information")
 local C = D.defineBase("C", "Currency")
 

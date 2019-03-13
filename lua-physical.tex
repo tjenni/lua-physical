@@ -1057,6 +1057,24 @@ Quantity & Unit & Symbol & Dim. & Definition \\\hline
 
 
 currency &
+Afghan afghani&
+|_AFN| & 
+$\C$ & 
+|0.012*_EUR| \\\hline
+
+ &
+Albanian lek &
+|_ALL| & 
+$\C$ & 
+|0.008*_EUR| \\\hline
+
+ &
+Armenian Dram &
+|_AMD| & 
+$\C$ & 
+|0.0018*_EUR| \\\hline
+
+ &
 U.S. dollar &
 |_USD| & 
 $\C$ & 
@@ -1146,48 +1164,15 @@ $\C$ &
 \newpage
 \section{Lua Documentation}
 
-In the following chapter, these shortcuts will be used.
+In this chapter, the following shortcuts will be used.
 \begin{lstlisting}
 local D = physical.Dimension
+local U = physical.Unit
+local N = physical.Number
 local Q = physical.Quantity
 \end{lstlisting}
 
-
-
-\subsection{physical.Dimension}
-
- All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used two check if two quantities can be added or subtraced and if they are equal. 
-
-
-\method{Dimension}{new(q=nil)}
-\begin{quote}
-  Constructor of the |Dimension| class.
-
-  \subtitle{Parameters}
-  \begin{description}
-  \item |q| : |Dimension| or |string|, optional\\
-    The name or symbol of the dimension. If |q| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
-
-  \item |return| : |Dimension|\\
-    The created |Quantity| object
-  \end{description}
-
-  \subtitle{Notes}\\
-  --
-
-  \subtitle{Examples}
-  \begin{lstlisting}
-  V_1 = D("Velocity")
-  L = D("L")
-  V_2 = D(L/T)
-  \end{lstlisting}
-\end{quote}
-
-
-
-
-
-
+The term |number| refers to a lua integer or a lua float number. By |string| a lua string is meant and by |bool| a lua boolean.
 
 
 
@@ -1195,26 +1180,26 @@ local Q = physical.Quantity
 
 
 \subsection{physical.Quantity}
+The quantity class is the main part of the library. Each physical Quantity and all units are represented by an instance of this class.
 
 
-
-\method{Quantity}{new(q=nil)}
+\method{Q}{new(q=nil)}
 \begin{quote}
-  Constuctor of the |Quantity| class.
+  Copy Constuctor
 
   \subtitle{Parameters}
   \begin{description}
-    \item |q| : |Quantity| or \ |number|, optional\\
-      Optional argument for copying a |Quantity| or to create a |number| quantity
+    \item |q| : |Q| or \ |number|, optional\\
+      Optional argument is either |Q|, a |number| or |nil|.
 
-    \item |return| : |Quantity|\\
-    The created |Quantity| object
+    \item |return| : |Q|\\
+      The created |Q| instance
   \end{description}
 
-  \subtitle{Notes}\\
-  It takes an optional |quantity| or |number| for the argument |q|. If the argument |q| is given, the new quantity is a copy of it. If no argument ist given, a quantity |_1| is created.
+  \subtitle{Note}\\
+  As an argument it takes |Q|, |number| or |nil|. If |Q| is given, a copy of it is made and returned. If a |number| is given, the function creates a dimeensionless quantity with that value. In the case |nil| is given, the quantity |_1| is returned.
 
-  \subtitle{Examples}
+  \subtitle{Example}
   \begin{lstlisting}
   myOne = Q()
   myNumber = Q(42)
@@ -1225,9 +1210,9 @@ local Q = physical.Quantity
 
 
 
-\method{Quantity}{defineBase(symbol,name,dimension)}
+\method{Q}{defineBase(symbol,name,dimension)}
 \begin{quote}
-  A unit system has some special units, called base units. From those base units all other units are derived. This function is used to declare the base units. Since in this library units are the same thing as quantities, one has to define base quantities (units). 
+  This function is used to declare the base units. Units are represented as |Q| instances.  
 
   \subtitle{Parameters}
   \begin{description}
@@ -1237,20 +1222,21 @@ local Q = physical.Quantity
   \item |name| : |string|\\
     name of the base quantity
 
-  \item |dimension| : |Dimension|\\
-    object which represents the base Dimension of the base quantity
+  \item |dimension| : |D|\\
+    Instance of the |D| class, which represents the dimension of the quantity.
 
-  \item |return| : The created physical.|Quantity| object
+  \item |return| : |Q|\\
+    The created |Q| instance.
   \end{description}
 
-  \subtitle{Notes}\\
+  \subtitle{Note}\\
   The function creates a global variable, an underscore concatenated with the |symbol| argument, e. g. |m| becomes the global variable |_m|.
 
   The |name| is used for example in the siunitx conversion function, e.g |meter| will be converted to |\meter|. 
 
-  Each quantity has a dimension associated. The argument |dimension| allows any dimension to be associated to base quantities. 
+  Each quantity has a dimension associated with it. The argument |dimension| allows any dimension to be associated to base quantities. By default, the SI convention is used. 
 
-  \subtitle{Examples}
+  \subtitle{Example}
   \begin{lstlisting}
 Q.defineBase("m", "meter", L)
 Q.defineBase("kg", "kilogram", M)
@@ -1929,6 +1915,114 @@ tex.write(tostring(x:atanh()))
 \end{lstlisting}
 
 \end{quote}
+
+
+
+%
+%
+%
+%
+\subsection{physical.Dimension}
+
+ All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used two check if two quantities can be added or subtraced and if they are equal. 
+
+
+\method{Dimension}{new(q=nil)}
+\begin{quote}
+  Constructor of the |Dimension| class.
+
+  \subtitle{Parameters}
+  \begin{description}
+  \item |q| : |Dimension| or |string|, optional\\
+    The name or symbol of the dimension. If |q| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
+
+  \item |return| : |Dimension|\\
+    The created |Quantity| object
+  \end{description}
+
+  \subtitle{Notes}\\
+  --
+
+  \subtitle{Examples}
+  \begin{lstlisting}
+  V_1 = D("Velocity")
+  L = D("L")
+  V_2 = D(L/T)
+  \end{lstlisting}
+\end{quote}
+
+
+
+
+
+
+
+
+%
+%
+%
+%
+\subsection{physical.Unit}
+
+The task of this class is keeping track of the unit term. The unit term is a fraction of units. The units in the enumerator and denominator can have an exponent. 
+
+
+\method{Unit}{new(u=nil)}
+\begin{quote}
+  Copy Constructor. It copies a given unit object. If nothing is given, an empty unit is created.
+
+  \subtitle{Parameters}
+  \begin{description}
+  \item |u| : |Unit|\\
+    The unit object which will be copied.
+
+  \item |return| : |Unit|\\
+    The created |Unit| object
+  \end{description}
+
+\end{quote}
+
+
+\method{Unit}{new(symbol, name, prefixsymbol=nil, prefixname=nil)}
+\begin{quote}
+  Constructor. A new |Unit| object with symbol is created. The prefixsymbol and prefixname are optional. 
+
+  \subtitle{Parameters}
+  \begin{description}
+  \item |symbol| : |String|\\
+    The symbol of the unit.
+
+  \item |name| : |String|\\
+    The name of the unit.
+
+  \item |prefixsymbol| : |String|\\
+    The optional symbol of the prefix. 
+
+  \item |prefixname| : |String|\\
+    The optional name of the prefix. 
+
+  \item |return| : |Unit|\\
+    The created |Unit| object
+  \end{description}
+
+\end{quote}
+
+
+
+
+\method{Unit}{tosiunitx(self)}
+\begin{quote}
+  The unit term will be compiled into a string, which the Latex package siunitx can understand.
+
+  \subtitle{Parameters}
+  \begin{description}
+  \item |return| : |String|\\
+    The siunitx representation of the unit term.
+  \end{description}
+
+\end{quote}
+
+
 
 
 
