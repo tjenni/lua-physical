@@ -257,6 +257,7 @@ function TestDefinition:testPlanckConstant()
 end
 
 function TestDefinition:testReducedPlanckConstant()
+   local Pi = 3.1415926535897932384626433832795028841971693993751
    local hbar = _h_P/(2*Pi)
    lu.assertTrue(hbar:isclose(_h_Pbar, 1e-3))
 end
@@ -269,6 +270,8 @@ end
 function TestDefinition:testVacuumPermeability()
    local I = 1.3 * _A
    local r = 20 * _cm
+   local Pi = 3.1415926535897932384626433832795028841971693993751
+
    local B = (_u_0*I/(2*Pi*r)):to(_T)
    lu.assertTrue(B:isclose(1.3*_uT, 1e-4))
 end
@@ -277,6 +280,8 @@ function TestDefinition:testVacuumPermitivity()
    local Q_1 = 3 * _nC
    local Q_2 = 5.5 * _uC
    local r = 20 * _cm
+
+   local Pi = 3.1415926535897932384626433832795028841971693993751
 
    local F_C = (1/(4*Pi*_e_0)) * Q_1 * Q_2 / r^2
    F_C = F_C:to(_N)
@@ -591,6 +596,8 @@ function TestDefinition:testPoiseuille()
    local l = 10 * _cm 
    local p = 400 * _Pa
    local eta = 0.0027 * _PI
+
+   local Pi = 3.1415926535897932384626433832795028841971693993751
 
    local Q = Pi*p*r^4/(8*eta*l)
    lu.assertTrue( Q:isclose(9.3084226773031 * _mL/_s,1e-4) )

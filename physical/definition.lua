@@ -120,33 +120,8 @@ local IEC_prefixes = {"Ki","Mi","Gi","Ti","Pi","Ei","Zi","Yi"}
 
 
 -- define mathematical constants
-Pi 	 = 3.1415926535897932384626433832795028841971693993751
-e    = 2.7182818284590452353602874713526624977572470936999
-
--- define mathematical functions
-abs = Q.abs
-min = Q.min
-max = Q.max
-
-sqrt = Q.sqrt
-exp = Q.exp
-log = Q.log
-
-sin = Q.sin
-cos = Q.cos
-tan = Q.tan
-
-asin = Q.asin
-acos = Q.acos
-atan = Q.atan
-
-sinh = Q.sinh
-cosh = Q.cosh
-tanh = Q.tanh
-
-asinh = Q.asinh
-acosh = Q.acosh
-atanh = Q.atanh
+local Pi 	 = 3.1415926535897932384626433832795028841971693993751
+local e    = 2.7182818284590452353602874713526624977572470936999
 
 -- define dimensionless base quantity
 Q.define("1", "number", Q(1))
@@ -383,6 +358,7 @@ Q.define("ppb", "partsperbillion", 1e-9*_1)
 Q.define("ppt", "partspertrillion", 1e-12*_1)
 Q.define("ppq", "partsperquadrillion", 1e-15*_1)
 Q.define("dB", "decibel", _1)
+
 Q.define("t", "tonne", 1000*_kg)
 Q.define("eV", "electronvolt", _e*_V)
 Q.define("Wh", "watthour", _W * _h)

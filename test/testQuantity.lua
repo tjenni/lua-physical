@@ -575,18 +575,21 @@ end
 
 -- test less than
 function TestQuantity:testLessThan()
-   l_D = 5 * _m
-   d_D = N(0.25,0.001) * _mm
 
-   d = N(5,0.01) * _cm
-   l = N(10,0.01) * _cm
+   local Pi = 3.1415926535897932384626433832795028841971693993751
+   
+   local l_D = 5 * _m
+   local d_D = N(0.25,0.001) * _mm
 
-   I_max = N(1,0.001) * _A
-   B = N(0.5,0.001) * _mT
+   local d = N(5,0.01) * _cm
+   local l = N(10,0.01) * _cm
 
-   Nw = ( B*l/(_u_0*I_max) ):to(_1)
-   N_max = (l/d_D):to(_1)
-   l_max = (Nw*Pi*d):to(_m)
+   local I_max = N(1,0.001) * _A
+   local B = N(0.5,0.001) * _mT
+
+   local Nw = ( B*l/(_u_0*I_max) ):to(_1)
+   local N_max = (l/d_D):to(_1)
+   local l_max = (Nw*Pi*d):to(_m)
 
    lu.assertTrue(l_D < l_max)
 end

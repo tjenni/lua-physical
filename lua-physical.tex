@@ -197,6 +197,8 @@ $$
 
 \renewcommand{\J}[1][]{\mathrm{J}^{#1}\,}
 
+\newcommand{\B}[1][]{\mathrm{B}^{#1}\,}
+
 \newcommand{\C}[1][]{\mathrm{C}^{#1}\,}
 
 \newcommand{\1}{\mathrm{1}}
@@ -207,59 +209,8 @@ $$
 \newpage
 \section{Supported Units}
 
-There are a few units with dimension $\1$. The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  l%
-  l%
-  X%
-}
-
-Unit & Symbol & Definition \\\hline
-
-number & 
-|_1| & 
-The number one.  \\\hline
-
-
-percent \% &  
-|_percent| & 
-|1e-2*_1|  \\\hline
-
-
-permille \textperthousand & 
-|_permille| & 
-|1e-3*_1|  \\\hline
-
-parts-per-million & 
-|_ppm| &
-|1e-6*_1|  \\\hline
-
-parts-per-billion & 
-|_ppb| &
-|1e-9*_1|  \\\hline
-
-parts-per-trillion & 
-|_ppt| &
-|1e-12*_1|  \\\hline
-
-parts-per-quadrillion & 
-|_ppq| &
-|1e-15*_1|  \\\hline
-
-
-decibel & 
-|_dB| & 
-|_1|  \\\hline
-
-\end{tabularx}
-\caption{Dimensionless units}
-\end{table}
-
-
-
+\subsection{Base Units}
 
 
 \begin{table}[H]
@@ -273,6 +224,12 @@ decibel &
 }
 
 Quantity & Unit & Symbol & Dim. & Definition \\\hline
+
+number &
+-- &
+|_1| &
+$\1$ & 
+The dimensionless number one.  \\\hline
 
 length &
 meter & 
@@ -314,15 +271,33 @@ luminous \newline intensity &
 candela & 
 |_cd| & 
 $\J$ & 
-the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$
+the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$ \\\hline
+
+information &
+Bit & 
+|_bit| & 
+$\B$ &
+The smallest amount of information. \\\hline
+
+currency &
+Euro & 
+|_EUR| & 
+$\L$ &
+The value of one Euro. 
+
+
 
 \end{tabularx}
-\caption{Base units of the International System of Units (SI)}
+\caption{Base units of the International System of Units (SI) and the base unit of information and currency.}
 \end{table}
 
 
 
 
+
+
+
+\subsection{Derived Units}
 
 \begin{table}[H]
 \centering
@@ -470,17 +445,17 @@ katal &
 $\T[-1] \N$ &
 |_mol/_s|
 
-
-
-
-
-
-
 \end{tabularx}
 \caption{Derived units of the International System of Units (SI)}
 \end{table}
 
 
+
+
+
+
+
+There are a few units with dimension $\1$. The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
 
 
 \begin{table}[H]
@@ -495,30 +470,72 @@ $\T[-1] \N$ &
 
 Quantity & Unit & Symbol & Dim. & Definition \\\hline
 
+ &
+percent \% &  
+|_percent| &
+$\1$ &
+|1e-2*_1|  \\\hline
+
+ &
+permille \textperthousand & 
+|_permille| & 
+$\1$ &
+|1e-3*_1|  \\\hline
+
+ &
+parts-per-million & 
+|_ppm| &
+$\1$ &
+|1e-6*_1|  \\\hline
+
+ &
+parts-per-billion & 
+|_ppb| &
+$\1$ &
+|1e-9*_1|  \\\hline
+
+ &
+parts-per-trillion & 
+|_ppt| &
+$\1$ &
+|1e-12*_1|  \\\hline
+
+ &
+parts-per-quadrillion & 
+|_ppq| &
+$\1$ &
+|1e-15*_1|  \\\hline
+
+ &
+decibel & 
+|_dB| & 
+$\1$ &
+|_1|  \\\hline
+
 
 plane angle & 
 degree &
 |_deg| & 
-$1$ & 
+$\1$ &
 |(Pi/180)*_rad| \\\hline
 
 
  & 
 arc minute &
 |_arcmin| & 
-$\1$ & 
+$\1$ &
 |_deg/60| \\\hline
 
  & 
 arc second &
 |_arcsec| & 
-$\1$ & 
+$\1$ &
 |_arcmin/60| \\\hline
 
  & 
 gradian &
 |_gon| & 
-$\1$ & 
+$\1$ &
 |(Pi/200)*_rad| \\\hline
 
  & 
@@ -1017,29 +1034,6 @@ $\L$ &
 
 
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{0.5\hsize}}X%
-  l%
-  l%
-  c%
-  >{\setlength\hsize{1.5\hsize}}X%
-}
-
-Quantity & Unit & Symbol & Dim. & Definition \\\hline
-
-currency &
-Euro & 
-|_EUR| & 
-$\L$ &
-The value of one Euro. \\\hline
-
-\end{tabularx}
-\caption{Base unit of Currency}
-\end{table}
-
-
 
 
 
@@ -1073,6 +1067,18 @@ Armenian Dram &
 |_AMD| & 
 $\C$ & 
 |0.0018*_EUR| \\\hline
+
+ &
+Angolan Kwanza &
+|_AOA| & 
+$\C$ & 
+|0.0028*_EUR| \\\hline
+
+ &
+Argentine Peso &
+|_ARS| & 
+$\C$ & 
+|0.021*_EUR| \\\hline
 
  &
 U.S. dollar &
