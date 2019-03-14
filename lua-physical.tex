@@ -9,10 +9,12 @@
 \usepackage{siunitx}
 \usepackage{tabularx}
 \usepackage{float}
+\usepackage{ulem}
 \usepackage{framed}
 
 \begin{luacode*}
 physical = require("physical")
+N = physical.Number
 \end{luacode*}
 
 \newcommand{\q}[1]{%
@@ -79,9 +81,7 @@ physical = require("physical")
 
 
 \begin{abstract}
-|lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. This package provides a standard set of units of the SI and the imperial system. It is possible to give a number a mesurement uncertainty. 
-
- is also integrated and is calculated by gaussian error propagation. The package includes some
+|lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. It has been written to simplify the creation of physics problem sets. The package provides units of the SI and the imperial system. Furthermore a lot of currencies are available, however without online exchange rates. To simplfy thee use of measurement uncertainties, the package is able to perform gaussian error propagation.
 \end{abstract}
 
 \tableofcontents
@@ -94,9 +94,7 @@ physical = require("physical")
 \newpage
 \section{Introduction}
 
-The author of this package is a teacher at the \emph{Kantonsschule Zug, Switzerland}, a high-school. The main use of this package is to write physics problem sets and integrate the calculation directly into the luatex-file. The package is now in use for more than two years and a lot of bugs have been found and crushed. Nevertheless it could be possible that some bugs are still there, living uncovered. Therefore I recommend not to use this library productively in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, please report them on github.com or directly to the author.
-
-E-Mail: \url{thomas.jenni (at) ksz.ch}
+The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. Lualatex does make it possible to integrate physical calculations directly into the luatex file. The package has been in use since 2016 and up until now, a lot of bugs have been found and crushed. Nevertheless it could be possible, that some of them are still living undiscovered. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
 
 
 
@@ -105,9 +103,8 @@ E-Mail: \url{thomas.jenni (at) ksz.ch}
 \lstset{language=[LaTex]Tex}
 
 \section{Basic usage}
-Since this package is pure lua library one has to require it explicitly by calling 
-\lstinline{require("physical")}. For printing results the |siunitx| package is used. It's recommended to define a shortcut like \lstinline{\q} or \lstinline{\Qty} to convert the lua quantity object to a siunitx expression. An example preamble is shown in the following.
-
+This package is a pure lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing calculation results the |siunitx| package is used. It's recommended to define a shortcut like |\q| or |\Qty| to convert the lua quantity object to a |siunitx| expression. The following Latex code shows a preamble, which loads the package and creates a command for printing physical quantities.
+\nopagebreak
 \begin{lstlisting}[language=Tex, caption=basic preamble]
   \usepackage{siunitx}
 
@@ -121,9 +118,10 @@ Since this package is pure lua library one has to require it explicitly by calli
     round-mode = off
   }
 
-  % load lua-physical
+  % load lua-physical package
   \begin{luacode*}
     physical = require("physical")
+    N = physical.Number
   \end{luacode*}
 
   % shortcut for printing physical quantities
@@ -133,13 +131,12 @@ Since this package is pure lua library one has to require it explicitly by calli
 \end{lstlisting}
 
 
-
-
-\newpage
-Given the preamble one can use now units in lua code and insert results in the latex code.
-
+Given that, one can use now units in lua code. The results can be printed out directly by using the macro |\q{}|.
+\nopagebreak
 \begin{lstlisting}[caption={basic usage}]
 \begin{luacode}
+  N.omitUncertainty = true
+  
   s = 10 * _m
 	t = 2 * _s
 	v = s/t
@@ -152,9 +149,13 @@ $$
 \end{lstlisting}
 
 
+The result of this code ist shown in the following box.
 \begin{luacode}
-  s = 10 * _m
-  t = 2 * _s
+  N.omitUncertainty = true
+
+  s = N(10,0.1) * _m
+  t = N(2,0.1) * _s
+
   v = s/t
 \end{luacode}
 
@@ -168,6 +169,45 @@ $$
 
 
 
+Another example is here. 
+\nopagebreak
+\begin{lstlisting}[caption={basic usage}]
+\begin{luacode}
+  N.omitUncertainty = true
+
+  p = 1.013 * _bar
+  n = 1 * _mol
+  T = 30 * _degC
+  
+  V = ( n * _R * T / p ):to(_L)
+\end{luacode}
+
+An ideal gas ($\q{n}$) is under a pressure of $\q{p}$ 
+$$
+  V=\frac{ \q{n} \cdot \q{_R} \cdot \q{T} }{ \q{p} }
+  = \uuline{\q{V}}
+$$
+\end{lstlisting}
+
+
+\begin{luacode}
+  N.omitUncertainty = true
+
+  p = N(1013,0.1) * _hPa
+  n = N(1,0.1) * _mol
+  T = N(30,0.1) * _degC
+  
+  V = ( n * _R * T / p ):to(_L)
+\end{luacode}
+
+\noindent
+\fbox{\begin{minipage}{\linewidth}
+An ideal gas ($\q{n}$) is under a pressure of $\q{p}$ 
+$$
+  V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{T:to(_K)} }{ \q{p} }
+  = \uuline{\q{V}}
+$$
+\end{minipage}}
 
 
 
@@ -284,8 +324,6 @@ Euro &
 |_EUR| & 
 $\L$ &
 The value of one Euro. 
-
-
 
 \end{tabularx}
 \caption{Base units of the International System of Units (SI) and the base unit of information and currency.}
