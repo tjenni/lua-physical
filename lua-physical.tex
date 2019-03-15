@@ -10,11 +10,14 @@
 \usepackage{tabularx}
 \usepackage{float}
 \usepackage{ulem}
+\usepackage{xcolor}
 \usepackage{framed}
+
 
 \begin{luacode*}
 physical = require("physical")
 N = physical.Number
+N.omitUncertainty = true
 \end{luacode*}
 
 \newcommand{\q}[1]{%
@@ -55,10 +58,12 @@ N = physical.Number
   breaklines=true,
   framexleftmargin=20pt,
   framexrightmargin=3.5pt,
-  xleftmargin=23.5pt,
+  xleftmargin=24.6pt,
   breakindent=30pt,
   morekeywords={},
-  frame=single,
+  frame=leftline,
+  framerule=2pt,
+  rulecolor=\color{blue},
   mathescape=false,
   captionpos=b,
   escapechar=`
@@ -66,8 +71,24 @@ N = physical.Number
 
 
 
+% no paragraph indent
+\setlength\parindent{0pt}
 
+% set emph italic
+\renewcommand{\emph}[1]{\textit{#1}}
 
+% left bar
+\renewenvironment{leftbar}[1][\hsize]
+{%
+    \def\FrameCommand
+    {%
+        {\color{red}\vrule width 2pt}%
+        \hspace{10pt}%must no space.
+        \fboxsep=\FrameSep%\colorbox{yellow}
+    }%
+    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}
+{\endMakeFramed}
 
 
 
@@ -81,7 +102,7 @@ N = physical.Number
 
 
 \begin{abstract}
-|lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. It has been written to simplify the creation of physics problem sets. The package provides units of the SI and the imperial system. Furthermore a lot of currencies are available, however without online exchange rates. To simplfy thee use of measurement uncertainties, the package is able to perform gaussian error propagation.
+\noindent |lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. It has been written to simplify the creation of physics problem sets. The package provides units of the SI and the imperial system. Furthermore an almost complete set of international currencies are supported, however without online exchange rates. In order to display the numbers with measurement uncertainties, the package is able to perform gaussian error propagation.
 \end{abstract}
 
 \tableofcontents
@@ -94,7 +115,7 @@ N = physical.Number
 \newpage
 \section{Introduction}
 
-The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. Lualatex does make it possible to integrate physical calculations directly into the luatex file. The package has been in use since 2016 and up until now, a lot of bugs have been found and crushed. Nevertheless it could be possible, that some of them are still living undiscovered. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
+The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. LuaTeX does make it possible to integrate physical calculations directly into the LuaTeX file. The package has been in use since 2016. Since then many bugs have been found and crushed. Nevertheless it still could be possible, that some were not found. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
 
 
 
@@ -103,9 +124,12 @@ The author of this package is a teacher at the high school \emph{Kantonsschule Z
 \lstset{language=[LaTex]Tex}
 
 \section{Basic usage}
-This package is a pure lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing calculation results the |siunitx| package is used. It's recommended to define a shortcut like |\q| or |\Qty| to convert the lua quantity object to a |siunitx| expression. The following Latex code shows a preamble, which loads the package and creates a command for printing physical quantities.
+This package is a pure Lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing calculation results the |siunitx| package can be used. It's recommended to define a macro like |\q| or |\Qty| to convert the lua quantity object to a |siunitx| expression.
+
+The following Latex preambel loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
 \begin{lstlisting}[language=Tex, caption=basic preamble]
+  \usepackage{lua-physical}
   \usepackage{siunitx}
 
   % configure siunitx
@@ -121,22 +145,23 @@ This package is a pure lua library. Therefore one has to require it explicitly b
   % load lua-physical package
   \begin{luacode*}
     physical = require("physical")
-    N = physical.Number
+
+    _N = physical.Number
+    _N.omitUncertainty = true
   \end{luacode*}
 
-  % shortcut for printing physical quantities
+  % print physical quantities
   \newcommand{\q}[1]{%
     \directlua{tex.print(physical.Quantity.tosiunitx(#1,"scientific-notation=fixed,exponent-to-prefix=false"))}%
   }
 \end{lstlisting}
 
 
-Given that, one can use now units in lua code. The results can be printed out directly by using the macro |\q{}|.
-\nopagebreak
-\begin{lstlisting}[caption={basic usage}]
+\newpage
+Given the basic preamble, units can be used in lua code. The Result of a calculation can be printed  by using the macro |\q{}|.
+
+\begin{lstlisting}
 \begin{luacode}
-  N.omitUncertainty = true
-  
   s = 10 * _m
 	t = 2 * _s
 	v = s/t
@@ -144,70 +169,62 @@ Given that, one can use now units in lua code. The results can be printed out di
 
 A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
 $$
-	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v} = \q{v:to(_km/_h)}
+	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v}
 $$
 \end{lstlisting}
 
-
-The result of this code ist shown in the following box.
 \begin{luacode}
-  N.omitUncertainty = true
-
-  s = N(10,0.1) * _m
-  t = N(2,0.1) * _s
+  s = 10 * _m
+  t = 2 * _s
 
   v = s/t
 \end{luacode}
 
-\noindent
-\fbox{\begin{minipage}{\linewidth}
+\leftbar
 A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
 $$
-  v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v} = \q{v:to(_km/_h)}
+  v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \q{v}
 $$
-\end{minipage}}
+\endleftbar
+
+The physical quantities |s| for displacement, |t| for time, do have the units meter |_m| and second |_s|. Once these variables are declared, the calculation of the velocity is straight forward. In the LaTeX code the quantities are printend in the problem statement and in the solution. 
 
 
+Another example is the following physics problem.
 
-Another example is here. 
-\nopagebreak
-\begin{lstlisting}[caption={basic usage}]
+\begin{lstlisting}
 \begin{luacode}
-  N.omitUncertainty = true
-
   p = 1.013 * _bar
   n = 1 * _mol
   T = 30 * _degC
   
-  V = ( n * _R * T / p ):to(_L)
+  V = ( n * _R * T:to(_K,true) / p ):to(_L)
 \end{luacode}
 
-An ideal gas ($\q{n}$) is under a pressure of $\q{p}$ 
+An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
 $$
-  V=\frac{ \q{n} \cdot \q{_R} \cdot \q{T} }{ \q{p} }
+  V=\frac{ \q{n} \cdot \q{_R} \cdot \q{T:to(_K,true)} }{ \q{p} }
   = \uuline{\q{V}}
 $$
 \end{lstlisting}
 
 
 \begin{luacode}
-  N.omitUncertainty = true
-
-  p = N(1013,0.1) * _hPa
-  n = N(1,0.1) * _mol
-  T = N(30,0.1) * _degC
+  p = 1013 * _hPa
+  n = 1 * _mol
+  T = 0 * _degC
   
-  V = ( n * _R * T / p ):to(_L)
+  V = ( n * _R * T:to(_K,true) / p ):to(_L)
 \end{luacode}
 
-\noindent
-\fbox{\begin{minipage}{\linewidth}
-An ideal gas ($\q{n}$) is under a pressure of $\q{p}$ 
+\leftbar
+An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
+
 $$
-  V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{T:to(_K)} }{ \q{p} }
+  V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{T:to(_K,true)} }{ \q{p} }
   = \uuline{\q{V}}
 $$
-\end{minipage}}
+\endleftbar
 
 
 
@@ -267,7 +284,7 @@ Quantity & Unit & Symbol & Dim. & Definition \\\hline
 
 number &
 -- &
-|_1| &
+$\1$ &
 $\1$ & 
 The dimensionless number one.  \\\hline
 
@@ -311,22 +328,22 @@ luminous \newline intensity &
 candela & 
 |_cd| & 
 $\J$ & 
-the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$ \\\hline
+The luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$ \\\hline
 
 information &
-Bit & 
+bit & 
 |_bit| & 
 $\B$ &
 The smallest amount of information. \\\hline
 
 currency &
-Euro & 
+euro & 
 |_EUR| & 
 $\L$ &
-The value of one Euro. 
+The value of the currency Euro. 
 
 \end{tabularx}
-\caption{Base units of the International System of Units (SI) and the base unit of information and currency.}
+\caption{Base units of the International System of Units (SI) expanded with the base units of information and currency.}
 \end{table}
 
 
@@ -2056,7 +2073,7 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 
 \method{Unit}{tosiunitx(self)}
 \begin{quote}
-  The unit term will be compiled into a string, which the Latex package siunitx can understand.
+  The unit term will be compiled into a string, which the LaTeX package siunitx can understand.
 
   \subtitle{Parameters}
   \begin{description}
