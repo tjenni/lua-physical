@@ -77,6 +77,9 @@ N.omitUncertainty = true
 % set emph italic
 \renewcommand{\emph}[1]{\textit{#1}}
 
+% lualatex logo
+\newcommand{\LuaLaTeX}{Lua\LaTeX}
+
 % left bar
 \renewenvironment{leftbar}[1][\hsize]
 {%
@@ -94,6 +97,11 @@ N.omitUncertainty = true
 
 
 \begin{document}
+
+  \lstset{language=[LaTex]Tex}
+
+
+
 	\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 0.1}
 	\author{Thomas Jenni}
 	\date{\today}
@@ -115,16 +123,13 @@ N.omitUncertainty = true
 \newpage
 \section{Introduction}
 
-The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. LuaTeX does make it possible to integrate physical calculations directly into the LuaTeX file. The package has been in use since 2016. Since then many bugs have been found and crushed. Nevertheless it still could be possible, that some were not found. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
+The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX does make it possible to integrate physical calculations directly into the \LuaLaTeX file. The package has been in use since 2016. Since then many bugs have been found and crushed. Nevertheless it still could be possible, that some were not found. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
 
 
 
+\section{Loading}
 
-
-\lstset{language=[LaTex]Tex}
-
-\section{Basic usage}
-This package is a pure Lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing calculation results the |siunitx| package can be used. It's recommended to define a macro like |\q| or |\Qty| to convert the lua quantity object to a |siunitx| expression.
+This package is a pure Lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing calculation results the |siunitx| package can be used. It's recommended to define a macro like |\q| to convert the lua quantity object to a |siunitx| expression.
 
 The following Latex preambel loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
@@ -157,8 +162,17 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
 \end{lstlisting}
 
 
-\newpage
-Given the basic preamble, units can be used in lua code. The Result of a calculation can be printed  by using the macro |\q{}|.
+\subsection{Dependencies}
+
+This package is standalone. If a pretty print to \LuaLaTeX{} is wanted, the package |siunitx| sould be installed. 
+
+
+
+
+
+\section{Calculate with physical quantities}
+
+Given the basic preamble, units can be used in lua code directly. The Result of the calculation can be printed to \TeX{} by using the macro |\q{}|.
 
 \begin{lstlisting}
 \begin{luacode}
