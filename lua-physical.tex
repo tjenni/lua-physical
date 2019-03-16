@@ -172,7 +172,7 @@ This package is standalone. If a pretty print to \LuaLaTeX{} is wanted, the pack
 
 \section{Calculate with physical quantities}
 
-Given the basic preamble, units can be used in lua code directly. The Result of the calculation can be printed to \TeX{} by using the macro |\q{}|.
+Given the basic preamble, units can be used in lua code. All units habe an underscore in front of them, i.e. Meter |_m|, Second |_s|. The Result of the calculation can be printed to \LuaLaTeX{} by using the macro |\q{}|.
 
 \begin{lstlisting}
 \begin{luacode}
@@ -201,10 +201,20 @@ $$
 $$
 \endleftbar
 
-The physical quantities |s| for displacement, |t| for time, do have the units meter |_m| and second |_s|. Once these variables are declared, the calculation of the velocity is straight forward. In the LaTeX code the quantities are printend in the problem statement and in the solution. 
+The physical quantity |s| stands for displacement and has the unit |_m|. The quantity |t| stands for time and is givebn in seconds |_s|. Once these variables are declared, the calculation of the velocity |v| is straight forward. In the \LuaLaTeX code above, the quantities are printend in the problem statement and in the solution. 
 
 
-Another example is the following physics problem.
+\subsection{Unit conversion}
+
+Very often, one wants to convert the result of a calcualtion to another physical unit. In the following example problem, the volume of an ideal gas should be calculated. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. 
+
+In order to do the calculation, one has to convert |T| to the base unit Kelvin first. This can be done by calling the function |T:to(_K,true)|.
+
+The first argument of the |to|-function is the target unit. The second argument is a boolean that tells the |to|-function to call a unit specific conversion function. By default the second argument is |false|. 
+
+Most units do not have a conversion function. Exceptions are the unit degree celsius |_degC| and degree fahrenheit |_degF|. These units are amigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. Therefore these units have their own conversion functions. 
+
+By default |_degC| and |_degF| units are standing for temperature differences. If one wants to have it converted like an absolute temperature, the conversion function |to()| should have the second argument set to true.
 
 \begin{lstlisting}
 \begin{luacode}
@@ -218,6 +228,7 @@ Another example is the following physics problem.
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
 $$
   V=\frac{ \q{n} \cdot \q{_R} \cdot \q{T:to(_K,true)} }{ \q{p} }
+  = \q{V}
   = \uuline{\q{V}}
 $$
 \end{lstlisting}
@@ -242,6 +253,43 @@ $$
 
 
 
+Another example is the following. The task is to calculate the volume of a cuboid with lengths given in different units. If the volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred it has to be converted explicitly. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the target unit. In many cases, like in the example here, its not clear in what unit the result sould be printed. Therefore the user has always to give the target unit explicitly.
+
+\begin{lstlisting}
+\begin{luacode}
+  a = 12 * _cm
+  b = 150 * _mm
+  c = 1.5 * _m
+  
+  V = a*b*c
+\end{luacode}
+
+Calculate the volume of a cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
+$$
+  V= a \cdot b \cdot c
+  = \q{a} \cdot \q{b} \cdot \q{c}
+  = \q{V}
+  = \uuline{\q{V:to(_dm^3)}}
+$$
+\end{lstlisting}
+
+\begin{luacode}
+  a = 12 * _cm
+  b = 150 * _mm
+  c = 1.5 * _m
+  
+  V = a*b*c
+\end{luacode}
+
+\leftbar
+Calculate the volume of a cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
+$$
+  V= a \cdot b \cdot c
+  = \q{a} \cdot \q{b} \cdot \q{c}
+  = \q{V}
+  = \uuline{\q{V:to(_dm^3)}}
+$$
+\endleftbar
 
 
 
