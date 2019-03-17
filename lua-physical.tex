@@ -17,7 +17,6 @@
 \begin{luacode*}
 physical = require("physical")
 N = physical.Number
-N.omitUncertainty = true
 \end{luacode*}
 
 \newcommand{\q}[1]{%
@@ -65,7 +64,7 @@ N.omitUncertainty = true
   framerule=2pt,
   rulecolor=\color{blue},
   mathescape=false,
-  captionpos=b,
+  captionpos=t,
   escapechar=`
 }
 
@@ -85,7 +84,7 @@ N.omitUncertainty = true
 {%
     \def\FrameCommand
     {%
-        {\color{red}\vrule width 2pt}%
+        {\color{blue!40!white}\vrule width 2pt}%
         \hspace{10pt}%must no space.
         \fboxsep=\FrameSep%\colorbox{yellow}
     }%
@@ -152,7 +151,6 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
     physical = require("physical")
 
     _N = physical.Number
-    _N.omitUncertainty = true
   \end{luacode*}
 
   % print physical quantities
@@ -170,11 +168,11 @@ This package is standalone. If a pretty print to \LuaLaTeX{} is wanted, the pack
 
 
 
-\section{Calculate with physical quantities}
+\section{Calculate with Physical Quantities}
 
-Given the basic preamble, units can be used in lua code. All units habe an underscore in front of them, i.e. Meter |_m|, Second |_s|. The Result of the calculation can be printed to \LuaLaTeX{} by using the macro |\q{}|.
+Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. Meter is |_m|, Second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The Result of the calculation can be printed to \LuaLaTeX{} by using the macro |\q{}|.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=The velocity of a car.,label=lst:Car Velocity]
 \begin{luacode}
   s = 10 * _m
 	t = 2 * _s
@@ -201,22 +199,93 @@ $$
 $$
 \endleftbar
 
-The physical quantity |s| stands for displacement and has the unit |_m|. The quantity |t| stands for time and is givebn in seconds |_s|. Once these variables are declared, the calculation of the velocity |v| is straight forward. In the \LuaLaTeX code above, the quantities are printend in the problem statement and in the solution. 
+In the above listing \ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|. The variable |t| stands for time and is given in second |_s|. By executing  mathematical operations on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The created instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code.
 
 
 \subsection{Unit conversion}
 
-Very often, one wants to convert the result of a calcualtion to another physical unit. In the following example problem, the volume of an ideal gas should be calculated. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. 
+Very often the result of a calculation is needed in different physical unit, than the given quantities. In the following listing \ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid with lengths given in different units. If the volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
 
-In order to do the calculation, one has to convert |T| to the base unit Kelvin first. This can be done by calling the function |T:to(_K,true)|.
+\begin{lstlisting}[caption=The volume of a cuboid.,label=lst:Volume of Cuboid]
+\begin{luacode}
+  a = 12 * _cm
+  b = 150 * _mm
+  c = 1.5 * _m
+  
+  V = a*b*c
+\end{luacode}
 
-The first argument of the |to|-function is the target unit. The second argument is a boolean that tells the |to|-function to call a unit specific conversion function. By default the second argument is |false|. 
+Find the volume of a rectangular cuboid with lengths $\q{a}$, 
+$\q{b}$ and $\q{c}$.
+$$
+  V= a \cdot b \cdot c
+  = \q{a} \cdot \q{b} \cdot \q{c}
+  = \q{V}
+  = \uuline{\q{V:to(_dm^3)}}
+$$
+\end{lstlisting}
 
-Most units do not have a conversion function. Exceptions are the unit degree celsius |_degC| and degree fahrenheit |_degF|. These units are amigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. Therefore these units have their own conversion functions. 
+\begin{luacode}
+  a = 12 * _cm
+  b = 150 * _mm
+  c = 1.5 * _m
+  
+  V = a*b*c
+\end{luacode}
 
-By default |_degC| and |_degF| units are standing for temperature differences. If one wants to have it converted like an absolute temperature, the conversion function |to()| should have the second argument set to true.
+\leftbar
+Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
+$$
+  V= a \cdot b \cdot c
+  = \q{a} \cdot \q{b} \cdot \q{c}
+  = \q{V}
+  = \uuline{\q{V:to(_dm^3)}}
+$$
+\endleftbar
 
-\begin{lstlisting}
+
+
+
+\subsubsection{Temperature conversion}
+
+In the following problem, listing \ref{lst:degree to kelvin} , the task is to convert a temperature given in the unit degree Celsius to Kelvin. As can be seen in the listing, the conversion function has two parameters. 
+
+The first argument is the target unit. The second is a boolean that tells the |to|-function to call a unit specific conversion function. By default the second argument is |false|. 
+
+Most units do not have a conversion function. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. Therefore these units have their own conversion functions. 
+
+By default |_degC| and |_degF| units are standing for temperature differences. If one wants to have it converted absolutely, the conversion function |to()| should have the second argument set to true.
+
+\begin{lstlisting}[caption=Temperature conversion.,label=lst:degree to kelvin]
+\begin{luacode}
+  T = 20 * _degC
+\end{luacode}
+
+A thermometer shows $\q{T}$. Converte this quantity to Kelvin. 
+$$
+  T = \q{T:to(_K)} + \q{273.15 * _K}
+  =  \q{T:to(_K,true)}
+$$
+\end{lstlisting}
+
+\begin{luacode}
+  T = 20 * _degC
+\end{luacode}
+
+\leftbar
+A thermometer shows $\q{T}$. Converte this quantity to Kelvin. 
+$$
+  T = \q{T:to(_K)} + \q{273.15 * _K}
+  =  \q{T:to(_K,true)}
+$$
+\endleftbar
+
+
+
+
+In the following problem, listing \ref{lst:volume of ideal gas} , the task is to calculate the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. In order to do the calculation, one has to convert |T| to the base unit Kelvin first. This can be done by calling the function |T:to(_K,true)|.
+
+\begin{lstlisting}[caption=Volume of an ideal gas.,label=lst:volume of ideal gas]
 \begin{luacode}
   p = 1.013 * _bar
   n = 1 * _mol
@@ -253,43 +322,13 @@ $$
 
 
 
-Another example is the following. The task is to calculate the volume of a cuboid with lengths given in different units. If the volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred it has to be converted explicitly. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the target unit. In many cases, like in the example here, its not clear in what unit the result sould be printed. Therefore the user has always to give the target unit explicitly.
 
-\begin{lstlisting}
-\begin{luacode}
-  a = 12 * _cm
-  b = 150 * _mm
-  c = 1.5 * _m
-  
-  V = a*b*c
-\end{luacode}
 
-Calculate the volume of a cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
-$$
-  V= a \cdot b \cdot c
-  = \q{a} \cdot \q{b} \cdot \q{c}
-  = \q{V}
-  = \uuline{\q{V:to(_dm^3)}}
-$$
-\end{lstlisting}
 
-\begin{luacode}
-  a = 12 * _cm
-  b = 150 * _mm
-  c = 1.5 * _m
-  
-  V = a*b*c
-\end{luacode}
 
-\leftbar
-Calculate the volume of a cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
-$$
-  V= a \cdot b \cdot c
-  = \q{a} \cdot \q{b} \cdot \q{c}
-  = \q{V}
-  = \uuline{\q{V:to(_dm^3)}}
-$$
-\endleftbar
+
+
+
 
 
 
@@ -328,9 +367,9 @@ $$
 \newpage
 \section{Supported Units}
 
+\label{ch:Supported Units}
 
 \subsection{Base Units}
-
 
 \begin{table}[H]
 \centering
