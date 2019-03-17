@@ -28,7 +28,7 @@ N = physical.Number
 \sisetup{
 	output-decimal-marker = {.}, 
 	per-mode = symbol,
-	separate-uncertainty = false,
+	separate-uncertainty = true,
 	add-decimal-zero = true,
 	exponent-product = \cdot,
 	round-mode=off
@@ -92,7 +92,8 @@ N = physical.Number
 }
 {\endMakeFramed}
 
-
+% style for table header
+\newcommand\thead[1]{#1}
 
 
 \begin{document}
@@ -140,7 +141,7 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
   \sisetup{
     output-decimal-marker = {.}, 
     per-mode = symbol,
-    separate-uncertainty = false,
+    separate-uncertainty = true,
     add-decimal-zero = true,
     exponent-product = \cdot,
     round-mode = off
@@ -168,7 +169,7 @@ This package is standalone. If a pretty print to \LuaLaTeX{} is wanted, the pack
 
 
 
-\section{Calculate with Physical Quantities}
+\section{Usage}
 
 Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. Meter is |_m|, Second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The Result of the calculation can be printed to \LuaLaTeX{} by using the macro |\q{}|.
 
@@ -246,7 +247,7 @@ $$
 
 
 
-\subsubsection{Temperature conversion}
+\subsubsection{Temperature Conversion}
 
 In the following problem, listing \ref{lst:degree to kelvin} , the task is to convert a temperature given in the unit degree Celsius to Kelvin. As can be seen in the listing, the conversion function has two parameters. 
 
@@ -283,13 +284,67 @@ $$
 
 
 
-In the following problem, listing \ref{lst:volume of ideal gas} , the task is to calculate the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. In order to do the calculation, one has to convert |T| to the base unit Kelvin first. This can be done by calling the function |T:to(_K,true)|.
+
+
+
+
+
+
+\subsubsection{Uncertainty}
+
+The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing \ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
+
+For the uncertainty propagation the gaussian formula 
+$$
+  \Delta f = \sqrt{ \left(\frac{\partial f}{x_1} \cdot \Delta x_1\right)^2 + \dots + \left(\frac{\partial f}{x_n} \cdot \Delta x_2 \right)^2 }
+$$
+is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to behave linear, if the quantities $x_i$ are changed in the range of their uncertainties.
+ 
+
+
+\begin{lstlisting}[caption=Uncertainty in area calculation.,label=lst:rectangular area]
+\begin{luacode}
+  a = N(2,0.1) * _m
+  b = N(3,0.1) * _m
+
+  A = (a*b):to(_m^2)
+\end{luacode}
+
+Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
+$$
+  A = a \cdot b 
+  = \q{a} \cdot \q{b}
+  = \uuline{\q{A}}
+$$
+\end{lstlisting}
+
+\begin{luacode}
+  a = N(2,0.1) * _m
+  b = N(3,0.1) * _m
+
+  A = (a*b):to(_m^2)
+\end{luacode}
+
+\leftbar
+Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
+$$
+  A = a \cdot b 
+  = \q{a} \cdot \q{b}
+  = \uuline{\q{A}}
+$$
+\endleftbar
+
+
+Instead of printing always the uncertainties, one can use the uncertainty calculation to provide significant numbers.
+
+In the following problem, listing \ref{lst:volume of ideal gas} , the task is to calculate the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. In order to do the calculation, one has to convert |T|, which is given as an absolute temperature in degree celsius to the base unit Kelvin first. By setting |N.omitUncertainty = true|, all uncertainties are not printed.
 
 \begin{lstlisting}[caption=Volume of an ideal gas.,label=lst:volume of ideal gas]
 \begin{luacode}
-  p = 1.013 * _bar
-  n = 1 * _mol
-  T = 30 * _degC
+  N.omitUncertainty = true
+  p = N(1.013,0.0001) * _bar
+  n = N(1,0.01) * _mol
+  T = N(30,0.1) * _degC
   
   V = ( n * _R * T:to(_K,true) / p ):to(_L)
 \end{luacode}
@@ -304,9 +359,10 @@ $$
 
 
 \begin{luacode}
-  p = 1013 * _hPa
-  n = 1 * _mol
-  T = 0 * _degC
+  N.omitUncertainty = true
+  p = N(1.013,0.0001) * _bar
+  n = N(1,0.01) * _mol
+  T = N(30,0.1) * _degC
   
   V = ( n * _R * T:to(_K,true) / p ):to(_L)
 \end{luacode}
@@ -319,6 +375,10 @@ $$
   = \uuline{\q{V}}
 $$
 \endleftbar
+
+
+
+
 
 
 
@@ -366,10 +426,77 @@ $$
 
 \newpage
 \section{Supported Units}
-
 \label{ch:Supported Units}
 
+In this chapter, all supported units are listed. 
+
+
+
+
+
+
 \subsection{Base Units}
+
+From the units listed in this section, all other units are derived from.
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{0.5\hsize}}X%
+  l%
+  c%
+  c%
+  >{\setlength\hsize{1.5\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
+
+length &
+meter & 
+|_m| & 
+$\L$ &
+The distance light travels in vacuum during $1/ \num{299792458}$ second. \\
+
+mass &
+kilogram  &  
+|_kg| & 
+$\M$ & 
+The mass of the international protoype of the kilogram.\\
+
+time &
+second & |_s| & 
+$\T$ & 
+Is \num{9192631770} times the period of the radiation from the transition between the two hyperfine levels of the ground state of caesium-133.  \\
+
+electric \newline current &
+ampere & 
+|_A| & 
+$\I$ & 
+The constant current which, if maintained in two straight parallel conductors of infinte length, of negligible circular crosss-section, and placed $\SI{1}{\m}$ apart in vacuum, would produce between these conductors a force equal to $\SI{2e-7}{\N\per\m}$.  \\
+
+
+thermodynamic \newline temperature &
+kelvin  & 
+|_K| & 
+$\Theta$ & 
+Is the fraction $1/\num{273.16}$ of the thermodynamic temperature of the triple point of water.  \\
+
+amount of \newline substance &
+mole  & 
+|_mol| &  
+$\N$ & 
+Amount of substance that contains as many particles as there are atoms in $\SI{0.012}{\kg}$ of carbon-12. \\
+
+luminous \newline intensity &
+candela & 
+|_cd| & 
+$\J$ & 
+The luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$ \\\hline
+
+\end{tabularx}
+\end{table}
+
 
 \begin{table}[H]
 \centering
@@ -381,79 +508,38 @@ $$
   >{\setlength\hsize{1.5\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dim. & Definition \\\hline
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
 
 number &
 -- &
-$\1$ &
+|_1| &
 $\1$ & 
-The dimensionless number one.  \\\hline
-
-length &
-meter & 
-|_m| & 
-$\L$ &
-The distance light travels in vacuum during $1/ \num{299792458}$ second. \\\hline
-
-mass &
-kilogram  &  
-|_kg| & 
-$\M$ & 
-The mass of the international protoype of the kilogram.\\\hline
-
-time &
-second & |_s| & 
-$\T$ & 
-Is \num{9192631770} times the period of the radiation from the transition between the two hyperfine levels of the ground state of caesium-133.  \\\hline
-
-electric \newline current &
-ampere & 
-|_A| & 
-$\I$ & 
-The constant current which, if maintained in two straight parallel conductors of infinte length, of negligible circular crosss-section, and placed $\SI{1}{\m}$ apart in vacuum, would produce between these conductors a force equal to $\SI{2e-7}{\N\per\m}$.  \\\hline
-
-
-thermodynamic \newline temperature &
-kelvin  & 
-|_K| & 
-$\Theta$ & 
-Is the fraction $1/\num{273.16}$ of the thermodynamic temperature of the triple point of water.  \\\hline
-
-amount of \newline substance &
-mole  & 
-|_mol| &  
-$\N$ & 
-Amount of substance that contains as many particles as there are atoms in $\SI{0.012}{\kg}$ of carbon-12. \\\hline
-
-luminous \newline intensity &
-candela & 
-|_cd| & 
-$\J$ & 
-The luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$ \\\hline
+The dimensionless number one.  \\
 
 information &
 bit & 
 |_bit| & 
 $\B$ &
-The smallest amount of information. \\\hline
+The smallest amount of information. \\
 
 currency &
 euro & 
 |_EUR| & 
 $\L$ &
-The value of the currency Euro. 
+The value of the currency Euro. \\\hline
 
 \end{tabularx}
-\caption{Base units of the International System of Units (SI) expanded with the base units of information and currency.}
+\caption{Base units of the International System of Units (SI), information,  currency and the dimensionless number one.}
 \end{table}
 
 
 
 
 
+\newpage
+\subsection{Derived Units of the International System of Units (SI)}
 
-
-\subsection{Derived Units}
+All units in this section are derived from the base units. 
 
 \begin{table}[H]
 \centering
@@ -465,98 +551,98 @@ The value of the currency Euro.
   >{\setlength\hsize{0.8\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dimension & Definition \\\hline
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
 plane angle & 
 radian &
 |_rad| & 
 $1$ & 
-|_1| \\\hline
+|_1| \\
 
 solid angle & 
 steradian &
 |_sr| & 
 $\1$ & 
-|_rad^2| \\\hline
+|_rad^2| \\
 
 frequency &
 hertz & 
 |_Hz| & 
 $\T[-1]$ & 
-|1/_s| \\\hline
+|1/_s| \\
 
 force &
 newton & 
 |_N| & 
 $\M \L \T[-2]$ & 
-|_kg*_m/_s^2| \\\hline
+|_kg*_m/_s^2| \\
 
 pressure &
 pascal & 
 |_Pa| & 
 $\M \L[-1] \T[-2]$ & 
-|_N/_m^2| \\\hline
+|_N/_m^2| \\
 
 energy &
 joule & 
 |_J| & 
 $\M \L[2] \T[-2]$ & 
-|_N*_m| \\\hline
-
+|_N*_m| \\
 
 power &
 watt & 
 |_W| & 
 $\M \L[2] \T[-3]$ & 
-|_J/_s| \\\hline
+|_J/_s| \\
 
 electric \newline charge &
 coulomb & 
 |_C| & 
 $\T \I$ & 
-|_A*_s| \\\hline
+|_A*_s| \\
 
 electric potential \newline difference &
 volt & 
 |_V| & 
 $\M \L[2] \T[-3] \I[-1]$ & 
-|_J/_C| \\\hline
+|_J/_C| \\
 
 capacitance &
 farad & 
 |_F| & 
 $\L[-2] \M[-1] \T[4] \I[2]$ & 
-|_C/_V| \\\hline
+|_C/_V| \\
 
 electric \newline resistance &
 ohm & 
 |_Ohm| & 
 $\L[2] M \T[-3] \I[-2]$ & 
-|_V/_A| \\\hline
+|_V/_A| \\
 
 electric \newline conductance &
 siemens & 
 |_S| & 
 $\L[-2] \M[-1] T^{3} I^{2}$ & 
-|_A/_V| \\\hline
+|_A/_V| \\
 
 magnetic \newline flux &
 weber & 
 |_Wb| & 
 $\L[2] \M \T[-2] \I[-1]$ & 
-|_V*_s| \\\hline
+|_V*_s| \\
 
 magnetic flux \newline density &
 tesla & 
 |_T| & 
 $\M \T[-2] \I[-1]$ & 
-|_V*_s| \\\hline
+|_V*_s| \\
+
 
 inductance &
 henry & 
 |_H| & 
 $\L[2] \M \T[-2] \I[-2]$ & 
-|_Wb/_A| \\\hline
+|_Wb/_A| \\
 
 Celsius \newline temperature &
 degree Celsius & 
@@ -564,42 +650,60 @@ degree Celsius &
 $\Theta$ & 
 |_K| \\\hline
 
+\end{tabularx}
+\end{table}
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{1.2\hsize}}X%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{0.8\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+
 luminous flux &
 lumen & 
 |_lm| & 
 $\J$ &
-|_cd*_sr| \\\hline
+|_cd*_sr| \\
 
 illuminance &
 lux & 
 |_lux| & 
 $\L[-2] \J$ &
-|_lm/_m^2| \\\hline
+|_lm/_m^2| \\
 
 activity &
 becquerel & 
 |_Bq| & 
 $\T[-1]$ &
-|1/_s| \\\hline
+|1/_s| \\
 
 absorbed dose &
 gray & 
 |_Gy| & 
 $\L[2] \T[-2]$ &
-|_J/_kg| \\\hline
+|_J/_kg| \\
 
 dose equivalent &
 sievert & 
 |_Sv| & 
 $\L[2] \T[-2]$ &
-|_J/_kg| \\\hline
+|_J/_kg| \\
 
 
 catalytic \newline activity &
 katal & 
 |_kat| & 
 $\T[-1] \N$ &
-|_mol/_s|
+|_mol/_s| \\\hline
 
 \end{tabularx}
 \caption{Derived units of the International System of Units (SI)}
@@ -609,9 +713,182 @@ $\T[-1] \N$ &
 
 
 
-
+\newpage
+\subsection{Units outside of the International System of Units (SI)}
 
 There are a few units with dimension $\1$. The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+
+ &
+percent \% &  
+|_percent| &
+$\1$ &
+|1e-2*_1|  \\
+
+ &
+permille \textperthousand & 
+|_permille| & 
+$\1$ &
+|1e-3*_1|  \\
+
+ &
+parts-per-million & 
+|_ppm| &
+$\1$ &
+|1e-6*_1|  \\
+
+ &
+parts-per-billion & 
+|_ppb| &
+$\1$ &
+|1e-9*_1|  \\
+
+ &
+parts-per-trillion & 
+|_ppt| &
+$\1$ &
+|1e-12*_1|  \\
+
+ &
+parts-per-quadrillion & 
+|_ppq| &
+$\1$ &
+|1e-15*_1|  \\
+
+ &
+decibel & 
+|_dB| & 
+$\1$ &
+|_1|  \\
+
+
+plane angle & 
+degree &
+|_deg| & 
+$\1$ &
+|(Pi/180)*_rad| \\
+
+
+ & 
+arc minute &
+|_arcmin| & 
+$\1$ &
+|_deg/60| \\
+
+ & 
+arc second &
+|_arcsec| & 
+$\1$ &
+|_arcmin/60| \\
+
+ & 
+gradian &
+|_gon| & 
+$\1$ &
+|(Pi/200)*_rad| \\
+
+ & 
+turn &
+|_tr| & 
+$\1$ & 
+|2*Pi*_rad| \\
+
+solid angle & 
+spat &
+|_sp| & 
+$\1$ & 
+|4*Pi*_sr| \\
+
+
+
+
+length & 
+astronomical unit &
+|_au| & 
+$\L$ & 
+|149597870700*_m| \\
+
+ &
+lightyear &
+|_ly| & 
+$\L$ & 
+|_c*_a| \\
+
+ &
+parsec &
+|_pc| & 
+$\L$ & 
+|(648000/Pi)*_au| \\
+
+
+ &
+angstrom &
+|_angstrom| & 
+$\L$ & 
+|1e-10*_m| \\
+
+ & 
+fermi &
+|_fermi| & 
+$\L$ & 
+|1e-15*_m| \\
+
+
+area & 
+are &
+|_ar| & 
+$\L[2]$ & 
+|1e2*_m^2| \\
+
+
+ & 
+hectare &
+|_hectare| & 
+$\L[2]$ & 
+|1e4*_m^2| \\
+
+
+ &
+barn &
+|_barn| & 
+$\L[2]$ &
+|1e-28*_m^2| \\
+
+
+volume & 
+liter &
+|_L| & 
+$\L[3]$ & 
+|0.001*_m^3| \\
+
+
+ & 
+metric teaspoon &
+|_tsp| & 
+$\L[3]$ & 
+|0.005*_L| \\
+
+
+ & 
+metric tablespoon &
+|_Tbsp| & 
+$\L[3]$ & 
+|3*_tsp| \\\hline
+
+\end{tabularx}
+\end{table}
+
 
 
 \begin{table}[H]
@@ -624,207 +901,47 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
   >{\setlength\hsize{1\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dim. & Definition \\\hline
-
- &
-percent \% &  
-|_percent| &
-$\1$ &
-|1e-2*_1|  \\\hline
-
- &
-permille \textperthousand & 
-|_permille| & 
-$\1$ &
-|1e-3*_1|  \\\hline
-
- &
-parts-per-million & 
-|_ppm| &
-$\1$ &
-|1e-6*_1|  \\\hline
-
- &
-parts-per-billion & 
-|_ppb| &
-$\1$ &
-|1e-9*_1|  \\\hline
-
- &
-parts-per-trillion & 
-|_ppt| &
-$\1$ &
-|1e-12*_1|  \\\hline
-
- &
-parts-per-quadrillion & 
-|_ppq| &
-$\1$ &
-|1e-15*_1|  \\\hline
-
- &
-decibel & 
-|_dB| & 
-$\1$ &
-|_1|  \\\hline
-
-
-plane angle & 
-degree &
-|_deg| & 
-$\1$ &
-|(Pi/180)*_rad| \\\hline
-
-
- & 
-arc minute &
-|_arcmin| & 
-$\1$ &
-|_deg/60| \\\hline
-
- & 
-arc second &
-|_arcsec| & 
-$\1$ &
-|_arcmin/60| \\\hline
-
- & 
-gradian &
-|_gon| & 
-$\1$ &
-|(Pi/200)*_rad| \\\hline
-
- & 
-turn &
-|_tr| & 
-$\1$ & 
-|2*Pi*_rad| \\\hline
-
-solid angle & 
-spat &
-|_sp| & 
-$\1$ & 
-|4*Pi*_sr| \\\hline
-
-
-
-
-length & 
-astronomical unit &
-|_au| & 
-$\L$ & 
-|149597870700*_m| \\\hline
-
- &
-lightyear &
-|_ly| & 
-$\L$ & 
-|_c*_a| \\\hline
-
- &
-parsec &
-|_pc| & 
-$\L$ & 
-|(648000/Pi)*_au| \\\hline
-
-
- &
-angstrom &
-|_angstrom| & 
-$\L$ & 
-|1e-10*_m| \\\hline
-
- & 
-fermi &
-|_fermi| & 
-$\L$ & 
-|1e-15*_m| \\\hline
-
-
-
-
-area & 
-are &
-|_ar| & 
-$\L[2]$ & 
-|1e2*_m^2| \\\hline
-
-
- & 
-hectare &
-|_hectare| & 
-$\L[2]$ & 
-|1e4*_m^2| \\\hline
-
-
- &
-barn &
-|_barn| & 
-$\L[2]$ &
-|1e-28*_m^2| \\\hline
-
-
-volume & 
-liter &
-|_L| & 
-$\L[3]$ & 
-|0.001*_m^3| \\\hline
-
-
- & 
-metric teaspoon &
-|_tsp| & 
-$\L[3]$ & 
-|0.005*_L| \\\hline
-
-
- & 
-metric tablespoon &
-|_Tbsp| & 
-$\L[3]$ & 
-|3*_tsp| \\\hline
-
-
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
 
 time & 
 minute &
 |_min| & 
 $\T$ & 
-|_60*_s| \\\hline
+|_60*_s| \\
 
 
  & 
 hour &
 |_h| & 
 $\T$ & 
-|_60*_min| \\\hline
+|_60*_min| \\
 
 
  & 
 day &
 |_d| & 
 $\T$ & 
-|_24*_h| \\\hline
+|_24*_h| \\
 
 
  & 
 week &
 |_wk| & 
 $\T$ & 
-|_7*_d| \\\hline
+|_7*_d| \\
 
  & 
 year &
 |_a| & 
 $\T$ & 
-|365.25*_d| \\\hline
+|365.25*_d| \\
 
  & 
 svedberg &
 |_svedberg| & 
 $\T$ & 
-|1e-13*_s| \\\hline
+|1e-13*_s| \\
 
 
 mass & 
@@ -839,8 +956,8 @@ $\M$ &
 
 
 
-
-
+\newpage
+\subsection{Imperial Units}
 
 
 \begin{table}[H]
@@ -853,162 +970,161 @@ $\M$ &
   >{\setlength\hsize{1\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dim. & Definition \\\hline
-
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
 length & 
 inch &
 |_in| & 
 $\L$ & 
-|0.0254*_m| \\\hline
+|0.0254*_m| \\
 
 
  & 
 thou &
 |_th| & 
 $\L$ & 
-|0.001*_in| \\\hline
+|0.001*_in| \\
 
 
  & 
 pica &
 |_pica| & 
 $\L$ & 
-|_in/6| \\\hline
+|_in/6| \\
 
 
  & 
 point &
 |_pt| & 
 $\L$ & 
-|_in/72| \\\hline
+|_in/72| \\
 
 
  & 
 hand &
 |_hh| & 
 $\L$ & 
-|4*_in| \\\hline
+|4*_in| \\
 
  & 
 foot &
 |_ft| & 
 $\L$ & 
-|12*_in| \\\hline
+|12*_in| \\
 
  & 
 yard &
 |_yd| & 
 $\L$ & 
-|3*_ft| \\\hline
+|3*_ft| \\
 
  & 
 rod &
 |_rd| & 
 $\L$ & 
-|5.5*_yd| \\\hline
+|5.5*_yd| \\
 
 
  & 
 chain &
 |_ch| & 
 $\L$ & 
-|4*_rd| \\\hline
+|4*_rd| \\
 
 
  & 
 furlong &
 |_fur| & 
 $\L$ & 
-|10*_ch| \\\hline
+|10*_ch| \\
 
 
  & 
 mile &
 |_mi| & 
 $\L$ & 
-|8*_fur| \\\hline
+|8*_fur| \\
 
  & 
 league &
 |_lea| & 
 $\L$ & 
-|3*_mi| \\\hline
+|3*_mi| \\
 
  & 
 nautical mile &
 |_nmi| & 
 $\L$ & 
-|1852 * _m| \\\hline
+|1852 * _m| \\
 
  & 
 nautical league &
 |_nlea| & 
 $\L$ & 
-|3*_nmi| \\\hline
+|3*_nmi| \\
 
  & 
 cable &
 |_cbl| & 
 $\L$ & 
-|_nmi/10| \\\hline
+|_nmi/10| \\
 
  & 
 fathom &
 |_ftm| & 
 $\L$ & 
-|6*_ft| \\\hline
+|6*_ft| \\
 
 
 velocity & 
 knot &
 |_kn| & 
 $\L[1] \T[-1]$ & 
-|_nmi/_h| \\\hline
+|_nmi/_h| \\
 
 
 area & 
 acre &
 |_ac| & 
 $\L[2]$ & 
-|43560*_ft^2| \\\hline
+|43560*_ft^2| \\
 
 
 volume & 
 gallon &
 |_gal| & 
 $\L[3]$ & 
-|4.54609*_L| \\\hline
+|4.54609*_L| \\
 
  & 
 quart &
 |_qt| & 
 $\L[3]$ & 
-|_gal/4| \\\hline
+|_gal/4| \\
 
  & 
 pint &
 |_pint| & 
 $\L[3]$ & 
-|_qt/2| \\\hline
+|_qt/2| \\
 
  & 
 cup &
 |_cup| & 
 $\L[3]$ & 
-|_pint/2| \\\hline
+|_pint/2| \\
 
  & 
 gill &
 |_gi| & 
 $\L[3]$ & 
-|_pint/4| \\\hline
+|_pint/4| \\
 
  & 
 fluid ounce &
 |_fl_oz| & 
 $\L[3]$ & 
-|_gi/5| \\\hline
+|_gi/5| \\
 
  & 
 fluid dram &
@@ -1017,7 +1133,6 @@ $\L[3]$ &
 |_fl_oz/8| \\\hline
 
 \end{tabularx}
-\caption{Imperial units}
 \end{table}
 
 
@@ -1032,50 +1147,49 @@ $\L[3]$ &
   >{\setlength\hsize{1\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dim. & Definition \\\hline
-
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
 mass & 
 grain &
 |_gr| & 
 $\M$ & 
-|64.79891*_mg| \\\hline
+|64.79891*_mg| \\
 
  & 
 pound &
 |_lb| & 
 $\M$ & 
-|7000*_gr| \\\hline
+|7000*_gr| \\
 
  & 
 ounce &
 |_oz| & 
 $\M$ & 
-|_lb/16| \\\hline
+|_lb/16| \\
 
  & 
 dram &
 |_dr| & 
 $\M$ & 
-|_lb/256| \\\hline
+|_lb/256| \\
 
  & 
 stone &
 |_st| & 
 $\M$ & 
-|14*_lb| \\\hline
+|14*_lb| \\
 
  & 
 quarter &
 |_qtr| & 
 $\M$ & 
-|2*_st| \\\hline
+|2*_st| \\
 
  & 
 hundredweight &
 |_cwt| & 
 $\M$ & 
-|4*_qtr| \\\hline
+|4*_qtr| \\
 
  & 
 long ton &
@@ -1091,6 +1205,14 @@ $\M$ &
 
 
 
+
+
+\newpage
+\subsection{U.S. customary units}
+
+In the U.S., the length units are bound  to the meter differently than in the imperial system. The followin definitions are taken from \url{https://en.wikipedia.org/wiki/United_States_customary_units}.
+
+
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
@@ -1101,87 +1223,146 @@ $\M$ &
   >{\setlength\hsize{1\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dim. & Definition \\\hline
-
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
 length & 
 U.S. survey inch &
 |_in_US| & 
 $\L$ & 
-|_m/39.37| \\\hline
+|_m/39.37| \\
 
  & 
 U.S. survey hand &
 |_hh_US| & 
 $\L$ & 
-|4*_in_US| \\\hline
+|4*_in_US| \\
 
  & 
 U.S. survey foot &
 |_ft_US| & 
 $\L$ & 
-|3*_hh_US| \\\hline
+|3*_hh_US| \\
 
  & 
 U.S. survey link &
 |_li_US| & 
 $\L$ & 
-|0.66*_ft_US| \\\hline
+|0.66*_ft_US| \\
 
  & 
 U.S. survey yard &
 |_yd_US| & 
 $\L$ & 
-|3*_ft_US| \\\hline
+|3*_ft_US| \\
 
  & 
 U.S. survey rod &
 |_rd_US| & 
 $\L$ & 
-|5.5*_yd_US| \\\hline
+|5.5*_yd_US| \\
 
 
  & 
 U.S. survey chain &
 |_ch_US| & 
 $\L$ & 
-|4*_rd_US| \\\hline
+|4*_rd_US| \\
 
 
  & 
 U.S. survey furlong &
 |_fur_US| & 
 $\L$ & 
-|10*_ch_US| \\\hline
+|10*_ch_US| \\
 
 
  & 
 U.S. survey mile &
 |_mi_US| & 
 $\L$ & 
-|8*_fur_US| \\\hline
+|8*_fur_US| \\
 
  & 
 U.S. survey league &
 |_lea_US| & 
 $\L$ & 
-|3*_mi_US| \\\hline
+|3*_mi_US| \\
 
  & 
 U.S. survey fathom &
 |_ftm_US| & 
 $\L$ & 
-|72*_in_US| \\\hline
+|72*_in_US| \\
 
  & 
 U.S. survey cable &
 |_cbl_US| & 
 $\L$ &
-|120*_ftm_US| \\\hline
+|120*_ftm_US| \\
 
+area & 
+U.S. acre &
+|_ac_US| & 
+$\L[2]$ &
+|_ch_US*_fur_US| \\
+
+volume & 
+U.S. gallon &
+|_gal_US| & 
+$\L[3]$ &
+|231*_in^3| \\
+
+ & 
+U.S. quart &
+|_qt_US| & 
+$\L[3]$ &
+|_gal_US/4| \\
+
+ & 
+U.S. pint &
+|_pint_US| & 
+$\L[3]$ &
+|_qt_US/2| \\
+
+ & 
+U.S. cup &
+|_pint_US| & 
+$\L[3]$ &
+|_pint_US/2| \\
+
+ & 
+U.S. gill &
+|_gi_US| & 
+$\L[3]$ &
+|_pint_US/4| \\
+
+ & 
+U.S. fluid ounce &
+|_fl_oz_US| & 
+$\L[3]$ &
+|_gi_US/4| \\
+
+ & 
+U.S. table spoon &
+|_Tbsp_US| & 
+$\L[3]$ &
+|_fl_oz_US/2| \\
+
+ & 
+U.S. tea spoon &
+|_tsp_US| & 
+$\L[3]$ &
+|_Tbsp_US/3| \\
+
+ & 
+U.S. fluid dram &
+|_fl_dr_US| & 
+$\L[3]$ &
+|_fl_oz_US/8| \\
+
+\hline
 
 \end{tabularx}
-\caption{U. S. customary units}
 \end{table}
 
 
@@ -1191,6 +1372,52 @@ $\L$ &
 
 
 
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+
+
+mass & 
+U.S. quarter &
+|_qtr_US| & 
+$\L[3]$ &
+|25*_lb| \\
+
+ & 
+U.S. hundredweight &
+|_qtr_US| & 
+$\L[3]$ &
+|4*_qtr_US| \\
+
+ & 
+U.S. short ton &
+|_ton_US| & 
+$\L[3]$ &
+|20*_cwt_US| \\
+
+\hline
+
+\end{tabularx}
+\caption{U.S. customary units}
+\end{table}
+
+
+
+
+
+
+
+
+\newpage
+\subsection{International Currencies}
 
 
 \begin{table}[H]
@@ -1203,93 +1430,94 @@ $\L$ &
   >{\setlength\hsize{1\hsize}}X%
 }
 
-Quantity & Unit & Symbol & Dim. & Definition \\\hline
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
 
 currency &
 Afghan afghani&
 |_AFN| & 
 $\C$ & 
-|0.012*_EUR| \\\hline
+|0.012*_EUR| \\
 
  &
 Albanian lek &
 |_ALL| & 
 $\C$ & 
-|0.008*_EUR| \\\hline
+|0.008*_EUR| \\
 
  &
 Armenian Dram &
 |_AMD| & 
 $\C$ & 
-|0.0018*_EUR| \\\hline
+|0.0018*_EUR| \\
 
  &
 Angolan Kwanza &
 |_AOA| & 
 $\C$ & 
-|0.0028*_EUR| \\\hline
+|0.0028*_EUR| \\
 
  &
 Argentine Peso &
 |_ARS| & 
 $\C$ & 
-|0.021*_EUR| \\\hline
+|0.021*_EUR| \\
 
  &
 U.S. dollar &
 |_USD| & 
 $\C$ & 
-|0.89*_EUR| \\\hline
+|0.89*_EUR| \\
 
  &
 Japanese yen &
 |_JPY| & 
 $\C$ & 
-|0.008*_EUR| \\\hline
+|0.008*_EUR| \\
 
  &
 British pound &
 |_GBP| & 
 $\C$ & 
-|1.17*_EUR| \\\hline
+|1.17*_EUR| \\
 
  &
 Australian dollar &
 |_AUD| & 
 $\C$ & 
-|0.63*_EUR| \\\hline
+|0.63*_EUR| \\
 
  &
 Canadian dollar &
 |_CAD| & 
 $\C$ & 
-|0.66*_EUR| \\\hline
+|0.66*_EUR| \\
 
  &
 Swiss franc &
 |_CHF| & 
 $\C$ & 
-|0.88*_EUR| \\\hline
+|0.88*_EUR| \\
 
  &
 Chinese yuan &
 |_CNY| & 
 $\C$ & 
-|0.13*_EUR| \\\hline
+|0.13*_EUR| \\
 
  &
 Swedish krona &
 |_SEK| & 
 $\C$ & 
-|0.094*_EUR| \\\hline
+|0.094*_EUR| \\
 
  &
 New Zealand dollar &
 |_NZD| & 
 $\C$ & 
-|0.60*_EUR| \\\hline
+|0.60*_EUR| \\
 
+\hline
 
 \end{tabularx}
 \caption{Currency units based on exchange rates from 7.3.2019, 21:00 UTC.}
