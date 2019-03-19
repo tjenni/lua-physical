@@ -539,7 +539,7 @@ The value of the currency Euro. \\\hline
 \newpage
 \subsection{Derived Units of the International System of Units (SI)}
 
-All units in this section are derived from the base units. 
+All units in this section are derived from the SI base units, \cite[123-129]{bipm06}.
 
 \begin{table}[H]
 \centering
@@ -648,7 +648,22 @@ Celsius \newline temperature &
 degree Celsius & 
 |_degC| & 
 $\Theta$ & 
-|_K| \\\hline
+|_K| \\
+
+
+luminous flux &
+lumen & 
+|_lm| & 
+$\J$ &
+|_cd*_sr| \\
+
+illuminance &
+lux & 
+|_lux| & 
+$\L[-2] \J$ &
+|_lm/_m^2| \\
+
+\hline
 
 \end{tabularx}
 \end{table}
@@ -667,18 +682,6 @@ $\Theta$ &
 }
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
-
-luminous flux &
-lumen & 
-|_lm| & 
-$\J$ &
-|_cd*_sr| \\
-
-illuminance &
-lux & 
-|_lux| & 
-$\L[-2] \J$ &
-|_lm/_m^2| \\
 
 activity &
 becquerel & 
@@ -2413,6 +2416,10 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 \end{quote}
 
 
+
+
+\bibliographystyle{plain}
+\bibliography{lua-physical}
 
 
 

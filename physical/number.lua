@@ -180,7 +180,7 @@ function Number:toPlusMinusNotation(format)
 
 	local m, e = self._frexp(self._x)
 	local dm, de = self._frexp(self._dx)
-
+	
 	-- if the first digit of the uncetainty is a 1, give two digits of the uncertainty
 	local udigit = 0
 	if math.floor(dm) == 1 then
