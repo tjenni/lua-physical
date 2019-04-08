@@ -118,11 +118,6 @@ Q.definePrefix("Ki", "kibi", 1024)
  
 local IEC_prefixes = {"Ki","Mi","Gi","Ti","Pi","Ei","Zi","Yi"}
 
-
--- define mathematical constants
-local Pi 	 = 3.1415926535897932384626433832795028841971693993751
-local e    = 2.7182818284590452353602874713526624977572470936999
-
 -- define dimensionless base quantity
 Q.define("1", "number", Q(1))
 
@@ -198,6 +193,12 @@ Q.define(
 )
 
 
+-- MATHEMATICAL CONSTANTS
+-- **********************
+local N = require(prefix..'number')
+
+Q.define("Pi", "pi", 3.1415926535897932384626433832795028841971693993751 * _1)
+Q.define("E", "eulersnumber", 2.7182818284590452353602874713526624977572470936999 * _1)
 
 
 -- PHYSICAL CONSTANTS
@@ -205,17 +206,15 @@ Q.define(
 -- Source: https://en.wikipedia.org/wiki/Physical_constant
 -- Source: https://arxiv.org/pdf/1510.07674.pdf
 
-local N = require(prefix..'number')
-
 -- Universal
 Q.define("c", "speedoflight", 299792458 * _m/_s)
 Q.define("Gc", "gravitationalconstant", N(6.67408e-11,0.00031e-11) * _m^3/(_kg*_s^2))
 Q.define("h_P", "planckconstant", N(6.626070040e-34, 0.000000081e-34 ) * _J*_s)
-Q.define("h_Pbar", "reducedplanckconstant", _h_P/(2*Pi))
+Q.define("h_Pbar", "reducedplanckconstant", _h_P/(2*_Pi))
 
 -- Electrodynamic
 Q.define("e", "elementarycharge", N(1.6021766208e-19, 0.0000000098e-19) * _C)
-Q.define("u_0", "vacuumpermeability", 4e-7*Pi * _N/_A^2)
+Q.define("u_0", "vacuumpermeability", 4e-7*_Pi * _N/_A^2)
 Q.define("e_0", "vacuumpermitivity", 1/(_u_0*_c^2))
 Q.define("u", "atomicmassunit", N(1.66053904e-27, 0.00000002e-27) * _kg)
 Q.define("m_e", "electronmass", N(9.10938356e-31, 0.00000011e-31) * _kg)
@@ -238,7 +237,7 @@ Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 0.00000079e-23) * _J/_K)
 Q.define("R", "molargasconstant", N(8.3144598, 0.0000048) * _J/(_K*_mol))
 
 -- Others
-Q.define("sigma", "stefanboltzmannconstant", Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2))
+Q.define("sigma", "stefanboltzmannconstant", _Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2))
 Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 
 -- Nominal Astronomical Constants
@@ -257,8 +256,6 @@ Q.define("GM_E", "nominalterrestrialmassparameter", 3.986004e14 * _m^3 * _s^-2)
 Q.define("Re_J", "nominaljovianequatorialradius", 7.1492e7 * _m)
 Q.define("Rp_J", "nominaljovianpolarradius", 6.6854e7 * _m)
 Q.define("GM_J", "nominaljovianmassparameter", 1.2668653e17 * _m^3 * _s^-2)
-
-
 
 
 
@@ -295,18 +292,18 @@ Q.define("a", "year", 365.25*_d)
 -- Angular
 Q.define("rad", "radian", _1 )
 Q.define("sr", "steradian", _rad^2 )
-Q.define("deg", "degree", (Pi/180)*_rad)
+Q.define("deg", "degree", (_Pi/180)*_rad)
 Q.define("arcmin", "arcminute", _deg/60)
 Q.define("arcsec", "arcsecond", _arcmin/60)
-Q.define("gon", "gradian", (Pi/200)*_rad)
-Q.define("tr", "turn", 2*Pi*_rad)
-Q.define("sp", "spat", 4*Pi*_sr)
+Q.define("gon", "gradian", (_Pi/200)*_rad)
+Q.define("tr", "turn", 2*_Pi*_rad)
+Q.define("sp", "spat", 4*_Pi*_sr)
 
 -- Astronomical
 Q.define("au", "astronomicalunit", 149597870700*_m)
 Q.define("ly", "lightyear", _c*_a)
 Q.define("ls", "lightsecond", _c*_s)
-Q.define("pc", "parsec", (648000/Pi)*_au)
+Q.define("pc", "parsec", (648000/_Pi)*_au)
 
 Q.addPrefix(SI_prefixes, {_ly,_pc})
 

@@ -410,7 +410,7 @@ $$
 
 \newcommand{\I}[1][]{\mathrm{I}^{#1}\,}
 
-\renewcommand{\theta}[1][]{\mathrm{theta}^{#1}\,}
+\renewcommand{\K}[1][]{\mathrm{\Theta}^{#1}\,}
 
 \renewcommand{\N}[1][]{\mathrm{N}^{#1}\,}
 
@@ -480,7 +480,7 @@ The constant current which, if maintained in two straight parallel conductors of
 thermodynamic \newline temperature &
 kelvin  & 
 |_K| & 
-$\Theta$ & 
+$\K$ & 
 Is the fraction $1/\num{273.16}$ of the thermodynamic temperature of the triple point of water.  \\
 
 amount of \newline substance &
@@ -542,7 +542,7 @@ The value of the currency Euro. \\\hline
 
 
 \begin{landscape}
-\subsection{Physical Constants}
+\subsection{Constants}
 
 
 \begin{table}[H]
@@ -555,6 +555,16 @@ The value of the currency Euro. \\\hline
 }
 
 \thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
+
+|pi| &
+|_Pi| &
+$\1$ & 
+|3.1415926535897932384626433832795028841971693993751 * _1|  \\
+
+|eulersnumber| &
+|_E| &
+$\1$ & 
+|2.7182818284590452353602874713526624977572470936999 * _1|  \\
 
 |speedoflight| &
 |_c| &
@@ -616,14 +626,90 @@ $\M[1]$ &
 $\M[1]$ & 
 |N(1.674927471e-27, 0.000000021e-27) * _kg|  \\
 
+|bohrmagneton| &
+|_u_B| &
+$\L[2]\I[1]$ & 
+|_e*_h_Pbar/(2*_m_e)|  \\
 
-
+|nuclearmagneton| &
+|_u_N| &
+$\L[2]\I[1]$ & 
+|_e*_h_Pbar/(2*_m_p)|  \\
 
 
 \hline
 
 \end{tabularx}
-\caption{Base units of the International System of Units (SI), information,  currency and the dimensionless number one.}
+\end{table}
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{0.6\hsize}}X%
+  l%
+  c%
+  >{\setlength\hsize{1.4\hsize}}X%
+}
+
+\thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
+
+
+|electronmagneticmoment| &
+|_u_e| &
+$\L[2]\I[1]$ & 
+|N(-928.4764620e-26,0.0000057e-26) * _J/_T|  \\
+
+|protonmagneticmoment| &
+|_u_p| &
+$\L[2]\I[1]$ & 
+|N(1.4106067873e-26,0.0000000097e-26) * _J/_T|  \\
+
+|neutronmagneticmoment| &
+|_u_n| &
+$\L[2]\I[1]$ & 
+|N(-0.96623650e-26,0.00000023e-26) * _J/_T|  \\
+
+|finestructureconstant| &
+|_alpha| &
+$\1$ & 
+|_u_0*_e^2*_c/(2*_h_P)|  \\
+
+|rydbergconstant| &
+|_Ry| &
+$\L[-1]$ & 
+|_alpha^2*_m_e*_c/(2*_h_P)|  \\
+
+|avogadronumber| &
+|_N_A| &
+$\N[-1]$ & 
+|N(6.022140857e23, 0.000000074e23)/_mol|  \\
+
+|boltzmannconstant| &
+|_k_B| &
+$\L[2]\M[1]\T[-2]\K[-1]$ & 
+|N(1.38064852e-23, 0.00000079e-23) * _J/_K|  \\
+
+|molargasconstant| &
+|_R| &
+$\L[2]\M[1]\T[-2]\K[-1]\N[-1]$ & 
+|N(8.3144598, 0.0000048) * _J/(_K*_mol)|  \\
+
+|stefanboltzmannconstant| &
+|_sigma| &
+$\L[2]\M[1]\T[-2]\K[-1]\N[-1]$ & 
+|Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)|  \\
+
+|standardgravity| &
+|_g_0| &
+$\L[1]\T[-2]$ & 
+|9.80665 * _m/_s^2|  \\
+
+\hline
+
+\end{tabularx}
+\caption{Physical constants.}
 \end{table}
 
 
@@ -743,7 +829,7 @@ $\L[2] \M \T[-2] \I[-2]$ &
 Celsius \newline temperature &
 degree Celsius & 
 |_degC| & 
-$\Theta$ & 
+$\K$ & 
 |_K| \\
 
 
