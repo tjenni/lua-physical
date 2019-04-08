@@ -127,7 +127,7 @@ function Number.new(x, dx)
 		end
 
 		print("Error: The string '"..tostring(_x).."' cannot be converted to a physical.Number.")
-
+		
 		return nil
 		
 	-- default

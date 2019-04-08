@@ -12,6 +12,7 @@
 \usepackage{ulem}
 \usepackage{xcolor}
 \usepackage{framed}
+\usepackage{lscape}
 
 
 \begin{luacode*}
@@ -532,6 +533,101 @@ The value of the currency Euro. \\\hline
 \caption{Base units of the International System of Units (SI), information,  currency and the dimensionless number one.}
 \end{table}
 
+
+
+
+
+
+\newpage
+
+
+\begin{landscape}
+\subsection{Physical Constants}
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{0.6\hsize}}X%
+  l%
+  c%
+  >{\setlength\hsize{1.4\hsize}}X%
+}
+
+\thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
+
+|speedoflight| &
+|_c| &
+$\L[1]\T[-1]$ & 
+|299792458 * _m/_s|  \\
+
+
+|gravitationalconstant| &
+|_Gc| &
+$\L[3]\M[-1]\T[-2]$ & 
+|N(6.67408e-11,0.00031e-11) * _m^3/(_kg*_s^2)|  \\
+
+ 
+|planckconstant| &
+|_h_P| &
+$\L[2]\M[1]\T[-1]$ & 
+|N(6.626070040e-34, 0.000000081e-34 ) * _J*_s|  \\
+
+
+|reducedplanckconstant| &
+|_h_Pbar| &
+$\L[2]\M[1]\T[-1]$ & 
+|_h_P/(2*Pi)|  \\
+
+
+|elementarycharge| &
+|_e| &
+$\T[1]\I[1]$ & 
+|N(1.6021766208e-19, 0.0000000098e-19) * _C|  \\
+
+
+|vacuumpermeability| &
+|_u_0| &
+$\L[1]\M[1]\T[-2]\I[-2]$ & 
+|4e-7*Pi * _N/_A^2|  \\
+
+|vacuumpermitivity| &
+|_e_0| &
+$\L[-3]\M[-1]\T[4]\I[2]$ & 
+|1/(_u_0*_c^2)|  \\
+
+|atomicmassunit| &
+|_u| &
+$\M[1]$ & 
+|N(1.66053904e-27, 0.00000002e-27) * _kg|  \\
+
+|electronmass| &
+|_m_e| &
+$\M[1]$ & 
+|N(9.10938356e-31, 0.00000011e-31) * _kg|  \\
+
+|protonmass| &
+|_m_p| &
+$\M[1]$ & 
+|N(1.672621898e-27, 0.000000021e-27) * _kg|  \\
+
+|neutronmass| &
+|_m_n| &
+$\M[1]$ & 
+|N(1.674927471e-27, 0.000000021e-27) * _kg|  \\
+
+
+
+
+
+\hline
+
+\end{tabularx}
+\caption{Base units of the International System of Units (SI), information,  currency and the dimensionless number one.}
+\end{table}
+
+
+\end{landscape}
 
 
 
@@ -1423,6 +1519,11 @@ $\L[3]$ &
 \subsection{International Currencies}
 
 
+\newcommand{\curfactor}[1]{%
+  \texttt{\directlua{tex.print( (#1):to(_EUR):__tonumber() )}}%
+}
+
+
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
@@ -1440,31 +1541,63 @@ currency &
 Afghan afghani&
 |_AFN| & 
 $\C$ & 
-|0.012*_EUR| \\
+\curfactor{_AFN}|*_EUR| \\
 
  &
 Albanian lek &
 |_ALL| & 
 $\C$ & 
-|0.008*_EUR| \\
+\curfactor{_ALL}|*_EUR| \\
 
  &
 Armenian Dram &
 |_AMD| & 
 $\C$ & 
-|0.0018*_EUR| \\
+\curfactor{_AMD}|*_EUR| \\
 
  &
 Angolan Kwanza &
 |_AOA| & 
 $\C$ & 
-|0.0028*_EUR| \\
+\curfactor{_AOA}|*_EUR| \\
 
  &
 Argentine Peso &
 |_ARS| & 
 $\C$ & 
-|0.021*_EUR| \\
+\curfactor{_ARS}|*_EUR| \\
+
+ &
+Australian dollar &
+|_AUD| & 
+$\C$ & 
+\curfactor{_AUD}|*_EUR| \\
+
+ &
+Azerbaijani Manat &
+|_AZN| & 
+$\C$ & 
+\curfactor{_AZN}|*_EUR| \\
+
+ &
+Bosnian Mark &
+|_BAM| & 
+$\C$ & 
+\curfactor{_BAM}|*_EUR| \\
+
+ &
+Bangladeshi Taka &
+|_BDT| & 
+$\C$ & 
+\curfactor{_BDT}|*_EUR| \\
+
+ &
+Burundian Franc &
+|_BIF| & 
+$\C$ & 
+\curfactor{_BIF}|*_EUR| \\
+
+
 
  &
 U.S. dollar &
@@ -1484,11 +1617,7 @@ British pound &
 $\C$ & 
 |1.17*_EUR| \\
 
- &
-Australian dollar &
-|_AUD| & 
-$\C$ & 
-|0.63*_EUR| \\
+
 
  &
 Canadian dollar &
@@ -1519,6 +1648,9 @@ New Zealand dollar &
 |_NZD| & 
 $\C$ & 
 |0.60*_EUR| \\
+
+
+
 
 \hline
 
@@ -2352,8 +2484,7 @@ tex.write(tostring(x:atanh()))
 
 
 %
-%
-%
+% physical.Unit
 %
 \subsection{physical.Unit}
 
@@ -2414,6 +2545,130 @@ The task of this class is keeping track of the unit term. The unit term is a fra
   \end{description}
 
 \end{quote}
+
+
+
+
+%
+% physical.Number
+%
+\subsection{physical.Number}
+
+It does arithmetics with gaussian error propagation. A number instance has a mean value called |x| and an uncertainty called |dx|.
+
+\method{Number}{new(n=nil)}
+\begin{quote}
+  This is the copy Constructor. It copies a given number object. If |n| is |nil|, an instance representing number zero with uncertainty zero is created.
+
+  \subtitle{Parameters}
+  \begin{description}
+  \item |n| : |Number|\\
+    The number object to be copied.
+
+  \item |return| : |Number|\\
+    The created |Number| instance.
+  \end{description}
+
+\end{quote}
+
+
+\method{Number}{new(x, dx)}
+\begin{quote}
+  This constructor, creates a new instance with mean value |x| and uncertainty |dx|.
+
+  \subtitle{Parameters}
+  \begin{description}
+  \item |x| : |number|\\
+    mean value
+
+  \item |dx| : |number|\\
+    uncertainty value
+
+  \item |return| : |Number|\\
+    The created |Number| instance.
+  \end{description}
+
+  \subtitle{Examples}
+  \begin{lstlisting}
+  n = N(12,0.1)
+  print(n)
+  \end{lstlisting}
+
+\end{quote}
+
+\method{Number}{new(str)}
+\begin{quote}
+  This constructor creates a new instance from a string. It can parse strings of the form |3.4|, |3.4e-3|, |5.4e-3 +/- 2.4e-6|, |5.45(7)e-23|. 
+
+  \subtitle{Parameters / Return}
+  \begin{description}
+  \item |str| : |string|\\
+    The number as a string.
+
+  \item |return| : |Number|\\
+    The created |Number| object
+  \end{description}
+
+  \subtitle{Examples}
+  \begin{lstlisting}
+  n_1 = N("12.3e-6")
+  print(n_1)
+
+  n_2 = N("12 +/- 0.1")
+  print(n_2)
+
+  n_3 = N("12.0(1)")
+  print(n_3)
+  \end{lstlisting}
+\end{quote}
+
+
+
+\method{Number}{mean(n)}
+\begin{quote}
+  Returns the mean value
+
+  \subtitle{Parameters / Return}
+  \begin{description}
+  \item |return| : |number|\\
+    The mean value
+  \end{description}
+\end{quote}
+
+\method{Number}{uncertainty(n)}
+\begin{quote}
+  Returns the uncertainty value
+
+  \subtitle{Parameters / Return}
+  \begin{description}
+  \item |return| : |number|\\
+    The uncertainty value
+  \end{description}
+\end{quote}
+
+
+\method{Number}{abs(n)}
+\begin{quote}
+  Returns the absolute value of the number.
+
+  \subtitle{Parameters / Return}
+  \begin{description}
+  \item |return| : |number|\\
+    The absolute value
+  \end{description}
+\end{quote}
+
+\method{Number}{sqrt(n)}
+\begin{quote}
+  Returns the square root of the number.
+
+  \subtitle{Parameters / Return}
+  \begin{description}
+  \item |return| : |number|\\
+    The square root
+  \end{description}
+\end{quote}
+
 
 
 
