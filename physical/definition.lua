@@ -197,8 +197,8 @@ Q.define(
 -- **********************
 local N = require(prefix..'number')
 
-Q.define("Pi", "pi", 3.1415926535897932384626433832795028841971693993751 * _1)
-Q.define("E", "eulersnumber", 2.7182818284590452353602874713526624977572470936999 * _1)
+Q.define("Pi", "pi", 3.1415926535897932384626433832795028841971 * _1)
+Q.define("E", "eulersnumber", 2.7182818284590452353602874713526624977572 * _1)
 
 
 -- PHYSICAL CONSTANTS
@@ -208,33 +208,33 @@ Q.define("E", "eulersnumber", 2.718281828459045235360287471352662497757247093699
 
 -- Universal
 Q.define("c", "speedoflight", 299792458 * _m/_s)
-Q.define("Gc", "gravitationalconstant", N(6.67408e-11,0.00031e-11) * _m^3/(_kg*_s^2))
-Q.define("h_P", "planckconstant", N(6.626070040e-34, 0.000000081e-34 ) * _J*_s)
+Q.define("Gc", "gravitationalconstant", N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2))
+Q.define("h_P", "planckconstant", N(6.626070040e-34, 8.1e-42 ) * _J*_s)
 Q.define("h_Pbar", "reducedplanckconstant", _h_P/(2*_Pi))
 
 -- Electrodynamic
-Q.define("e", "elementarycharge", N(1.6021766208e-19, 0.0000000098e-19) * _C)
+Q.define("e", "elementarycharge", N(1.6021766208e-19, 9.8e-28) * _C)
 Q.define("u_0", "vacuumpermeability", 4e-7*_Pi * _N/_A^2)
 Q.define("e_0", "vacuumpermitivity", 1/(_u_0*_c^2))
-Q.define("u", "atomicmassunit", N(1.66053904e-27, 0.00000002e-27) * _kg)
-Q.define("m_e", "electronmass", N(9.10938356e-31, 0.00000011e-31) * _kg)
-Q.define("m_p", "protonmass", N(1.672621898e-27, 0.000000021e-27) * _kg)
-Q.define("m_n", "neutronmass", N(1.674927471e-27, 0.000000021e-27) * _kg)
+Q.define("u", "atomicmassunit", N(1.66053904e-27, 2e-35) * _kg)
+Q.define("m_e", "electronmass", N(9.10938356e-31, 1.1e-38) * _kg)
+Q.define("m_p", "protonmass", N(1.672621898e-27, 2.1e-35) * _kg)
+Q.define("m_n", "neutronmass", N(1.674927471e-27, 2.1e-35) * _kg)
 
 Q.define("u_B", "bohrmagneton", _e*_h_Pbar/(2*_m_e))
 Q.define("u_N", "nuclearmagneton", _e*_h_Pbar/(2*_m_p))
 
-Q.define("u_e", "electronmagneticmoment", N(-928.4764620e-26,0.0000057e-26) * _J/_T)
-Q.define("u_p", "protonmagneticmoment", N(1.4106067873e-26,0.0000000097e-26) * _J/_T)
-Q.define("u_n", "neutronmagneticmoment", N(-0.96623650e-26,0.00000023e-26) * _J/_T)
+Q.define("u_e", "electronmagneticmoment", N(-928.4764620e-26,5.7e-32) * _J/_T)
+Q.define("u_p", "protonmagneticmoment", N(1.4106067873e-26,9.7e-35) * _J/_T)
+Q.define("u_n", "neutronmagneticmoment", N(-0.96623650e-26,2.3e-26) * _J/_T)
 
 Q.define("alpha", "finestructureconstant", _u_0*_e^2*_c/(2*_h_P))
 Q.define("Ry", "rydbergconstant", _alpha^2*_m_e*_c/(2*_h_P))
 
 -- Thermodynamic
-Q.define("N_A", "avogadronumber", N(6.022140857e23, 0.000000074e23)/_mol)
-Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 0.00000079e-23) * _J/_K)
-Q.define("R", "molargasconstant", N(8.3144598, 0.0000048) * _J/(_K*_mol))
+Q.define("N_A", "avogadronumber", N(6.022140857e23, 7.4e23)/_mol)
+Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 7.9e-23) * _J/_K)
+Q.define("R", "molargasconstant", N(8.3144598, 4.8e-6) * _J/(_K*_mol))
 
 -- Others
 Q.define("sigma", "stefanboltzmannconstant", _Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2))
@@ -247,15 +247,15 @@ Q.define("R_sun", "nominalsolarradius", 6.957e8 * _m)
 Q.define("S_sun", "nominalsolarirradiance", 1361 * _W/_m^2)
 Q.define("L_sun", "nominalsolarluminosity", 3.828e26 * _W)
 Q.define("T_sun", "nominalsolareffectivetemperature", 5772 * _K)
-Q.define("GM_sun", "nominalsolarmassparameter", 1.3271244e20 * _m^3 * _s^-2)
+Q.define("GM_sun", "nominalsolarmassparameter", 1.3271244e20 * _m^3*_s^-2)
 
 Q.define("Re_E", "nominalterrestrialequatorialradius", 6.3781e6 * _m)
 Q.define("Rp_E", "nominalterrestrialpolarradius", 6.3568e6 * _m)
-Q.define("GM_E", "nominalterrestrialmassparameter", 3.986004e14 * _m^3 * _s^-2)
+Q.define("GM_E", "nominalterrestrialmassparameter", 3.986004e14 * _m^3*_s^-2)
 
 Q.define("Re_J", "nominaljovianequatorialradius", 7.1492e7 * _m)
 Q.define("Rp_J", "nominaljovianpolarradius", 6.6854e7 * _m)
-Q.define("GM_J", "nominaljovianmassparameter", 1.2668653e17 * _m^3 * _s^-2)
+Q.define("GM_J", "nominaljovianmassparameter", 1.2668653e17 * _m^3*_s^-2)
 
 
 

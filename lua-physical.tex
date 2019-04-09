@@ -111,7 +111,7 @@ N = physical.Number
 
 
 \begin{abstract}
-\noindent |lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. It has been written to simplify the creation of physics problem sets. The package provides units of the SI and the imperial system. Furthermore an almost complete set of international currencies are supported, however without online exchange rates. In order to display the numbers with measurement uncertainties, the package is able to perform gaussian error propagation.
+\noindent |lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. It has been written to simplify the creation problem sets. The package provides units of the SI and the imperial system. Furthermore an almost complete set of international currencies are supported, however without online exchange rates. In order to display the numbers with measurement uncertainties, the package is able to perform gaussian error propagation.
 \end{abstract}
 
 \tableofcontents
@@ -124,13 +124,13 @@ N = physical.Number
 \newpage
 \section{Introduction}
 
-The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX does make it possible to integrate physical calculations directly into the \LuaLaTeX file. The package has been in use since 2016. Since then many bugs have been found and crushed. Nevertheless it still could be possible, that some were not found. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
+The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
 
 
 
 \section{Loading}
 
-This package is a pure Lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing calculation results the |siunitx| package can be used. It's recommended to define a macro like |\q| to convert the lua quantity object to a |siunitx| expression.
+This package is a pure Lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing results, the |siunitx| package can be used. It's recommended to define a macro like |\q| to convert the lua quantity object to a |siunitx| expression.
 
 The following Latex preambel loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
@@ -151,8 +151,7 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
   % load lua-physical package
   \begin{luacode*}
     physical = require("physical")
-
-    _N = physical.Number
+    N = physical.Number
   \end{luacode*}
 
   % print physical quantities
@@ -164,10 +163,7 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
 
 \subsection{Dependencies}
 
-This package is standalone. If a pretty print to \LuaLaTeX{} is wanted, the package |siunitx| sould be installed. 
-
-
-
+This is a standalone package. If a pretty print to \LuaLaTeX{} is wanted, the package |siunitx| sould be installed. 
 
 
 \section{Usage}
@@ -201,12 +197,12 @@ $$
 $$
 \endleftbar
 
-In the above listing \ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|. The variable |t| stands for time and is given in second |_s|. By executing  mathematical operations on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The created instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code.
+In the above listing \ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|. The variable |t| stands for time and is given in second |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
 
 
 \subsection{Unit conversion}
 
-Very often the result of a calculation is needed in different physical unit, than the given quantities. In the following listing \ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid with lengths given in different units. If the volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
+Very often the result of a calculation is needed in different unit, than the given quantities are. In the following listing \ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid with lengths given in different units. If the volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
 
 \begin{lstlisting}[caption=The volume of a cuboid.,label=lst:Volume of Cuboid]
 \begin{luacode}
@@ -429,25 +425,20 @@ $$
 \section{Supported Units}
 \label{ch:Supported Units}
 
-In this chapter, all supported units are listed. 
-
-
-
+In this chapter, all supported units are listed. Subchapter \ref{ch:Base Units} lists the seven base units of the International System of Units (SI) and three additional ones. In subchapter \ref{ch:Constants}  mathematical and physical constants are defined. The subchapter \ref{ch:Derived Units SI} contains all derived units from the SI system. Subchapter \ref{ch:Units outside SI} lists units, which are common but outside of the SI system. The subchapters \ref{ch:Imperial Units} and \ref{ch:U.S. customary units} is dedicated to imperial and U.S. customary units. The last subchapter \ref{ch:currencies} containts international currencies.
 
 
 
 \subsection{Base Units}
-
-From the units listed in this section, all other units are derived from.
-
+\label{ch:Base Units}
 
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
   >{\setlength\hsize{0.5\hsize}}X%
   l%
-  c%
-  c%
+  l%
+  l%
   >{\setlength\hsize{1.5\hsize}}X%
 }
 
@@ -505,7 +496,7 @@ The luminous intensity, in a given direction, of a source that emits monochromat
   >{\setlength\hsize{0.5\hsize}}X%
   l%
   l%
-  c%
+  l%
   >{\setlength\hsize{1.5\hsize}}X%
 }
 
@@ -526,7 +517,7 @@ The smallest amount of information. \\
 currency &
 euro & 
 |_EUR| & 
-$\L$ &
+$\C$ &
 The value of the currency Euro. \\\hline
 
 \end{tabularx}
@@ -543,6 +534,7 @@ The value of the currency Euro. \\\hline
 
 \begin{landscape}
 \subsection{Constants}
+\label{ch:Constants}
 
 
 \begin{table}[H]
@@ -550,7 +542,7 @@ The value of the currency Euro. \\\hline
 \begin{tabularx}{\linewidth}{%
   >{\setlength\hsize{0.6\hsize}}X%
   l%
-  c%
+  l%
   >{\setlength\hsize{1.4\hsize}}X%
 }
 
@@ -559,12 +551,12 @@ The value of the currency Euro. \\\hline
 |pi| &
 |_Pi| &
 $\1$ & 
-|3.1415926535897932384626433832795028841971693993751 * _1|  \\
+|3.1415926535897932384626433832795028841971 * _1|  \\
 
 |eulersnumber| &
 |_E| &
 $\1$ & 
-|2.7182818284590452353602874713526624977572470936999 * _1|  \\
+|2.7182818284590452353602874713526624977572 * _1|  \\
 
 |speedoflight| &
 |_c| &
@@ -575,13 +567,13 @@ $\L[1]\T[-1]$ &
 |gravitationalconstant| &
 |_Gc| &
 $\L[3]\M[-1]\T[-2]$ & 
-|N(6.67408e-11,0.00031e-11) * _m^3/(_kg*_s^2)|  \\
+|N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2)|  \\
 
  
 |planckconstant| &
 |_h_P| &
 $\L[2]\M[1]\T[-1]$ & 
-|N(6.626070040e-34, 0.000000081e-34 ) * _J*_s|  \\
+|N(6.626070040e-34, 8.1e-42 ) * _J*_s|  \\
 
 
 |reducedplanckconstant| &
@@ -593,7 +585,7 @@ $\L[2]\M[1]\T[-1]$ &
 |elementarycharge| &
 |_e| &
 $\T[1]\I[1]$ & 
-|N(1.6021766208e-19, 0.0000000098e-19) * _C|  \\
+|N(1.6021766208e-19, 9.8e-28) * _C|  \\
 
 
 |vacuumpermeability| &
@@ -609,22 +601,22 @@ $\L[-3]\M[-1]\T[4]\I[2]$ &
 |atomicmassunit| &
 |_u| &
 $\M[1]$ & 
-|N(1.66053904e-27, 0.00000002e-27) * _kg|  \\
+|N(1.66053904e-27, 2e-35) * _kg|  \\
 
 |electronmass| &
 |_m_e| &
 $\M[1]$ & 
-|N(9.10938356e-31, 0.00000011e-31) * _kg|  \\
+|N(9.10938356e-31, 1.1e-38) * _kg|  \\
 
 |protonmass| &
 |_m_p| &
 $\M[1]$ & 
-|N(1.672621898e-27, 0.000000021e-27) * _kg|  \\
+|N(1.672621898e-27, 2.1e-35) * _kg|  \\
 
 |neutronmass| &
 |_m_n| &
 $\M[1]$ & 
-|N(1.674927471e-27, 0.000000021e-27) * _kg|  \\
+|N(1.674927471e-27, 2.1e-35) * _kg|  \\
 
 |bohrmagneton| &
 |_u_B| &
@@ -647,10 +639,10 @@ $\L[2]\I[1]$ &
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{0.6\hsize}}X%
+  >{\setlength\hsize{1\hsize}}X%
   l%
-  c%
-  >{\setlength\hsize{1.4\hsize}}X%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
 }
 
 \thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
@@ -659,17 +651,17 @@ $\L[2]\I[1]$ &
 |electronmagneticmoment| &
 |_u_e| &
 $\L[2]\I[1]$ & 
-|N(-928.4764620e-26,0.0000057e-26) * _J/_T|  \\
+|N(-928.4764620e-26,5.7e-32) * _J/_T|  \\
 
 |protonmagneticmoment| &
 |_u_p| &
 $\L[2]\I[1]$ & 
-|N(1.4106067873e-26,0.0000000097e-26) * _J/_T|  \\
+|N(1.4106067873e-26,9.7e-35) * _J/_T|  \\
 
 |neutronmagneticmoment| &
 |_u_n| &
 $\L[2]\I[1]$ & 
-|N(-0.96623650e-26,0.00000023e-26) * _J/_T|  \\
+|N(-0.96623650e-26,2.3e-26) * _J/_T|  \\
 
 |finestructureconstant| &
 |_alpha| &
@@ -684,17 +676,17 @@ $\L[-1]$ &
 |avogadronumber| &
 |_N_A| &
 $\N[-1]$ & 
-|N(6.022140857e23, 0.000000074e23)/_mol|  \\
+|N(6.022140857e23, 7.4e23)/_mol|  \\
 
 |boltzmannconstant| &
 |_k_B| &
 $\L[2]\M[1]\T[-2]\K[-1]$ & 
-|N(1.38064852e-23, 0.00000079e-23) * _J/_K|  \\
+|N(1.38064852e-23, 7.9e-23) * _J/_K|  \\
 
 |molargasconstant| &
 |_R| &
 $\L[2]\M[1]\T[-2]\K[-1]\N[-1]$ & 
-|N(8.3144598, 0.0000048) * _J/(_K*_mol)|  \\
+|N(8.3144598, 4.8e-6) * _J/(_K*_mol)|  \\
 
 |stefanboltzmannconstant| &
 |_sigma| &
@@ -705,6 +697,62 @@ $\L[2]\M[1]\T[-2]\K[-1]\N[-1]$ &
 |_g_0| &
 $\L[1]\T[-2]$ & 
 |9.80665 * _m/_s^2|  \\
+
+|nominalsolarradius| &
+|_R_Sun| &
+$\L[1]$ & 
+|6.957e8 * _m|  \\
+
+|nominalsolarirradiance| &
+|_S_Sun| &
+$\M[1]\T[-3]$ & 
+|1361 * _W/_m^2|  \\
+
+|nominalsolarluminosity| &
+|_L_Sun| &
+$\L[2]\M[1]\T[-3]$ & 
+|3.828e26 * _W|  \\
+
+|nominalsolareffectivetemperature| &
+|_T_Sun| &
+$\K[1]$ & 
+|5772 * _K|  \\
+
+|nominalsolarmassparameter| &
+|_GM_Sun| &
+$\L[3]\T[-2]$ & 
+|1.3271244e20 * _m^3 * _s^-2|  \\
+
+|nominalterrestrialequatorialradius| &
+|_Re_E| &
+$\L[1]$ & 
+|6.3781e6 * _m|  \\
+
+|nominalterrestrialpolarradius| &
+|_Rp_E| &
+$\L[1]$ & 
+|6.3568e6 * _m|  \\
+
+|nominalterrestrialmassparameter| &
+|_GM_E| &
+$\L[3]\T[-2]$ & 
+|3.986004e14 * _m^3 * _s^-2|  \\
+
+
+|nominaljovianequatorialradius| &
+|_Re_J| &
+$\L[1]$ & 
+|7.1492e7 * _m|  \\
+
+|nominaljovianpolarradius| &
+|_Rp_J| &
+$\L[1]$ & 
+|6.6854e7 * _m|  \\
+
+|nominaljovianmassparameter| &
+|_GM_J| &
+$\L[3]\T[-2]$ & 
+|1.2668653e17 * _m^3*_s^-2|  \\
 
 \hline
 
@@ -720,6 +768,7 @@ $\L[1]\T[-2]$ &
 
 \newpage
 \subsection{Derived Units of the International System of Units (SI)}
+\label{ch:Derived Units SI}
 
 All units in this section are derived from the SI base units, \cite[123-129]{bipm06}.
 
@@ -900,6 +949,7 @@ $\T[-1] \N$ &
 
 \newpage
 \subsection{Units outside of the International System of Units (SI)}
+\label{ch:Units outside SI}
 
 There are a few units with dimension $\1$. The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
 
@@ -1141,9 +1191,15 @@ $\M$ &
 
 
 
+
+
+
+
+
+
 \newpage
 \subsection{Imperial Units}
-
+\label{ch:Imperial Units}
 
 \begin{table}[H]
 \centering
@@ -1394,6 +1450,7 @@ $\M$ &
 
 \newpage
 \subsection{U.S. customary units}
+\label{ch:U.S. customary units}
 
 In the U.S., the length units are bound  to the meter differently than in the imperial system. The followin definitions are taken from \url{https://en.wikipedia.org/wiki/United_States_customary_units}.
 
@@ -1603,7 +1660,7 @@ $\L[3]$ &
 
 \newpage
 \subsection{International Currencies}
-
+\label{ch:currencies}
 
 \newcommand{\curfactor}[1]{%
   \texttt{\directlua{tex.print( (#1):to(_EUR):__tonumber() )}}%
