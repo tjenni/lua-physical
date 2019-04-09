@@ -243,11 +243,11 @@ Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 -- Nominal Astronomical Constants
 -- Source: Nominal values for selected solar and planetary quantities: IAU 2015 Resolution B3, 
 -- https://arxiv.org/pdf/1605.09788.pdf
-Q.define("R_sun", "nominalsolarradius", 6.957e8 * _m)
-Q.define("S_sun", "nominalsolarirradiance", 1361 * _W/_m^2)
-Q.define("L_sun", "nominalsolarluminosity", 3.828e26 * _W)
-Q.define("T_sun", "nominalsolareffectivetemperature", 5772 * _K)
-Q.define("GM_sun", "nominalsolarmassparameter", 1.3271244e20 * _m^3*_s^-2)
+Q.define("R_Sun", "nominalsolarradius", 6.957e8 * _m)
+Q.define("S_Sun", "nominalsolarirradiance", 1361 * _W/_m^2)
+Q.define("L_Sun", "nominalsolarluminosity", 3.828e26 * _W)
+Q.define("T_Sun", "nominalsolareffectivetemperature", 5772 * _K)
+Q.define("GM_Sun", "nominalsolarmassparameter", 1.3271244e20 * _m^3*_s^-2)
 
 Q.define("Re_E", "nominalterrestrialequatorialradius", 6.3781e6 * _m)
 Q.define("Rp_E", "nominalterrestrialpolarradius", 6.3568e6 * _m)
