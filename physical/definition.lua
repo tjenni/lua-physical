@@ -118,7 +118,7 @@ Q.definePrefix("Ki", "kibi", 1024)
  
 local IEC_prefixes = {"Ki","Mi","Gi","Ti","Pi","Ei","Zi","Yi"}
 
--- define dimensionless base quantity
+-- define the dimensionless base quantity for real numbers
 Q.define("1", "number", Q(1))
 
 -- define SI base units
@@ -135,6 +135,8 @@ Q.addPrefix(SI_prefixes,{_m,_s,_A,_K,_mol,_cd})
 -- define base unit of information
 Q.defineBase("bit", "bit", B)
 
+Q.addPrefix(IEC_prefixes,{_bit})
+
 -- define the euro as the base currency unit
 Q.defineBase("EUR", "euro",  C)
 Q.define("cEUR", "eurocent", 0.01*_EUR)
@@ -148,10 +150,10 @@ Q.define("Pa", "pascal", _N/_m^2)
 Q.define("J", "joule", _N*_m)
 Q.define("W", "watt", _J/_s)
 
--- add prefixes
--- Remark: Don't create the unit kilogram twice
+-- remark: don't create the unit kilogram twice
 Q.addPrefix({"y","z","a","f","p","n","u","m","c","d","da","h","M","G","T","P","E","Z","Y"},{_g})
 Q.addPrefix(SI_prefixes,{_Hz,_N,_Pa,_J,_W})
+
 
 Q.define("C", "coulomb", _A*_s)
 Q.define("V", "volt", _J/_C)
@@ -163,7 +165,7 @@ Q.define("T", "tesla", _Wb/_m^2)
 Q.define("H", "henry", _Wb/_A)
 
 -- add prefixes
--- Remark: Don't create "peta siemens" because its symbol is the same for "Pferdestaerke", a common german unit for power.
+-- remark: Don't create "peta siemens" because its symbol is the same for "Pferdestaerke", a common german unit for power.
 Q.addPrefix({"y","z","a","f","p","n","u","m","c","d","da","h","M","G","T","E","Z","Y"},{_S})
 Q.addPrefix(SI_prefixes,{_C,_V,_F,_Ohm,_Wb,_T,_H})
 
@@ -204,7 +206,6 @@ Q.define("E", "eulersnumber", 2.7182818284590452353602874713526624977572 * _1)
 -- PHYSICAL CONSTANTS
 -- ******************
 -- Source: https://en.wikipedia.org/wiki/Physical_constant
--- Source: https://arxiv.org/pdf/1510.07674.pdf
 
 -- Universal
 Q.define("c", "speedoflight", 299792458 * _m/_s)
@@ -243,19 +244,21 @@ Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 -- Nominal Astronomical Constants
 -- Source: Nominal values for selected solar and planetary quantities: IAU 2015 Resolution B3, 
 -- https://arxiv.org/pdf/1605.09788.pdf
-Q.define("R_Sun", "nominalsolarradius", 6.957e8 * _m)
-Q.define("S_Sun", "nominalsolarirradiance", 1361 * _W/_m^2)
-Q.define("L_Sun", "nominalsolarluminosity", 3.828e26 * _W)
-Q.define("T_Sun", "nominalsolareffectivetemperature", 5772 * _K)
-Q.define("GM_Sun", "nominalsolarmassparameter", 1.3271244e20 * _m^3*_s^-2)
+-- https://arxiv.org/pdf/1510.07674.pdf
 
-Q.define("Re_E", "nominalterrestrialequatorialradius", 6.3781e6 * _m)
-Q.define("Rp_E", "nominalterrestrialpolarradius", 6.3568e6 * _m)
-Q.define("GM_E", "nominalterrestrialmassparameter", 3.986004e14 * _m^3*_s^-2)
+Q.define("R_S_nom", "nomsolradius", 6.957e8 * _m)
+Q.define("S_S_nom", "nomsolirradiance", 1361 * _W/_m^2)
+Q.define("L_S_nom", "nomsolluminosity", 3.828e26 * _W)
+Q.define("T_S_nom", "nomsolefftemperature", 5772 * _K)
+Q.define("GM_S_nom", "nomsolmassparam", 1.3271244e20 * _m^3*_s^-2)
 
-Q.define("Re_J", "nominaljovianequatorialradius", 7.1492e7 * _m)
-Q.define("Rp_J", "nominaljovianpolarradius", 6.6854e7 * _m)
-Q.define("GM_J", "nominaljovianmassparameter", 1.2668653e17 * _m^3*_s^-2)
+Q.define("Re_E_nom", "nomterreqradius", 6.3781e6 * _m)
+Q.define("Rp_E_nom", "nomterrpolradius", 6.3568e6 * _m)
+Q.define("GM_E_nom", "nomterrmassparam", 3.986004e14 * _m^3*_s^-2)
+
+Q.define("Re_J_nom", "nomjovianeqradius", 7.1492e7 * _m)
+Q.define("Rp_J_nom", "nomjovianpolradius", 6.6854e7 * _m)
+Q.define("GM_J_nom", "nomjovianmassparam", 1.2668653e17 * _m^3*_s^-2)
 
 
 
@@ -343,7 +346,7 @@ Q.define("bps", "bitpersecond", _bit/_s)
 Q.define("nibble", "nibble", 4*_bit)
 Q.define("B", "byte", 8*_bit)
 
-Q.addPrefix(IEC_prefixes,{_bit,_nibble,_B,_bps})
+Q.addPrefix(IEC_prefixes,{_nibble,_B,_bps})
 Q.addPrefix({"k","M","G","T","P","E","Z","Y"},{_bit,_nibble,_B,_bps})
 
 
