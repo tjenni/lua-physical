@@ -331,15 +331,15 @@ function TestDefinition:testFineStructureConstant()
 end
 
 function TestDefinition:testRydbergConstant()
-   lu.assertTrue(_Ry:isclose(N(10973731.568508,0.000065)/_m, 1e-9))
+   lu.assertTrue(_Ry:isclose(N(1.097373139e7,0.000065e7)/_m, 1e-9))
 end
 
 function TestDefinition:testAvogadrosNumber()
-   lu.assertTrue(_N_A:isclose(N(6.022140857e23,0.000000074e23)/_mol, 1e-9))
+   lu.assertTrue(_N_A:isclose(N(6.02214076e23,0.00000001e23)/_mol, 1e-9))
 end
 
 function TestDefinition:testBoltzmannConstant()
-   lu.assertTrue(_k_B:isclose(N(1.38064852e-23,0.00000079e-23)*_J/_K, 1e-9))
+   lu.assertTrue(_k_B:isclose(N(1.380649e-23,0.000001e-23)*_J/_K, 1e-9))
 end
 
 function TestDefinition:testGasConstant()
@@ -347,7 +347,7 @@ function TestDefinition:testGasConstant()
 end
 
 function TestDefinition:testStefanBoltzmannConstant()
-   lu.assertTrue(_sigma:isclose(N(5.670367e-8,0.000013e-8)*_W/(_m^2*_K^4), 1e-6))
+   lu.assertTrue(_sigma:isclose(N(5.6703744191844e-8,0.000013e-8)*_W/(_m^2*_K^4), 1e-6))
 end
 
 function TestDefinition:testStandardGravity()

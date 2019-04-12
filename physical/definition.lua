@@ -206,15 +206,22 @@ Q.define("E", "eulersnumber", 2.7182818284590452353602874713526624977572 * _1)
 -- PHYSICAL CONSTANTS
 -- ******************
 -- Source: https://en.wikipedia.org/wiki/Physical_constant
+-- Source: https://www.bipm.org/utils/common/pdf/CGPM-2018/26th-CGPM-Resolutions.pdf
 
 -- Universal
+-- prior 20 may 2019
+-- Q.define("h_P", "planckconstant", N(6.626070040e-34, 8.1e-42 ) * _J*_s)
+-- Q.define("e", "elementarycharge", N(1.6021766208e-19, 9.8e-28) * _C)
+-- Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 7.9e-23) * _J/_K)
+-- Q.define("N_A", "avogadronumber", N(6.022140857e23, 7.4e23)/_mol)
+
 Q.define("c", "speedoflight", 299792458 * _m/_s)
 Q.define("Gc", "gravitationalconstant", N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2))
-Q.define("h_P", "planckconstant", N(6.626070040e-34, 8.1e-42 ) * _J*_s)
+Q.define("h_P", "planckconstant", 6.62607015e-34 * _J*_s)
 Q.define("h_Pbar", "reducedplanckconstant", _h_P/(2*_Pi))
 
 -- Electrodynamic
-Q.define("e", "elementarycharge", N(1.6021766208e-19, 9.8e-28) * _C)
+Q.define("e", "elementarycharge", 1.602176634e-19 * _C)
 Q.define("u_0", "vacuumpermeability", 4e-7*_Pi * _N/_A^2)
 Q.define("e_0", "vacuumpermitivity", 1/(_u_0*_c^2))
 Q.define("u", "atomicmassunit", N(1.66053904e-27, 2e-35) * _kg)
@@ -233,8 +240,8 @@ Q.define("alpha", "finestructureconstant", _u_0*_e^2*_c/(2*_h_P))
 Q.define("Ry", "rydbergconstant", _alpha^2*_m_e*_c/(2*_h_P))
 
 -- Thermodynamic
-Q.define("N_A", "avogadronumber", N(6.022140857e23, 7.4e23)/_mol)
-Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 7.9e-23) * _J/_K)
+Q.define("N_A", "avogadronumber", 6.02214076e23/_mol)
+Q.define("k_B", "boltzmannconstant", 1.380649e-23 * _J/_K)
 Q.define("R", "molargasconstant", N(8.3144598, 4.8e-6) * _J/(_K*_mol))
 
 -- Others

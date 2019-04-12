@@ -24,6 +24,16 @@ N = physical.Number
   \directlua{tex.print(physical.Quantity.tosiunitx(#1,"add-decimal-zero=true,scientific-notation=fixed,exponent-to-prefix=false"))}%
 }
 
+\newcommand{\qs}[1]{%
+  \directlua{tex.print(physical.Quantity.tosiunitx(#1,"scientific-notation=true,exponent-to-prefix=false,round-integer-to-decimal=true"))}%
+}
+
+\newcommand{\qu}[1]{%
+  \directlua{tex.print(physical.Quantity.tosiunitx(#1,nil,2))}%
+}
+
+\DeclareSIUnit\number{}
+
 
 % siunitx config
 \sisetup{
@@ -425,12 +435,11 @@ $$
 \section{Supported Units}
 \label{ch:Supported Units}
 
-All supported units are listed in this chapter. Subchapter \ref{ch:Base Units} lists the seven base units of the International System of Units (SI) and three additional ones. In subchapter \ref{ch:Constants}  mathematical and physical constants are defined. The subchapter \ref{ch:Derived Units SI} contains all derived units from the SI system. Subchapter \ref{ch:Units outside SI} lists units, which are common but outside of the SI system. The subchapters \ref{ch:Imperial Units} and \ref{ch:U.S. customary units} are dedicated to imperial and U.S. customary units. The last subchapter \ref{ch:currencies} containts international currencies.
-
-
+All supported units are listed in this chapter. Subchapter \ref{ch:Base Units} lists the seven base units of the International System of Units (SI). In subchapter \ref{ch:Constants}  mathematical and physical constants are defined. The subchapter \ref{ch:Derived Units SI} contains all derived units from the SI system. Subchapter \ref{ch:Units outside SI} lists units, which are common but outside of the SI system. The subchapters \ref{ch:Imperial Units} and \ref{ch:U.S. customary units} are dedicated to imperial and U.S. customary units. The last subchapter \ref{ch:currencies} containts international currencies.
 
 \subsection{Base Units}
 \label{ch:Base Units}
+
 
 \begin{table}[H]
 \centering
@@ -444,51 +453,43 @@ All supported units are listed in this chapter. Subchapter \ref{ch:Base Units} l
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
 
+time &
+second & |_s| & 
+$\T$ & 
+The SI unit of time. It is defined by taking the fixed numerical value of the caesium frequency $\Delta \nu_{Cs}$, the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom, to be \num{9192631770} when expressed in the unit $\qu{_s^-1}$. \\
+
 length &
 meter & 
 |_m| & 
 $\L$ &
-The distance light travels in vacuum during $1/ \num{299792458}$ second. \\
+The SI unit of length. It is defined by taking the fixed numercial value of the speed of light in vacuum $c$ to be $\num{299792458}$ when expressed in the unit of $\q{_m/_s}$. \\
+
 
 mass &
 kilogram  &  
 |_kg| & 
 $\M$ & 
-The mass of the international protoype of the kilogram.\\
+The SI unit of mass. It is defined by taking the fixed numerical value of the Planck constant $h$ to be $\qs{(_h_P/(_J*_s)):to()}$ when expressed in $\qu{_m^2*_kg/_s}$.\\
 
-time &
-second & |_s| & 
-$\T$ & 
-Is \num{9192631770} times the period of the radiation from the transition between the two hyperfine levels of the ground state of caesium-133.  \\
 
 electric \newline current &
 ampere & 
 |_A| & 
 $\I$ & 
-The constant current which, if maintained in two straight parallel conductors of infinte length, of negligible circular crosss-section, and placed $\SI{1}{\m}$ apart in vacuum, would produce between these conductors a force equal to $\SI{2e-7}{\N\per\m}$.  \\
+The SI unit of electric current. It is defined by taking the fixed numerical value of the elementary charge $e$ to be $\qs{(_e/_C):to()}$ when expressed in $\qu{_A*_s}$.\\
 
 
 thermodynamic \newline temperature &
 kelvin  & 
 |_K| & 
 $\K$ & 
-Is the fraction $1/\num{273.16}$ of the thermodynamic temperature of the triple point of water.  \\
+The SI unit of the thermodynamic temperature. It is defineed by taking the fixed numerical value of the Boltzmann constant $k_B$ to be $\qs{(_k_B/(_J/_K)):to()}$ when expressed in $\q{_kg*_m^2*_s^-2*_K^-1}$\\
 
-amount of \newline substance &
-mole  & 
-|_mol| &  
-$\N$ & 
-Amount of substance that contains as many particles as there are atoms in $\SI{0.012}{\kg}$ of carbon-12. \\
 
-luminous \newline intensity &
-candela & 
-|_cd| & 
-$\J$ & 
-The luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequenc $\SI{540e12}{\Hz}$ and has a radiant intensity in that direction of $(1/\num{683}) \, \si{\W\per\steradian}$ \\\hline
+\hline
 
 \end{tabularx}
 \end{table}
-
 
 \begin{table}[H]
 \centering
@@ -501,6 +502,23 @@ The luminous intensity, in a given direction, of a source that emits monochromat
 }
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
+
+
+
+amount of \newline substance &
+mole  & 
+|_mol| &  
+$\N$ & 
+The SI unit of amount of substance. One mole contains exactly $\qs{(_N_A*_mol):to()}$ elementary entities. This number is the fixed numerical value of the Avogadro constant $N_A$ when expressed in $\qu{1/_mol}$.\\
+
+luminous \newline intensity &
+candela & 
+|_cd| & 
+$\J$ & 
+The SI unit of luminous intensity in a given direction. It is defined by taking the fixed numerical value of the luminous efficacy of monochromatic radiation of frequency $\qs{540e12 * _Hz}$, $K_{cd}$, to be $683$ when expressed in the unit $\qu{_cd*_sr*_kg^-1*_m^-2*_s^3}$.\\
+
+
+
 
 number &
 -- &
@@ -521,15 +539,11 @@ $\C$ &
 The value of the currency Euro. \\\hline
 
 \end{tabularx}
-\caption{Base units of the International System of Units (SI), information,  currency and the dimensionless number one.}
+\caption{Base units of the International System of Units (SI) \cite{bipm18}, information,  currency and the dimensionless number one.}
 \end{table}
 
 
 
-
-
-
-\newpage
 
 
 \begin{landscape}
@@ -724,6 +738,8 @@ $\L[1]\T[-2]$ &
 |9.80665 * _m/_s^2|  &
 \cite{nist19} \\
 
+
+
 |nomsolradius| &
 |_R_S_nom| &
 $\L[1]$ & 
@@ -771,6 +787,31 @@ $\L[1]$ &
 $\L[3]\T[-2]$ & 
 |3.986004e14 * _m^3 * _s^-2|  &
 \cite{iau16} \\
+
+
+\hline
+
+\end{tabularx}
+\end{table}
+
+
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{0.8\hsize}}X%
+  l%
+  l%
+  >{\setlength\hsize{1.2\hsize}}X%
+  c%
+}
+
+\thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} & \thead{Source} \\\hline
+
+
 
 
 |nomjovianeqradius| &
