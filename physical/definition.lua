@@ -301,12 +301,12 @@ Q.define("a", "year", 365.25*_d)
 
 -- Angular
 Q.define("rad", "radian", _1 )
-Q.define("sr", "steradian", _rad^2 )
 Q.define("deg", "degree", (_Pi/180)*_rad)
 Q.define("arcmin", "arcminute", _deg/60)
 Q.define("arcsec", "arcsecond", _arcmin/60)
 Q.define("gon", "gradian", (_Pi/200)*_rad)
 Q.define("tr", "turn", 2*_Pi*_rad)
+Q.define("sr", "steradian", _rad^2 )
 Q.define("sp", "spat", 4*_Pi*_sr)
 
 -- Astronomical
@@ -321,7 +321,7 @@ Q.addPrefix(SI_prefixes, {_ly,_pc})
 Q.define("kp", "kilopond", _kg*_g_0)
 
 -- Pressure
-Q.define("bar", "bar", 100000*_Pa)
+Q.define("bar", "bar", 1e5*_Pa)
 Q.define("atm", "standardatmosphere", 101325*_Pa)
 Q.define("at", "technicalatmosphere", _kp/_cm^2)
 Q.define("mmHg", "millimeterofmercury", 133.322387415*_Pa)
@@ -343,23 +343,28 @@ Q.define("t_TNT", "tonoftnt", 1e9 * _cal)
 Q.addPrefix({"u","m","k","M","G"}, {_t_TNT})
 
 -- Electrical
-Q.define("VA", "voltampere", _V * _A)
+Q.define("eV", "electronvolt", _e*_V)
+Q.define("Ws", "wattsecond", _W*_s)
+Q.define("Wh", "watthour", _W*_h)
+Q.define("As", "amperesecond", _A*_s)
 Q.define("Ah", "amperehour", _A*_h)
+Q.define("VA", "voltampere", _V*_A)
 
-Q.addPrefix(SI_prefixes,{_VA,_Ah})
+
+Q.addPrefix(SI_prefixes,{_eV,_Wh,_VA,_Ah})
 
 -- Information units
-Q.define("bps", "bitpersecond", _bit/_s)
 Q.define("nibble", "nibble", 4*_bit)
 Q.define("B", "byte", 8*_bit)
+Q.define("bps", "bitpersecond", _bit/_s)
 
 Q.addPrefix(IEC_prefixes,{_nibble,_B,_bps})
 Q.addPrefix({"k","M","G","T","P","E","Z","Y"},{_bit,_nibble,_B,_bps})
 
 
 -- Others
-Q.define("percent", "percent", 0.01*_1)
-Q.define("permille", "permille", 0.001*_1)
+Q.define("percent", "percent", 1e-2*_1)
+Q.define("permille", "permille", 1e-3*_1)
 Q.define("ppm", "partspermillion", 1e-6*_1)
 Q.define("ppb", "partsperbillion", 1e-9*_1)
 Q.define("ppt", "partspertrillion", 1e-12*_1)
@@ -367,8 +372,6 @@ Q.define("ppq", "partsperquadrillion", 1e-15*_1)
 Q.define("dB", "decibel", _1)
 
 Q.define("t", "tonne", 1000*_kg)
-Q.define("eV", "electronvolt", _e*_V)
-Q.define("Wh", "watthour", _W * _h)
 Q.define("PS", "metrichorsepower", 75*_g_0*_kg*_m/_s)
 Q.define("Ci", "curie", 3.7e10*_Bq)
 Q.define("Rad", "rad", 0.01*_Gy)
@@ -376,7 +379,7 @@ Q.define("rem", "rem", 0.01*_Sv)
 Q.define("Ro", "roentgen", 2.58e-4*_C/_kg)
 Q.define("PI", "poiseuille", _Pa * _s)
 
-Q.addPrefix(SI_prefixes,{_eV, _Wh, _barn})
+Q.addPrefix(SI_prefixes,{_barn})
 
 
 

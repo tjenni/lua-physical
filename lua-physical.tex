@@ -504,12 +504,12 @@ The SI unit of the thermodynamic temperature. It is defineed by taking the fixed
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
 
 
-
 amount of \newline substance &
 mole  & 
 |_mol| &  
 $\N$ & 
 The SI unit of amount of substance. One mole contains exactly $\qs{(_N_A*_mol):to()}$ elementary entities. This number is the fixed numerical value of the Avogadro constant $N_A$ when expressed in $\qu{1/_mol}$.\\
+
 
 luminous \newline intensity &
 candela & 
@@ -518,19 +518,19 @@ $\J$ &
 The SI unit of luminous intensity in a given direction. It is defined by taking the fixed numerical value of the luminous efficacy of monochromatic radiation of frequency $\qs{540e12 * _Hz}$, $K_{cd}$, to be $683$ when expressed in the unit $\qu{_cd*_sr*_kg^-1*_m^-2*_s^3}$.\\
 
 
-
-
 number &
 -- &
 |_1| &
 $\1$ & 
 The dimensionless number one.  \\
 
+
 information &
 bit & 
 |_bit| & 
 $\B$ &
 The smallest amount of information. \\
+
 
 currency &
 euro & 
@@ -591,13 +591,13 @@ $\L[3]\M[-1]\T[-2]$ &
 |planckconstant| &
 |_h_P| &
 $\L[2]\M[1]\T[-1]$ & 
-|N(6.626070040e-34, 8.1e-42 ) * _J*_s| &
+|6.62607015e-34 * _J*_s| &
 \cite{nist19} \\
 
 
 |reducedplanckconstant| &
 |_h_Pbar| &
-$\L[2]\M[1]\T[-1]$ & 
+$\L[2]\M[1]\T[-1]$ &
 |_h_P/(2*Pi)|  &
 \cite{nist19} \\
 
@@ -605,7 +605,7 @@ $\L[2]\M[1]\T[-1]$ &
 |elementarycharge| &
 |_e| &
 $\T[1]\I[1]$ & 
-|N(1.6021766208e-19, 9.8e-28) * _C| &
+|1.602176634e-19 * _C| &
 \cite{nist19} \\
 
 
@@ -711,13 +711,13 @@ $\L[-1]$ &
 |avogadronumber| &
 |_N_A| &
 $\N[-1]$ & 
-|N(6.022140857e23, 7.4e23)/_mol|  &
+|6.02214076e23/_mol|  &
 \cite{nist19} \\
 
 |boltzmannconstant| &
 |_k_B| &
 $\L[2]\M[1]\T[-2]\K[-1]$ & 
-|N(1.38064852e-23, 7.9e-23) * _J/_K|  &
+|1.380649e-23 * _J/_K|  &
 \cite{nist19} \\
 
 |molargasconstant| &
@@ -862,111 +862,99 @@ All units in this section are derived from the SI base units, \cite[123-129]{bip
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
-plane angle & 
-radian &
-|_rad| & 
-$1$ & 
-|_1| \\
-
-solid angle & 
-steradian &
-|_sr| & 
-$\1$ & 
-|_rad^2| \\
-
-frequency &
+frequency & % check
 hertz & 
 |_Hz| & 
 $\T[-1]$ & 
 |1/_s| \\
 
-force &
+force & % check
 newton & 
 |_N| & 
 $\M \L \T[-2]$ & 
 |_kg*_m/_s^2| \\
 
-pressure &
+pressure & % check
 pascal & 
 |_Pa| & 
 $\M \L[-1] \T[-2]$ & 
 |_N/_m^2| \\
 
-energy &
+energy & % check
 joule & 
 |_J| & 
 $\M \L[2] \T[-2]$ & 
 |_N*_m| \\
 
-power &
+power & % check
 watt & 
 |_W| & 
 $\M \L[2] \T[-3]$ & 
 |_J/_s| \\
 
-electric \newline charge &
+electric \newline charge & % check
 coulomb & 
 |_C| & 
 $\T \I$ & 
 |_A*_s| \\
 
-electric potential \newline difference &
+electric potential \newline difference & % check
 volt & 
 |_V| & 
 $\M \L[2] \T[-3] \I[-1]$ & 
 |_J/_C| \\
 
-capacitance &
+capacitance & % check
 farad & 
 |_F| & 
 $\L[-2] \M[-1] \T[4] \I[2]$ & 
 |_C/_V| \\
 
-electric \newline resistance &
+electric \newline resistance & % check
 ohm & 
 |_Ohm| & 
 $\L[2] M \T[-3] \I[-2]$ & 
 |_V/_A| \\
 
-electric \newline conductance &
+electric \newline conductance & % check
 siemens & 
 |_S| & 
 $\L[-2] \M[-1] T^{3} I^{2}$ & 
 |_A/_V| \\
 
-magnetic \newline flux &
+magnetic \newline flux & % check
 weber & 
 |_Wb| & 
 $\L[2] \M \T[-2] \I[-1]$ & 
 |_V*_s| \\
 
-magnetic flux \newline density &
+magnetic flux \newline density & % check
 tesla & 
 |_T| & 
 $\M \T[-2] \I[-1]$ & 
-|_V*_s| \\
+|_Wb/_m^2| \\
 
 
-inductance &
+inductance & % check
 henry & 
 |_H| & 
 $\L[2] \M \T[-2] \I[-2]$ & 
 |_Wb/_A| \\
 
-Celsius \newline temperature &
+Celsius \newline temperature & % check
 degree Celsius & 
 |_degC| & 
 $\K$ & 
 |_K| \\
 
 
-luminous flux &
+luminous flux & % check
 lumen & 
 |_lm| & 
 $\J$ &
 |_cd*_sr| \\
 
-illuminance &
+illuminance & % check
 lux & 
 |_lux| & 
 $\L[-2] \J$ &
@@ -992,26 +980,26 @@ $\L[-2] \J$ &
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
-activity &
+activity & % check
 becquerel & 
 |_Bq| & 
 $\T[-1]$ &
 |1/_s| \\
 
-absorbed dose &
+absorbed dose & % check
 gray & 
 |_Gy| & 
 $\L[2] \T[-2]$ &
 |_J/_kg| \\
 
-dose equivalent &
+dose equivalent & % check
 sievert & 
 |_Sv| & 
 $\L[2] \T[-2]$ &
 |_J/_kg| \\
 
 
-catalytic \newline activity &
+catalytic \newline activity & % check
 katal & 
 |_kat| & 
 $\T[-1] \N$ &
@@ -1043,161 +1031,175 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
- &
-percent \% &  
-|_percent| &
-$\1$ &
-|1e-2*_1|  \\
-
- &
-permille \textperthousand & 
-|_permille| & 
-$\1$ &
-|1e-3*_1|  \\
-
- &
-parts-per-million & 
-|_ppm| &
-$\1$ &
-|1e-6*_1|  \\
-
- &
-parts-per-billion & 
-|_ppb| &
-$\1$ &
-|1e-9*_1|  \\
-
- &
-parts-per-trillion & 
-|_ppt| &
-$\1$ &
-|1e-12*_1|  \\
-
- &
-parts-per-quadrillion & 
-|_ppq| &
-$\1$ &
-|1e-15*_1|  \\
-
- &
-decibel & 
-|_dB| & 
-$\1$ &
-|_1|  \\
-
-
-plane angle & 
-degree &
-|_deg| & 
-$\1$ &
-|(Pi/180)*_rad| \\
-
-
- & 
-arc minute &
-|_arcmin| & 
-$\1$ &
-|_deg/60| \\
-
- & 
-arc second &
-|_arcsec| & 
-$\1$ &
-|_arcmin/60| \\
-
- & 
-gradian &
-|_gon| & 
-$\1$ &
-|(Pi/200)*_rad| \\
-
- & 
-turn &
-|_tr| & 
-$\1$ & 
-|2*Pi*_rad| \\
-
-solid angle & 
-spat &
-|_sp| & 
-$\1$ & 
-|4*Pi*_sr| \\
-
-
-
-
-length & 
-astronomical unit &
-|_au| & 
-$\L$ & 
-|149597870700*_m| \\
-
- &
-lightyear &
-|_ly| & 
-$\L$ & 
-|_c*_a| \\
-
- &
-parsec &
-|_pc| & 
-$\L$ & 
-|(648000/Pi)*_au| \\
-
-
- &
+length & % check
 angstrom &
 |_angstrom| & 
 $\L$ & 
 |1e-10*_m| \\
 
  & 
-fermi &
+fermi & % check
 |_fermi| & 
 $\L$ & 
 |1e-15*_m| \\
 
 
-area & 
+
+area & % check
+barn &
+|_barn| & 
+$\L[2]$ &
+|1e-28*_m^2| \\
+
+ & % check
 are &
 |_ar| & 
 $\L[2]$ & 
 |1e2*_m^2| \\
 
-
- & 
+ & % check
 hectare &
 |_hectare| & 
 $\L[2]$ & 
 |1e4*_m^2| \\
 
 
- &
-barn &
-|_barn| & 
-$\L[2]$ &
-|1e-28*_m^2| \\
 
-
-volume & 
+volume & % check
 liter &
 |_L| & 
 $\L[3]$ & 
 |0.001*_m^3| \\
 
-
- & 
+ & % check
 metric teaspoon &
 |_tsp| & 
 $\L[3]$ & 
 |0.005*_L| \\
 
-
- & 
+ & % check
 metric tablespoon &
 |_Tbsp| & 
 $\L[3]$ & 
-|3*_tsp| \\\hline
+|3*_tsp| \\
+
+
+
+time & % check
+svedberg &
+|_svedberg| & 
+$\T$ & 
+|1e-13*_s| \\
+
+ & % check
+minute &
+|_min| & 
+$\T$ & 
+|_60*_s| \\
+
+ & % check
+hour &
+|_h| & 
+$\T$ & 
+|_60*_min| \\
+
+ & % check
+day &
+|_d| & 
+$\T$ & 
+|_24*_h| \\
+
+ & % check
+week &
+|_wk| & 
+$\T$ & 
+|_7*_d| \\
+
+ & % check
+year &
+|_a| & 
+$\T$ & 
+|365.25*_d| \\
+
+
+
+plane angle & % check
+radian &
+|_rad| & 
+$1$ & 
+|_1| \\
+
+ & % check
+degree &
+|_deg| & 
+$\1$ &
+|(_Pi/180)*_rad| \\
+
+ & % check
+arc minute &
+|_arcmin| & 
+$\1$ &
+|_deg/60| \\
+
+ & % check
+arc second &
+|_arcsec| & 
+$\1$ &
+|_arcmin/60| \\
+
+ & % check
+gradian &
+|_gon| & 
+$\1$ &
+|(Pi/200)*_rad| \\
+
+ & % check
+turn &
+|_tr| & 
+$\1$ & 
+|2*Pi*_rad| \\
+
+
+
+solid angle & % check
+steradian &
+|_sr| & 
+$\1$ & 
+|_rad^2| \\
+
+ & % check
+spat &
+|_sp| & 
+$\1$ & 
+|4*Pi*_sr| \\
+
+
+length & % check
+astronomical unit &
+|_au| & 
+$\L$ & 
+|149597870700*_m| \\
+
+ & % check
+lightyear &
+|_ly| & 
+$\L$ & 
+|_c*_a| \\
+
+ & % check
+lightsecond &
+|_ls| & 
+$\L$ & 
+|_c*_s| \\
+
+ & % check
+parsec &
+|_pc| & 
+$\L$ & 
+|(648000/_Pi)*_au| \\
+
+
+\hline
 
 \end{tabularx}
 \end{table}
@@ -1217,54 +1219,134 @@ $\L[3]$ &
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
 
 
-time & 
-minute &
-|_min| & 
-$\T$ & 
-|_60*_s| \\
+
+force & % check
+kilopond &
+|_kp| & 
+$\M \L \T[-2]$ &  
+|_kg*_g_0| \\
 
 
- & 
-hour &
-|_h| & 
-$\T$ & 
-|_60*_min| \\
+
+pressure & % check
+bar &
+|_bar| & 
+$\M \L[-1] \T[-2]$ & 
+|1e5*_Pa| \\
+
+ & % check
+standardatmosphere &
+|_atm| & 
+$\M \L[-1] \T[-2]$ & 
+|101325*_Pa| \\
+
+ & % check
+technicalatmosphere &
+|_at| & 
+$\M \L[-1] \T[-2]$ & 
+|_kp/_cm^2| \\
+
+ & % check
+millimeterofmercury &
+|_mmHg| & 
+$\M \L[-1] \T[-2]$ & 
+|133.322387415*_Pa| \\
+
+ & % check
+torr &
+|_Torr| & 
+$\M \L[-1] \T[-2]$ & 
+|(101325/760)*_Pa| \\
 
 
- & 
-day &
-|_d| & 
-$\T$ & 
-|_24*_h| \\
+
+energy & % check
+thermochemicalcalorie &
+|_cal| & 
+$\M \L[2] \T[-2]$ & 
+|4.184*_J| \\
+
+ & % check
+internationalcalorie &
+|_cal_IT| & 
+$\M \L[2] \T[-2]$ & 
+|4.1868*_J| \\
+
+ & % check
+gramoftnt &
+|_g_TNT| & 
+$\M \L[2] \T[-2]$ & 
+|1e3 * _cal| \\
+
+ & % check
+tonoftnt &
+|_t_TNT| & 
+$\M \L[2] \T[-2]$ & 
+|1e9 * _cal| \\
+
+ & % check
+electronvolt &
+|_eV| & 
+$\M \L[2] \T[-2]$ & 
+|_e*_V| \\
+
+ & % check
+wattsecond &
+|_Ws| & 
+$\M \L[2] \T[-2]$ & 
+|_W*_s| \\
+
+ & % check
+watthour &
+|_Wh| & 
+$\M \L[2] \T[-2]$ & 
+|_W*_h| \\
+
+power & % check
+voltampere &
+|_VA| & 
+$\M \L[2] \T[-3]$ & 
+|_V*_A| \\
 
 
- & 
-week &
-|_wk| & 
-$\T$ & 
-|_7*_d| \\
 
- & 
-year &
-|_a| & 
-$\T$ & 
-|365.25*_d| \\
+charge & % check
+amperesecond &
+|_As| & 
+$\T \I$ & 
+|_A*_s| \\
 
- & 
-svedberg &
-|_svedberg| & 
-$\T$ & 
-|1e-13*_s| \\
+ & % check
+amperehour &
+|_Ah| & 
+$\T \I$ & 
+|_A*_h| \\
 
 
-mass & 
-tonne &
-|_t| & 
-$\M$ & 
-|1000*_kg| \\\hline
+
+information &
+nibble \% & % check
+|_nibble| &
+$\B$ &
+|4*_bit|  \\
+
+ &
+byte \% & % check
+|_B| &
+$\B$ &
+|8*_bit|  \\
+
+information \\ transfer rate &
+bitpersecond \% & % check
+|_bps| &
+$\T[-1]\B$ &
+|_bit/_s|  \\
+
+
+\hline
+
 
 \end{tabularx}
-\caption{Units outside of the International System of Units (SI)}
 \end{table}
 
 
@@ -1272,6 +1354,74 @@ $\M$ &
 
 
 
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+
+number &
+percent \% & % check
+|_percent| &
+$\1$ &
+|1e-2*_1|  \\
+
+ &
+permille \textperthousand & % check
+|_permille| & 
+$\1$ &
+|1e-3*_1|  \\
+
+ &
+parts-per-million & % check
+|_ppm| &
+$\1$ &
+|1e-6*_1|  \\
+
+ &
+parts-per-billion & % check
+|_ppb| &
+$\1$ &
+|1e-9*_1|  \\
+
+ &
+parts-per-trillion & % check
+|_ppt| &
+$\1$ &
+|1e-12*_1|  \\
+
+ &
+parts-per-quadrillion & % check
+|_ppq| &
+$\1$ &
+|1e-15*_1|  \\
+
+ &
+decibel & % check
+|_dB| & 
+$\1$ &
+|_1|  \\
+
+
+
+mass & 
+tonne &
+|_t| & 
+$\M$ & 
+|1000*_kg| \\
+
+
+\hline
+
+\end{tabularx}
+\caption{Units outside of the International System of Units (SI)}
+\end{table}
 
 
 
