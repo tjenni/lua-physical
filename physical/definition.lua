@@ -143,12 +143,14 @@ Q.define("cEUR", "eurocent", 0.01*_EUR)
 
 
 -- define SI derived units
-Q.define("g", "gram", 0.001*_kg)
+Q.define("rad", "radian", _1 )
+Q.define("sr", "steradian", _rad^2 )
 Q.define("Hz", "hertz", 1/_s)
 Q.define("N", "newton", _kg*_m/_s^2)
 Q.define("Pa", "pascal", _N/_m^2)
 Q.define("J", "joule", _N*_m)
 Q.define("W", "watt", _J/_s)
+Q.define("g", "gram", 1e-3*_kg)
 
 -- remark: don't create the unit kilogram twice
 Q.addPrefix({"y","z","a","f","p","n","u","m","c","d","da","h","M","G","T","P","E","Z","Y"},{_g})
@@ -255,6 +257,27 @@ Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 -- http://m.convert-me.com/en/convert/area/township.html?u=township&v=1
 -- https://www.nist.gov/pml/nist-guide-si-appendix-b9-factors-units-listed-kind-quantity-or-field-science
 
+Q.define("min", "minute", 60*_s)
+Q.define("h", "hour", 60*_min)
+Q.define("d", "day", 24*_h)
+
+Q.define("deg", "degree", (_Pi/180)*_rad)
+Q.define("arcmin", "arcminute", _deg/60)
+Q.define("arcsec", "arcsecond", _arcmin/60)
+
+Q.define("hectare", "hectare", 1e4*_m^2)
+
+Q.define("L", "liter", 1e-3*_m^3)
+Q.addPrefix(SI_prefixes,{_L})
+
+Q.define("t", "tonne", 1e3*_kg)
+
+
+
+
+-- OTHER NON-SI UNITS
+-- ******************
+
 -- Length
 Q.define("angstrom", "angstrom", 1e-10*_m)
 Q.define("fermi", "fermi", 1e-15*_m)
@@ -262,31 +285,19 @@ Q.define("fermi", "fermi", 1e-15*_m)
 -- Area 
 Q.define("barn", "barn", 1e-28*_m^2)
 Q.define("are", "are", 1e2*_m^2)
-Q.define("hectare", "hectare", 1e4*_m^2)
 
 -- Volume
-Q.define("L", "liter", 1e-3*_m^3)
 Q.define("tsp", "metricteaspoon", 5e-3*_L)
 Q.define("Tbsp", "metrictablespoon", 3*_tsp)
 
-Q.addPrefix(SI_prefixes,{_L})
-
 -- Time
 Q.define("svedberg", "svedberg", 1e-13*_s)
-Q.define("min", "minute", 60*_s)
-Q.define("h", "hour", 60*_min)
-Q.define("d", "day", 24*_h)
 Q.define("wk", "week", 7*_d)
 Q.define("a", "year", 365.25*_d)
 
 -- Angular
-Q.define("rad", "radian", _1 )
-Q.define("deg", "degree", (_Pi/180)*_rad)
-Q.define("arcmin", "arcminute", _deg/60)
-Q.define("arcsec", "arcsecond", _arcmin/60)
 Q.define("gon", "gradian", (_Pi/200)*_rad)
 Q.define("tr", "turn", 2*_Pi*_rad)
-Q.define("sr", "steradian", _rad^2 )
 Q.define("sp", "spat", 4*_Pi*_sr)
 
 -- Astronomical
@@ -294,6 +305,8 @@ Q.define("au", "astronomicalunit", 149597870700*_m)
 Q.define("ly", "lightyear", _c*_a)
 Q.define("ls", "lightsecond", _c*_s)
 Q.define("pc", "parsec", (648000/_Pi)*_au)
+
+Q.addPrefix(SI_prefixes, {_ls,_ly,_pc})
 
 -- Nominal Astronomical Constants
 -- Source: Nominal values for selected solar and planetary quantities: IAU 2015 Resolution B3, 
@@ -315,7 +328,6 @@ Q.define("Rp_J_nom", "nomjovianpolradius", 6.6854e7 * _m)
 Q.define("GM_J_nom", "nomjovianmassparam", 1.2668653e17 * _m^3*_s^-2)
 
 
-Q.addPrefix(SI_prefixes, {_ly,_pc})
 
 --force
 Q.define("kp", "kilopond", _kg*_g_0)
@@ -371,7 +383,6 @@ Q.define("ppt", "partspertrillion", 1e-12*_1)
 Q.define("ppq", "partsperquadrillion", 1e-15*_1)
 Q.define("dB", "decibel", _1)
 
-Q.define("t", "tonne", 1000*_kg)
 Q.define("PS", "metrichorsepower", 75*_g_0*_kg*_m/_s)
 Q.define("Ci", "curie", 3.7e10*_Bq)
 Q.define("Rad", "rad", 0.01*_Gy)

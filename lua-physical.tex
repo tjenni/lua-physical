@@ -955,10 +955,10 @@ All units in this section are coherent derived units from the SI base units with
 
 
 
+% https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
 
-
-\subsection{Units outside of the International System of Units (SI)}
-\label{ch:Units outside SI}
+\subsection{Non-SI units accepted for use with the SI}
+\label{ch:Non-SI units accepted for use with the SI}
 
 There are a few units with dimension $\1$. The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
 
@@ -973,31 +973,73 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
 
-\printunit[Length]{_angstrom}{1e-10*_m}
-\printunit[ ]{_fermi}{1e-15*_m}
-
-\printunit{_barn}{1e-28*_m^2}
-\printunit[ ]{_are}{1e2*_m^2}
-\printunit[ ]{_hectare}{1e4*_m^2}
-
-\printunit{_L}{1e-3*_m^3}
-\printunit[ ]{_tsp}{5e-3*_L}
-\printunit[ ]{_Tbsp}{3*_tsp}
-
-\printunit[Time]{_svedberg}{1e-13*_s}
-\printunit[ ]{_min}{60*_s}
+\printunit[Time]{_min}{60*_s}
 \printunit[ ]{_h}{60*_min}
 \printunit[ ]{_d}{24*_h}
+
+\printunit[Plane Angle]{_deg}{(_Pi/180)*_rad}
+\printunit[ ]{_arcmin}{_deg/60}
+\printunit[ ]{_arcsec}{_arcmin/60}
+
+\printunit{_hectare}{1e4*_m^2}
+
+\printunit{_L}{1e-3*_m^3}
+
+\printunit[Mass]{_t}{1e3*_kg}
+
+
+\hline
+
+\end{tabularx}
+
+\caption{Units outside of the International System of Units (SI)}
+
+\end{table}
+
+
+
+
+
+
+
+
+
+\subsection{Other Non-SI units}
+\label{ch:Other Non-SI units}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{1.2\hsize}}X%
+  l%
+  l%
+  >{\setlength\hsize{0.8\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+
+
+\printunit[Time]{_svedberg}{1e-13*_s}
 \printunit[ ]{_wk}{7*_d}
 \printunit[ ]{_a}{365.25*_d}
 
+\printunit[Length]{_angstrom}{1e-10*_m}
+\printunit[ ]{_fermi}{1e-15*_m}
+\printunit[ ]{_au}{149597870700*_m}
+\printunit[ ]{_ls}{_c*_s}
+\printunit[ ]{_ly}{_c*_a}
+\printunit[ ]{_pc}{(648000/_Pi)*_au}
 
-\printunit[Number]{_deg}{(_Pi/180)*_rad}
-\printunit[ ]{_arcmin}{_deg/60}
-\printunit[ ]{_arcsec}{_arcmin/60}
-\printunit[ ]{_gon}{(Pi/200)*_rad}
+\printunit{_barn}{1e-28*_m^2}
+\printunit[ ]{_are}{1e2*_m^2}
+
+\printunit{_tsp}{5e-3*_L}
+\printunit[ ]{_Tbsp}{3*_tsp}
+
+\printunit[Plane Angle]{_gon}{(Pi/200)*_rad}
 \printunit[ ]{_tr}{2*Pi*_rad}
 
+\printunit[Solid Angle]{_sp}{4*Pi*_sr}
 
 \hline
 
@@ -1019,21 +1061,13 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
 
-
-\printunit[Number]{_sp}{4*Pi*_sr}
-
-\printunit[Length]{_au}{149597870700*_m}
-\printunit[ ]{_ls}{_c*_s}
-\printunit[ ]{_ly}{_c*_a}
-\printunit[ ]{_pc}{(648000/_Pi)*_au}
-
-\printunit{_kp}{_kg*_g_0}
-
 \printunit{_bar}{1e5*_Pa}
 \printunit[ ]{_atm}{101325*_Pa}
 \printunit[ ]{_at}{_kp/_cm^2}
 \printunit[ ]{_mmHg}{133.322387415*_Pa}
 \printunit[ ]{_Torr}{(101325/760)*_Pa}
+
+\printunit{_kp}{_kg*_g_0}
 
 \printunit[Energy]{_cal}{4.184*_J}
 \printunit[ ]{_cal_IT}{4.1868*_J}
@@ -1053,6 +1087,15 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
 
 \printunit[Information \newline Transfer Rate]{_bps}{_bit/_s}
 
+\printunit[Number]{_percent}{1e-2*_1}
+\printunit[ ]{_permille}{1e-3*_1}
+\printunit[ ]{_ppm}{1e-6*_1}
+\printunit[ ]{_ppb}{1e-9*_1}
+\printunit[ ]{_ppt}{1e-12*_1}
+\printunit[ ]{_ppq}{1e-15*_1}
+
+\printunit[ ]{_dB}{_1}
+
 \hline
 
 \end{tabularx}
@@ -1061,74 +1104,9 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
 
 
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  l%
-  l%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
-}
-
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
-
-number &
-percent \% & % check
-|_percent| &
-$\1$ &
-|1e-2*_1|  \\
-
- &
-permille \textperthousand & % check
-|_permille| & 
-$\1$ &
-|1e-3*_1|  \\
-
- &
-parts-per-million & % check
-|_ppm| &
-$\1$ &
-|1e-6*_1|  \\
-
- &
-parts-per-billion & % check
-|_ppb| &
-$\1$ &
-|1e-9*_1|  \\
-
- &
-parts-per-trillion & % check
-|_ppt| &
-$\1$ &
-|1e-12*_1|  \\
-
- &
-parts-per-quadrillion & % check
-|_ppq| &
-$\1$ &
-|1e-15*_1|  \\
-
- &
-decibel & % check
-|_dB| & 
-$\1$ &
-|_1|  \\
 
 
 
-mass & 
-tonne &
-|_t| & 
-$\M$ & 
-|1000*_kg| \\
-
-
-\hline
-
-\end{tabularx}
-\caption{Units outside of the International System of Units (SI)}
-\end{table}
 
 
 
@@ -1139,246 +1117,76 @@ $\M$ &
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  l%
-  l%
+  >{\setlength\hsize{1\hsize}}X%
   l%
   l%
   >{\setlength\hsize{1\hsize}}X%
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
 
-length & 
-inch &
-|_in| & 
-$\L$ & 
-|0.0254*_m| \\
+\printunit[Length]{_in}{0.0254*_m}
+\printunit[ ]{_th}{0.001*_in}
+\printunit[ ]{_pica}{_in/6}
+\printunit[ ]{_pt}{_in/72}
+\printunit[ ]{_hh}{4*_in}
+\printunit[ ]{_ft}{12*_in}
+\printunit[ ]{_yd}{3*_ft}
+\printunit[ ]{_rd}{5.5*_yd}
+\printunit[ ]{_ch}{4*_rd}
+\printunit[ ]{_fur}{10*_ch}
+\printunit[ ]{_mi}{8*_fur}
+\printunit[ ]{_lea}{3*_mi}
+\printunit[ ]{_nmi}{1852 * _m}
+\printunit[ ]{_nlea}{3*_nmi}
+\printunit[ ]{_cbl}{_nmi/10}
+\printunit[ ]{_ftm}{6*_ft}
 
+\printunit{_kn}{_nmi/_h}
 
- & 
-thou &
-|_th| & 
-$\L$ & 
-|0.001*_in| \\
+\printunit{_ac}{43560*_ft^2}
 
-
- & 
-pica &
-|_pica| & 
-$\L$ & 
-|_in/6| \\
-
-
- & 
-point &
-|_pt| & 
-$\L$ & 
-|_in/72| \\
-
-
- & 
-hand &
-|_hh| & 
-$\L$ & 
-|4*_in| \\
-
- & 
-foot &
-|_ft| & 
-$\L$ & 
-|12*_in| \\
-
- & 
-yard &
-|_yd| & 
-$\L$ & 
-|3*_ft| \\
-
- & 
-rod &
-|_rd| & 
-$\L$ & 
-|5.5*_yd| \\
+\printunit{_gal}{4.54609*_L}
+\printunit[ ]{_qt}{_gal/4}
+\printunit[ ]{_pint}{_qt/2}
+\printunit[ ]{_cup}{_pint/2}
+\printunit[ ]{_gi}{_pint/4}
+\printunit[ ]{_fl_oz}{_gi/5}
+\printunit[ ]{_fl_dr}{_fl_oz/8}
 
 
- & 
-chain &
-|_ch| & 
-$\L$ & 
-|4*_rd| \\
-
-
- & 
-furlong &
-|_fur| & 
-$\L$ & 
-|10*_ch| \\
-
-
- & 
-mile &
-|_mi| & 
-$\L$ & 
-|8*_fur| \\
-
- & 
-league &
-|_lea| & 
-$\L$ & 
-|3*_mi| \\
-
- & 
-nautical mile &
-|_nmi| & 
-$\L$ & 
-|1852 * _m| \\
-
- & 
-nautical league &
-|_nlea| & 
-$\L$ & 
-|3*_nmi| \\
-
- & 
-cable &
-|_cbl| & 
-$\L$ & 
-|_nmi/10| \\
-
- & 
-fathom &
-|_ftm| & 
-$\L$ & 
-|6*_ft| \\
-
-
-velocity & 
-knot &
-|_kn| & 
-$\L[1] \T[-1]$ & 
-|_nmi/_h| \\
-
-
-area & 
-acre &
-|_ac| & 
-$\L[2]$ & 
-|43560*_ft^2| \\
-
-
-volume & 
-gallon &
-|_gal| & 
-$\L[3]$ & 
-|4.54609*_L| \\
-
- & 
-quart &
-|_qt| & 
-$\L[3]$ & 
-|_gal/4| \\
-
- & 
-pint &
-|_pint| & 
-$\L[3]$ & 
-|_qt/2| \\
-
- & 
-cup &
-|_cup| & 
-$\L[3]$ & 
-|_pint/2| \\
-
- & 
-gill &
-|_gi| & 
-$\L[3]$ & 
-|_pint/4| \\
-
- & 
-fluid ounce &
-|_fl_oz| & 
-$\L[3]$ & 
-|_gi/5| \\
-
- & 
-fluid dram &
-|_fl_dr| & 
-$\L[3]$ & 
-|_fl_oz/8| \\\hline
+\hline
 
 \end{tabularx}
 \end{table}
-
 
 
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  l%
-  l%
+  >{\setlength\hsize{1\hsize}}X%
   l%
   l%
   >{\setlength\hsize{1\hsize}}X%
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
 
-mass & 
-grain &
-|_gr| & 
-$\M$ & 
-|64.79891*_mg| \\
+\printunit[Mass]{_gr}{64.79891*_mg}
+\printunit[ ]{_lb}{7000*_gr}
+\printunit[ ]{_oz}{_lb/16}
+\printunit[ ]{_dr}{_lb/256}
+\printunit[ ]{_st}{14*_lb}
+\printunit[ ]{_qtr}{2*_st}
+\printunit[ ]{_cwt}{4*_qtr}
+\printunit[ ]{_ton}{20*_cwt}
 
- & 
-pound &
-|_lb| & 
-$\M$ & 
-|7000*_gr| \\
 
- & 
-ounce &
-|_oz| & 
-$\M$ & 
-|_lb/16| \\
-
- & 
-dram &
-|_dr| & 
-$\M$ & 
-|_lb/256| \\
-
- & 
-stone &
-|_st| & 
-$\M$ & 
-|14*_lb| \\
-
- & 
-quarter &
-|_qtr| & 
-$\M$ & 
-|2*_st| \\
-
- & 
-hundredweight &
-|_cwt| & 
-$\M$ & 
-|4*_qtr| \\
-
- & 
-long ton &
-|_ton| & 
-$\M$ & 
-|20*_cwt| \\\hline
-
+\hline
 
 \end{tabularx}
 \caption{Imperial units}
 \end{table}
-
-
 
 
 
@@ -1393,149 +1201,39 @@ In the U.S., the length units are bound  to the meter differently than in the im
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  l%
-  l%
+  >{\setlength\hsize{1\hsize}}X%
   l%
   l%
   >{\setlength\hsize{1\hsize}}X%
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
 
-length & 
-U.S. survey inch &
-|_in_US| & 
-$\L$ & 
-|_m/39.37| \\
+\printunit[Length]{_in_US}{_m/39.37}
+\printunit[ ]{_hh_US}{4*_in_US}
+\printunit[ ]{_ft_US}{3*_hh_US}
+\printunit[ ]{_li_US}{0.66*_ft_US}
+\printunit[ ]{_yd_US}{3*_ft_US}
+\printunit[ ]{_rd_US}{5.5*_yd_US}
+\printunit[ ]{_ch_US}{4*_rd_US}
+\printunit[ ]{_fur_US}{10*_ch_US}
+\printunit[ ]{_mi_US}{8*_fur_US}
+\printunit[ ]{_lea_US}{3*_mi_US}
+\printunit[ ]{_ftm_US}{72*_in_US}
+\printunit[ ]{_cbl_US}{120*_ftm_US}
 
- & 
-U.S. survey hand &
-|_hh_US| & 
-$\L$ & 
-|4*_in_US| \\
+\printunit{_ac_US}{_ch_US*_fur_US}
 
- & 
-U.S. survey foot &
-|_ft_US| & 
-$\L$ & 
-|3*_hh_US| \\
+\printunit{_gal_US}{231*_in^3}
+\printunit[ ]{_qt_US}{_gal_US/4}
+\printunit[ ]{_pint_US}{_qt_US/2}
+\printunit[ ]{_cup_US}{_pint_US/2}
+\printunit[ ]{_gi_US}{_pint_US/4}
+\printunit[ ]{_fl_oz_US}{_gi_US/4}
+\printunit[ ]{_Tbsp_US}{_fl_oz_US/2}
+\printunit[ ]{_tsp_US}{_Tbsp_US/3}
+\printunit[ ]{_fl_dr_US}{_fl_oz_US/8}
 
- & 
-U.S. survey link &
-|_li_US| & 
-$\L$ & 
-|0.66*_ft_US| \\
-
- & 
-U.S. survey yard &
-|_yd_US| & 
-$\L$ & 
-|3*_ft_US| \\
-
- & 
-U.S. survey rod &
-|_rd_US| & 
-$\L$ & 
-|5.5*_yd_US| \\
-
-
- & 
-U.S. survey chain &
-|_ch_US| & 
-$\L$ & 
-|4*_rd_US| \\
-
-
- & 
-U.S. survey furlong &
-|_fur_US| & 
-$\L$ & 
-|10*_ch_US| \\
-
-
- & 
-U.S. survey mile &
-|_mi_US| & 
-$\L$ & 
-|8*_fur_US| \\
-
- & 
-U.S. survey league &
-|_lea_US| & 
-$\L$ & 
-|3*_mi_US| \\
-
- & 
-U.S. survey fathom &
-|_ftm_US| & 
-$\L$ & 
-|72*_in_US| \\
-
- & 
-U.S. survey cable &
-|_cbl_US| & 
-$\L$ &
-|120*_ftm_US| \\
-
-area & 
-U.S. acre &
-|_ac_US| & 
-$\L[2]$ &
-|_ch_US*_fur_US| \\
-
-volume & 
-U.S. gallon &
-|_gal_US| & 
-$\L[3]$ &
-|231*_in^3| \\
-
- & 
-U.S. quart &
-|_qt_US| & 
-$\L[3]$ &
-|_gal_US/4| \\
-
- & 
-U.S. pint &
-|_pint_US| & 
-$\L[3]$ &
-|_qt_US/2| \\
-
- & 
-U.S. cup &
-|_pint_US| & 
-$\L[3]$ &
-|_pint_US/2| \\
-
- & 
-U.S. gill &
-|_gi_US| & 
-$\L[3]$ &
-|_pint_US/4| \\
-
- & 
-U.S. fluid ounce &
-|_fl_oz_US| & 
-$\L[3]$ &
-|_gi_US/4| \\
-
- & 
-U.S. table spoon &
-|_Tbsp_US| & 
-$\L[3]$ &
-|_fl_oz_US/2| \\
-
- & 
-U.S. tea spoon &
-|_tsp_US| & 
-$\L[3]$ &
-|_Tbsp_US/3| \\
-
- & 
-U.S. fluid dram &
-|_fl_dr_US| & 
-$\L[3]$ &
-|_fl_oz_US/8| \\
 
 \hline
 
@@ -1543,48 +1241,28 @@ $\L[3]$ &
 \end{table}
 
 
-
-
-
-
-
-
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  l%
-  l%
+  >{\setlength\hsize{1\hsize}}X%
   l%
   l%
   >{\setlength\hsize{1\hsize}}X%
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
 
+\printunit[Mass]{_qtr_US}{25*_lb}
+\printunit[Mass]{_cwt_US}{4*_qtr_US}
+\printunit[Mass]{_ton_US}{20*_cwt_US}
 
-mass & 
-U.S. quarter &
-|_qtr_US| & 
-$\L[3]$ &
-|25*_lb| \\
-
- & 
-U.S. hundredweight &
-|_qtr_US| & 
-$\L[3]$ &
-|4*_qtr_US| \\
-
- & 
-U.S. short ton &
-|_ton_US| & 
-$\L[3]$ &
-|20*_cwt_US| \\
 
 \hline
 
 \end{tabularx}
 \caption{U.S. customary units}
 \end{table}
+
 
 
 
