@@ -546,301 +546,6 @@ The value of the currency Euro. \\\hline
 
 
 
-\begin{landscape}
-\subsection{Constants}
-\label{ch:Constants}
-
-Almost all physical constants are taken from the NIST webpage \cite{nist19}. The nominal values of solar, terrestrial and jovial quantities are taken from IAU Resolution B3 \cite{iau16}.
-
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{0.6\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1.4\hsize}}X%
-  c%
-}
-
-\thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} & \thead{Source} \\\hline
-
-|pi| &
-|_Pi| &
-$\1$ & 
-|3.1415926535897932384626433832795028841971 * _1|  \\
-
-|eulersnumber| &
-|_E| &
-$\1$ & 
-|2.7182818284590452353602874713526624977572 * _1|  \\
-
-|speedoflight| &
-|_c| &
-$\L[1]\T[-1]$ & 
-|299792458 * _m/_s| &
-\cite{nist19} \\
-
-
-|gravitationalconstant| &
-|_Gc| &
-$\L[3]\M[-1]\T[-2]$ & 
-|N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2)| &
-\cite{nist19} \\
-
- 
-|planckconstant| &
-|_h_P| &
-$\L[2]\M[1]\T[-1]$ & 
-|6.62607015e-34 * _J*_s| &
-\cite{nist19} \\
-
-
-|reducedplanckconstant| &
-|_h_Pbar| &
-$\L[2]\M[1]\T[-1]$ &
-|_h_P/(2*Pi)|  &
-\cite{nist19} \\
-
-
-|elementarycharge| &
-|_e| &
-$\T[1]\I[1]$ & 
-|1.602176634e-19 * _C| &
-\cite{nist19} \\
-
-
-|vacuumpermeability| &
-|_u_0| &
-$\L[1]\M[1]\T[-2]\I[-2]$ & 
-|4e-7*Pi * _N/_A^2| &
-\cite{nist19} \\
-
-|vacuumpermitivity| &
-|_e_0| &
-$\L[-3]\M[-1]\T[4]\I[2]$ & 
-|1/(_u_0*_c^2)| &
-\cite{nist19} \\
-
-|atomicmassunit| &
-|_u| &
-$\M[1]$ & 
-|N(1.66053904e-27, 2e-35) * _kg| &
-\cite{nist19} \\
-
-|electronmass| &
-|_m_e| &
-$\M[1]$ & 
-|N(9.10938356e-31, 1.1e-38) * _kg| &
-\cite{nist19} \\
-
-|protonmass| &
-|_m_p| &
-$\M[1]$ & 
-|N(1.672621898e-27, 2.1e-35) * _kg|  &
-\cite{nist19} \\
-
-|neutronmass| &
-|_m_n| &
-$\M[1]$ & 
-|N(1.674927471e-27, 2.1e-35) * _kg| &
-\cite{nist19} \\
-
-|bohrmagneton| &
-|_u_B| &
-$\L[2]\I[1]$ & 
-|_e*_h_Pbar/(2*_m_e)| &
-\cite{nist19} \\
-
-|nuclearmagneton| &
-|_u_N| &
-$\L[2]\I[1]$ & 
-|_e*_h_Pbar/(2*_m_p)| &
-\cite{nist19} \\
-
-
-\hline
-
-\end{tabularx}
-\end{table}
-
-
-
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{0.8\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1.2\hsize}}X%
-  c%
-}
-
-\thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} & \thead{Source} \\\hline
-
-
-|electronmagneticmoment| &
-|_u_e| &
-$\L[2]\I[1]$ & 
-|N(-928.4764620e-26,5.7e-32) * _J/_T|  &
-\cite{nist19} \\
-
-|protonmagneticmoment| &
-|_u_p| &
-$\L[2]\I[1]$ & 
-|N(1.4106067873e-26,9.7e-35) * _J/_T|  &
-\cite{nist19} \\
-
-|neutronmagneticmoment| &
-|_u_n| &
-$\L[2]\I[1]$ & 
-|N(-0.96623650e-26,2.3e-26) * _J/_T|  &
-\cite{nist19} \\
-
-|finestructureconstant| &
-|_alpha| &
-$\1$ & 
-|_u_0*_e^2*_c/(2*_h_P)|  &
-\cite{nist19} \\
-
-|rydbergconstant| &
-|_Ry| &
-$\L[-1]$ & 
-|_alpha^2*_m_e*_c/(2*_h_P)|  &
-\cite{nist19} \\
-
-|avogadronumber| &
-|_N_A| &
-$\N[-1]$ & 
-|6.02214076e23/_mol|  &
-\cite{nist19} \\
-
-|boltzmannconstant| &
-|_k_B| &
-$\L[2]\M[1]\T[-2]\K[-1]$ & 
-|1.380649e-23 * _J/_K|  &
-\cite{nist19} \\
-
-|molargasconstant| &
-|_R| &
-$\L[2]\M[1]\T[-2]\K[-1]\N[-1]$ & 
-|N(8.3144598, 4.8e-6) * _J/(_K*_mol)|  &
-\cite{nist19} \\
-
-|stefanboltzmannconstant| &
-|_sigma| &
-$\L[2]\M[1]\T[-2]\K[-1]\N[-1]$ & 
-|Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)|  &
-\cite{nist19} \\
-
-|standardgravity| &
-|_g_0| &
-$\L[1]\T[-2]$ & 
-|9.80665 * _m/_s^2|  &
-\cite{nist19} \\
-
-
-
-|nomsolradius| &
-|_R_S_nom| &
-$\L[1]$ & 
-|6.957e8 * _m|  &
-\cite{iau16} \\
-
-|nomsolirradiance| &
-|_S_S_nom| &
-$\M[1]\T[-3]$ & 
-|1361 * _W/_m^2|  &
-\cite{iau16} \\
-
-|nomsolluminosity| &
-|_L_S_nom| &
-$\L[2]\M[1]\T[-3]$ & 
-|3.828e26 * _W|  &
-\cite{iau16} \\
-
-|nomsolefftemperature| &
-|_T_S_nom| &
-$\K[1]$ & 
-|5772 * _K|  &
-\cite{iau16} \\
-
-|nomsolmassparam| &
-|_GM_S_nom| &
-$\L[3]\T[-2]$ & 
-|1.3271244e20 * _m^3 * _s^-2|  &
-\cite{iau16} \\
-
-|nomterreqradius| &
-|_Re_E_nom| &
-$\L[1]$ & 
-|6.3781e6 * _m|  &
-\cite{iau16} \\
-
-|nomterrpolradius| &
-|_Rp_E_nom| &
-$\L[1]$ & 
-|6.3568e6 * _m|  &
-\cite{iau16} \\
-
-|nomterrmassparam| &
-|_GM_E_nom| &
-$\L[3]\T[-2]$ & 
-|3.986004e14 * _m^3 * _s^-2|  &
-\cite{iau16} \\
-
-
-\hline
-
-\end{tabularx}
-\end{table}
-
-
-
-
-
-
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{0.8\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1.2\hsize}}X%
-  c%
-}
-
-\thead{Name} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} & \thead{Source} \\\hline
-
-
-
-
-|nomjovianeqradius| &
-|_Re_J_nom| &
-$\L[1]$ & 
-|7.1492e7 * _m|  &
-\cite{iau16} \\
-
-|nomjovianpolradius| &
-|_Rp_J_nom| &
-$\L[1]$ & 
-|6.6854e7 * _m|  &
-\cite{iau16} \\
-
-|nomjovianmassparam| &
-|_GM_J_nom| &
-$\L[3]\T[-2]$ & 
-|1.2668653e17 * _m^3*_s^-2|  &
-\cite{iau16} \\
-
-\hline
-
-\end{tabularx}
-\caption{Physical and mathematical constants.}
-\end{table}
-
-
-\end{landscape}
-
 
 
 
@@ -866,6 +571,101 @@ end
   |#2| &
   |#3| \\
 }
+
+
+\begin{landscape}
+
+\subsection{Constants}
+\label{ch:Constants}
+
+Almost all physical constants are taken from the NIST webpage \cite{nist19}.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+
+\printunit[Number]{_Pi}{3.1415926535897932384626433832795028841971 * _1}
+\printunit[Number]{_E}{2.7182818284590452353602874713526624977572 * _1}
+
+\printunit{_c}{299792458 * _m/_s}
+
+\printunit[ ]{_Gc}{N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2)}
+
+\printunit[ ]{_h_P}{6.62607015e-34 * _J*_s}
+\printunit[ ]{_h_Pbar}{_h_P/(2*_Pi)}
+
+\printunit{_e}{1.602176634e-19 * _C}
+
+\printunit[ ]{_u_0}{4e-7*Pi * _N/_A^2}
+
+\printunit[ ]{_e_0}{1/(_u_0*_c^2)}
+
+\printunit{_u}{N(1.66053904e-27, 2e-35) * _kg}
+\printunit[ ]{_m_e}{N(9.10938356e-31, 1.1e-38) * _kg}
+\printunit[ ]{_m_p}{N(1.672621898e-27, 2.1e-35) * _kg}
+\printunit[ ]{_m_n}{N(1.674927471e-27, 2.1e-35) * _kg}
+
+\printunit[ ]{_u_B}{_e*_h_Pbar/(2*_m_e)}
+\printunit[ ]{_u_N}{_e*_h_Pbar/(2*_m_p)}
+
+
+\hline
+
+\end{tabularx}
+\end{table}
+
+\end{landscape}
+
+
+
+
+\begin{landscape}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+
+
+\printunit[ ]{_u_e}{N(-928.4764620e-26,5.7e-32) * _J/_T}
+\printunit[ ]{_u_p}{N(1.4106067873e-26,9.7e-35) * _J/_T}
+\printunit[ ]{_u_n}{N(-0.96623650e-26,2.3e-26) * _J/_T}
+
+\printunit[ ]{_alpha}{_u_0*_e^2*_c/(2*_h_P)}
+
+\printunit[ ]{_Ry}{_alpha^2*_m_e*_c/(2*_h_P)}
+
+\printunit[ ]{_N_A}{6.02214076e23/_mol}
+
+\printunit[ ]{_k_B}{1.380649e-23 * _J/_K}
+
+\printunit[ ]{_R}{N(8.3144598, 4.8e-6) * _J/(_K*_mol)}
+
+\printunit[ ]{_sigma}{_Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)}
+
+\printunit[ ]{_g_0}{9.80665 * _m/_s^2}
+
+
+\hline
+
+\end{tabularx}
+\end{table}
+
+
+\end{landscape}
 
 
 
@@ -996,6 +796,48 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
 
 \end{table}
 
+
+
+
+\newpage
+\begin{landscape}
+\subsection{Nominal Astronomical Units}
+\label{ch:Nominal Astronomical Units}
+
+The nominal values of solar, terrestrial and jovial quantities are taken from IAU Resolution B3 \cite{iau16}.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{%
+  l%
+  l%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+
+\printunit[Length]{_R_S_nom}{6.957e8 * _m}
+\printunit[Irradiance]{_S_S_nom}{1361 * _W/_m^2}
+\printunit[Radiant Flux]{_L_S_nom}{3.828e26 * _W}
+\printunit[Temperature]{_T_S_nom}{5772 * _K}
+\printunit[Mass Parameter]{_GM_S_nom}{1.3271244e20 * _m^3*_s^-2}
+
+
+\printunit[Length]{_Re_E_nom}{6.3781e6 * _m}
+\printunit[Length]{_Rp_E_nom}{6.3568e6 * _m}
+\printunit[Mass Parameter]{_GM_E_nom}{3.986004e14 * _m^3*_s^-2}
+
+\printunit[Length]{_Re_J_nom}{7.1492e7 * _m}
+\printunit[Length]{_Rp_J_nom}{6.6854e7 * _m}
+\printunit[Mass Parameter]{_GM_J_nom}{1.2668653e17 * _m^3*_s^-2}
+
+\hline
+
+\end{tabularx}
+\end{table}
+
+\end{landscape}
 
 
 
@@ -1275,179 +1117,63 @@ In the U.S., the length units are bound  to the meter differently than in the im
 \subsection{International Currencies}
 \label{ch:currencies}
 
-\newcommand{\curfactor}[1]{%
-  \texttt{\directlua{tex.print( (#1):to(_EUR):__tonumber() )}}%
+
+
+
+
+\newcommand{\printcurrency}[1]{
+  \directlua{tex.print(#1.unit.name)} & 
+  |#1| &
+  \texttt{\directlua{tex.print( (#1):to(_EUR):__tonumber() )}*\_EUR}  \\
 }
 
 
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
-  l%
-  l%
-  l%
+  >{\setlength\hsize{1\hsize}}X%
   l%
   >{\setlength\hsize{1\hsize}}X%
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dimension} & \thead{Definition} \\\hline
+\thead{Currency} & \thead{Symbol} & \thead{Definition} \\\hline
 
+\printcurrency{_AFN}
+\printcurrency{_ALL}
+\printcurrency{_AMD}
+\printcurrency{_AOA}
+\printcurrency{_ARS}
+\printcurrency{_AUD}
+\printcurrency{_AZN}
 
-currency &
-Afghan afghani&
-|_AFN| & 
-$\C$ & 
-\curfactor{_AFN}|*_EUR| \\
+\printcurrency{_BAM}
+\printcurrency{_BDT}
+\printcurrency{_BIF}
+\printcurrency{_BOB}
+\printcurrency{_BRL}
+\printcurrency{_BWP}
+\printcurrency{_BYN}
 
- &
-Albanian lek &
-|_ALL| & 
-$\C$ & 
-\curfactor{_ALL}|*_EUR| \\
-
- &
-Armenian Dram &
-|_AMD| & 
-$\C$ & 
-\curfactor{_AMD}|*_EUR| \\
-
- &
-Angolan Kwanza &
-|_AOA| & 
-$\C$ & 
-\curfactor{_AOA}|*_EUR| \\
-
- &
-Argentine Peso &
-|_ARS| & 
-$\C$ & 
-\curfactor{_ARS}|*_EUR| \\
-
- &
-Australian dollar &
-|_AUD| & 
-$\C$ & 
-\curfactor{_AUD}|*_EUR| \\
-
- &
-Azerbaijani Manat &
-|_AZN| & 
-$\C$ & 
-\curfactor{_AZN}|*_EUR| \\
-
- &
-Bosnian Mark &
-|_BAM| & 
-$\C$ & 
-\curfactor{_BAM}|*_EUR| \\
-
- &
-Bangladeshi Taka &
-|_BDT| & 
-$\C$ & 
-\curfactor{_BDT}|*_EUR| \\
-
- &
-Burundian Franc &
-|_BIF| & 
-$\C$ & 
-\curfactor{_BIF}|*_EUR| \\
-
- &
-Bolivian Boliviano &
-|_BOB| & 
-$\C$ & 
-\curfactor{_BOB}|*_EUR| \\
-
- &
-Brazilian Real &
-|_BRL| & 
-$\C$ & 
-\curfactor{_BRL}|*_EUR| \\
-
- &
-Botswana Pula &
-|_BWP| & 
-$\C$ & 
-\curfactor{_BWP}|*_EUR| \\
-
- &
-Belarusian Ruble &
-|_BYN| & 
-$\C$ & 
-\curfactor{_BYN}|*_EUR| \\
-
- &
-Canadian Dollar &
-|_CAD| & 
-$\C$ & 
-\curfactor{_CAD}|*_EUR| \\
-
- &
-Congolese Franc &
-|_CDF| & 
-$\C$ & 
-\curfactor{_CDF}|*_EUR| \\
-
-
- &
-U.S. dollar &
-|_USD| & 
-$\C$ & 
-|0.89*_EUR| \\
-
- &
-Japanese yen &
-|_JPY| & 
-$\C$ & 
-|0.008*_EUR| \\
-
- &
-British pound &
-|_GBP| & 
-$\C$ & 
-|1.17*_EUR| \\
-
-
-
- &
-Canadian dollar &
-|_CAD| & 
-$\C$ & 
-|0.66*_EUR| \\
-
- &
-Swiss franc &
-|_CHF| & 
-$\C$ & 
-|0.88*_EUR| \\
-
- &
-Chinese yuan &
-|_CNY| & 
-$\C$ & 
-|0.13*_EUR| \\
-
- &
-Swedish krona &
-|_SEK| & 
-$\C$ & 
-|0.094*_EUR| \\
-
- &
-New Zealand dollar &
-|_NZD| & 
-$\C$ & 
-|0.60*_EUR| \\
-
-
+\printcurrency{_CAD}
+\printcurrency{_USD}
+\printcurrency{_JPY}
+\printcurrency{_GBP}
+\printcurrency{_CNY}
+\printcurrency{_SEK}
+\printcurrency{_NZD}
 
 
 \hline
 
-\end{tabularx}
-\caption{Currency units based on exchange rates from 7.3.2019, 21:00 UTC.}
+\end{tabularx}\caption{International currency units based on exchange rates from 7.3.2019, 21:00 UTC.}
 \end{table}
+
+
+
+
+
+
+
 
 
 
