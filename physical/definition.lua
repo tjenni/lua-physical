@@ -64,11 +64,11 @@ D.define("Thermal Conductivity", L * M * T^-3 * K^-1)
 D.define("Electric Charge", T * I)
 D.define("Electric Permittivity", L^-3 * M^-1 * T^4 * I^2)
 D.define("Electric Field Strength", L * M * T^-3 * I^-1)
-D.define("Electric Potential", L^2 * M * T^-3 * I^-1)
+D.define("Electric Potential Difference", L^2 * M * T^-3 * I^-1)
 D.define("Electric Resistance", L^2 * M * T^-3 * I^-2)
 D.define("Electric Conductance", L^-2 * M^-1 * T^3 * I^2)
 D.define("Electric Capacitance", L^-2 * M^-1 * T^4 * I^2)
-D.define("Electric Inductance", L^2 * M * T^-2 * I^-2)
+D.define("Inductance", L^2 * M * T^-2 * I^-2)
 D.define("Magnetic Permeability", L * M * T^-2 * I^-2)
 D.define("Magnetic Field Strength", L^-1 * I)
 D.define("Magnetic Flux", L^2 * M * T^-2 * I^-1)
@@ -248,26 +248,6 @@ Q.define("R", "molargasconstant", N(8.3144598, 4.8e-6) * _J/(_K*_mol))
 Q.define("sigma", "stefanboltzmannconstant", _Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2))
 Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 
--- Nominal Astronomical Constants
--- Source: Nominal values for selected solar and planetary quantities: IAU 2015 Resolution B3, 
--- https://arxiv.org/pdf/1605.09788.pdf
--- https://arxiv.org/pdf/1510.07674.pdf
-
-Q.define("R_S_nom", "nomsolradius", 6.957e8 * _m)
-Q.define("S_S_nom", "nomsolirradiance", 1361 * _W/_m^2)
-Q.define("L_S_nom", "nomsolluminosity", 3.828e26 * _W)
-Q.define("T_S_nom", "nomsolefftemperature", 5772 * _K)
-Q.define("GM_S_nom", "nomsolmassparam", 1.3271244e20 * _m^3*_s^-2)
-
-Q.define("Re_E_nom", "nomterreqradius", 6.3781e6 * _m)
-Q.define("Rp_E_nom", "nomterrpolradius", 6.3568e6 * _m)
-Q.define("GM_E_nom", "nomterrmassparam", 3.986004e14 * _m^3*_s^-2)
-
-Q.define("Re_J_nom", "nomjovianeqradius", 7.1492e7 * _m)
-Q.define("Rp_J_nom", "nomjovianpolradius", 6.6854e7 * _m)
-Q.define("GM_J_nom", "nomjovianmassparam", 1.2668653e17 * _m^3*_s^-2)
-
-
 
 -- NON-SI UNITS BUT ACCEPTED FOR USE WITH THE SI
 -- *********************************************
@@ -285,8 +265,8 @@ Q.define("are", "are", 1e2*_m^2)
 Q.define("hectare", "hectare", 1e4*_m^2)
 
 -- Volume
-Q.define("L", "liter", 0.001*_m^3)
-Q.define("tsp", "metricteaspoon", 0.005*_L)
+Q.define("L", "liter", 1e-3*_m^3)
+Q.define("tsp", "metricteaspoon", 5e-3*_L)
 Q.define("Tbsp", "metrictablespoon", 3*_tsp)
 
 Q.addPrefix(SI_prefixes,{_L})
@@ -315,6 +295,26 @@ Q.define("ly", "lightyear", _c*_a)
 Q.define("ls", "lightsecond", _c*_s)
 Q.define("pc", "parsec", (648000/_Pi)*_au)
 
+-- Nominal Astronomical Constants
+-- Source: Nominal values for selected solar and planetary quantities: IAU 2015 Resolution B3, 
+-- https://arxiv.org/pdf/1605.09788.pdf
+-- https://arxiv.org/pdf/1510.07674.pdf
+
+Q.define("R_S_nom", "nomsolradius", 6.957e8 * _m)
+Q.define("S_S_nom", "nomsolirradiance", 1361 * _W/_m^2)
+Q.define("L_S_nom", "nomsolluminosity", 3.828e26 * _W)
+Q.define("T_S_nom", "nomsolefftemperature", 5772 * _K)
+Q.define("GM_S_nom", "nomsolmassparam", 1.3271244e20 * _m^3*_s^-2)
+
+Q.define("Re_E_nom", "nomterreqradius", 6.3781e6 * _m)
+Q.define("Rp_E_nom", "nomterrpolradius", 6.3568e6 * _m)
+Q.define("GM_E_nom", "nomterrmassparam", 3.986004e14 * _m^3*_s^-2)
+
+Q.define("Re_J_nom", "nomjovianeqradius", 7.1492e7 * _m)
+Q.define("Rp_J_nom", "nomjovianpolradius", 6.6854e7 * _m)
+Q.define("GM_J_nom", "nomjovianmassparam", 1.2668653e17 * _m^3*_s^-2)
+
+
 Q.addPrefix(SI_prefixes, {_ly,_pc})
 
 --force
@@ -336,10 +336,10 @@ Q.define("cal_IT", "internationalcalorie", 4.1868*_J)
 
 Q.addPrefix({"k"}, {_cal,_cal_IT})
 
-Q.define("g_TNT", "gramoftnt", 1e3 * _cal)
+Q.define("g_TNT", "gramoftnt", 1e3*_cal)
 Q.addPrefix({"k","M","G","T","P"}, {_g_TNT})
 
-Q.define("t_TNT", "tonoftnt", 1e9 * _cal)
+Q.define("t_TNT", "tonoftnt", 1e9*_cal)
 Q.addPrefix({"u","m","k","M","G"}, {_t_TNT})
 
 -- Electrical
