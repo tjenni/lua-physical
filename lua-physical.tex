@@ -149,7 +149,7 @@ This package is a pure Lua library. Therefore one has to require it explicitly b
 
 The following Latex preambel loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
-\begin{lstlisting}[language=Tex, caption=basic preamble]
+\begin{lstlisting}[language=Tex, caption=basic preamble, label=lst:basic preamble]
   \usepackage{lua-physical}
   \usepackage{siunitx}
 
@@ -163,13 +163,13 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
     round-mode = off
   }
 
-  % load lua-physical package
+  % load the lua-physical package
   \begin{luacode*}
     physical = require("physical")
     N = physical.Number
   \end{luacode*}
 
-  % print physical quantities
+  % print a physical quantity
   \newcommand{\q}[1]{%
     \directlua{tex.print(physical.Quantity.tosiunitx(#1,"scientific-notation=fixed,exponent-to-prefix=false"))}%
   }
@@ -178,12 +178,12 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
 
 \subsection{Dependencies}
 
-This is a standalone package. If a pretty print to \LuaLaTeX{} is wanted, the package |siunitx| sould be installed. 
+This is a standalone package. If a pretty print to \LuaLaTeX{} is needed, the package |siunitx| should be installed. 
 
 
 \section{Usage}
 
-Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. Meter is |_m|, Second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The Result of the calculation can be printed to \LuaLaTeX{} by using the macro |\q{}|.
+Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. meter is |_m|, second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The Result of the calculation can be printed to \LuaLaTeX{} by using the macro |\q{}|.
 
 \begin{lstlisting}[caption=The velocity of a car.,label=lst:Car Velocity]
 \begin{luacode}
@@ -212,12 +212,12 @@ $$
 $$
 \endleftbar
 
-In the above listing \ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|. The variable |t| stands for time and is given in second |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
+In the above listing \ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|. The variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
 
 
 \subsection{Unit conversion}
 
-Very often the result of a calculation is needed in different unit, than the given quantities are. In the following listing \ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid with lengths given in different units. If the volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
+Very often, the result of a calculation has to be converted to another unit. In the following listing \ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid with lengths given in three different units. If the volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
 
 \begin{lstlisting}[caption=The volume of a cuboid.,label=lst:Volume of Cuboid]
 \begin{luacode}
@@ -261,12 +261,11 @@ $$
 
 \subsubsection{Temperature Conversion}
 
-In the following problem, listing \ref{lst:degree to kelvin} , the task is to convert a temperature given in the unit degree Celsius to Kelvin. 
-
 Most of the units transform linearly to base units. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. 
 
-
 By default |_degC| and |_degF| units are standing for temperature differences. If one wants to have it converted absolutely, it has to be done adding / subtracting the quantities |_degC_0| and |_degF_0|. 
+
+In the following problem, listing \ref{lst:temperature conversion} , the task is to convert temperatures given in the unit degree Celsius and degree Fahrenheit to Kelvin. 
 
 \begin{lstlisting}[caption=Temperature conversion.,label=lst:temperature conversion]
 \begin{luacode}
@@ -313,49 +312,17 @@ By default |_degC| and |_degF| units are standing for temperature differences. I
 
 
 
-\begin{lstlisting}[caption=Temperature conversion.,label=lst:degree to kelvin]
-\begin{luacode}
-  theta = 20 * _degC
-  T = ( theta + _degC_0 ):to(_K)
-\end{luacode}
-
-A thermometer shows $\q{theta}$. Convert this quantity to Kelvin temperature. 
-$$
-  T = \q{theta} + \q{_degC_0:to()}
-  =  \q{T}
-$$
-\end{lstlisting}
-
-\begin{luacode}
-  theta = 20 * _degC
-\end{luacode}
-
-\leftbar
-A thermometer shows $\q{T}$. Converte this quantity to Kelvin. 
-$$
-  T = \q{theta:to(_K)} + \q{_degC_0:to(_K)}
-  =  \q{(theta + _degC_0):to(_K)}
-$$
-\endleftbar
-
-
-
-
-
-
-
-
 
 
 \subsubsection{Uncertainty}
 
-The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing \ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
+The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing \ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
 
 For the uncertainty propagation the gaussian formula 
 $$
   \Delta f = \sqrt{ \left(\frac{\partial f}{x_1} \cdot \Delta x_1\right)^2 + \dots + \left(\frac{\partial f}{x_n} \cdot \Delta x_2 \right)^2 }
 $$
-is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to behave linear, if the quantities $x_i$ are changed in the range of their uncertainties.
+is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to change linear, if quantities $x_i$ are changed in the range of their uncertainties.
  
 
 
@@ -392,7 +359,7 @@ $$
 \endleftbar
 
 
-Instead of printing always the uncertainties, one can use the uncertainty calculation to provide significant numbers.
+Instead of printing always the uncertainties, one can use the uncertainty calculation to provide significant digits.
 
 In the following problem, listing \ref{lst:volume of ideal gas} , the task is to calculate the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. In order to do the calculation, one has to convert |T|, which is given as an absolute temperature in degree celsius to the base unit Kelvin first. By setting |N.omitUncertainty = true|, all uncertainties are not printed.
 
