@@ -11,10 +11,11 @@
 \usepackage{ulem}
 \usepackage{xcolor}
 \usepackage{framed}
-\usepackage{makeidx}
+\usepackage{imakeidx}
 \usepackage{ifthen}
 
 
+% lua code and lua-physical command definitions
 \begin{luacode*}
 physical = require("physical")
 N = physical.Number
@@ -32,10 +33,8 @@ N = physical.Number
   \directlua{tex.print(physical.Quantity.tosiunitx(#1,nil,2))}%
 }
 
-%\DeclareSIUnit\number{}
 
-
-% siunitx config
+% config siunitx
 \sisetup{
 	output-decimal-marker = {.}, 
 	per-mode = symbol,
@@ -45,6 +44,8 @@ N = physical.Number
 	round-mode=off
 }
 
+
+% config listings
 \lstdefinelanguage{lua}
 {
   morekeywords={
@@ -111,10 +112,11 @@ N = physical.Number
 \makeindex
 
 
+
+
 \begin{document}
 
 \lstset{language=[LaTex]Tex}
-
 
 \title{The \textsc{lua-physical} library \\\ \\\normalsize Version 0.1}
 \author{Thomas Jenni}
@@ -129,8 +131,6 @@ N = physical.Number
 
 
 \tableofcontents
-
-
 
 
 
@@ -577,13 +577,13 @@ end
   } &
   \directlua{tex.print(#2.unit.name)} & 
   |#2| &
-  \mbox{|#3|} \index{\directlua{tex.print(#2.unit.name)}!\texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
+  \mbox{|#3|} \index{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
 }
 
 \newcommand{\printconstant}[2]{
   \directlua{tex.print(#1.unit.name)} & 
   |#1| &
-  \mbox{|#2|} \index{\directlua{tex.print(#1.unit.name)}!\texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
+  \mbox{|#2|} \index{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
 }
 
 
@@ -591,7 +591,7 @@ end
 \subsection{Constants}
 \label{ch:Constants}
 
-Almost all physical constants are taken from the NIST webpage \cite{nist19}.
+All physical constants are taken from the NIST webpage \cite{nist19}.
 
 \begin{table}[H]
 \centering
@@ -2196,12 +2196,15 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
 
 
 
-
+\newpage
+\addcontentsline{toc}{section}{Bibliography}
 \bibliographystyle{plain}
 \bibliography{lua-physical}
 
+
 \newpage
 \addcontentsline{toc}{section}{Index}
+\indexprologue{}
 \printindex
 
 
