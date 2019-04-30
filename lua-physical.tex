@@ -2,6 +2,7 @@
 \documentclass{ltxdoc}
 
 \usepackage[english]{babel}
+\usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{luacode}
 \usepackage{listings}
@@ -44,6 +45,7 @@ N = physical.Number
 	round-mode=off
 }
 
+\DeclareSIUnit\fahrenheit{\ensuremath{{}^{\circ}}F}
 
 % config listings
 \lstdefinelanguage{lua}
@@ -259,35 +261,80 @@ $$
 
 \subsubsection{Temperature Conversion}
 
-In the following problem, listing \ref{lst:degree to kelvin} , the task is to convert a temperature given in the unit degree Celsius to Kelvin. As can be seen in the listing, the conversion function has two parameters. 
+In the following problem, listing \ref{lst:degree to kelvin} , the task is to convert a temperature given in the unit degree Celsius to Kelvin. 
 
-The first argument is the target unit. The second is a boolean that tells the |to|-function to call a unit specific conversion function. By default the second argument is |false|. 
+Most of the units transform linearly to base units. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. 
 
-Most units do not have a conversion function. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. Therefore these units have their own conversion functions. 
 
-By default |_degC| and |_degF| units are standing for temperature differences. If one wants to have it converted absolutely, the conversion function |to()| should have the second argument set to true.
+By default |_degC| and |_degF| units are standing for temperature differences. If one wants to have it converted absolutely, it has to be done adding / subtracting the quantities |_degC_0| and |_degF_0|. 
+
+\begin{lstlisting}[caption=Temperature conversion.,label=lst:temperature conversion]
+\begin{luacode}
+  theta_1 = 110 * _degC
+  T_1 = ( theta_1 + _degC_0 ):to(_K)
+  theta_1 = T_1:to(_degC) - _degC_0
+
+  theta_2 = 212 * _degF
+  T_2 = ( theta_2 + _degF_0 ):to(_K)
+  theta_2 = T_2:to(_degF) - _degF_0
+\end{luacode}
+
+\begin{align*}
+  \vartheta_1 &= \q{theta_1} \\
+  T_1 &= \q{T_1} \\
+  %
+  \vartheta_2 &= \q{theta_2} \\
+  T_2 &= \q{T_2} \\
+\end{align*}
+
+\end{lstlisting}
+
+\begin{luacode}
+  theta_1 = 110 * _degC
+  T_1 = ( theta_1 + _degC_0 ):to(_K)
+  theta_1 = T_1:to(_degC) - _degC_0
+
+  theta_2 = 212 * _degF
+  T_2 = ( theta_2 + _degF_0 ):to(_K)
+  theta_2 = T_2:to(_degF) - _degF_0
+\end{luacode}
+
+\leftbar
+\begin{align*}
+  \vartheta_1 &= \q{theta_1} \\
+  T_1 &= \q{T_1} \\
+  %
+  \vartheta_2 &= \q{theta_2} \\
+  T_2 &= \q{T_2} \\
+\end{align*}
+\endleftbar
+
+
+
+
 
 \begin{lstlisting}[caption=Temperature conversion.,label=lst:degree to kelvin]
 \begin{luacode}
-  T = 20 * _degC
+  theta = 20 * _degC
+  T = ( theta + _degC_0 ):to(_K)
 \end{luacode}
 
-A thermometer shows $\q{T}$. Converte this quantity to Kelvin. 
+A thermometer shows $\q{theta}$. Convert this quantity to Kelvin temperature. 
 $$
-  T = \q{T:to(_K)} + \q{273.15 * _K}
-  =  \q{T:to(_K,true)}
+  T = \q{theta} + \q{_degC_0:to()}
+  =  \q{T}
 $$
 \end{lstlisting}
 
 \begin{luacode}
-  T = 20 * _degC
+  theta = 20 * _degC
 \end{luacode}
 
 \leftbar
 A thermometer shows $\q{T}$. Converte this quantity to Kelvin. 
 $$
-  T = \q{T:to(_K)} + \q{273.15 * _K}
-  =  \q{T:to(_K,true)}
+  T = \q{theta:to(_K)} + \q{_degC_0:to(_K)}
+  =  \q{(theta + _degC_0):to(_K)}
 $$
 \endleftbar
 

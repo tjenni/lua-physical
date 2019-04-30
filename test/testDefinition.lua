@@ -224,6 +224,14 @@ function TestDefinition:testDegreeCelsius()
 
    local Q = ( c * m * dT ):to(_J)
    lu.assertTrue( Q == 20 * _J )
+
+
+   theta_1 = 110 * _degC
+   T_1 = ( theta_1 + _degC_0 ):to(_K)
+   theta_1 = T_1:to(_degC) - _degC_0
+
+   lu.assertTrue( T_1 == 383.15 * _K )
+   lu.assertTrue( theta_1 == 110 * _degC )
 end
 
 

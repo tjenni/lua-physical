@@ -185,7 +185,7 @@ Q.addPrefix(SI_prefixes,{_lm,_lx,_Bq,_Gy,_Sv,_kat})
 -- T = (theta + _degC_0):to(_K)
 -- theta = T:to(_degC) - _degC_0
 Q.define("degC", "celsius", _K)
-Q.define("degC_0", "celsiuszero", 273.15*_degC)
+Q.defineAlias("degC_0", 273.15*_degC)
 
 
 -- MATHEMATICAL CONSTANTS
@@ -450,7 +450,7 @@ Q.define("ftn", "fortnight", 14*_d)
 -- T = (theta + _degF_0):to(_K)
 -- theta = T:to(_degF) - _degF_0
 Q.define("degF", "fahrenheit", (5/9)*_K)
-Q.define("degF_0", "fahrenheitzero", 459.67*_degF)
+Q.defineAlias("degF_0", 459.67*_degF)
 
 Q.define("degR", "rankine", (5/9)*_K)
 
