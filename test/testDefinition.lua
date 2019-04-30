@@ -194,17 +194,17 @@ function TestDefinition:testKatal()
 end
 
 function TestDefinition:testDegreeCelsius()
-   local T = 0 * _degC
-   lu.assertTrue( T:to(_K,true) == 273.15 * _K )
+   local theta = 0 * _degC
+   lu.assertTrue( (theta + _degC_0):to(_K) == 273.15 * _K )
 
-   T = 5*_degC
-   lu.assertTrue( T:to(_K,true) == 278.15*_K )
+   theta = 5*_degC
+   lu.assertTrue( (theta + _degC_0):to(_K) == 278.15*_K )
 
-   T = _degC*5
-   lu.assertTrue( T:to(_K,true) == 278.15*_K )
+   theta = _degC*5
+   lu.assertTrue( (theta + _degC_0):to(_K) == 278.15*_K )
 
-   T = 5*_degC + 3*_degC
-   lu.assertTrue( T:to(_K,true) == 281.15*_K )
+   theta = 5*_degC + 3*_degC
+   lu.assertTrue( (theta + _degC_0):to(_K,true) == 281.15*_K )
    
    local dT = (5 * _degC) / _cm
    lu.assertTrue( dT == 5 * _K / _cm )
@@ -213,11 +213,11 @@ function TestDefinition:testDegreeCelsius()
    local T_1 = 0 * _degC
    local T_2 = 1 * _K
 
-   local r = (T_1:to(_K,true)-T_2)/T_1:to(_K,true)
+   local r = ((T_1 + _degC_0):to(_K)-T_2)/(T_1 + _degC_0)
 
    r = r:to(_percent)
    lu.assertTrue( r:isclose(99.63*_percent, 0.1) )
-      
+   
    local c = 1000 * _J/(_kg*_degC)
    local m = 1 * _g
    local dT = 20 * _degC
@@ -791,33 +791,33 @@ end
 
 -- Temperature
 function TestDefinition:testFahrenheit()
-   local T = -459.67*_degF
-   lu.assertTrue(  T:to(_K,true) == 0 * _K )
+   local theta = -459.67*_degF
+   lu.assertTrue(  (theta + _degF_0):to(_K) == 0 * _K )
 
    -- the isclose function treats temperature units as differences
-   local T_1 = 32 * _degF
-   local T_2 = 0 * _degC
-   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+   local theta_1 = 32 * _degF
+   local theta_2 = 0 * _degC
+   lu.assertTrue( ((theta_1 + _degF_0):to(_K)):isclose((theta_2 + _degC_0):to(_K,true), 0.001) )
   
-   local T_1 = 69.8*_degF
-   local T_2 = 21*_degC
-   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+   local theta_1 = 69.8*_degF
+   local theta_2 = 21*_degC
+   lu.assertTrue( ((theta_1 + _degF_0):to(_K)):isclose((theta_2 + _degC_0):to(_K,true), 0.001) )
   
-   local T_1 = 98.6*_degF
-   local T_2 = 37*_degC
-   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+   local theta_1 = 98.6*_degF
+   local theta_2 = 37*_degC
+   lu.assertTrue( ((theta_1 + _degF_0):to(_K)):isclose((theta_2 + _degC_0):to(_K,true), 0.001) )
   
 
-   local T_1 = 212.0*_degF
-   local T_2 = 100*_degC
-   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+   local theta_1 = 212.0*_degF
+   local theta_2 = 100*_degC
+   lu.assertTrue( ((theta_1 + _degF_0):to(_K)):isclose((theta_2 + _degC_0):to(_K,true), 0.001) )
 end
 
 function TestDefinition:testRankine()
-   local T_1 = 55*_degR
-   local T_2 = -242.594 * _degC
+   local theta_1 = 55*_degR
+   local theta_2 = -242.594 * _degC
    
-   lu.assertTrue( (T_1:to(_K,true)):isclose(T_2:to(_K,true), 0.001) )
+   lu.assertTrue( (theta_1:to(_K)):isclose((theta_2 + _degC_0):to(_K), 0.001) )
 end
 
 

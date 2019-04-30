@@ -64,7 +64,7 @@ D.define("Thermal Conductivity", L * M * T^-3 * K^-1)
 D.define("Electric Charge", T * I)
 D.define("Electric Permittivity", L^-3 * M^-1 * T^4 * I^2)
 D.define("Electric Field Strength", L * M * T^-3 * I^-1)
-D.define("Electric Potential Difference", L^2 * M * T^-3 * I^-1)
+D.define("Electric Potential", L^2 * M * T^-3 * I^-1)
 D.define("Electric Resistance", L^2 * M * T^-3 * I^-2)
 D.define("Electric Conductance", L^-2 * M^-1 * T^3 * I^2)
 D.define("Electric Capacitance", L^-2 * M^-1 * T^4 * I^2)
@@ -182,19 +182,10 @@ Q.define("kat", "katal", _mol/_s)
 Q.addPrefix(SI_prefixes,{_lm,_lx,_Bq,_Gy,_Sv,_kat})
 
 -- define degree celsius
-Q.define(
-	"degC", 
-	"celsius",
-	_K, 
-	function(q)
-		q.value = q.value + 273.15
-		return q
-	end,
-	function(q)
-		q.value = q.value - 273.15
-		return q
-	end
-)
+-- T = (theta + _degC_0):to(_K)
+-- theta = T:to(_degC) - _degC_0
+Q.define("degC", "celsius", _K)
+Q.define("degC_0", "celsiuszero", 273.15*_degC)
 
 
 -- MATHEMATICAL CONSTANTS
@@ -456,20 +447,14 @@ Q.define("sen", "sennight", 7*_d)
 Q.define("ftn", "fortnight", 14*_d)
 
 -- Temperature
-Q.define(
-	"degF",
-	"fahrenheit", 
-	(5/9)*_K,
-	function(q)
-		q.value = (q.value + 459.67)*(5/9)
-		return q
-	end,
-	function(q)
-		q.value = (9/5)*q.value - 459.67
-		return q
-	end
-)
+-- T = (theta + _degF_0):to(_K)
+-- theta = T:to(_degF) - _degF_0
+Q.define("degF", "fahrenheit", (5/9)*_K)
+Q.define("degF_0", "fahrenheitzero", 459.67*_degF)
+
 Q.define("degR", "rankine", (5/9)*_K)
+
+
 
 
 

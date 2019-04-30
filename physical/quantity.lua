@@ -58,8 +58,6 @@ function Quantity.new(q)
 		p.value = q.value
 		p.prefixfactor = q.prefixfactor
 		p.basefactor = q.basefactor
-		p.tobase = q.tobase
-		p.frombase = q.frombase
 		p.unit = U(q.unit)
 
 	-- create a dimensionless Quantity
@@ -68,8 +66,6 @@ function Quantity.new(q)
 		p.value = q or 1
 		p.prefixfactor = 1
 		p.basefactor = 1
-		p.tobase = nil
-		p.frombase = nil
 		p.unit = U()
 	end
 
@@ -98,7 +94,7 @@ end
 
 
 -- create derived quantities
-function Quantity.define(symbol, name, q, tobase, frombase)
+function Quantity.define(symbol, name, q)
 
 	-- check if quantity does already exist
 	if rawget(_G,"_"..symbol) ~= nil then
@@ -114,8 +110,6 @@ function Quantity.define(symbol, name, q, tobase, frombase)
 	
 	p.value = 1
 	p.basefactor = p.basefactor * q.value
-	p.tobase = tobase
-	p.frombase = frombase
 	p.unit = U.new(symbol, name)
 
 	rawset(_G, "_"..symbol, p)
@@ -239,16 +233,6 @@ function Quantity.__mul(q1, q2)
 	p.basefactor = q1.basefactor * q2.basefactor
 	p.unit = q1.unit * q2.unit
 
-	if q1.tobase ~= nil and q2.dimension:iszero() then
-		p.tobase = q1.tobase
-		p.frombase = q1.frombase
-		
-	elseif q2.tobase ~= nil and q1.dimension:iszero() then
-		p.tobase = q2.tobase
-		p.frombase = q2.frombase
-
-	end
-
 	return p
 end
 
@@ -269,11 +253,6 @@ function Quantity.__div(q1, q2)
 	p.prefixfactor = q1.prefixfactor / q2.prefixfactor
 	p.basefactor = q1.basefactor / q2.basefactor
 	p.unit = q1.unit / q2.unit
-
-	if q1.tobase ~= nil and q2.dimension:iszero() then
-		p.tobase = q1.tobase
-		p.frombase = q1.frombase
-	end
 
 	return p
 end
@@ -350,22 +329,14 @@ end
 
 
 -- convert quantity to another unit
-function Quantity:to(q, usefunction)
-
-	usefunction = false or usefunction
+function Quantity:to(q)
 
 	local p = Quantity.new()
 
 	-- convert to base units
 	p.dimension = self.dimension
 	p.value = self.value * self.prefixfactor
-
-	-- call convertion function
-	if type(self.tobase) == "function" and usefunction then
-		p = self.tobase(p)
-	else
-		p.value = p.value * self.basefactor
-	end
+	p.value = p.value * self.basefactor
 
 	-- convert to target units
 	if q ~= nil then
@@ -377,18 +348,10 @@ function Quantity:to(q, usefunction)
 			error("Error: Cannot convert '"..tostring(self).."' to '"..tostring(q).."', because they have different dimensions.")
 		end
 
-		-- call convertion function
-		if type(q.frombase) == "function" and usefunction then
-			p = q.frombase(p)
-		else
-			p.value = p.value / q.basefactor
-		end
-
+		p.value = p.value / q.basefactor
 		p.value = p.value / q.prefixfactor
 		p.basefactor = q.basefactor
 		p.prefixfactor = q.prefixfactor
-		p.tobase = q.tobase
-		p.frombase = q.frombase
 		p.unit = U(q.unit)
 	
 	-- convert to base units

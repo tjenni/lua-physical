@@ -264,7 +264,7 @@ function TestDimension:testElectricCapacitance()
 end
 
 function TestDimension:testElectricInductance()
-   lu.assertEquals(D("Electric Inductance"), D("Electric Potential") * T / D("Electric Current")  )
+   lu.assertEquals(D("Inductance"), D("Electric Potential") * T / D("Electric Current")  )
 end
 
 function TestDimension:testMagneticFluxDensity()
