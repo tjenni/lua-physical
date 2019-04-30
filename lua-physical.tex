@@ -1,7 +1,6 @@
 %!TEX program = lualatex
 \documentclass{ltxdoc}
 
-\usepackage{url}
 \usepackage[english]{babel}
 \usepackage{hyperref}
 \usepackage{luacode}
@@ -12,7 +11,7 @@
 \usepackage{ulem}
 \usepackage{xcolor}
 \usepackage{framed}
-\usepackage{lscape}
+\usepackage{makeidx}
 \usepackage{ifthen}
 
 
@@ -33,7 +32,7 @@ N = physical.Number
   \directlua{tex.print(physical.Quantity.tosiunitx(#1,nil,2))}%
 }
 
-\DeclareSIUnit\number{}
+%\DeclareSIUnit\number{}
 
 
 % siunitx config
@@ -107,25 +106,29 @@ N = physical.Number
 % style for table header
 \newcommand\thead[1]{#1}
 
+% create index
+\newcommand{\Index}[1]{#1\index{#1}}
+\makeindex
+
 
 \begin{document}
 
-  \lstset{language=[LaTex]Tex}
+\lstset{language=[LaTex]Tex}
 
 
-	\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 0.1}
-	\author{Thomas Jenni}
-	\date{\today}
-	\maketitle
-
+\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 0.1}
+\author{Thomas Jenni}
+\date{\today}
+\maketitle
 
 
 \begin{abstract}
 \noindent |lua-physical| is a pure Lua library which provides functions and object for doing computation with physical quantities. It has been written to simplify the creation problem sets. The package provides units of the SI and the imperial system. Furthermore an almost complete set of international currencies are supported, however without online exchange rates. In order to display the numbers with measurement uncertainties, the package is able to perform gaussian error propagation.
 \end{abstract}
 
-\tableofcontents
 
+
+\tableofcontents
 
 
 
@@ -134,7 +137,7 @@ N = physical.Number
 \newpage
 \section{Introduction}
 
-The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\url{thomas.jenni (at) ksz.ch}).
+The author of this package is a teacher at the high school \emph{Kantonsschule Zug} in Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\texttt{thomas.jenni (at) ksz.ch}).
 
 
 
@@ -558,6 +561,11 @@ function getdim(q)
 
   return str
 end
+
+function strtoidx(str)
+  local s,n = string.gsub(str,"%_","\\_")
+  return s
+end
 \end{luacode}
 
 
@@ -569,12 +577,17 @@ end
   } &
   \directlua{tex.print(#2.unit.name)} & 
   |#2| &
-  |#3| \\
+  \mbox{|#3|} \index{\directlua{tex.print(#2.unit.name)}!\texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
+}
+
+\newcommand{\printconstant}[2]{
+  \directlua{tex.print(#1.unit.name)} & 
+  |#1| &
+  \mbox{|#2|} \index{\directlua{tex.print(#1.unit.name)}!\texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
 }
 
 
-\begin{landscape}
-
+\newpage
 \subsection{Constants}
 \label{ch:Constants}
 
@@ -585,79 +598,70 @@ Almost all physical constants are taken from the NIST webpage \cite{nist19}.
 \begin{tabularx}{\linewidth}{%
   l%
   l%
-  l%
   >{\setlength\hsize{1\hsize}}X%
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+\thead{Name} & \thead{Symbol} & \thead{Definition} \\\hline
 
-\printunit[Number]{_Pi}{3.1415926535897932384626433832795028841971 * _1}
-\printunit[Number]{_E}{2.7182818284590452353602874713526624977572 * _1}
+\printconstant{_Pi}{3.1415926535897932384626433832795028841971 * _1}
+\printconstant{_E}{2.7182818284590452353602874713526624977572 * _1}
 
-\printunit{_c}{299792458 * _m/_s}
+\printconstant{_c}{299792458 * _m/_s}
 
-\printunit[ ]{_Gc}{N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2)}
+\printconstant{_Gc}{N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2)}
 
-\printunit[ ]{_h_P}{6.62607015e-34 * _J*_s}
-\printunit[ ]{_h_Pbar}{_h_P/(2*_Pi)}
+\printconstant{_h_P}{6.62607015e-34 * _J*_s}
+\printconstant{_h_Pbar}{_h_P/(2*_Pi)}
 
-\printunit{_e}{1.602176634e-19 * _C}
+\printconstant{_e}{1.602176634e-19 * _C}
 
-\printunit[ ]{_u_0}{4e-7*Pi * _N/_A^2}
+\printconstant{_u_0}{4e-7*Pi * _N/_A^2}
 
-\printunit[ ]{_e_0}{1/(_u_0*_c^2)}
+\printconstant{_e_0}{1/(_u_0*_c^2)}
 
-\printunit{_u}{N(1.66053904e-27, 2e-35) * _kg}
-\printunit[ ]{_m_e}{N(9.10938356e-31, 1.1e-38) * _kg}
-\printunit[ ]{_m_p}{N(1.672621898e-27, 2.1e-35) * _kg}
-\printunit[ ]{_m_n}{N(1.674927471e-27, 2.1e-35) * _kg}
+\printconstant{_u}{N(1.66053904e-27, 2e-35) * _kg}
+\printconstant{_m_e}{N(9.10938356e-31, 1.1e-38) * _kg}
+\printconstant{_m_p}{N(1.672621898e-27, 2.1e-35) * _kg}
+\printconstant{_m_n}{N(1.674927471e-27, 2.1e-35) * _kg}
 
-\printunit[ ]{_u_B}{_e*_h_Pbar/(2*_m_e)}
-\printunit[ ]{_u_N}{_e*_h_Pbar/(2*_m_p)}
+\printconstant{_u_B}{_e*_h_Pbar/(2*_m_e)}
+\printconstant{_u_N}{_e*_h_Pbar/(2*_m_p)}
 
+
+\printconstant{_u_e}{N(-928.4764620e-26,5.7e-32) * _J/_T}
+\printconstant{_u_p}{N(1.4106067873e-26,9.7e-35) * _J/_T}
+\printconstant{_u_n}{N(-0.96623650e-26,2.3e-26) * _J/_T}
+
+\printconstant{_alpha}{_u_0*_e^2*_c/(2*_h_P)}
+
+\printconstant{_Ry}{_alpha^2*_m_e*_c/(2*_h_P)}
 
 \hline
 
 \end{tabularx}
 \end{table}
 
-\end{landscape}
 
-
-
-
-\begin{landscape}
 
 \begin{table}[H]
 \centering
 \begin{tabularx}{\linewidth}{%
   l%
   l%
-  l%
   >{\setlength\hsize{1\hsize}}X%
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+\thead{Name} & \thead{Symbol} & \thead{Definition} \\\hline
 
+\printconstant{_N_A}{6.02214076e23/_mol}
 
-\printunit[ ]{_u_e}{N(-928.4764620e-26,5.7e-32) * _J/_T}
-\printunit[ ]{_u_p}{N(1.4106067873e-26,9.7e-35) * _J/_T}
-\printunit[ ]{_u_n}{N(-0.96623650e-26,2.3e-26) * _J/_T}
+\printconstant{_k_B}{1.380649e-23 * _J/_K}
 
-\printunit[ ]{_alpha}{_u_0*_e^2*_c/(2*_h_P)}
+\printconstant{_R}{N(8.3144598, 4.8e-6) * _J/(_K*_mol)}
 
-\printunit[ ]{_Ry}{_alpha^2*_m_e*_c/(2*_h_P)}
+\printconstant{_sigma}{_Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)}
 
-\printunit[ ]{_N_A}{6.02214076e23/_mol}
-
-\printunit[ ]{_k_B}{1.380649e-23 * _J/_K}
-
-\printunit[ ]{_R}{N(8.3144598, 4.8e-6) * _J/(_K*_mol)}
-
-\printunit[ ]{_sigma}{_Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2)}
-
-\printunit[ ]{_g_0}{9.80665 * _m/_s^2}
-
+\printconstant{_g_0}{9.80665 * _m/_s^2}
 
 \hline
 
@@ -665,12 +669,11 @@ Almost all physical constants are taken from the NIST webpage \cite{nist19}.
 \end{table}
 
 
-\end{landscape}
-
 
 
 
 \newpage
+
 \subsection{Coherent derived units in the SI}
 \label{ch:Coherent derived units in the SI}
 
@@ -707,6 +710,7 @@ All units in this section are coherent derived units from the SI base units with
 \printunit[Luminous Flux]{_lm}{_cd*_sr}
 \printunit{_lx}{_lm/_m^2}
 
+
 \hline
 
 \end{tabularx}
@@ -727,6 +731,8 @@ All units in this section are coherent derived units from the SI base units with
 \footnotetext[3]{
   The unit \texttt{\_degC} is by default interpreted as a temperature difference. For absolute temperature conversion, set the second parameter of the \texttt{to}-function, i.e. \texttt{(15*\_degC):to(\_K,true)}.
 }
+
+
 
 
 \begin{table}[H]
@@ -760,7 +766,7 @@ All units in this section are coherent derived units from the SI base units with
 \subsection{Non-SI units accepted for use with the SI}
 \label{ch:Non-SI units accepted for use with the SI}
 
-There are a few units with dimension $\1$. The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
+There are a few units with dimension $\1$.
 
 \begin{table}[H]
 \centering
@@ -800,7 +806,7 @@ There are a few units with dimension $\1$. The unit Bel is only available with p
 
 
 \newpage
-\begin{landscape}
+
 \subsection{Nominal Astronomical Units}
 \label{ch:Nominal Astronomical Units}
 
@@ -837,7 +843,6 @@ The nominal values of solar, terrestrial and jovial quantities are taken from IA
 \end{tabularx}
 \end{table}
 
-\end{landscape}
 
 
 
@@ -848,6 +853,8 @@ The nominal values of solar, terrestrial and jovial quantities are taken from IA
 
 \subsection{Other Non-SI units}
 \label{ch:Other Non-SI units}
+
+ The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
 
 \begin{table}[H]
 \centering
@@ -2193,8 +2200,9 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
 \bibliographystyle{plain}
 \bibliography{lua-physical}
 
-
-
+\newpage
+\addcontentsline{toc}{section}{Index}
+\printindex
 
 
 \end{document}
