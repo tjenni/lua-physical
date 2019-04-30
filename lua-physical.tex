@@ -403,12 +403,12 @@ In the following problem, listing \ref{lst:volume of ideal gas} , the task is to
   n = N(1,0.01) * _mol
   T = N(30,0.1) * _degC
   
-  V = ( n * _R * T:to(_K,true) / p ):to(_L)
+  V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
 \end{luacode}
 
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
 $$
-  V=\frac{ \q{n} \cdot \q{_R} \cdot \q{T:to(_K,true)} }{ \q{p} }
+  V=\frac{ \q{n} \cdot \q{_R} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
   = \q{V}
   = \uuline{\q{V}}
 $$
@@ -421,14 +421,14 @@ $$
   n = N(1,0.01) * _mol
   T = N(30,0.1) * _degC
   
-  V = ( n * _R * T:to(_K,true) / p ):to(_L)
+  V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
 \end{luacode}
 
 \leftbar
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
 
 $$
-  V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{T:to(_K,true)} }{ \q{p} }
+  V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
   = \uuline{\q{V}}
 $$
 \endleftbar
@@ -776,7 +776,7 @@ All units in this section are coherent derived units from the SI base units with
 }
 
 \footnotetext[3]{
-  The unit \texttt{\_degC} is by default interpreted as a temperature difference. For absolute temperature conversion, set the second parameter of the \texttt{to}-function, i.e. \texttt{(15*\_degC):to(\_K,true)}.
+  The unit \texttt{\_degC} is by default interpreted as a temperature difference. 
 }
 
 
@@ -1273,8 +1273,6 @@ The term |number| refers to a lua integer or a lua float number. By |string| a l
 
 
 
-
-
 \subsection{physical.Quantity}
 The quantity class is the main part of the library. Each physical Quantity and all units are represented by an instance of this class.
 
@@ -1283,7 +1281,6 @@ The quantity class is the main part of the library. Each physical Quantity and a
 \begin{quote}
   Copy Constuctor
 
-  \subtitle{Parameters}
   \begin{description}
     \item |q| : |Q| or \ |number|, optional\\
       Optional argument is either |Q|, a |number| or |nil|.
@@ -1292,7 +1289,6 @@ The quantity class is the main part of the library. Each physical Quantity and a
       The created |Q| instance
   \end{description}
 
-  \subtitle{Note}\\
   As an argument it takes |Q|, |number| or |nil|. If |Q| is given, a copy of it is made and returned. If a |number| is given, the function creates a dimeensionless quantity with that value. In the case |nil| is given, the quantity |_1| is returned.
 
   \subtitle{Example}
@@ -1308,29 +1304,27 @@ The quantity class is the main part of the library. Each physical Quantity and a
 
 \method{Q}{defineBase(symbol,name,dimension)}
 \begin{quote}
-  This function is used to declare the base units. Units are represented as |Q| instances.  
+  This function is used to declare base quantities from which all other quantities are derived from.
 
-  \subtitle{Parameters}
   \begin{description}
   \item |symbol| : |string|\\
-    symbol of the base quantity
+    The symbol of the base quantity.
 
   \item |name| : |string|\\
-    name of the base quantity
+    The name of the base quantity.
 
   \item |dimension| : |D|\\
-    Instance of the |D| class, which represents the dimension of the quantity.
+    An instance of the |D| class, which represents the dimension of the quantity.
 
   \item |return| : |Q|\\
     The created |Q| instance.
   \end{description}
 
-  \subtitle{Note}\\
-  The function creates a global variable, an underscore concatenated with the |symbol| argument, e. g. |m| becomes the global variable |_m|.
+  The function creates a global variable of the created base quantity. The name consist of an underscore concatenated with the |symbol| argument, i.e. the symbol |m| becomes the global variable |_m|.
 
   The |name| is used for example in the siunitx conversion function, e.g |meter| will be converted to |\meter|. 
 
-  Each quantity has a dimension associated with it. The argument |dimension| allows any dimension to be associated to base quantities. By default, the SI convention is used. 
+  Each quantity has a dimension associated with it. The argument |dimension| allows any dimension to be associated to base quantities.
 
   \subtitle{Example}
   \begin{lstlisting}
@@ -1342,55 +1336,55 @@ Q.defineBase("kg", "kilogram", M)
 
 
 
-\method{Quantity}{define(symbol, name, q, tobase=nil, frombase=nil)}
+\method{Quantity}{define(symbol, name, q)}
 \begin{quote}
-  Creates a new derived unit from an expression of other units. For affine quantities like the temperature in celcius, one can give convertion functions to and from base units.
+  Creates a new derived quantity from an expression of other quantities. Affine quantities like the absolute temperature in celsius are not supported.
 
-  \subtitle{Parameters}
   \begin{description}
   \item |symbol| : |string|\\
   Symbol of the base quantity
 
   \item |name| : |string|\\
-    Name of the base quantity
+    The Name of the derived quantity.
 
   \item |q| : |physical.Quantity|\\
-    Definition of the unit
-
-  \item |tobase| : |function|, optional\\
-    to convert a quantity to base units
-
-  \item |frombase| : |function|, optional\\
-    to convert a quantity from the base units
+    The definition of the derived quantity.
 
   \item |return| : |Quantity|\\
-    The defined quantity
+    The created quantity.
   \end{description}
 
-  \subtitle{Examples}
+  The function creates a global variable of the created base quantity. The name consist of an underscore concatenated with the |symbol| argument, i.e. the symbol |N| becomes the global variable |_N|.
+
+  The |name| is used for example in the siunitx conversion function, e.g |newton| will be converted to |\newton|. 
+
+  \subtitle{Example}
   \begin{lstlisting}
 Q.define("L", "liter", _dm^3)
 Q.define("Pa", "pascal", _N/_m^2)
 Q.define("C", "coulomb", _A*_s)
 
-Q.define(
-  "degC", 
-  "celsius",
-  _K, 
-  function(q)
-    q.value = q.value + 273.15
-    return q
-  end,
-  function(q)
-    q.value = q.value - 273.15
-    return q
-  end
-)
+Q.define("degC", "celsius", _K)
   \end{lstlisting}
 \end{quote}
 
 
+\method{Quantity}{defineAlias(symbol, q)}
+\begin{quote}
+  Creates an alias of a quantity.
 
+  \begin{description}
+  \item |symbol| : |string|\\
+    The name of the alias.
+
+  \item |q| : |Quantity|\\
+    The aliased quantity.
+  \end{description}
+
+\begin{lstlisting}
+Q.defineAlias("degC_0", 273.15*_degC)
+\end{lstlisting}
+\end{quote}
 
 
 
@@ -1399,11 +1393,14 @@ Q.define(
   Defines a new prefix.
 
   \begin{description}
-  \item |symbol| : |string|, Symbol of the base quantity
+  \item |symbol| : |string|\\
+    Symbol of the base quantity
 
-  \item |name| : |string|, Name of the base quantity
+  \item |name| : |string|\\
+    Name of the base quantity
 
-  \item |factor| : |number|, the factor which corresponds to the prefix
+  \item |factor| : |number|\\
+    The factor which corresponds to the prefix
   \end{description}
 
 
@@ -1415,16 +1412,16 @@ Q.definePrefix("a", "atto", 1e-18)
 
 
 
-
-
 \method{Quantity}{addPrefix(prefixes, units)}
 \begin{quote}
   Create several units with prefixes from a given unit.
 
   \begin{description}
-  \item |prefixes| : |string|, list of unit symbols
+  \item |prefixes| : |string|\\
+    A list of unit symbols.
 
-  \item |units| : |Quantity|, list of quantities
+  \item |units| : |Quantity|\\
+    A list of quantities.
   \end{description}
 
 
@@ -1435,14 +1432,17 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 
 
-\method{Quantity}{to(self,q,usefunction=false)}
+
+\method{Quantity}{to(self,q)}
 \begin{quote}
-  Converts the quantity self to the unit of the quantity |q|. If the boolean |usefunction| is true, the convertion function is used for conversion.
+  Converts the quantity self to the unit of the quantity |q|.
 
   \begin{description}
-  \item |self| : |Quantity| 
+  \item |self| : |Quantity|\\
+    A quantity.
+
   \item |q| : |Quantity|
-  \item |usefunction| : |Bool| 
+    The quantity to wich |self| will be converted to.
   \end{description}
 
 \begin{lstlisting}
@@ -1463,11 +1463,11 @@ T = 10 * _degC
 tex.write(tostring(T:to(_K)) )
 \end{luacode}
 `
-print( T:to(_K,true) )
+print( T:to(_K) )
 `
 \begin{luacode}
 T = 10 * _degC
-tex.write(tostring(T:to(_K,true)) )
+tex.write(tostring(T:to(_K)) )
 \end{luacode}
 `
 \end{lstlisting}
@@ -2020,14 +2020,13 @@ tex.write(tostring(x:atanh()))
 %
 \subsection{physical.Dimension}
 
- All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used two check if two quantities can be added or subtraced and if they are equal. 
+ All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used to check equality and if addition or substraction is allowed.
 
 
 \method{Dimension}{new(q=nil)}
 \begin{quote}
   Constructor of the |Dimension| class.
 
-  \subtitle{Parameters}
   \begin{description}
   \item |q| : |Dimension| or |string|, optional\\
     The name or symbol of the dimension. If |q| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
@@ -2036,10 +2035,8 @@ tex.write(tostring(x:atanh()))
     The created |Quantity| object
   \end{description}
 
-  \subtitle{Notes}\\
-  --
 
-  \subtitle{Examples}
+  \subtitle{Example}
   \begin{lstlisting}
   V_1 = D("Velocity")
   L = D("L")
@@ -2066,7 +2063,6 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 \begin{quote}
   Copy Constructor. It copies a given unit object. If nothing is given, an empty unit is created.
 
-  \subtitle{Parameters}
   \begin{description}
   \item |u| : |Unit|\\
     The unit object which will be copied.
@@ -2082,7 +2078,6 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 \begin{quote}
   Constructor. A new |Unit| object with symbol is created. The prefixsymbol and prefixname are optional. 
 
-  \subtitle{Parameters}
   \begin{description}
   \item |symbol| : |String|\\
     The symbol of the unit.
@@ -2109,7 +2104,6 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 \begin{quote}
   The unit term will be compiled into a string, which the LaTeX package siunitx can understand.
 
-  \subtitle{Parameters}
   \begin{description}
   \item |return| : |String|\\
     The siunitx representation of the unit term.
@@ -2131,7 +2125,6 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
 \begin{quote}
   This is the copy Constructor. It copies a given number object. If |n| is |nil|, an instance representing number zero with uncertainty zero is created.
 
-  \subtitle{Parameters}
   \begin{description}
   \item |n| : |Number|\\
     The number object to be copied.
@@ -2147,7 +2140,6 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
 \begin{quote}
   This constructor, creates a new instance with mean value |x| and uncertainty |dx|.
 
-  \subtitle{Parameters}
   \begin{description}
   \item |x| : |number|\\
     mean value
@@ -2159,7 +2151,7 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
     The created |Number| instance.
   \end{description}
 
-  \subtitle{Examples}
+  \subtitle{Example}
   \begin{lstlisting}
   n = N(12,0.1)
   print(n)
@@ -2180,7 +2172,7 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
     The created |Number| object
   \end{description}
 
-  \subtitle{Examples}
+  \subtitle{Example}
   \begin{lstlisting}
   n_1 = N("12.3e-6")
   print(n_1)
