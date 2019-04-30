@@ -56,7 +56,6 @@ function Quantity.new(q)
 	if getmetatable(q) == Quantity then
 		p.dimension = q.dimension
 		p.value = q.value
-		p.prefixfactor = q.prefixfactor
 		p.basefactor = q.basefactor
 		p.unit = U(q.unit)
 
@@ -64,7 +63,6 @@ function Quantity.new(q)
 	else
 		p.dimension = D.new()
 		p.value = q or 1
-		p.prefixfactor = 1
 		p.basefactor = 1
 		p.unit = U()
 	end
@@ -148,7 +146,7 @@ function Quantity.addPrefix(prefixes, qs)
 
 			local p = Quantity.new(q)
 			p.unit = U.new(q.unit.symbol, q.unit.name, prefix.symbol, prefix.name)
-			p.prefixfactor = prefix.factor
+			p.basefactor = p.basefactor*prefix.factor
 
 			-- assert that unit does not exist
 			local symbol = "_"..prefix.symbol..q.unit.symbol
@@ -229,7 +227,6 @@ function Quantity.__mul(q1, q2)
 
 	p.dimension = q1.dimension * q2.dimension
 	p.value = q1.value * q2.value
-	p.prefixfactor = q1.prefixfactor * q2.prefixfactor
 	p.basefactor = q1.basefactor * q2.basefactor
 	p.unit = q1.unit * q2.unit
 
@@ -250,7 +247,6 @@ function Quantity.__div(q1, q2)
 	local p = Quantity.new()
 	p.dimension = q1.dimension / q2.dimension
 	p.value = q1.value / q2.value
-	p.prefixfactor = q1.prefixfactor / q2.prefixfactor
 	p.basefactor = q1.basefactor / q2.basefactor
 	p.unit = q1.unit / q2.unit
 
@@ -278,7 +274,6 @@ function Quantity.__pow(q1,q2)
 	
 	e = e:__tonumber()
 	p.dimension = q1.dimension^e
-	p.prefixfactor = q1.prefixfactor^e
 	p.basefactor = q1.basefactor^e
 	p.unit = q1.unit^e
 	
@@ -300,8 +295,6 @@ function Quantity.__eq(q1,q2)
 	if p.value ~= q2.value then
 		return false
 	elseif p.dimension ~= q2.dimension then
-		return false
-	elseif p.prefixfactor ~= q2.prefixfactor then
 		return false
 	elseif p.basefactor ~= q2.basefactor then
 		return false
@@ -335,8 +328,7 @@ function Quantity:to(q)
 
 	-- convert to base units
 	p.dimension = self.dimension
-	p.value = self.value * self.prefixfactor
-	p.value = p.value * self.basefactor
+	p.value = self.value * self.basefactor
 
 	-- convert to target units
 	if q ~= nil then
@@ -349,9 +341,7 @@ function Quantity:to(q)
 		end
 
 		p.value = p.value / q.basefactor
-		p.value = p.value / q.prefixfactor
 		p.basefactor = q.basefactor
-		p.prefixfactor = q.prefixfactor
 		p.unit = U(q.unit)
 	
 	-- convert to base units
@@ -362,7 +352,7 @@ function Quantity:to(q)
 		for i=1,#base do
 			unit = unit * base[i].unit^self.dimension[i]
 		end
-
+		
 		p.unit = unit
 	end
 
