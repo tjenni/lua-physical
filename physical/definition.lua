@@ -142,7 +142,11 @@ Q.defineBase("EUR", "euro",  C)
 Q.define("cEUR", "eurocent", 0.01*_EUR)
 
 
--- define SI derived units
+
+
+-- SI derived units
+-- ****************
+
 Q.define("rad", "radian", _1 )
 Q.define("sr", "steradian", _rad^2 )
 Q.define("Hz", "hertz", 1/_s)
@@ -166,6 +170,12 @@ Q.define("Wb", "weber", _V*_s)
 Q.define("T", "tesla", _Wb/_m^2)
 Q.define("H", "henry", _Wb/_A)
 
+-- define degree celsius
+-- T = (theta + _degC_0):to(_K)
+-- theta = T:to(_degC) - _degC_0
+Q.define("degC", "celsius", _K)
+Q.defineAlias("degC_0", 273.15*_degC)
+
 -- add prefixes
 -- remark: Don't create "peta siemens" because its symbol is the same for "Pferdestaerke", a common german unit for power.
 Q.addPrefix({"y","z","a","f","p","n","u","m","c","d","da","h","M","G","T","E","Z","Y"},{_S})
@@ -181,11 +191,7 @@ Q.define("kat", "katal", _mol/_s)
 -- add prefixes
 Q.addPrefix(SI_prefixes,{_lm,_lx,_Bq,_Gy,_Sv,_kat})
 
--- define degree celsius
--- T = (theta + _degC_0):to(_K)
--- theta = T:to(_degC) - _degC_0
-Q.define("degC", "celsius", _K)
-Q.defineAlias("degC_0", 273.15*_degC)
+
 
 
 -- MATHEMATICAL CONSTANTS
@@ -196,18 +202,14 @@ Q.define("Pi", "pi", 3.1415926535897932384626433832795028841971 * _1)
 Q.define("E", "eulersnumber", 2.7182818284590452353602874713526624977572 * _1)
 
 
+
+
 -- PHYSICAL CONSTANTS
 -- ******************
 -- Source: https://en.wikipedia.org/wiki/Physical_constant
 -- Source: https://www.bipm.org/utils/common/pdf/CGPM-2018/26th-CGPM-Resolutions.pdf
 
 -- Universal
--- prior 20 may 2019
--- Q.define("h_P", "planckconstant", N(6.626070040e-34, 8.1e-42 ) * _J*_s)
--- Q.define("e", "elementarycharge", N(1.6021766208e-19, 9.8e-28) * _C)
--- Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 7.9e-23) * _J/_K)
--- Q.define("N_A", "avogadronumber", N(6.022140857e23, 7.4e23)/_mol)
-
 Q.define("c", "speedoflight", 299792458 * _m/_s)
 Q.define("Gc", "gravitationalconstant", N(6.67408e-11,3.1e-15) * _m^3/(_kg*_s^2))
 Q.define("h_P", "planckconstant", 6.62607015e-34 * _J*_s)
@@ -241,6 +243,14 @@ Q.define("R", "molargasconstant", N(8.3144598, 4.8e-6) * _J/(_K*_mol))
 Q.define("sigma", "stefanboltzmannconstant", _Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2))
 Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 
+-- prior 20 may 2019
+-- Q.define("h_P", "planckconstant", N(6.626070040e-34, 8.1e-42 ) * _J*_s)
+-- Q.define("e", "elementarycharge", N(1.6021766208e-19, 9.8e-28) * _C)
+-- Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 7.9e-23) * _J/_K)
+-- Q.define("N_A", "avogadronumber", N(6.022140857e23, 7.4e23)/_mol)
+
+
+
 
 -- NON-SI UNITS BUT ACCEPTED FOR USE WITH THE SI
 -- *********************************************
@@ -248,58 +258,26 @@ Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 -- http://m.convert-me.com/en/convert/area/township.html?u=township&v=1
 -- https://www.nist.gov/pml/nist-guide-si-appendix-b9-factors-units-listed-kind-quantity-or-field-science
 
-Q.define("min", "minute", 60*_s)
-Q.define("h", "hour", 60*_min)
-Q.define("d", "day", 24*_h)
+Q.define("min", "minute", 60 * _s)
+Q.define("h", "hour", 60 * _min)
+Q.define("d", "day", 24 * _h)
 
-Q.define("deg", "degree", (_Pi/180)*_rad)
+Q.define("deg", "degree", (_Pi/180) * _rad)
 Q.define("arcmin", "arcminute", _deg/60)
 Q.define("arcsec", "arcsecond", _arcmin/60)
 
-Q.define("hectare", "hectare", 1e4*_m^2)
+Q.define("hectare", "hectare", 1e4 * _m^2)
 
-Q.define("L", "liter", 1e-3*_m^3)
+Q.define("L", "liter", 1e-3 * _m^3)
 Q.addPrefix(SI_prefixes,{_L})
 
-Q.define("t", "tonne", 1e3*_kg)
+Q.define("t", "tonne", 1e3 * _kg)
 
 
 
 
--- OTHER NON-SI UNITS
--- ******************
-
--- Length
-Q.define("angstrom", "angstrom", 1e-10*_m)
-Q.define("fermi", "fermi", 1e-15*_m)
-
--- Area 
-Q.define("barn", "barn", 1e-28*_m^2)
-Q.define("are", "are", 1e2*_m^2)
-
--- Volume
-Q.define("tsp", "metricteaspoon", 5e-3*_L)
-Q.define("Tbsp", "metrictablespoon", 3*_tsp)
-
--- Time
-Q.define("svedberg", "svedberg", 1e-13*_s)
-Q.define("wk", "week", 7*_d)
-Q.define("a", "year", 365.25*_d)
-
--- Angular
-Q.define("gon", "gradian", (_Pi/200)*_rad)
-Q.define("tr", "turn", 2*_Pi*_rad)
-Q.define("sp", "spat", 4*_Pi*_sr)
-
--- Astronomical
-Q.define("au", "astronomicalunit", 149597870700*_m)
-Q.define("ly", "lightyear", _c*_a)
-Q.define("ls", "lightsecond", _c*_s)
-Q.define("pc", "parsec", (648000/_Pi)*_au)
-
-Q.addPrefix(SI_prefixes, {_ls,_ly,_pc})
-
--- Nominal Astronomical Constants
+-- Nominal Astronomical Units
+-- **************************
 -- Source: Nominal values for selected solar and planetary quantities: IAU 2015 Resolution B3, 
 -- https://arxiv.org/pdf/1605.09788.pdf
 -- https://arxiv.org/pdf/1510.07674.pdf
@@ -320,26 +298,64 @@ Q.define("GM_J_nom", "nomjovianmassparam", 1.2668653e17 * _m^3*_s^-2)
 
 
 
+
+-- OTHER NON-SI UNITS
+-- ******************
+
+-- Length
+Q.define("angstrom", "angstrom", 1e-10 * _m)
+Q.define("fermi", "fermi", 1e-15 * _m)
+
+-- Astronomical Length
+Q.define("au", "astronomicalunit", 149597870700 * _m)
+Q.define("ly", "lightyear", _c*_a)
+Q.define("ls", "lightsecond", _c*_s)
+Q.define("pc", "parsec", (648000/_Pi) * _au)
+
+Q.addPrefix(SI_prefixes, {_ls,_ly,_pc})
+
+-- Area 
+Q.define("barn", "barn", 1e-28 * _m^2)
+Q.define("are", "are", 1e2 * _m^2)
+
+Q.addPrefix(SI_prefixes,{_barn})
+
+-- Volume
+Q.define("tsp", "metricteaspoon", 5e-3 * _L)
+Q.define("Tbsp", "metrictablespoon", 3 * _tsp)
+
+-- Time
+Q.define("svedberg", "svedberg", 1e-13 * _s)
+Q.define("wk", "week", 7 * _d)
+Q.define("a", "year", 365.25 * _d)
+
+-- Plane Angle
+Q.define("gon", "gradian", (_Pi/200) * _rad)
+Q.define("tr", "turn", 2*_Pi * _rad)
+
+-- Solid Angle
+Q.define("sp", "spat", 4*_Pi * _sr)
+
 --force
 Q.define("kp", "kilopond", _kg*_g_0)
 
 -- Pressure
-Q.define("bar", "bar", 1e5*_Pa)
-Q.define("atm", "standardatmosphere", 101325*_Pa)
+Q.define("bar", "bar", 1e5 * _Pa)
+Q.define("atm", "standardatmosphere", 101325 * _Pa)
 Q.define("at", "technicalatmosphere", _kp/_cm^2)
-Q.define("mmHg", "millimeterofmercury", 133.322387415*_Pa)
-Q.define("Torr", "torr", (101325/760)*_Pa)
+Q.define("mmHg", "millimeterofmercury", 133.322387415 * _Pa)
+Q.define("Torr", "torr", (101325/760) * _Pa)
 
 Q.addPrefix({"m"}, {_bar,_Torr})
 
 -- Heat
 -- Source: https://www.nist.gov/pml/nist-guide-si-appendix-b9-factors-units-listed-kind-quantity-or-field-science
-Q.define("cal", "thermochemicalcalorie", 4.184*_J)
-Q.define("cal_IT", "internationalcalorie", 4.1868*_J)
+Q.define("cal", "thermochemicalcalorie", 4.184 * _J)
+Q.define("cal_IT", "internationalcalorie", 4.1868 * _J)
 
 Q.addPrefix({"k"}, {_cal,_cal_IT})
 
-Q.define("g_TNT", "gramoftnt", 1e3*_cal)
+Q.define("g_TNT", "gramoftnt", 1e3 * _cal)
 Q.addPrefix({"k","M","G","T","P"}, {_g_TNT})
 
 Q.define("t_TNT", "tonoftnt", 1e9*_cal)
@@ -349,16 +365,17 @@ Q.addPrefix({"u","m","k","M","G"}, {_t_TNT})
 Q.define("eV", "electronvolt", _e*_V)
 Q.define("Ws", "wattsecond", _W*_s)
 Q.define("Wh", "watthour", _W*_h)
-Q.define("As", "amperesecond", _A*_s)
-Q.define("Ah", "amperehour", _A*_h)
+
 Q.define("VA", "voltampere", _V*_A)
 
+Q.define("As", "amperesecond", _A*_s)
+Q.define("Ah", "amperehour", _A*_h)
 
 Q.addPrefix(SI_prefixes,{_eV,_Wh,_VA,_Ah})
 
 -- Information units
-Q.define("nibble", "nibble", 4*_bit)
-Q.define("B", "byte", 8*_bit)
+Q.define("nibble", "nibble", 4 * _bit)
+Q.define("B", "byte", 8 * _bit)
 Q.define("bps", "bitpersecond", _bit/_s)
 
 Q.addPrefix(IEC_prefixes,{_nibble,_B,_bps})
@@ -366,22 +383,22 @@ Q.addPrefix({"k","M","G","T","P","E","Z","Y"},{_bit,_nibble,_B,_bps})
 
 
 -- Others
-Q.define("percent", "percent", 1e-2*_1)
-Q.define("permille", "permille", 1e-3*_1)
-Q.define("ppm", "partspermillion", 1e-6*_1)
-Q.define("ppb", "partsperbillion", 1e-9*_1)
-Q.define("ppt", "partspertrillion", 1e-12*_1)
-Q.define("ppq", "partsperquadrillion", 1e-15*_1)
+Q.define("percent", "percent", 1e-2 * _1)
+Q.define("permille", "permille", 1e-3 * _1)
+Q.define("ppm", "partspermillion", 1e-6 * _1)
+Q.define("ppb", "partsperbillion", 1e-9 * _1)
+Q.define("ppt", "partspertrillion", 1e-12 * _1)
+Q.define("ppq", "partsperquadrillion", 1e-15 * _1)
 Q.define("dB", "decibel", _1)
 
-Q.define("PS", "metrichorsepower", 75*_g_0*_kg*_m/_s)
-Q.define("Ci", "curie", 3.7e10*_Bq)
-Q.define("Rad", "rad", 0.01*_Gy)
-Q.define("rem", "rem", 0.01*_Sv)
-Q.define("Ro", "roentgen", 2.58e-4*_C/_kg)
-Q.define("PI", "poiseuille", _Pa * _s)
 
-Q.addPrefix(SI_prefixes,{_barn})
+Q.define("PS", "metrichorsepower", 75 * _g_0*_kg*_m/_s)
+Q.define("Ci", "curie", 3.7e10 * _Bq)
+Q.define("Rad", "rad", 1e-2 * _Gy)
+Q.define("rem", "rem", 1e-2 * _Sv)
+Q.define("Pl", "poiseuille", _Pa*_s)
+
+
 
 
 
@@ -389,28 +406,28 @@ Q.addPrefix(SI_prefixes,{_barn})
 -- **************
 
 -- Length
-Q.define("in", "inch", 0.0254*_m)
-Q.define("th", "thou", 0.001*_in)
-Q.define("pica", "pica", _in/6)
+Q.define("in", "inch", 2.54e-2 * _m)
+Q.define("th", "thou", 1e-3 * _in)
 Q.define("pt", "point", _in/72)
-Q.define("hh", "hand", 4*_in)
-Q.define("ft", "foot", 12*_in)
-Q.define("yd", "yard", 3*_ft)
-Q.define("rd", "rod", 5.5*_yd)
-Q.define("ch", "chain", 4*_rd)
-Q.define("fur", "furlong", 10*_ch)
+Q.define("pica", "pica", 12 * _pt)
+Q.define("hh", "hand", 4 * _in)
+Q.define("ft", "foot", 12 * _in)
+Q.define("yd", "yard", 3 * _ft)
+Q.define("rd", "rod", 5.5 * _yd)
+Q.define("ch", "chain", 4 * _rd)
+Q.define("fur", "furlong", 10 * _ch)
 Q.define("mi", "mile", 8*_fur) -- int. mile
 Q.define("lea", "league", 3*_mi)
 
 -- International Nautical Units
 Q.define("nmi", "nauticalmile", 1852 * _m)
-Q.define("nlea", "nauticalleague", 3*_nmi)
-Q.define("cbl", "cable", _nmi/10)
-Q.define("ftm", "fathom", 6*_ft)
+Q.define("nlea", "nauticalleague", 3 * _nmi)
+Q.define("cbl", "cable", 0.1 * _nmi)
+Q.define("ftm", "fathom", 6 * _ft)
 Q.define("kn", "knot", _nmi/_h)
 
 -- Area
-Q.define("ac", "acre", 43560*_ft^2)
+Q.define("ac", "acre", 10 * _ch^2)
 
 -- Volume
 Q.define("gal", "gallon", 4.54609*_L)
