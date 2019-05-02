@@ -7,3 +7,5 @@
 *.ind
 *.out
 *.gz
+*.toc
+*.bbl
