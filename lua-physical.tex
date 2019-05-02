@@ -112,6 +112,7 @@ N = physical.Number
 
 % create index
 \newcommand{\Index}[1]{#1\index{#1}}
+\makeindex[name=cur,title={Index of Currencies}]
 \makeindex
 
 % reset footnotes numbers for each page.
@@ -125,7 +126,7 @@ N = physical.Number
 \lstset{language=[LaTex]Tex}
 
 \title{The \textsc{lua-physical} library \\\ \\\normalsize Version 0.1}
-\author{Thomas Jenni}
+\author{T. Jenni}
 \date{\today}
 \maketitle
 
@@ -413,25 +414,11 @@ $$
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 %------------------------------------------------------------
 \newpage
 \section{Supported Units}
 \label{ch:Supported Units}
+%------------------------------------------------------------
 
 All supported units are listed in this chapter. Subchapter \ref{ch:base units} lists the seven base units of the International System of Units (SI). In subchapter \ref{ch:constants}  mathematical and physical constants are defined. The subchapter \ref{ch:coherent derived units} contains all coherent derived units from the SI system and \ref{ch:non-si accepted} those which are accepted to use with the SI.
 
@@ -441,54 +428,6 @@ Subchapter \ref{ch:non-si} lists units, which are common but outside of the SI s
 
 
 \renewcommand{\arraystretch}{1.5}
-
-% lua function for printing dimension names.
-\begin{luacode}
-function getdim(q)
-  local str = q.dimension:__tostring()
-  
-  str = string.gsub(str,"%[","")
-  str = string.gsub(str,"%]","")
-
-  return str
-end
-
-function strtoidx(str)
-  local s,n = string.gsub(str,"%_","\\_")
-  return s
-end
-\end{luacode}
-
-% define macros for printing dimensions
-\newcommand{\1}{\mathrm{1}}
-\renewcommand{\L}[1][]{\mathrm{L}^{#1}\,}
-\newcommand{\M}[1][]{\mathrm{M}^{#1}\,}
-\newcommand{\T}[1][]{\mathrm{T}^{#1}\,}
-\newcommand{\I}[1][]{\mathrm{I}^{#1}\,}
-\renewcommand{\K}[1][]{\mathrm{\Theta}^{#1}\,}
-\renewcommand{\N}[1][]{\mathrm{N}^{#1}\,}
-\renewcommand{\J}[1][]{\mathrm{J}^{#1}\,}
-\newcommand{\B}[1][]{\mathrm{B}^{#1}\,}
-\newcommand{\C}[1][]{\mathrm{C}^{#1}\,}
-
-% print table row unit
-\newcommand{\printunit}[3][]{
-  \ifthenelse{\equal{#1}{}}{
-    \directlua{tex.print(getdim(#2))}
-  }{
-    #1
-  } &
-  \directlua{tex.print(#2.unit.name)} & 
-  |#2| &
-  \mbox{|#3|}\index{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
-}
-
-% print table row constant
-\newcommand{\printconstant}[2]{
-  \directlua{tex.print(#1.unit.name)} & 
-  |#1| &
-  \mbox{|#2|}\index{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
-}
 
 
 %------------------------------------------------------------
@@ -510,33 +449,33 @@ end
 number &
 -- &
 |_1| &
-$\1$ & 
+$\mathrm{1}$ & 
 The dimensionless number one.  \\
 
 time &
 second & 
 |_s| & 
-$\T$ & 
+$\mathrm{T}$ & 
 The SI unit of time. It is defined by taking the fixed numerical value of the caesium frequency $\Delta \nu_{Cs}$, the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom, to be \num{9192631770} when expressed in the unit $\qu{_s^-1}$. \\
 
 length &
 meter & 
 |_m| & 
-$\L$ &
+$\mathrm{L}$ &
 The SI unit of length. It is defined by taking the fixed numercial value of the speed of light in vacuum $c$ to be $\num{299792458}$ when expressed in the unit of $\q{_m/_s}$. \\
 
 
 mass &
 kilogram  &  
 |_kg| & 
-$\M$ & 
+$\mathrm{M}$ & 
 The SI unit of mass. It is defined by taking the fixed numerical value of the Planck constant $h$ to be $\qs{(_h_P/(_J*_s)):to()}$ when expressed in $\qu{_m^2*_kg/_s}$.\\
 
 
 electric \newline current &
 ampere & 
 |_A| & 
-$\I$ & 
+$\mathrm{I}$ & 
 The SI unit of electric current. It is defined by taking the fixed numerical value of the elementary charge $e$ to be $\qs{(_e/_C):to()}$ when expressed in $\qu{_A*_s}$.\\
 
 
@@ -560,38 +499,39 @@ The SI unit of electric current. It is defined by taking the fixed numerical val
 thermodynamic \newline temperature &
 kelvin  & 
 |_K| & 
-$\K$ & 
+$\mathrm{\Theta}$ & 
 The SI unit of the thermodynamic temperature. It is defineed by taking the fixed numerical value of the Boltzmann constant $k_B$ to be $\qs{(_k_B/(_J/_K)):to()}$ when expressed in $\q{_kg*_m^2*_s^-2*_K^-1}$\\
 
 amount of \newline substance &
 mole  & 
 |_mol| &  
-$\N$ & 
+$\mathrm{N}$ & 
 The SI unit of amount of substance. One mole contains exactly $\qs{(_N_A*_mol):to()}$ elementary entities. This number is the fixed numerical value of the Avogadro constant $N_A$ when expressed in $\qu{1/_mol}$.\\
 
 
 luminous \newline intensity &
 candela & 
 |_cd| & 
-$\J$ & 
+$\mathrm{J}$ & 
 The SI unit of luminous intensity in a given direction. It is defined by taking the fixed numerical value of the luminous efficacy of monochromatic radiation of frequency $\qs{540e12 * _Hz}$, $K_{cd}$, to be $683$ when expressed in the unit $\qu{_cd*_sr*_kg^-1*_m^-2*_s^3}$.\\
 
 
 information &
 bit & 
 |_bit| & 
-$\B$ &
+$\mathrm{B}$ &
 The smallest amount of information. \\
 
 
 currency &
 euro & 
 |_EUR| & 
-$\C$ &
+$\mathrm{C}$ &
 The value of the currency Euro. \\\hline
 
 \end{tabularx}
 \end{table}
+
 
 
 
@@ -601,6 +541,14 @@ The value of the currency Euro. \\\hline
 \label{ch:constants}
 
 All physical constants are taken from the NIST webpage \cite{nist19}.
+
+
+% print table row constant
+\newcommand{\printconstant}[2]{
+  \directlua{tex.print(#1.unit.name)} & 
+  |#1| &
+  \mbox{|#2|}\index{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
+}
 
 \begin{table}[H]
 \centering
@@ -670,45 +618,79 @@ All physical constants are taken from the NIST webpage \cite{nist19}.
 
 All units in this section are coherent derived units from the SI base units with special names, \cite[118]{bipm06}. 
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+% lua function for printing dimension names.
+\begin{luacode}
+function getdim(q)
+  local str = q.dimension:__tostring()
+  
+  str = string.gsub(str,"%[","")
+  str = string.gsub(str,"%]","")
+
+  return str
+end
+
+function strtoidx(str)
+  local s,n = string.gsub(str,"%_","\\_")
+  return s
+end
+\end{luacode}
+
+% print unit table
+\newcommand{\unittable}[1]{
+  \begin{table}[H]
+  \centering
+  \begin{tabularx}{\linewidth}{%
+    >{\setlength\hsize{1\hsize}}X%
+    l%
+    l%
+    >{\setlength\hsize{1\hsize}}X%
+  }
+  \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+
+  #1
+
+  \hline
+  \end{tabularx}
+  \end{table}
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+% print unit table row
+\newcommand{\printunit}[3][]{
+  \ifthenelse{\equal{#1}{}}{
+    \directlua{tex.print(getdim(#2))}
+  }{
+    #1
+  } &
+  \directlua{tex.print(#2.unit.name)} & 
+  |#2| &
+  \mbox{|#3|}\index{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
+}
 
+\unittable{
+  \printunit[Plane Angle\protect\footnotemark]{_rad}{_1}
+  \printunit[Solid Angle\protect\footnotemark]{_sr}{_rad^2}
+  \printunit{_Hz}{1/_s}
+  \printunit{_N}{_kg*_m/_s^2}
+  \printunit{_Pa}{_N/_m^2}
+  \printunit[Energy]{_J}{_N*_m}
+  \printunit{_W}{_J/_s}
+  \printunit{_C}{_A*_s}
+  \printunit{_V}{_J/_C}
+  \printunit{_F}{_C/_V}
+  \printunit{_Ohm}{_V/_A}
+  \printunit[Electric Conductance\protect\footnotemark]{_S}{_A/_V}
+  \printunit{_Wb}{_V*_s}
+  \printunit{_T}{_Wb/_m^2}
+  \printunit{_H}{_Wb/_A}
+  \printunit[Celsius Temperature\protect\footnotemark]{_degC}{_K}
+  \printunit[Luminous Flux]{_lm}{_cd*_sr}
+  \printunit{_lx}{_lm/_m^2}
+  \printunit[Activity]{_Bq}{1/_s}
+  \printunit{_Gy}{_J/_kg}
+  \printunit[Dose Equivalent]{_Sv}{_J/_kg}
+  \printunit{_kat}{_mol/_s}
+}
 
-\printunit[Plane Angle\protect\footnotemark]{_rad}{_1}
-\printunit[Solid Angle\protect\footnotemark]{_sr}{_rad^2}
-\printunit{_Hz}{1/_s}
-\printunit{_N}{_kg*_m/_s^2}
-\printunit{_Pa}{_N/_m^2}
-\printunit[Energy]{_J}{_N*_m}
-\printunit{_W}{_J/_s}
-\printunit{_C}{_A*_s}
-\printunit{_V}{_J/_C}
-\printunit{_F}{_C/_V}
-\printunit{_Ohm}{_V/_A}
-\printunit[Electric Conductance\protect\footnotemark]{_S}{_A/_V}
-\printunit{_Wb}{_V*_s}
-\printunit{_T}{_Wb/_m^2}
-\printunit{_H}{_Wb/_A}
-\printunit[Celsius Temperature\protect\footnotemark]{_degC}{_K}
-\printunit[Luminous Flux]{_lm}{_cd*_sr}
-\printunit{_lx}{_lm/_m^2}
-\printunit[Activity]{_Bq}{1/_s}
-\printunit{_Gy}{_J/_kg}
-\printunit[Dose Equivalent]{_Sv}{_J/_kg}
-\printunit{_kat}{_mol/_s}
-
-\hline
-
-\end{tabularx}
-\end{table}
 
 \footnotetext[1]{
   In the SI system, the quantity Plane Angle has the dimension of a number.
@@ -729,48 +711,28 @@ All units in this section are coherent derived units from the SI base units with
 
 
 
-
-
-
-
-
 % https://www.bipm.org/utils/common/pdf/si_brochure_8_en.pdf
 %------------------------------------------------------------
 \subsection{Non-SI units accepted for use with the SI}
 \label{ch:non-si accepted}
 
-There are a few units with dimension $\1$.
+There are a few units with dimension $\mathrm{1}$.
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+\unittable{
+  \printunit[Time]{_min}{60 * _s}
+  \printunit[ ]{_h}{60 * _min}
+  \printunit[ ]{_d}{24 * _h}
+
+  \printunit[Plane Angle]{_deg}{(_Pi/180) * _rad}
+  \printunit[ ]{_arcmin}{_deg/60}
+  \printunit[ ]{_arcsec}{_arcmin/60}
+
+  \printunit{_hectare}{1e4 * _m^2}
+
+  \printunit{_L}{1e-3 * _m^3}
+
+  \printunit[Mass]{_t}{1e3 * _kg}
 }
-
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-\printunit[Time]{_min}{60 * _s}
-\printunit[ ]{_h}{60 * _min}
-\printunit[ ]{_d}{24 * _h}
-
-\printunit[Plane Angle]{_deg}{(_Pi/180) * _rad}
-\printunit[ ]{_arcmin}{_deg/60}
-\printunit[ ]{_arcsec}{_arcmin/60}
-
-\printunit{_hectare}{1e4 * _m^2}
-
-\printunit{_L}{1e-3 * _m^3}
-
-\printunit[Mass]{_t}{1e3 * _kg}
-
-
-\hline
-
-\end{tabularx}
-\end{table}
 
 
 \subsection{Nominal Astronomical Units}
@@ -778,39 +740,22 @@ There are a few units with dimension $\1$.
 
 The nominal values of solar, terrestrial and jovial quantities are taken from IAU Resolution B3 \cite{iau16}.
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  l%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+\unittable{
+  \printunit[Length]{_R_S_nom}{6.957e8 * _m}
+  \printunit[Irradiance]{_S_S_nom}{1361 * _W/_m^2}
+  \printunit[Radiant Flux]{_L_S_nom}{3.828e26 * _W}
+  \printunit[Temperature]{_T_S_nom}{5772 * _K}
+  \printunit[Mass Parameter]{_GM_S_nom}{1.3271244e20 * _m^3*_s^-2}
+
+
+  \printunit[Length]{_Re_E_nom}{6.3781e6 * _m}
+  \printunit[Length]{_Rp_E_nom}{6.3568e6 * _m}
+  \printunit[Mass Parameter]{_GM_E_nom}{3.986004e14 * _m^3*_s^-2}
+
+  \printunit[Length]{_Re_J_nom}{7.1492e7 * _m}
+  \printunit[Length]{_Rp_J_nom}{6.6854e7 * _m}
+  \printunit[Mass Parameter]{_GM_J_nom}{1.2668653e17 * _m^3*_s^-2}
 }
-
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-\printunit[Length]{_R_S_nom}{6.957e8 * _m}
-\printunit[Irradiance]{_S_S_nom}{1361 * _W/_m^2}
-\printunit[Radiant Flux]{_L_S_nom}{3.828e26 * _W}
-\printunit[Temperature]{_T_S_nom}{5772 * _K}
-\printunit[Mass Parameter]{_GM_S_nom}{1.3271244e20 * _m^3*_s^-2}
-
-
-\printunit[Length]{_Re_E_nom}{6.3781e6 * _m}
-\printunit[Length]{_Rp_E_nom}{6.3568e6 * _m}
-\printunit[Mass Parameter]{_GM_E_nom}{3.986004e14 * _m^3*_s^-2}
-
-\printunit[Length]{_Re_J_nom}{7.1492e7 * _m}
-\printunit[Length]{_Rp_J_nom}{6.6854e7 * _m}
-\printunit[Mass Parameter]{_GM_J_nom}{1.2668653e17 * _m^3*_s^-2}
-
-\hline
-
-\end{tabularx}
-\end{table}
-
-
-
 
 
 
@@ -820,108 +765,78 @@ The nominal values of solar, terrestrial and jovial quantities are taken from IA
 \subsection{Other Non-SI units}
 \label{ch:non-si}
 
- The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
+The unit Bel is only available with prefix decibel, because |_B| is the unit byte.
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+\unittable{
+  \printunit[Length]{_angstrom}{1e-10 * _m}
+  \printunit[ ]{_fermi}{1e-15 * _m}
+
+  \printunit[ ]{_au}{149597870700 * _m}
+  \printunit[ ]{_ls}{_c*_s}
+  \printunit[ ]{_ly}{_c*_a}
+  \printunit[ ]{_pc}{(648000/_Pi) * _au}
+
+  \printunit{_barn}{1e-28 * _m^2}
+  \printunit[ ]{_are}{1e2 * _m^2}
+
+  \printunit{_tsp}{5e-3 * _L}
+  \printunit[ ]{_Tbsp}{3 * _tsp}
+
+  \printunit[Time]{_svedberg}{1e-13 * _s}
+  \printunit[ ]{_wk}{7 * _d}
+  \printunit[ ]{_a}{365.25 * _d}
+
+  \printunit[Plane Angle]{_gon}{(Pi/200) * _rad}
+  \printunit[ ]{_tr}{2*Pi * _rad}
+
+  \printunit[Solid Angle]{_sp}{4*Pi * _sr}
+
+  \printunit{_kp}{_kg*_g_0}
+
+  \printunit{_bar}{1e5 * _Pa}
+  \printunit[ ]{_atm}{101325 * _Pa}
+  \printunit[ ]{_at}{_kp/_cm^2}
+  \printunit[ ]{_mmHg}{133.322387415 * _Pa}
+  \printunit[ ]{_Torr}{(101325/760) * _Pa}
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+\unittable{
+  \printunit[Energy]{_cal}{4.184 * _J}
+  \printunit[ ]{_cal_IT}{4.1868 * _J}
+  \printunit[ ]{_g_TNT}{1e3 * _cal}
+  \printunit[ ]{_t_TNT}{1e9 * _cal}
 
-\printunit[Length]{_angstrom}{1e-10 * _m}
-\printunit[ ]{_fermi}{1e-15 * _m}
+  \printunit[ ]{_eV}{_e*_V}
+  \printunit[ ]{_Ws}{_W*_s}
+  \printunit[ ]{_Wh}{_W*_h}
 
-\printunit[ ]{_au}{149597870700 * _m}
-\printunit[ ]{_ls}{_c*_s}
-\printunit[ ]{_ly}{_c*_a}
-\printunit[ ]{_pc}{(648000/_Pi) * _au}
+  \printunit{_VA}{_V*_A}
 
-\printunit{_barn}{1e-28 * _m^2}
-\printunit[ ]{_are}{1e2 * _m^2}
+  \printunit{_As}{_A*_s}
+  \printunit[ ]{_Ah}{_A*_h}
 
-\printunit{_tsp}{5e-3 * _L}
-\printunit[ ]{_Tbsp}{3 * _tsp}
+  \printunit[Information]{_nibble}{4 * _bit}
+  \printunit[ ]{_B}{8 * _bit}
 
-\printunit[Time]{_svedberg}{1e-13 * _s}
-\printunit[ ]{_wk}{7 * _d}
-\printunit[ ]{_a}{365.25 * _d}
+  \printunit[Information \newline Transfer Rate]{_bps}{_bit/_s}
 
-\printunit[Plane Angle]{_gon}{(Pi/200) * _rad}
-\printunit[ ]{_tr}{2*Pi * _rad}
+  \printunit[Number]{_percent}{1e-2 * _1}
+  \printunit[ ]{_permille}{1e-3 * _1}
+  \printunit[ ]{_ppm}{1e-6 * _1}
+  \printunit[ ]{_ppb}{1e-9 * _1}
+  \printunit[ ]{_ppt}{1e-12 * _1}
+  \printunit[ ]{_ppq}{1e-15 * _1}
 
-\printunit[Solid Angle]{_sp}{4*Pi * _sr}
+  \printunit[ ]{_dB}{_1}
 
-\printunit{_kp}{_kg*_g_0}
+  \printunit{_PS}{75 * _g_0*_kg*_m/_s}
 
-\printunit{_bar}{1e5 * _Pa}
-\printunit[ ]{_atm}{101325 * _Pa}
-\printunit[ ]{_at}{_kp/_cm^2}
-\printunit[ ]{_mmHg}{133.322387415 * _Pa}
-\printunit[ ]{_Torr}{(101325/760) * _Pa}
+  \printunit[Activity]{_Ci}{3.7e10 * _Bq}
+  \printunit[Absorbed Dose]{_Rad}{1e-2 * _Gy}
+  \printunit[Dose Equivalent]{_rem}{1e-2 * _Sv}
 
-\hline
-
-\end{tabularx}
-\end{table}
-
-
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+  \printunit[Viscosity]{_Pl}{_Pa*_s}
 }
-
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-
-\printunit[Energy]{_cal}{4.184 * _J}
-\printunit[ ]{_cal_IT}{4.1868 * _J}
-\printunit[ ]{_g_TNT}{1e3 * _cal}
-\printunit[ ]{_t_TNT}{1e9 * _cal}
-
-\printunit[ ]{_eV}{_e*_V}
-\printunit[ ]{_Ws}{_W*_s}
-\printunit[ ]{_Wh}{_W*_h}
-
-\printunit{_VA}{_V*_A}
-
-\printunit{_As}{_A*_s}
-\printunit[ ]{_Ah}{_A*_h}
-
-\printunit[Information]{_nibble}{4 * _bit}
-\printunit[ ]{_B}{8 * _bit}
-
-\printunit[Information \newline Transfer Rate]{_bps}{_bit/_s}
-
-\printunit[Number]{_percent}{1e-2 * _1}
-\printunit[ ]{_permille}{1e-3 * _1}
-\printunit[ ]{_ppm}{1e-6 * _1}
-\printunit[ ]{_ppb}{1e-9 * _1}
-\printunit[ ]{_ppt}{1e-12 * _1}
-\printunit[ ]{_ppq}{1e-15 * _1}
-
-\printunit[ ]{_dB}{_1}
-
-\printunit{_PS}{75 * _g_0*_kg*_m/_s}
-
-\printunit[Activity]{_Ci}{3.7e10 * _Bq}
-\printunit[Absorbed Dose]{_Rad}{1e-2 * _Gy}
-\printunit[Dose Equivalent]{_rem}{1e-2 * _Sv}
-
-\printunit[Viscosity]{_Pl}{_Pa*_s}
-
-\hline
-
-\end{tabularx}
-\end{table}
 
 
 
@@ -931,84 +846,54 @@ The nominal values of solar, terrestrial and jovial quantities are taken from IA
 \subsection{Imperial Units}
 \label{ch:imperial units}
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+\unittable{
+  \printunit[Length]{_in}{2.54e-2 * _m}
+  \printunit[ ]{_th}{1e-3 * _in}
+  \printunit[DTP Point\protect\footnotemark]{_pt}{_in/72}
+  \printunit[ ]{_pica}{12 * _pt}
+  \printunit[ ]{_hh}{4 * _in}
+  \printunit[ ]{_ft}{12 * _in}
+  \printunit[ ]{_yd}{3 * _ft}
+  \printunit[ ]{_rd}{5.5 * _yd}
+  \printunit[ ]{_ch}{4 * _rd}
+  \printunit[ ]{_fur}{10 * _ch}
+  \printunit[ ]{_mi}{8 * _fur}
+  \printunit[ ]{_lea}{3*_mi}
+
+  \printunit[ ]{_nmi}{1852 * _m}
+  \printunit[ ]{_nlea}{3 * _nmi}
+  \printunit[ ]{_cbl}{0.1 * _nmi}
+  \printunit[ ]{_ftm}{6 * _ft}
+
+  \printunit{_kn}{_nmi/_h}
+
+  \printunit{_ac}{10 * _ch^2}
+
+  \printunit{_gal}{4.54609*_L}
+  \printunit[ ]{_qt}{_gal/4}
+  \printunit[ ]{_pint}{_qt/2}
+  \printunit[ ]{_cup}{_pint/2}
+  \printunit[ ]{_gi}{_pint/4}
+  \printunit[ ]{_fl_oz}{_gi/5}
+  \printunit[ ]{_fl_dr}{_fl_oz/8}
 }
-
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-\printunit[Length]{_in}{2.54e-2 * _m}
-\printunit[ ]{_th}{1e-3 * _in}
-\printunit[\ \protect\footnotemark]{_pt}{_in/72}
-\printunit[ ]{_pica}{12 * _pt}
-\printunit[ ]{_hh}{4 * _in}
-\printunit[ ]{_ft}{12 * _in}
-\printunit[ ]{_yd}{3 * _ft}
-\printunit[ ]{_rd}{5.5 * _yd}
-\printunit[ ]{_ch}{4 * _rd}
-\printunit[ ]{_fur}{10 * _ch}
-\printunit[ ]{_mi}{8 * _fur}
-\printunit[ ]{_lea}{3*_mi}
-
-\printunit[ ]{_nmi}{1852 * _m}
-\printunit[ ]{_nlea}{3 * _nmi}
-\printunit[ ]{_cbl}{0.1 * _nmi}
-\printunit[ ]{_ftm}{6 * _ft}
-
-\printunit{_kn}{_nmi/_h}
-
-\printunit{_ac}{10 * _ch^2}
-
-\printunit{_gal}{4.54609*_L}
-\printunit[ ]{_qt}{_gal/4}
-\printunit[ ]{_pint}{_qt/2}
-\printunit[ ]{_cup}{_pint/2}
-\printunit[ ]{_gi}{_pint/4}
-\printunit[ ]{_fl_oz}{_gi/5}
-\printunit[ ]{_fl_dr}{_fl_oz/8}
-
-
-\hline
-
-\end{tabularx}
-\end{table}
 
 \footnotetext[1]{
   The desktop publishing point or PostScript point is $1/72$ of an international inch. 
 }
 
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+\unittable{
+  \printunit[Mass]{_gr}{64.79891*_mg}
+  \printunit[ ]{_lb}{7000*_gr}
+  \printunit[ ]{_oz}{_lb/16}
+  \printunit[ ]{_dr}{_lb/256}
+  \printunit[ ]{_st}{14*_lb}
+  \printunit[ ]{_qtr}{2*_st}
+  \printunit[ ]{_cwt}{4*_qtr}
+  \printunit[ ]{_ton}{20*_cwt}
 }
 
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-\printunit[Mass]{_gr}{64.79891*_mg}
-\printunit[ ]{_lb}{7000*_gr}
-\printunit[ ]{_oz}{_lb/16}
-\printunit[ ]{_dr}{_lb/256}
-\printunit[ ]{_st}{14*_lb}
-\printunit[ ]{_qtr}{2*_st}
-\printunit[ ]{_cwt}{4*_qtr}
-\printunit[ ]{_ton}{20*_cwt}
-
-
-\hline
-
-\end{tabularx}
-\caption{Imperial units}
-\end{table}
 
 
 
@@ -1019,81 +904,44 @@ The nominal values of solar, terrestrial and jovial quantities are taken from IA
 
 In the U.S., the length units are bound  to the meter differently than in the imperial system. The followin definitions are taken from \url{https://en.wikipedia.org/wiki/United_States_customary_units}.
 
+\unittable{
+  \printunit[Length]{_in_US}{_m/39.37}
+  \printunit[ ]{_hh_US}{4 * _in_US}
+  \printunit[ ]{_ft_US}{3 * _hh_US}
+  \printunit[ ]{_li_US}{0.66 * _ft_US}
+  \printunit[ ]{_yd_US}{3 * _ft_US}
+  \printunit[ ]{_rd_US}{5.5 * _yd_US}
+  \printunit[ ]{_ch_US}{4 * _rd_US}
+  \printunit[ ]{_fur_US}{10 * _ch_US}
+  \printunit[ ]{_mi_US}{8 * _fur_US}
+  \printunit[ ]{_lea_US}{3 * _mi_US}
+  \printunit[ ]{_ftm_US}{72 * _in_US}
+  \printunit[ ]{_cbl_US}{120 * _ftm_US}
 
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+  \printunit{_ac_US}{_ch_US * _fur_US}
+
+  \printunit{_gal_US}{231 * _in^3}
+  \printunit[ ]{_qt_US}{_gal_US/4}
+  \printunit[ ]{_pint_US}{_qt_US/2}
+  \printunit[ ]{_cup_US}{_pint_US/2}
+  \printunit[ ]{_gi_US}{_pint_US/4}
+  \printunit[ ]{_fl_oz_US}{_gi_US/4}
+  \printunit[ ]{_Tbsp_US}{_fl_oz_US/2}
+  \printunit[ ]{_tsp_US}{_Tbsp_US/3}
+  \printunit[ ]{_fl_dr_US}{_fl_oz_US/8}
+
+  \printunit[Mass]{_qtr_US}{25 * _lb}
+  \printunit[ ]{_cwt_US}{4 * _qtr_US}
+  \printunit[ ]{_ton_US}{20 * _cwt_US}
 }
-
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-\printunit[Length]{_in_US}{_m/39.37}
-\printunit[ ]{_hh_US}{4 * _in_US}
-\printunit[ ]{_ft_US}{3 * _hh_US}
-\printunit[ ]{_li_US}{0.66 * _ft_US}
-\printunit[ ]{_yd_US}{3 * _ft_US}
-\printunit[ ]{_rd_US}{5.5 * _yd_US}
-\printunit[ ]{_ch_US}{4 * _rd_US}
-\printunit[ ]{_fur_US}{10 * _ch_US}
-\printunit[ ]{_mi_US}{8 * _fur_US}
-\printunit[ ]{_lea_US}{3 * _mi_US}
-\printunit[ ]{_ftm_US}{72 * _in_US}
-\printunit[ ]{_cbl_US}{120 * _ftm_US}
-
-\printunit{_ac_US}{_ch_US * _fur_US}
-
-\printunit{_gal_US}{231 * _in^3}
-\printunit[ ]{_qt_US}{_gal_US/4}
-\printunit[ ]{_pint_US}{_qt_US/2}
-\printunit[ ]{_cup_US}{_pint_US/2}
-\printunit[ ]{_gi_US}{_pint_US/4}
-\printunit[ ]{_fl_oz_US}{_gi_US/4}
-\printunit[ ]{_Tbsp_US}{_fl_oz_US/2}
-\printunit[ ]{_tsp_US}{_Tbsp_US/3}
-\printunit[ ]{_fl_dr_US}{_fl_oz_US/8}
-
-\hline
-
-\end{tabularx}
-\end{table}
-
-
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
-}
-
-\thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-\printunit[Mass]{_qtr_US}{25 * _lb}
-\printunit[Mass]{_cwt_US}{4 * _qtr_US}
-\printunit[Mass]{_ton_US}{20 * _cwt_US}
-
-\hline
-
-\end{tabularx}
-\caption{U.S. customary units}
-\end{table}
-
-
-
-
 
 
 
 
 %------------------------------------------------------------
 \newpage
-\subsection{Variable International Currencies}
-\label{ch:variable currencies}
+\subsection{International Currencies}
+\label{ch:currencies}
 
 International currency units based on exchange rates from 7.3.2019, 21:00 UTC.
 
@@ -1101,7 +949,7 @@ International currency units based on exchange rates from 7.3.2019, 21:00 UTC.
 local curr = {"AFN","ALL","AMD","AOA","ARS","AUD","AZN","BAM","BDT","BIF","BOB","BRL","BWP","BYN","CAD","CDF","CHF","CLP","CNY","COP","CRC","CZK","DKK","DOP","DZD","EGP","ETB","FJD","GBP","GEL","GHS","GMD","GNF","GTQ","GYD","HKD","HNL","HRK","HTG","HUF","IDR","ILS","INR","IQD","IRR","ISK","JMD","JPY","KES","KGS","KHR","KPW","KRW","KWD","KZT","LAK","LKR","LRD","LYD","MAD","MDL","MGA","MKD","MMK","MNT","MRU","MUR","MVR","MWK","MXN","MYR","MZN","NGN","NIO","NOK","NZD","PEN","PGK","PHP","PKR","PLN","PYG","QAR","RON","RSD","RUB","RWF","SBD","SCR","SDG","SEK","SGD","SLL","SQS","SOS","SRD","SYP","THB","TJS","TOP","TRY","TTD","TWD","TZS","UAH","UGX","USD","UYU","UZS","VES","VND","WST","YER","ZAR","ZMW"}
 
 -- print variable currency rows
-function printcurrency(start,n)
+function printcurrencyrows(start,n)
   for i,v in ipairs(curr) do
     if i >= start and i < start+n  then
       printcurrencyrow(v)
@@ -1111,10 +959,11 @@ function printcurrency(start,n)
 end
 
 -- print pegged currency row
-function printcurrencyrow(v,def)
-    q = _G["_"..v]
-    tex.print(q.unit.name.."&")
-    tex.print("|_"..v.."|&")
+function printcurrencyrow(iso,def)
+    q = _G["_"..iso]
+    tex.print(q.unit.name)
+    tex.print("\\index[cur]{"..q.unit.name.." \\texttt{\\_"..iso.."}}&")
+    tex.print("|_"..iso.."|&")
 
     if def == nil then
       tex.print("\\texttt{"..q:to(_EUR):__tonumber().." * \\_EUR} \\\\")
@@ -1122,99 +971,142 @@ function printcurrencyrow(v,def)
       tex.print("|"..def.."|\\\\")
     end
 
-    if _G["_c"..v] ~= nil then
-      p = _G["_c"..v]
-      tex.print(p.unit.name.."&")
-      tex.print("|_c"..v.."|&")
-      tex.print("\\texttt{"..(p/q):to(_1):__tonumber().." * \\_"..v.."} \\\\")
+    if _G["_c"..iso] ~= nil then
+      p = _G["_c"..iso]
+      tex.print(p.unit.name)
+      tex.print("\\index[cur]{"..p.unit.name.." \\texttt{\\_c"..iso.."}}&")
+      tex.print("|_c"..iso.."|&")
+      tex.print("\\texttt{"..(p/q):to(_1):__tonumber().." * \\_"..iso.."} \\\\")
     end
 end
-
-
 \end{luacode}
 
 
-\newcommand{\currencyTable}[2]{%
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
+\newcommand{\currencytable}[1]{%
+  \begin{table}[H]
+  \centering
+  \begin{tabularx}{\linewidth}{%
+    >{\setlength\hsize{1\hsize}}X%
+    l%
+    >{\setlength\hsize{1\hsize}}X%
+  }
+
+  \thead{Name} & \thead{Symbol} & \thead{Definition} \\\hline
+
+  #1
+
+  \hline
+
+  \end{tabularx}
+  \end{table}
 }
 
-\thead{Currency} & \thead{Symbol} & \thead{Definition} \\\hline
+\newcommand{\printcurrency}[2]{%
+  \directlua{printcurrencyrow("#1","#2")}
+}
 
-\directlua{printcurrency(#1,#2)}
+\newcounter{currency}
+\setcounter{currency}{1}
 
-\hline
+\newcommand{\printcurrencies}[1]{%
+  \currencytable{\directlua{printcurrencyrows(\thecurrency,#1)}}
+  \addtocounter{currency}{#1}
+}
 
-\end{tabularx}
-\end{table}
+\printcurrencies{14}
+\printcurrencies{14}
+\printcurrencies{14}
+\printcurrencies{16}
+\printcurrencies{14}
+\printcurrencies{14}
+\printcurrencies{14}
+\printcurrencies{15}
+
+
+%------------------------------------------------------------
+\newpage
+\subsubsection{Pegged International Currencies}
+\label{ch:pegged currencies}
+
+International currency which are pegged to other currencies.
+
+\currencytable{
+  \printcurrency{AED}{(1/3.6725) * _USD}
+  \printcurrency{ANG}{(1/1.79) * _USD}
+  \printcurrency{AWG}{(1/1.79) * _USD}
+  \printcurrency{BBD}{0.5 * _USD}
+  \printcurrency{BGN}{0.51129 * _EUR}
+  \printcurrency{BHD}{(1/0.376) * _USD}
+  \printcurrency{BMD}{1 * _USD}
+  \printcurrency{BND}{1 * _SGD}
+  \printcurrency{BSD}{1 * _USD}
+  \printcurrency{BTN}{1 * _INR}
+  \printcurrency{BZD}{0.5 * _USD}
+  \printcurrency{CUC}{1 * _USD}
+  \printcurrency{CUP}{(1/24) * _CUC}
+  
+}
+
+\currencytable{
+  \printcurrency{CVE}{(1/110.265) * _EUR}
+  \printcurrency{DJF}{(1/177.721) * _USD}
+  \printcurrency{ERN}{(1/15) * _USD}
+  \printcurrency{FKP}{1 * _GBP}
+  \printcurrency{GGP}{1 * _GBP}
+  \printcurrency{GIP}{1 * _GBP}
+  \printcurrency{IMP}{1 * _GBP}
+  \printcurrency{JEP}{1 * _GBP}
+  \printcurrency{JOD}{(1/0.708) * _USD}
+  \printcurrency{KID}{1 * _AUD}
+  \printcurrency{KMF}{(1/491.96775) * _EUR}
+  \printcurrency{KYD}{1.2 * _USD}
+  \printcurrency{LBP}{(1/1507.5) * _USD}
+  \printcurrency{MOP}{(1/1.03) * _HKD}
+  
+}
+
+\currencytable{
+  \printcurrency{NAD}{1 * _ZAR}
+  \printcurrency{NPR}{(1/1.6) * _INR}
+  \printcurrency{OMR}{(1/2.6008) * _USD}
+  \printcurrency{PAB}{1 * _USD}
+  \printcurrency{PRB}{(1/16.1) * _USD}
+  \printcurrency{SAR}{(1/3.75) * _USD}
+  \printcurrency{SHP}{1 * _GBP}
+  \printcurrency{SSP}{1 * _SDG}
+  \printcurrency{STN}{(1/24.5) * _EUR}
+  \printcurrency{SZL}{1 * _ZAR}
+  \printcurrency{TMT}{(1/3.5) * _USD}
+  \printcurrency{TVD}{1 * _AUD}
+  \printcurrency{XAF}{(1/655.957) * _EUR}
+  \printcurrency{XCD}{(1/2.7) * _USD}
+}
+
+\currencytable{
+  \printcurrency{XOF}{(1/655.957) * _USD}
+  \printcurrency{XPF}{(1000/8.38) * _EUR}
+  \printcurrency{ZWL}{1 * _USD}
 }
 
 
-\currencyTable{1}{14}
-\currencyTable{15}{15}
-\currencyTable{30}{15}
-\currencyTable{45}{15}
-\currencyTable{45}{15}
-\currencyTable{60}{15}
-\currencyTable{75}{15}
-\currencyTable{90}{15}
-\currencyTable{105}{15}
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 %------------------------------------------------------------
 \newpage
-\subsection{Pegged International Currencies}
-\label{ch:pegged currencies}
-
-International currency which are pegged to other currencies.
-
-\newcommand{\printcurrency}[2]{%
-  \directlua{printcurrencyrow("#1","#2")}
-}
-
-\begin{table}[H]
-\centering
-\begin{tabularx}{\linewidth}{%
-  >{\setlength\hsize{1\hsize}}X%
-  l%
-  >{\setlength\hsize{1\hsize}}X%
-}
-
-\thead{Currency} & \thead{Symbol} & \thead{Definition} \\\hline
-
-\printcurrency{AED}{(1/3.6725)*_USD}
-\printcurrency{ANG}{(1/1.79)*_USD}
-\printcurrency{BBD}{0.5*_USD}
-
-\hline
-
-\end{tabularx}
-\end{table}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\section{Lua Documentation}
+%------------------------------------------------------------
 
 % shortcut for method definitions
 \newcommand{\method}[2]{\subsection*{|#1.#2|}}
@@ -1223,12 +1115,6 @@ International currency which are pegged to other currencies.
 
 % set listings language to lua
 \lstset{language=Lua}
-
-
-
-
-\newpage
-\section{Lua Documentation}
 
 In this chapter, the following shortcuts will be used.
 \begin{lstlisting}
@@ -2215,6 +2101,11 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
 \addcontentsline{toc}{section}{Index}
 \indexprologue{}
 \printindex
+
+\newpage
+\addcontentsline{toc}{section}{Index of Currencies}
+\indexprologue{}
+\printindex[cur]
 
 
 \end{document}
