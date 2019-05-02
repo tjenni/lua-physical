@@ -265,6 +265,7 @@ function Quantity.__div(q1, q2)
 	end
 
 	local p = Quantity.new()
+	
 	p.dimension = q1.dimension / q2.dimension
 	p.value = q1.value / q2.value
 	p.basefactor = q1.basefactor / q2.basefactor

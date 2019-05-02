@@ -491,23 +491,23 @@ Q.define("hp", "horsepower", 33000*_ft*_lbf/_min)
 
 -- Length
 Q.define("in_US", "ussurveyinch", _m/39.37)
-Q.define("hh_US", "ussurveyhand", 4*_in_US)
-Q.define("ft_US", "ussurveyfoot", 3*_hh_US)
-Q.define("li_US", "ussurveylink", 0.66*_ft_US)
-Q.define("yd_US", "ussurveyyard", 3*_ft_US)
-Q.define("rd_US", "ussurveyrod", 5.5*_yd_US)
-Q.define("ch_US", "ussurveychain", 4*_rd_US)
-Q.define("fur_US", "ussurveyfurlong", 10*_ch_US)
-Q.define("mi_US", "ussurveymile", 8*_fur_US)
-Q.define("lea_US", "ussurveyleague", 3*_mi_US)
-Q.define("ftm_US", "ussurveyfathom", 72*_in_US)
-Q.define("cbl_US", "ussurveycable", 120*_ftm_US)
+Q.define("hh_US", "ussurveyhand", 4 * _in_US)
+Q.define("ft_US", "ussurveyfoot", 3 * _hh_US)
+Q.define("li_US", "ussurveylink", 0.66 * _ft_US)
+Q.define("yd_US", "ussurveyyard", 3 * _ft_US)
+Q.define("rd_US", "ussurveyrod", 5.5 * _yd_US)
+Q.define("ch_US", "ussurveychain", 4 * _rd_US)
+Q.define("fur_US", "ussurveyfurlong", 10 * _ch_US)
+Q.define("mi_US", "ussurveymile", 8 * _fur_US)
+Q.define("lea_US", "ussurveyleague", 3 * _mi_US)
+Q.define("ftm_US", "ussurveyfathom", 72 * _in_US)
+Q.define("cbl_US", "ussurveycable", 120 * _ftm_US)
 
 -- Area
-Q.define("ac_US", "ussurveyacre", _ch_US*_fur_US)
+Q.define("ac_US", "ussurveyacre", _ch_US * _fur_US)
 
 -- Volume
-Q.define("gal_US", "usgallon", 231*_in^3)
+Q.define("gal_US", "usgallon", 231 * _in^3)
 Q.define("qt_US", "usquart", _gal_US/4)
 Q.define("pint_US", "uspint", _qt_US/2)
 Q.define("cup_US", "uscup", _pint_US/2)
@@ -518,9 +518,9 @@ Q.define("tsp_US", "usteaspoon", _Tbsp_US/3)
 Q.define("fl_dr_US", "usfluiddram", _fl_oz_US/8)
 
 -- Mass
-Q.define("qtr_US", "usquarter", 25*_lb)
-Q.define("cwt_US", "ushundredweight", 4*_qtr_US)
-Q.define("ton_US", "uston", 20*_cwt_US)
+Q.define("qtr_US", "usquarter", 25 * _lb)
+Q.define("cwt_US", "ushundredweight", 4 * _qtr_US)
+Q.define("ton_US", "uston", 20 *_cwt_US)
 
 
 
