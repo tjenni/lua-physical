@@ -280,15 +280,15 @@ Q.define("R_S_nom", "nomsolradius", 6.957e8 * _m)
 Q.define("S_S_nom", "nomsolirradiance", 1361 * _W/_m^2)
 Q.define("L_S_nom", "nomsolluminosity", 3.828e26 * _W)
 Q.define("T_S_nom", "nomsolefftemperature", 5772 * _K)
-Q.define("GM_S_nom", "nomsolmassparam", 1.3271244e20 * _m^3*_s^-2)
+Q.define("GM_S_nom", "nomsolmassparameter", 1.3271244e20 * _m^3*_s^-2)
 
 Q.define("Re_E_nom", "nomterreqradius", 6.3781e6 * _m)
 Q.define("Rp_E_nom", "nomterrpolradius", 6.3568e6 * _m)
-Q.define("GM_E_nom", "nomterrmassparam", 3.986004e14 * _m^3*_s^-2)
+Q.define("GM_E_nom", "nomterrmassparameter", 3.986004e14 * _m^3*_s^-2)
 
-Q.define("Re_J_nom", "nomjovianeqradius", 7.1492e7 * _m)
-Q.define("Rp_J_nom", "nomjovianpolradius", 6.6854e7 * _m)
-Q.define("GM_J_nom", "nomjovianmassparam", 1.2668653e17 * _m^3*_s^-2)
+Q.define("Re_J_nom", "nomjoveqradius", 7.1492e7 * _m)
+Q.define("Rp_J_nom", "nomjovpolradius", 6.6854e7 * _m)
+Q.define("GM_J_nom", "nomjovmassparameter", 1.2668653e17 * _m^3*_s^-2)
 
 
 
@@ -299,6 +299,11 @@ Q.define("GM_J_nom", "nomjovianmassparam", 1.2668653e17 * _m^3*_s^-2)
 -- Length
 Q.define("angstrom", "angstrom", 1e-10 * _m)
 Q.define("fermi", "fermi", 1e-15 * _m)
+
+-- Time
+Q.define("svedberg", "svedberg", 1e-13 * _s)
+Q.define("wk", "week", 7 * _d)
+Q.define("a", "year", 365.25 * _d)
 
 -- Astronomical Length
 Q.define("au", "astronomicalunit", 149597870700 * _m)
@@ -317,11 +322,6 @@ Q.addPrefix(SI_prefixes,{_barn})
 -- Volume
 Q.define("tsp", "metricteaspoon", 5e-3 * _L)
 Q.define("Tbsp", "metrictablespoon", 3 * _tsp)
-
--- Time
-Q.define("svedberg", "svedberg", 1e-13 * _s)
-Q.define("wk", "week", 7 * _d)
-Q.define("a", "year", 365.25 * _d)
 
 -- Plane Angle
 Q.define("gon", "gradian", (_Pi/200) * _rad)

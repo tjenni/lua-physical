@@ -595,15 +595,11 @@ function TestDefinition:testRad()
    lu.assertTrue( (100 * _rem):isclose(1 * _Sv,1e-4) )
 end
 
-function TestDefinition:testRoentgen()
-   lu.assertTrue( (200 * _C/_kg):isclose(775193.7984496 * _Ro,1e-4) )
-end
-
 function TestDefinition:testPoiseuille()
    local r = 2 * _mm 
    local l = 10 * _cm 
    local p = 400 * _Pa
-   local eta = 0.0027 * _PI
+   local eta = 0.0027 * _Pl
 
    local Pi = 3.1415926535897932384626433832795028841971693993751
 

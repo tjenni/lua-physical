@@ -107,7 +107,7 @@ function Quantity.define(symbol, name, q)
 	local p = Quantity.new(q)
 	
 	p.value = 1
-	p.basefactor = p.basefactor * q.value
+	p.basefactor = q.basefactor * q.value
 	p.unit = U.new(symbol, name)
 
 	rawset(_G, "_"..symbol, p)
