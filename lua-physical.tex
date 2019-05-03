@@ -183,12 +183,12 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
 
 \subsection{Dependencies}
 
-This is a standalone package. If a pretty print to \LuaLaTeX{} is needed, the package |siunitx| should be installed. 
+In principle this library is standalone, but it is compatible with the |siunitx| package. Calculation results done in \LuaLaTeX{} can be printed directly by calling the |tosiunitx()| method.
 
 
 \section{Usage}
 
-Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. meter is |_m|, second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The Result of the calculation can be printed to \LuaLaTeX{} by using the macro |\q{}|.
+Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. meter is |_m|, second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The results of calculations can be printed to \LuaLaTeX{} by using the macro |\q{}|.
 
 \begin{lstlisting}[caption=The velocity of a car.,label=lst:Car Velocity]
 \begin{luacode}
@@ -432,7 +432,7 @@ Subchapter \ref{ch:non-si} lists units, which are common but outside of the SI s
 %------------------------------------------------------------
 \subsection{Prefixes}
 
-All SI units have prefixed versions, i.e. |_us| microsecond, |_cm| centimeter.
+All SI units have prefixed versions, i.e. |_us| microsecond, |_cm| centimeter, see table \ref{tab:SI prefixes}. Some units of data processing, like |_bit| have prefixes which are powers of 2. They are called binary or IEC prefixes, see table \ref{tab:IEC prefixes}. \cite[121]{bipm06}
 
 \begin{table}[H]
 \centering
@@ -491,7 +491,9 @@ yocto & |y| & |1e-23| \\
 
 \end{multicols}
 
-\caption{SI Prefixes}
+\caption{SI prefixes \cite[121]{bipm06}}
+\label{tab:SI prefixes}
+
 \end{table}
 
 
@@ -520,7 +522,9 @@ yobi & |Yi| & |1208925819614629174706176| \\
 
 \end{tabularx}
 
-\caption{IEC Prefixes}
+\caption{IEC prefixes \cite[121]{bipm06}}
+\label{tab:IEC prefixes}
+
 \end{table}
 
 
@@ -529,6 +533,8 @@ yobi & |Yi| & |1208925819614629174706176| \\
 %------------------------------------------------------------
 \subsection{Base Units}
 \label{ch:base units}
+
+The |lua-physical| library has 9 base quantities. These are the seven basis units or basis quantities of the SI system and in addition the base quantity of information |_bit| and of currency |_EUR|. All other quantities are derived from these.
 
 \begin{table}[H]
 \centering
@@ -568,13 +574,6 @@ $\mathrm{M}$ &
 The SI unit of mass. It is defined by taking the fixed numerical value of the Planck constant $h$ to be $\qs{(_h_P/(_J*_s)):to()}$ when expressed in $\qu{_m^2*_kg/_s}$.\\
 
 
-electric \newline current &
-ampere & 
-|_A| & 
-$\mathrm{I}$ & 
-The SI unit of electric current. It is defined by taking the fixed numerical value of the elementary charge $e$ to be $\qs{(_e/_C):to()}$ when expressed in $\qu{_A*_s}$.\\
-
-
 \hline
 
 \end{tabularx}
@@ -591,6 +590,13 @@ The SI unit of electric current. It is defined by taking the fixed numerical val
 }
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
+
+
+electric \newline current &
+ampere & 
+|_A| & 
+$\mathrm{I}$ & 
+The SI unit of electric current. It is defined by taking the fixed numerical value of the elementary charge $e$ to be $\qs{(_e/_C):to()}$ when expressed in $\qu{_A*_s}$.\\
 
 thermodynamic \newline temperature &
 kelvin  & 
