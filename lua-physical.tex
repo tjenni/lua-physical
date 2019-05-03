@@ -15,6 +15,7 @@
 \usepackage{imakeidx}
 \usepackage{ifthen}
 \usepackage{perpage}
+\usepackage{multicol}
 
 
 % lua code and lua-physical command definitions
@@ -138,7 +139,6 @@ N = physical.Number
 
 
 \tableofcontents
-
 
 
 \newpage
@@ -428,6 +428,102 @@ Subchapter \ref{ch:non-si} lists units, which are common but outside of the SI s
 
 
 \renewcommand{\arraystretch}{1.5}
+
+%------------------------------------------------------------
+\subsection{Prefixes}
+
+All SI units have prefixed versions, i.e. |_us| microsecond, |_cm| centimeter.
+
+\begin{table}[H]
+\centering
+
+\begin{multicols}{2}
+
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{1\hsize}}X%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Prefix} & \thead{Symbol} & \thead{Definition} \\\hline
+
+yotta & |Y| & |1e24| \\
+zetta & |Z| & |1e21| \\
+exa & |E| & |1e18| \\
+peta & |P| & |1e15| \\
+tera & |T| & |1e12| \\
+giga & |G| & |1e9| \\
+mega & |M| & |1e6| \\
+kilo & |k| & |1e3| \\
+hecto & |h| & |1e2| \\
+deca & |da| & |1e1| \\
+
+\hline
+
+\end{tabularx}
+
+
+\columnbreak
+
+
+\begin{tabularx}{\linewidth}{%
+  >{\setlength\hsize{1\hsize}}X%
+  l%
+  >{\setlength\hsize{1\hsize}}X%
+}
+
+\thead{Prefix} & \thead{Symbol} & \thead{Definition} \\\hline
+
+deci & |d| & |1e-1| \\
+centi & |c| & |1e-2| \\
+milli & |m| & |1e-3| \\
+micro & |u| & |1e-6| \\
+nano & |n| & |1e-9| \\
+pico & |p| & |1e-12| \\
+femto & |f| & |1e-15| \\
+atto & |a| & |1e-18| \\
+zepto & |z| & |1e-21| \\
+yocto & |y| & |1e-23| \\
+
+\hline
+
+\end{tabularx}
+
+\end{multicols}
+
+\caption{SI Prefixes}
+\end{table}
+
+
+
+\begin{table}[H]
+\centering
+
+\begin{tabularx}{0.7\linewidth}{%
+  >{\setlength\hsize{0.5\hsize}}X%
+  l%
+  >{\setlength\hsize{1.5\hsize}}X%
+}
+
+\thead{Prefix} & \thead{Symbol} & \thead{Definition} \\\hline
+
+kibi & |Ki| & |1024| \\
+mebi & |Mi| & |1048576| \\
+gibi & |Gi| & |1073741824| \\
+tebi & |Ti| & |1099511627776| \\
+pebi & |Pi| & |1125899906842624| \\
+exbi & |Ei| & |1152921504606846976| \\
+zebi & |Zi| & |1180591620717411303424| \\
+yobi & |Yi| & |1208925819614629174706176| \\
+
+\hline
+
+\end{tabularx}
+
+\caption{IEC Prefixes}
+\end{table}
+
+
 
 
 %------------------------------------------------------------

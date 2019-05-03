@@ -243,12 +243,6 @@ Q.define("R", "molargasconstant", N(8.3144598, 4.8e-6) * _J/(_K*_mol))
 Q.define("sigma", "stefanboltzmannconstant", _Pi^2*_k_B^4/(60*_h_Pbar^3*_c^2))
 Q.define("g_0", "standardgravity", 9.80665 * _m/_s^2)
 
--- prior 20 may 2019
--- Q.define("h_P", "planckconstant", N(6.626070040e-34, 8.1e-42 ) * _J*_s)
--- Q.define("e", "elementarycharge", N(1.6021766208e-19, 9.8e-28) * _C)
--- Q.define("k_B", "boltzmannconstant", N(1.38064852e-23, 7.9e-23) * _J/_K)
--- Q.define("N_A", "avogadronumber", N(6.022140857e23, 7.4e23)/_mol)
-
 
 
 
