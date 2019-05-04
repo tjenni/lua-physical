@@ -817,13 +817,6 @@ function TestDefinition:testFahrenheit()
    lu.assertTrue( ((theta_1 + _degF_0):to(_K)):isclose((theta_2 + _degC_0):to(_K,true), 0.001) )
 end
 
-function TestDefinition:testRankine()
-   local theta_1 = 55*_degR
-   local theta_2 = -242.594 * _degC
-   
-   lu.assertTrue( (theta_1:to(_K)):isclose((theta_2 + _degC_0):to(_K), 0.001) )
-end
-
 
 -- Others
 

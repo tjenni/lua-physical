@@ -66,7 +66,7 @@ function Quantity.new(q)
 		p.basefactor = 1
 		p.unit = U()
 	end
-
+	
 	return p
 end
 

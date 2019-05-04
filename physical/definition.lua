@@ -463,8 +463,6 @@ Q.define("ftn", "fortnight", 14*_d)
 Q.define("degF", "fahrenheit", (5/9)*_K)
 Q.defineAlias("degF_0", 459.67*_degF)
 
-Q.define("degR", "rankine", (5/9)*_K)
-
 
 
 
@@ -473,9 +471,9 @@ Q.define("degR", "rankine", (5/9)*_K)
 Q.define("lbf", "poundforce", _lb*_g_0)
 Q.define("pdl", "poundal", _lb*_ft/_s^2)
 Q.define("slug", "slug", _lbf*_s^2/_ft)
-Q.define("psi", "psi", _lbf/_in^2)
-Q.define("BTU", "thermochemicalbritishthermalunit", (1897.83047608/1.8)*_J) -- = c_th * lb * °F
-Q.define("BTU_it", "internationalbritishthermalunit", 1055.05585262*_J) -- = c_IT * lb * °F
+Q.define("psi", "poundforcepersquareinch", _lbf/_in^2)
+Q.define("BTU", "thchembritishthermalunit", (1897.83047608/1.8) * _J) -- = c_th * lb * °F
+Q.define("BTU_it", "intbritishthermalunit", 1055.05585262*_J) -- = c_IT * lb * °F
 Q.define("hp", "horsepower", 33000*_ft*_lbf/_min)
 
 

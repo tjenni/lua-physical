@@ -114,7 +114,7 @@ N = physical.Number
 % create index
 \newcommand{\Index}[1]{#1\index{#1}}
 \makeindex[name=cur,title={Index of Currencies}]
-\makeindex
+\makeindex[name=unit,title={Index of Units}]
 
 % reset footnotes numbers for each page.
 \MakePerPage{footnote}
@@ -186,7 +186,10 @@ The following Latex preambel loads the |lua-physical| package and creates a macr
 In principle this library is standalone, but it is compatible with the |siunitx| package. Calculation results can be written to \LuaLaTeX{} directly by calling the |tosiunitx()| method. If the preamble above is used, the printing is done be the |\q{}| macro.
 
 
+%------------------------------------------------------------
 \section{Usage}
+\label{ch:usage}
+%------------------------------------------------------------
 
 Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. meter is |_m|, second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The following example illustrates the use of this library.
 
@@ -220,6 +223,9 @@ $$
 In the above Listing \ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
 
 
+
+
+%------------------------------------------------------------
 \subsection{Unit conversion}
 
 Very often, the result of a calculation has to be converted to another unit. In the following Listing \ref{lst:Volume of Cuboid}, the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
@@ -264,6 +270,7 @@ $$
 
 
 
+%------------------------------------------------------------
 \subsubsection{Temperature Conversion}
 
 Most physical units transform linearly. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. 
@@ -316,9 +323,7 @@ In the following problem, Listing \ref{lst:temperature conversion} , the task is
 
 
 
-
-
-
+%------------------------------------------------------------
 \subsection{Uncertainty Propagation}
 
 The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see Listing \ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
@@ -406,6 +411,16 @@ $$
 \endleftbar
 
 This example shows, that the result has only two digits. If more digits are needed, the uncertainties of the given quantities should be smaller.
+
+
+
+
+%------------------------------------------------------------
+\subsection{Mathematical operations}
+
+
+
+
 
 
 
@@ -534,7 +549,7 @@ yobi & |Yi| & |1208925819614629174706176| \\
 \subsection{Base Units}
 \label{ch:base units}
 
-The |lua-physical| library has 9 base quantities. These are the seven basis units or basis quantities of the SI system and in addition the base quantity of information |_bit| and of currency |_EUR|. All other quantities are derived from these.
+The |lua-physical| library has nine base quantities. These are the seven basis units or basis quantities of the SI system \cite{bipm18} and in addition the base quantity of information |_bit| and of currency |_EUR|. All other quantities are derived from these base units.
 
 \begin{table}[H]
 \centering
@@ -548,7 +563,7 @@ The |lua-physical| library has 9 base quantities. These are the seven basis unit
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
 
-number &
+number \protect\footnotemark &
 -- &
 |_1| &
 $\mathrm{1}$ & 
@@ -566,18 +581,15 @@ meter &
 $\mathrm{L}$ &
 The SI unit of length. It is defined by taking the fixed numercial value of the speed of light in vacuum $c$ to be $\num{299792458}$ when expressed in the unit of $\q{_m/_s}$. \\
 
-
-mass &
-kilogram  &  
-|_kg| & 
-$\mathrm{M}$ & 
-The SI unit of mass. It is defined by taking the fixed numerical value of the Planck constant $h$ to be $\qs{(_h_P/(_J*_s)):to()}$ when expressed in $\qu{_m^2*_kg/_s}$.\\
-
-
 \hline
 
 \end{tabularx}
 \end{table}
+
+\footnotetext[1]{
+  The number one is a unit with dimension zero. Stricly speaking it is not a base unit.
+}
+
 
 \begin{table}[H]
 \centering
@@ -591,6 +603,11 @@ The SI unit of mass. It is defined by taking the fixed numerical value of the Pl
 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
 
+mass &
+kilogram  &  
+|_kg| & 
+$\mathrm{M}$ & 
+The SI unit of mass. It is defined by taking the fixed numerical value of the Planck constant $h$ to be $\qs{(_h_P/(_J*_s)):to()}$ when expressed in $\qu{_m^2*_kg/_s}$.\\
 
 electric \newline current &
 ampere & 
@@ -632,6 +649,7 @@ $\mathrm{C}$ &
 The value of the currency Euro. \\\hline
 
 \end{tabularx}
+\caption{base units}
 \end{table}
 
 
@@ -644,12 +662,11 @@ The value of the currency Euro. \\\hline
 
 All physical constants are taken from the NIST webpage \cite{nist19}.
 
-
 % print table row constant
 \newcommand{\printconstant}[2]{
   \directlua{tex.print(#1.unit.name)} & 
   |#1| &
-  \mbox{|#2|}\index{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
+  \mbox{|#2|}\index[unit]{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
 }
 
 \begin{table}[H]
@@ -765,7 +782,7 @@ end
   } &
   \directlua{tex.print(#2.unit.name)} & 
   |#2| &
-  \mbox{|#3|}\index{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
+  \mbox{|#3|}\index[unit]{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
 }
 
 \unittable{
@@ -784,7 +801,7 @@ end
   \printunit{_Wb}{_V*_s}
   \printunit{_T}{_Wb/_m^2}
   \printunit{_H}{_Wb/_A}
-  \printunit[Celsius Temperature\protect\footnotemark]{_degC}{_K}
+  \printunit[Temperature\protect\footnotemark]{_degC}{_K}
   \printunit[Luminous Flux]{_lm}{_cd*_sr}
   \printunit{_lx}{_lm/_m^2}
   \printunit[Activity]{_Bq}{1/_s}
@@ -818,7 +835,7 @@ end
 \subsection{Non-SI units accepted for use with the SI}
 \label{ch:non-si accepted}
 
-There are a few units with dimension $\mathrm{1}$.
+There are a few units with dimension $\mathrm{1}$. \cite[124]{bipm06}.
 
 \unittable{
   \printunit[Time]{_min}{60 * _s}
@@ -900,14 +917,14 @@ The unit Bel is only available with prefix decibel, because |_B| is the unit byt
   \printunit[ ]{_at}{_kp/_cm^2}
   \printunit[ ]{_mmHg}{133.322387415 * _Pa}
   \printunit[ ]{_Torr}{(101325/760) * _Pa}
-}
 
-\unittable{
   \printunit[Energy]{_cal}{4.184 * _J}
   \printunit[ ]{_cal_IT}{4.1868 * _J}
   \printunit[ ]{_g_TNT}{1e3 * _cal}
   \printunit[ ]{_t_TNT}{1e9 * _cal}
+}
 
+\unittable{
   \printunit[ ]{_eV}{_e*_V}
   \printunit[ ]{_Ws}{_W*_s}
   \printunit[ ]{_Wh}{_W*_h}
@@ -994,6 +1011,32 @@ The unit Bel is only available with prefix decibel, because |_B| is the unit byt
   \printunit[ ]{_qtr}{2*_st}
   \printunit[ ]{_cwt}{4*_qtr}
   \printunit[ ]{_ton}{20*_cwt}
+  \printunit[ ]{_lb_t}{5760*_gr}
+  \printunit[ ]{_oz_t}{_lb_t/12}
+  \printunit[ ]{_dwt}{24*_gr}
+  \printunit[ ]{_fir}{56*_lb}
+
+  \printunit[Time]{_sen}{7*_d}
+  \printunit[ ]{_ftn}{14*_d}
+
+  \printunit[Temperature\protect\footnotemark]{_degF}{(5/9)*_K}
+
+  \printunit[Force]{_lbf}{_lb*_g_0}
+  \printunit[ ]{_pdl}{_lb*_ft/_s^2}
+
+  \printunit[Mass]{_slug}{_lbf*_s^2/_ft}
+
+  \printunit{_psi}{_lbf/_in^2}
+
+  \printunit{_BTU}{(1897.83047608/1.8)*_J}
+  \printunit{_BTU_it}{1055.05585262 * _J}
+
+  \printunit{_hp}{33000*_ft*_lbf/_min}
+
+}
+
+\footnotetext[1]{
+  The unit \texttt{\_degF} is by default interpreted as a temperature difference. 
 }
 
 
@@ -1230,7 +1273,7 @@ The term |number| refers to a lua integer or a lua float number. By |string| a l
 
 
 
-
+%------------------------------------------------------------
 \subsection{physical.Quantity}
 The quantity class is the main part of the library. Each physical Quantity and all units are represented by an instance of this class.
 
@@ -1240,20 +1283,23 @@ The quantity class is the main part of the library. Each physical Quantity and a
   Copy Constuctor
 
   \begin{description}
-    \item |q| : |Q| or \ |number|, optional\\
-      Optional argument is either |Q|, a |number| or |nil|.
+    \item |q| : |Q|, |number|, |object|, |nil|\\
 
-    \item |return| : |Q|\\
-      The created |Q| instance
+    \item returns : |Q|\\
   \end{description}
 
-  As an argument it takes |Q|, |number| or |nil|. If |Q| is given, a copy of it is made and returned. If a |number| is given, the function creates a dimeensionless quantity with that value. In the case |nil| is given, the quantity |_1| is returned.
+  As an argument it takes |Q|, |number|, |object| or |nil|. If an instance of |Q| is given, a copy is made and returned. If a |number| or an instance |object| of another class is given, the function creates a dimensionless quantity with the |number| or the instance as a value. In the case |nil| is given, a dimensionless quantity with value 1 is returned.
 
   \subtitle{Example}
   \begin{lstlisting}
-  myOne = Q()
-  myNumber = Q(42)
-  myLength = Q(73*_m)
+  print( Q() )
+  1
+
+  print( Q(42) )
+  42
+
+  print( Q(73*_m) )
+  73 * _m
   \end{lstlisting}
 \end{quote}
 
@@ -1274,7 +1320,7 @@ The quantity class is the main part of the library. Each physical Quantity and a
   \item |dimension| : |D|\\
     An instance of the |D| class, which represents the dimension of the quantity.
 
-  \item |return| : |Q|\\
+  \item returns : |Q|\\
     The created |Q| instance.
   \end{description}
 
@@ -1972,10 +2018,7 @@ tex.write(tostring(x:atanh()))
 
 
 
-%
-%
-%
-%
+%------------------------------------------------------------
 \subsection{physical.Dimension}
 
  All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used to check equality and if addition or substraction is allowed.
@@ -2009,9 +2052,8 @@ tex.write(tostring(x:atanh()))
 
 
 
-%
-% physical.Unit
-%
+
+%------------------------------------------------------------
 \subsection{physical.Unit}
 
 The task of this class is keeping track of the unit term. The unit term is a fraction of units. The units in the enumerator and denominator can have an exponent. 
@@ -2072,9 +2114,8 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 
 
 
-%
-% physical.Number
-%
+
+%------------------------------------------------------------
 \subsection{physical.Number}
 
 It does arithmetics with gaussian error propagation. A number instance has a mean value called |x| and an uncertainty called |dx|.
@@ -2200,9 +2241,9 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
 
 
 \newpage
-\addcontentsline{toc}{section}{Index}
+\addcontentsline{toc}{section}{Index of Units}
 \indexprologue{}
-\printindex
+\printindex[unit]
 
 \newpage
 \addcontentsline{toc}{section}{Index of Currencies}
