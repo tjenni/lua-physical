@@ -106,32 +106,16 @@ function Quantity.define(symbol, name, q)
 
 	local p = Quantity.new(q)
 	
-	p.value = 1
-	p.basefactor = q.basefactor * q.value
-	p.unit = U.new(symbol, name)
+	if name ~= nil then
+		p.value = 1
+		p.basefactor = q.basefactor * q.value
+		p.unit = U.new(symbol, name)
+	else
+		local p = Quantity.new(q)
+	end
 
 	rawset(_G, "_"..symbol, p)
 
-	return p
-end
-
--- create derived quantities
-function Quantity.defineAlias(symbol, q)
-
-	-- check if quantity does already exist
-	if rawget(_G,"_"..symbol) ~= nil then
-		error("Error: Quantity '_"..symbol.."' does already exist.")
-	end
-
-	-- check if given value is a quantity
-	if getmetatable(q) ~= Quantity then
-		error("Error: No quantity given in the definition of '"..name.."'.")
-	end
-
-	local p = Quantity.new(q)
-	
-	rawset(_G, "_"..symbol, p)
-	
 	return p
 end
 

@@ -174,7 +174,7 @@ Q.define("H", "henry", _Wb/_A)
 -- T = (theta + _degC_0):to(_K)
 -- theta = T:to(_degC) - _degC_0
 Q.define("degC", "celsius", _K)
-Q.defineAlias("degC_0", 273.15*_K)
+Q.define("degC_0", nil, 273.15*_K)
 
 -- add prefixes
 -- remark: Don't create "peta siemens" because its symbol is the same for "Pferdestaerke", a common german unit for power.
@@ -461,7 +461,7 @@ Q.define("ftn", "fortnight", 14 * _d)
 -- T = (theta + _degF_0):to(_K)
 -- theta = (T - _degF_0):to(_degF)
 Q.define("degF", "fahrenheit", (5/9) * _K)
-Q.defineAlias("degF_0", (273.15 - 32*(5/9)) * _K)
+Q.define("degF_0", nil, (273.15 - 32*(5/9)) * _K)
 
 
 
