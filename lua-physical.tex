@@ -541,6 +541,10 @@ N_0 * Q.exp(-lambda * t)
 
 
 
+
+
+
+
 %------------------------------------------------------------
 \newpage
 \section{Supported Units}
@@ -559,7 +563,7 @@ Subchapter \ref{ch:non-si} lists units, which are common but outside of the SI s
 %------------------------------------------------------------
 \subsection{Prefixes}
 
-All SI units have prefixed versions, i.e. |_us| microsecond, |_cm| centimeter, see table \ref{tab:SI prefixes}. Some units of data processing, like |_bit| have prefixes which are powers of 2. They are called binary or IEC prefixes, see table \ref{tab:IEC prefixes}. \cite[121]{bipm06}
+All SI units have prefixed versions, i.e. |_us| microsecond, |_cm| centimeter, |_mN| millinewton, see table \ref{tab:SI prefixes}. Some units of data processing, like |_bit| have prefixes which are powers of 2. They are called binary or IEC prefixes, see table \ref{tab:IEC prefixes}. \cite[121]{bipm06}
 
 \begin{table}[H]
 \centering
@@ -729,8 +733,8 @@ The SI unit of electric current. It is defined by taking the fixed numerical val
 
 thermodynamic \newline temperature &
 kelvin  & 
-|_K| & 
-$\mathrm{\Theta}$ & 
+|_K| &
+$\mathrm{K}$ \protect\footnotemark & 
 The SI unit of the thermodynamic temperature. It is defineed by taking the fixed numerical value of the Boltzmann constant $k_B$ to be $\qs{(_k_B/(_J/_K)):to()}$ when expressed in $\q{_kg*_m^2*_s^-2*_K^-1}$\\
 
 amount of \newline substance &
@@ -761,8 +765,13 @@ $\mathrm{C}$ &
 The value of the currency Euro. \\\hline
 
 \end{tabularx}
-\caption{base units}
+\caption{Base units}
 \end{table}
+
+
+\footnotetext[1]{
+  The SI symbol for the dimension of temperature is $\mathrm{\Theta}$, but all symbols of this library consist of roman letters, numbers and underscores only. Therefore the symbol for the dimension of the thermodynamic temperature is the letter $\mathrm{K}$.
+}
 
 
 
@@ -838,6 +847,8 @@ All physical constants are taken from the NIST webpage \cite{nist19}.
 \hline
 
 \end{tabularx}
+\caption{Physical and mathematical constants}
+\label{tab:constants}
 \end{table}
 
 
@@ -932,7 +943,7 @@ end
 }
 
 \footnotetext[3]{
-  The unit \texttt{\_PS} stands for peta siemens and is in conflict with the german version of the unit horsepower (Pferdestärke). Since the latter is more common than peta siemens, \texttt{\_PS} is defined as the german version of horsepower.
+  The unit \texttt{\_PS} stands for peta siemens and is in conflict with the metric version of the unit horsepower (german Pferdestärke). Since the latter is more common than peta siemens, \texttt{\_PS} is defined to be the metric version of horsepower.
 }
 
 \footnotetext[4]{

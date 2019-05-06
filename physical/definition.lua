@@ -2,7 +2,7 @@
 This file contains the definitions for dimensions, prefixes,
 SI, Imperial and U.S. Survey units
 
-Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
+Copyright (c) 2019 Thomas Jenni (tjenni@me.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ local L = D.defineBase("L", "Length")
 local M = D.defineBase("M", "Mass")
 local T = D.defineBase("T", "Time")
 local I = D.defineBase("I", "Electric Current")
-local K = D.defineBase("θ", "Temperature")
+local K = D.defineBase("K", "Temperature")
 local N = D.defineBase("N", "Amount of Substance")
 local J = D.defineBase("J", "Luminous Intensity")
 local B = D.defineBase("B", "Information")

@@ -33,7 +33,7 @@ local L = D("L")
 local M = D("M")
 local T = D("T")
 local I = D("I")
-local K = D("θ")
+local K = D("K")
 local N = D("N")
 local J = D("J")
 
@@ -79,7 +79,7 @@ function TestDimension:testToString()
    lu.assertEquals( tostring(d), "[Force]" )
 
    local d = D(L^-1 * T * I^2 * K^3 * N^4 * J^5)
-   lu.assertEquals( tostring(d), "[L]^-1 [T] [I]^2 [θ]^3 [N]^4 [J]^5" )
+   lu.assertEquals( tostring(d), "[L]^-1 [T] [I]^2 [K]^3 [N]^4 [J]^5" )
 end
 
 function TestDimension:testEqual()

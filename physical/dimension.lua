@@ -3,7 +3,7 @@ The Dimension class keeps track of the dimenionality of a physical quantity.
 It can be used to perform validity checks on mathematical operations such as 
 addition and subtraction.
 
-Copyright (c) 2017 Thomas Jenni (tjenni@me.com)
+Copyright (c) 2019 Thomas Jenni (tjenni@me.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
