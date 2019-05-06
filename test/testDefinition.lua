@@ -795,8 +795,8 @@ end
 
 -- Temperature
 function TestDefinition:testFahrenheit()
-   local theta = -459.67*_degF
-   lu.assertTrue(  (theta + _degF_0):to(_K) == 0 * _K )
+   local theta = -457.87*_degF
+   lu.assertTrue(  (theta + _degF_0):to(_K):isclose(1*_K, 0.001) )
 
    -- the isclose function treats temperature units as differences
    local theta_1 = 32 * _degF

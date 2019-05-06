@@ -279,7 +279,9 @@ $$
 
 Most physical units transform linearly. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. 
 
-By default |_degC| and |_degF| units are temperature differences. If one wants to have it converted absolutely, it has to be done adding / subtracting the quantities |_degC_0| and |_degF_0|, the zero point temperatures.
+By default |_degC| and |_degF| units are temperature differences. If one wants to have it converted absolutely, it has to be done adding / subtracting  |_degC_0 = 273.15*_K| or |_degF_0 = (273.15 - 32*(5/9)) * _K|, 
+the zero point temperatures of the scales.
+
 
 In the following problem, Listing \ref{lst:temperature conversion} , the task is to convert temperatures given in the unit degree Celsius and degree Fahrenheit to Kelvin. 
 
@@ -287,40 +289,61 @@ In the following problem, Listing \ref{lst:temperature conversion} , the task is
 \begin{luacode}
   theta_1 = 110 * _degC
   T_1 = ( theta_1 + _degC_0 ):to(_K)
-  theta_1 = T_1:to(_degC) - _degC_0
 
-  theta_2 = 212 * _degF
-  T_2 = ( theta_2 + _degF_0 ):to(_K)
-  theta_2 = T_2:to(_degF) - _degF_0
+  T_2 = 100 * _K
+  theta_2 = ( T_2 - _degC_0 ):to(_degC)
+
+  theta_3 = 212 * _degF
+  T_3 = ( theta_3 + _degF_0 ):to(_K)
+
+  T_4 = 100 * _K
+  theta_4 = ( T_4 - _degF_0 ):to(_degF)
+
+  theta_5 = 100 * _degC
+  theta_6 = ( ( theta_5 + _degC_0 ):to(_K) - _degF_0):to(_degF)
 \end{luacode}
 
 \begin{align*}
-  \vartheta_1 &= \q{theta_1} \\
-  T_1 &= \q{T_1} \\
+  \q{theta_1} &\mathrel{\widehat{=}} \q{T_1} \\
   %
-  \vartheta_2 &= \q{theta_2} \\
-  T_2 &= \q{T_2} \\
+  \q{theta_2} &\mathrel{\widehat{=}} \q{T_2} \\
+  %
+  \q{theta_3} &\mathrel{\widehat{=}} \q{T_3} \\
+  %
+  \q{theta_4} &\mathrel{\widehat{=}} \q{T_4} \\
+  %
+  \q{theta_5} &\mathrel{\widehat{=}} \q{theta_6} \\
 \end{align*}
-
 \end{lstlisting}
 
 \begin{luacode}
   theta_1 = 110 * _degC
   T_1 = ( theta_1 + _degC_0 ):to(_K)
-  theta_1 = T_1:to(_degC) - _degC_0
 
-  theta_2 = 212 * _degF
-  T_2 = ( theta_2 + _degF_0 ):to(_K)
-  theta_2 = T_2:to(_degF) - _degF_0
+  T_2 = 100 * _K
+  theta_2 = ( T_2 - _degC_0 ):to(_degC)
+
+  theta_3 = 212 * _degF
+  T_3 = ( theta_3 + _degF_0 ):to(_K)
+
+  T_4 = 100 * _K
+  theta_4 = ( T_4 - _degF_0 ):to(_degF)
+
+  theta_5 = 100 * _degC
+  theta_6 = ( ( theta_5 + _degC_0 ):to(_K) - _degF_0):to(_degF)
 \end{luacode}
 
 \leftbar
 \begin{align*}
-  \vartheta_1 &= \q{theta_1} \\
-  T_1 &= \q{T_1} \\
+  \q{theta_1} &\mathrel{\widehat{=}} \q{T_1} \\
   %
-  \vartheta_2 &= \q{theta_2} \\
-  T_2 &= \q{T_2} \\
+  \q{theta_2} &\mathrel{\widehat{=}} \q{T_2} \\
+  %
+  \q{theta_3} &\mathrel{\widehat{=}} \q{T_3} \\
+  %
+  \q{theta_4} &\mathrel{\widehat{=}} \q{T_4} \\
+  %
+  \q{theta_5} &\mathrel{\widehat{=}} \q{theta_6}
 \end{align*}
 \endleftbar
 

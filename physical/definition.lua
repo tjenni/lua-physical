@@ -174,7 +174,7 @@ Q.define("H", "henry", _Wb/_A)
 -- T = (theta + _degC_0):to(_K)
 -- theta = T:to(_degC) - _degC_0
 Q.define("degC", "celsius", _K)
-Q.defineAlias("degC_0", 273.15*_degC)
+Q.defineAlias("degC_0", 273.15*_K)
 
 -- add prefixes
 -- remark: Don't create "peta siemens" because its symbol is the same for "Pferdestaerke", a common german unit for power.
@@ -445,23 +445,23 @@ Q.define("ton", "longton", 20*_cwt)
 
 -- Mass (Troy)
 
-Q.define("lb_t", "troypound", 5760*_gr)
+Q.define("lb_t", "troypound", 5760 * _gr)
 Q.define("oz_t", "troyounce", _lb_t/12)
-Q.define("dwt", "pennyweight", 24*_gr)
+Q.define("dwt", "pennyweight", 24 * _gr)
 
 -- Mass (Other)
 
-Q.define("fir", "firkin", 56*_lb)
+Q.define("fir", "firkin", 56 * _lb)
 
 -- Time
-Q.define("sen", "sennight", 7*_d)
-Q.define("ftn", "fortnight", 14*_d)
+Q.define("sen", "sennight", 7 * _d)
+Q.define("ftn", "fortnight", 14 * _d)
 
 -- Temperature
 -- T = (theta + _degF_0):to(_K)
--- theta = T:to(_degF) - _degF_0
-Q.define("degF", "fahrenheit", (5/9)*_K)
-Q.defineAlias("degF_0", 459.67*_degF)
+-- theta = (T - _degF_0):to(_degF)
+Q.define("degF", "fahrenheit", (5/9) * _K)
+Q.defineAlias("degF_0", (273.15 - 32*(5/9)) * _K)
 
 
 
