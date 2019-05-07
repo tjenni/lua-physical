@@ -1632,12 +1632,22 @@ tex.write(tostring(s:tosiunitx(nil,2)) )
 
 \method{Q}{isclose(self,q,r)}
 \begin{quote}
-  Checks if this quantity is close to another one. The argument |r| is the maximal relative deviation.
+  Checks if this quantity is close to another one. The argument |r| is the maximum relative deviation. The function returns |true| if the following condition is fullfilled
+
+  \begin{align*}
+   \frac{abs(\texttt{self} - \texttt{q})}{min(\texttt{self},\texttt{q})} \leq \texttt{r} \quad.
+  \end{align*}
 
   \begin{description}
-  \item |self| : |Quantity| 
-  \item |q| : |Quantity,Number| 
-  \item |r| : |Number| 
+  \item |self| : |Q|, |N|, |number|
+
+  \item |q| : |Q|, |N|, |number| 
+
+  \item |r| : |number|\\
+    maximum relative deviation of |self| and |q|
+
+  \item Returns : |bool|\\
+    |true| if q is close to |self|, otherwise |false|
   \end{description}
 
 \begin{lstlisting}
@@ -1667,12 +1677,19 @@ tex.write(tostring(s_1:isclose(s_2,1 * _percent)) )
 
 \method{Q}{min(q1, q2, ...)}
 \begin{quote}
-  Returns the smallest quantity of several given ones. The function returns |q1| if the Quantities are equal.
+  Returns the smallest quantity of the given ones. The function returns |q1| if the Quantities are equal.
 
   \begin{description}
-  \item |q1| : |Quantity,Number|, first argument
+  \item |q1| : |Q|, |N|, |number|
 
-  \item |q2| : |Quantity,Number|, second argument
+  \item |q2| : |Q|, |N|, |number|
+
+  \item ...
+
+  \item |qN| : |Q|, |N|, |number|\\
+
+  \item Returns : |Q|\\
+    the smallest quantity of |q1|, ... , |qN|
   \end{description}
 
 
@@ -1696,9 +1713,16 @@ tex.write(tostring(s_1:min(s_2)))
   Returns the biggest quantity of several given ones. The function returns |q1| if the Quantities are equal.
 
   \begin{description}
-  \item |q1| : |Quantity,Number|, first argument
+  \item |q1| : |Q|, |N|, |number|
 
-  \item |q2| : |Quantity,Number|, second argument
+  \item |q2| : |Q|, |N|, |number|
+
+  \item ...
+
+  \item |qN| : |Q|, |N|, |number|\\
+
+  \item Returns : |Q|\\
+    the biggest quantity of |q1|, ... , |qN|
   \end{description}
 
 
@@ -1725,7 +1749,6 @@ tex.write(tostring(s_1:max(s_2)))
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
-    dimensionless argument
 
   \item Returns : |Q|\\
     the absolute value of |q|

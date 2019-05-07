@@ -431,7 +431,7 @@ function Quantity:isclose(q, r)
 	
 	local delta = math.abs(q1 - q2)
 	local min = math.min(math.abs(q1),math.abs(q2))
-	return  (delta / min) < r
+	return  (delta / min) <= r
 end
 
 
