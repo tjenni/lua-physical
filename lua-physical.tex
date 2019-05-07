@@ -33,7 +33,7 @@
 \usepackage{float}
 \usepackage{ulem}
 \usepackage{xcolor}
-\usepackage{framed}
+\usepackage{tcolorbox}
 \usepackage{imakeidx}
 \usepackage{ifthen}
 \usepackage{perpage}
@@ -84,23 +84,28 @@ N = physical.Number
 }
 
 \lstset{
-  numberstyle=\footnotesize\color{gray},
-  keywordstyle=\ttfamily\bfseries\color{blue},
+  numberstyle=\footnotesize\color{green!50!black},
+  keywordstyle=\ttfamily\bfseries\color{black},
   basicstyle=\ttfamily\footnotesize,
   commentstyle=\itshape\color{gray},
   stringstyle=\ttfamily,
   tabsize=2,
-  numbers=left,
+  numbers=right,
   showstringspaces=false,
   breaklines=true,
-  framexleftmargin=20pt,
-  framexrightmargin=3.5pt,
-  xleftmargin=24.6pt,
   breakindent=30pt,
   morekeywords={},
-  frame=leftline,
-  framerule=2pt,
-  rulecolor=\color{blue},
+  abovecaptionskip=11pt,
+  belowcaptionskip=11pt,
+  xleftmargin=20pt,
+  xrightmargin=25pt,
+  frame=single,
+  framerule=0.5pt,
+  framesep=5pt,
+  frameround=tttt,
+  framexleftmargin=15pt,
+  framexrightmargin=20pt,
+  rulecolor=\color{green!50!black},
   mathescape=false,
   captionpos=t,
   escapechar=`
@@ -118,17 +123,13 @@ N = physical.Number
 \newcommand{\LuaLaTeX}{Lua\LaTeX}
 
 % left bar
-\renewenvironment{leftbar}[1][\hsize]
+\newenvironment{leftbar}
 {%
-    \def\FrameCommand
-    {%
-        {\color{blue!40!white}\vrule width 2pt}%
-        \hspace{10pt}%must no space.
-        \fboxsep=\FrameSep%\colorbox{yellow}
-    }%
-    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+\begin{tcolorbox}[colframe=green!50!black, colback=white, arc=5pt, boxrule=0.5pt,]%
 }
-{\endMakeFramed}
+{%
+\end{tcolorbox}%
+}
 
 % style for table header
 \newcommand\thead[1]{#1}
@@ -1463,7 +1464,7 @@ Q.defineBase("kg", "kilogram", M)
 
 
 
-\method{Quantity}{define(symbol, name, q)}
+\method{Q}{define(symbol, name, q)}
 \begin{quote}
   Creates a new derived quantity from an expression of other quantities. Affine quantities like the absolute temperature in celsius are not supported.
 
@@ -1498,7 +1499,7 @@ Q.define("degC", "celsius", _K)
 
 
 
-\method{Quantity}{definePrefix(symbol,name,factor)}
+\method{Q}{definePrefix(symbol,name,factor)}
 \begin{quote}
   Defines a new prefix.
 
@@ -1522,7 +1523,7 @@ Q.definePrefix("a", "atto", 1e-18)
 
 
 
-\method{Quantity}{addPrefix(prefixes, units)}
+\method{Q}{addPrefix(prefixes, units)}
 \begin{quote}
   Create several units with prefixes from a given unit.
 
@@ -1543,7 +1544,7 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 
 
 
-\method{Quantity}{to(self,q)}
+\method{Q}{to(self,q)}
 \begin{quote}
   Converts the quantity self to the unit of the quantity |q|.
 
@@ -1586,7 +1587,7 @@ tex.write(tostring(T:to(_K)) )
 
 
 
-\method{Quantity}{tosiunitx(self,param,mode)}
+\method{Q}{tosiunitx(self,param,mode)}
 \begin{quote}
   Converts the quantity into a siunitx string.
 
@@ -1629,7 +1630,7 @@ tex.write(tostring(s:tosiunitx(nil,2)) )
 
 
 
-\method{Quantity}{isclose(self,q,r)}
+\method{Q}{isclose(self,q,r)}
 \begin{quote}
   Checks if this quantity is close to another one. The argument |r| is the maximal relative deviation.
 
@@ -1664,7 +1665,7 @@ tex.write(tostring(s_1:isclose(s_2,1 * _percent)) )
 
 
 
-\method{Quantity}{min(q1, q2, ...)}
+\method{Q}{min(q1, q2, ...)}
 \begin{quote}
   Returns the smallest quantity of several given ones. The function returns |q1| if the Quantities are equal.
 
@@ -1690,7 +1691,7 @@ tex.write(tostring(s_1:min(s_2)))
 \end{quote}
 
 
-\method{Quantity}{max(q1, q2, ...)}
+\method{Q}{max(q1, q2, ...)}
 \begin{quote}
   Returns the biggest quantity of several given ones. The function returns |q1| if the Quantities are equal.
 
@@ -1718,12 +1719,16 @@ tex.write(tostring(s_1:max(s_2)))
 
 
 
-\method{Quantity}{abs(q)}
+\method{Q}{abs(q)}
 \begin{quote}
   Returns the absolute value of the given quantity |q|.
 
   \begin{description}
-  \item |q| : |Quantity,Number|, argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    the absolute value of |q|
   \end{description}
 
 
@@ -1749,23 +1754,27 @@ tex.write(tostring(U:abs()))
 
 
 
-\method{Quantity}{sqrt(q)}
+\method{Q}{sqrt(q)}
 \begin{quote}
   Returns the square root of the given quantity.
 
   \begin{description}
-  \item |q| : |Quantity,Number| argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    the square root of |q|
   \end{description}
 
 
 \begin{lstlisting}
 A = 25 * _m^2
-s = sqrt(A)
+s = A:sqrt()
 print(s)
 `
 \begin{luacode}
 A = 25 * _m^2
-s = sqrt(A)
+s = A:sqrt()
 tex.write(tostring(s))
 \end{luacode}
 `
@@ -1774,13 +1783,19 @@ tex.write(tostring(s))
 
 
 
-\method{Quantity}{log(q, base)}
+\method{Q}{log(q, base=nil)}
 \begin{quote}
-  Returns the logarithm of the given quantitiy. If no base is given, the natural logarithm is calculated.
+  Returns the logarithm of a given quantitiy to the given base. If no base is given, the natural logarithm is returned.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
-  \item |base| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item |base| : |Q|, |N|, |number|, |nil|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    logarithm  of |q| to the |base|
   \end{description}
 
 
@@ -1801,12 +1816,16 @@ tex.write(tostring(10 * (I/I_0):log(10.0) *_dB ))
 
 
 
-\method{Quantity}{exp(q)}
+\method{Q}{exp(q)}
 \begin{quote}
-  Returns the value of the exponential function of the given quantitiy.
+  Returns the value of the natural exponential function of the given quantitiy.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    natural exponential of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -1824,12 +1843,16 @@ tex.write(tostring(x:exp()))
 
 
 
-\method{Quantity}{sin(q)}
+\method{Q}{sin(q)}
 \begin{quote}
   Returns the value of the sinus function of the given quantitiy.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    sine of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -1847,12 +1870,16 @@ tex.write(tostring(alpha:sin()))
 
 
 
-\method{Quantity}{cos(q)}
+\method{Q}{cos(q)}
 \begin{quote}
   Returns the value of the cosinus function of the given quantity. The quantity has to be dimensionless.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    cosine of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -1870,12 +1897,16 @@ tex.write(tostring(alpha:cos()))
 
 
 
-\method{Quantity}{tan(q)}
+\method{Q}{tan(q)}
 \begin{quote}
   Returns the value of the tangent function of the given quantity. The quantity has to be dimensionless.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    tangent of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -1893,12 +1924,16 @@ tex.write(tostring(alpha:tan()))
 
 
 
-\method{Quantity}{asin(q)}
+\method{Q}{asin(q)}
 \begin{quote}
   Returns the value of the arcus sinus function of the given quantity. The quantity has to be dimensionless.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    inverse sine of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -1916,12 +1951,16 @@ tex.write(tostring(x:asin():to(_deg)))
 
 
 
-\method{Quantity}{acos(q)}
+\method{Q}{acos(q)}
 \begin{quote}
   Returns the value of the arcus cosinus function of the given quantity. The quantity has to be dimensionless.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    inverse cosine of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -1940,12 +1979,16 @@ tex.write(tostring(x:acos():to(_deg)))
 
 
 
-\method{Quantity}{atan(q)}
+\method{Q}{atan(q)}
 \begin{quote}
   Returns the value of the arcus tangent function of the given quantity. The quantity has to be dimensionless.
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    inverse tangent of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -1964,16 +2007,21 @@ tex.write(tostring(x:atan():to(_deg)))
 
 
 
-\method{Quantity}{sinh(q)}
+\method{Q}{sinh(q)}
 \begin{quote}
-  Returns the value of the hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  Returns the value of the hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
   $$
     \sinh(x) = 0.5 \cdot e^x - 0.5 / e^x  \quad.
   $$
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    hyperbolic sine of |q|
   \end{description}
+
 
 \begin{lstlisting}
 x = 1 * _1
@@ -1990,15 +2038,19 @@ tex.write(tostring(x:sinh()))
 
 
 
-\method{Quantity}{cosh(q)}
+\method{Q}{cosh(q)}
 \begin{quote}
-  Returns the value of the hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  Returns the value of the hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
   $$
     \cosh(x) = 0.5 \cdot e^x + 0.5 / e^x  \quad.
   $$
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    hyperbolic cosine of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -2016,16 +2068,19 @@ tex.write(tostring(x:cosh()))
 
 
 
-\method{Quantity}{tanh(q)}
+\method{Q}{tanh(q)}
 \begin{quote}
-  Returns the value of the hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  Returns the value of the hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
   $$
     \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \quad.
   $$
 
-
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    hyperbolic tangent of |q|
   \end{description}
 
 \begin{lstlisting}
@@ -2044,17 +2099,21 @@ tex.write(tostring(x:tanh()))
 
 
 
-\method{Quantity}{asinh(q)}
+\method{Q}{asinh(q)}
 \begin{quote}
-  Returns the value of the inverse hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  Returns the value of the inverse hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
   $$
     \text{asinh}(x) = \ln\left( x + \sqrt{x^2 + 1} \right)  \quad.
   $$
 
-
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument
+
+  \item Returns : |Q|\\
+    inverse hyperbolic sine of |q|
   \end{description}
+
 
 \begin{lstlisting}
 x = 1 * _1
@@ -2071,17 +2130,21 @@ tex.write(tostring(x:asinh()))
 
 
 
-\method{Quantity}{acosh(q)}
+\method{Q}{acosh(q)}
 \begin{quote}
-  Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
   $$
     \text{acosh}(x) = \ln\left( x + \sqrt{x^2 - 1} \right)  \quad, x > 1 \quad.
   $$
 
-
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument bigger than or equal to one.
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument bigger or equal to one
+
+  \item Returns : |Q|\\
+    inverse hyperbolic cosine of |q|
   \end{description}
+
 
 \begin{lstlisting}
 x = 2 * _1
@@ -2098,16 +2161,22 @@ tex.write(tostring(x:acosh()))
 
 
 
-\method{Quantity}{atanh(q)}
+\method{Q}{atanh(q)}
 \begin{quote}
-  Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since lua doesn't implement the hyperbolic functions the following formula is used 
+  Returns the value of the inverse hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
   $$
     \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, -1 < x < 1 \quad.
   $$
 
   \begin{description}
-  \item |q| : |Quantity,Number| dimensionless argument with magnitude smaller than one.
+  \item |q| : |Q|, |N|, |number|\\
+    dimensionless argument with magnitude smaller than one
+
+  \item Returns : |Q|\\
+    inverse hyperbolic tangent of |q|
   \end{description}
+
+
 
 \begin{lstlisting}
 x = 0.5 * _1
