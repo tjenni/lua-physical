@@ -41,10 +41,11 @@
 
 
 % lua code and lua-physical command definitions
-\begin{luacode*}
+\begin{luacode}
 physical = require("physical")
 N = physical.Number
-\end{luacode*}
+Q = physical.Quantity
+\end{luacode}
 
 \newcommand{\q}[1]{%
   \directlua{tex.print(physical.Quantity.tosiunitx(#1,"add-decimal-zero=true,scientific-notation=fixed,exponent-to-prefix=false"))}%
@@ -108,7 +109,8 @@ N = physical.Number
   rulecolor=\color{green!50!black},
   mathescape=false,
   captionpos=t,
-  escapechar=`
+  escapechar=`,
+  moredelim=**[is][\color{red}]{@}{@},
 }
 
 
@@ -138,6 +140,7 @@ N = physical.Number
 \newcommand{\Index}[1]{#1\index{#1}}
 \makeindex[name=cur,title={Index of Currencies}]
 \makeindex[name=unit,title={Index of Units}]
+\makeindex[name=lua,title={Index of Lua Classes and Methods}]
 
 % reset footnotes numbers for each page.
 \MakePerPage{footnote}
@@ -1378,7 +1381,7 @@ International currency which are pegged to other currencies.
 %------------------------------------------------------------
 
 % shortcut for method definitions
-\newcommand{\method}[2]{\subsection*{|#1.#2|}}
+\newcommand{\method}[2]{\subsection*{|#1.#2|}\index[lua]{\texttt{#1.#2}}}
 
 \newcommand{\subtitle}[1]{\noindent \\\textbf{#1}}
 
@@ -1409,12 +1412,11 @@ The quantity class is the main part of the library. Each physical Quantity and a
   \begin{description}
     \item |q| : |Q|, |number|, |object|, |nil|\\
 
-    \item returns : |Q|\\
+    \item Returns : |Q|\\
   \end{description}
 
   As an argument it takes |Q|, |number|, |object| or |nil|. If an instance of |Q| is given, a copy is made and returned. If a |number| or an instance |object| of another class is given, the function creates a dimensionless quantity with the |number| or the instance as a value. In the case |nil| is given, a dimensionless quantity with value 1 is returned.
 
-  \subtitle{Example}
   \begin{lstlisting}
   print( Q() )
   1
@@ -1444,7 +1446,7 @@ The quantity class is the main part of the library. Each physical Quantity and a
   \item |dimension| : |D|\\
     An instance of the |D| class, which represents the dimension of the quantity.
 
-  \item returns : |Q|\\
+  \item Returns : |Q|\\
     The created |Q| instance.
   \end{description}
 
@@ -1454,7 +1456,6 @@ The quantity class is the main part of the library. Each physical Quantity and a
 
   Each quantity has a dimension associated with it. The argument |dimension| allows any dimension to be associated to base quantities.
 
-  \subtitle{Example}
   \begin{lstlisting}
 Q.defineBase("m", "meter", L)
 Q.defineBase("kg", "kilogram", M)
@@ -1478,7 +1479,7 @@ Q.defineBase("kg", "kilogram", M)
   \item |q| : |physical.Quantity|\\
     The definition of the derived quantity.
 
-  \item |return| : |Quantity|\\
+  \item Returns : |Q|\\
     The created quantity.
   \end{description}
 
@@ -1486,7 +1487,6 @@ Q.defineBase("kg", "kilogram", M)
 
   The |name| is used for example in the siunitx conversion function, e.g |newton| will be converted to |\newton|. 
 
-  \subtitle{Example}
   \begin{lstlisting}
 Q.define("L", "liter", _dm^3)
 Q.define("Pa", "pascal", _N/_m^2)
@@ -1531,7 +1531,7 @@ Q.definePrefix("a", "atto", 1e-18)
   \item |prefixes| : |string|\\
     A list of unit symbols.
 
-  \item |units| : |Quantity|\\
+  \item |units| : |Q|\\
     A list of quantities.
   \end{description}
 
@@ -1540,93 +1540,6 @@ Q.definePrefix("a", "atto", 1e-18)
 Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
 \end{lstlisting}
 \end{quote}
-
-
-
-
-\method{Q}{to(self,q)}
-\begin{quote}
-  Converts the quantity self to the unit of the quantity |q|.
-
-  \begin{description}
-  \item |self| : |Quantity|\\
-    A quantity.
-
-  \item |q| : |Quantity|
-    The quantity to wich |self| will be converted to.
-  \end{description}
-
-\begin{lstlisting}
-s = 1.9 * _km
-print( s:to(_m) )
-`
-\begin{luacode}
-s = 1.9 * _km
-tex.write(tostring(s:to(_m)) )
-\end{luacode}
-`
-
-T = 10 * _degC
-print( T:to(_K) )
-`
-\begin{luacode}
-T = 10 * _degC
-tex.write(tostring(T:to(_K)) )
-\end{luacode}
-`
-print( T:to(_K) )
-`
-\begin{luacode}
-T = 10 * _degC
-tex.write(tostring(T:to(_K)) )
-\end{luacode}
-`
-\end{lstlisting}
-
-\end{quote}
-
-
-
-\method{Q}{tosiunitx(self,param,mode)}
-\begin{quote}
-  Converts the quantity into a siunitx string.
-
-  \begin{description}
-  \item |self| : |Quantity| 
-  \item |param| : |string|
-  \item |mode| : |Number|, 0:\textbackslash SI, 1:\textbackslash num, 2:\textbackslash si
-  \end{description}
-
-\begin{lstlisting}
-s = 1.9 * _km
-
-print( s:tosiunitx() )
-`
-\begin{luacode}
-s = 1.9 * _km
-tex.write(tostring(s:tosiunitx()) )
-\end{luacode}
-`
-
-print( s:tosiunitx(nil,1) )
-`
-\begin{luacode}
-tex.write(tostring(s:tosiunitx(nil,1)) )
-\end{luacode}
-`
-
-print( s:tosiunitx(nil,2) )
-`
-\begin{luacode}
-tex.write(tostring(s:tosiunitx(nil,2)) )
-\end{luacode}
-`
-\end{lstlisting}
-
-\end{quote}
-
-
-
 
 
 
@@ -1672,6 +1585,96 @@ tex.write(tostring(s_1:isclose(s_2,1 * _percent)) )
 \end{lstlisting}
 
 \end{quote}
+
+
+\method{Q}{to(self,q=nil)}
+\begin{quote}
+  Converts the quantity |self| to the unit of the quantity |q|. If no |q| is given, the quantity |self| is converted to base units.
+
+  \begin{description}
+  \item |self| : |Q|
+
+  \item |q| : |Q|, |nil|
+  \end{description}
+
+\begin{lstlisting}
+s = 1.9 * _km
+print( s:to(_m) )
+`
+\begin{luacode}
+s = 1.9 * _km
+tex.write(tostring(s:to(_m)) )
+\end{luacode}
+`
+
+T = 10 * _degC
+print( T:to(_K) )
+`
+\begin{luacode}
+T = 10 * _degC
+tex.write(tostring(T:to(_K)) )
+\end{luacode}
+`
+
+print( T:to() )
+`
+\begin{luacode}
+tex.write(tostring(T:to()) )
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Q}{tosiunitx(self,param,mode=Q.siunitx\_SI)}
+\begin{quote}
+  Converts the quantity into a |siunitx| string. 
+
+  \begin{description}
+  \item |self| : |Q|
+
+  \item |param| : |string|
+
+  \item |mode| : |number|
+  \end{description}
+
+  If |mode| is equal |Q.siunitx_SI|, which is the default, the quantity is converted to an \textbackslash SI\{\}\{\} macro. If mode is |Q.siunitx_num|, the quantity is converted to \textbackslash num\{\} and if it is |Q.siunitx_si| the macro \textbackslash si\{\} is printed.
+
+\begin{lstlisting}
+s = 1.9 * _km
+
+print( s:tosiunitx() )
+`
+\begin{luacode}
+s = 1.9 * _km
+tex.write(tostring(s:tosiunitx()) )
+\end{luacode}
+`
+
+print( s:tosiunitx(nil,Q.siunitx_num) )
+`
+\begin{luacode}
+tex.write(tostring(s:tosiunitx(nil,Q.siunitx_num)) )
+\end{luacode}
+`
+
+print( s:tosiunitx(nil,Q.siunitx_si) )
+`
+\begin{luacode}
+tex.write(tostring(s:tosiunitx(nil,Q.siunitx_si)) )
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
+
+
 
 
 
@@ -2448,6 +2451,11 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
 \addcontentsline{toc}{section}{Index of Currencies}
 \indexprologue{}
 \printindex[cur]
+
+\newpage
+\addcontentsline{toc}{section}{Index of Lua Classes and Methods}
+\indexprologue{}
+\printindex[lua]
 
 
 \end{document}

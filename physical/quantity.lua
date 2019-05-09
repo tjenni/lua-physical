@@ -45,6 +45,11 @@ Quantity._base = {}
 -- registry for prefixes
 Quantity._prefixes = {}
 
+-- modes for the function tosiunitx()
+Quantity.siunitx_SI = 0
+Quantity.siunitx_num = 1
+Quantity.siunitx_si = 2
+
 
 -- constructor
 function Quantity.new(q)
@@ -103,7 +108,7 @@ function Quantity.define(symbol, name, q)
 	if getmetatable(q) ~= Quantity then
 		error("Error: No quantity given in the definition of '"..name.."'.")
 	end
-
+	
 	local p = Quantity.new(q)
 	
 	if name ~= nil then
@@ -247,7 +252,7 @@ function Quantity.__div(q1, q2)
 	if getmetatable(q2) ~= Quantity then
 		q2 = Quantity.new(q2)
 	end
-
+	
 	local p = Quantity.new()
 	
 	p.dimension = q1.dimension / q2.dimension
@@ -325,6 +330,33 @@ function Quantity.__lt(q1,q2)
 	return q1:to().value < q2:to().value
 end
 
+-- check if this quantity is close to another one. r is the maximal relative deviation.
+function Quantity:isclose(q, r)
+
+	if getmetatable(q) ~= Quantity then
+		q = Quantity.new(q)
+	end
+
+	if getmetatable(r) ~= Quantity then
+		r = Quantity.new(r)
+	end
+
+	if self.dimension ~= q.dimension then
+		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q)..", because they have different dimensions.")
+	end
+	if not r.dimension:iszero() then
+		error("Error. The argument '"..tostring(r).."' of the isclose function is not unitless.")
+	end
+	
+	local q1 = self:to():__tonumber()
+	local q2 = q:to():__tonumber()
+	local r = r:to():__tonumber()
+	
+	local delta = math.abs(q1 - q2)
+	local min = math.min(math.abs(q1),math.abs(q2))
+	return  (delta / min) <= r
+end
+
 
 -- convert quantity to another unit
 function Quantity:to(q)
@@ -384,54 +416,26 @@ end
 -- convert quantity to an siunitx expression
 function Quantity:tosiunitx(param,mode)
 
-	mode = mode or 0
+	mode = mode or self.siunitx_SI
 	param = param or ""
 
 	if param ~= "" then
 		param = "["..param.."]"
 	end
 
-	if mode == 0 then
+	if mode == Quantity.siunitx_SI then
 		return "\\SI"..param.."{"..tostring(self.value).."}".."{"..self.unit:tosiunitx().."}"
 
-	elseif mode == 1 then
+	elseif mode == Quantity.siunitx_num then
 		return "\\num"..param.."{"..tostring(self.value).."}"
 
-	elseif mode == 2 then
+	elseif mode == Quantity.siunitx_si then
 		return "\\si"..param.."{"..self.unit:tosiunitx().."}"
 
 	else
 		error("Error: Unknown mode '"..tostring(mode).."'.")
 	end
 
-end
-
-
--- check if this quantity is close to another one. r is the maximal relative deviation.
-function Quantity:isclose(q, r)
-
-	if getmetatable(q) ~= Quantity then
-		q = Quantity.new(q)
-	end
-
-	if getmetatable(r) ~= Quantity then
-		r = Quantity.new(r)
-	end
-
-	if self.dimension ~= q.dimension then
-		error("Error: Cannot compare '"..tostring(self).."' to '"..tostring(q)..", because they have different dimensions.")
-	end
-	if not r.dimension:iszero() then
-		error("Error. The argument '"..tostring(r).."' of the isclose function is not unitless.")
-	end
-	
-	local q1 = self:to():__tonumber()
-	local q2 = q:to():__tonumber()
-	local r = r:to():__tonumber()
-	
-	local delta = math.abs(q1 - q2)
-	local min = math.min(math.abs(q1),math.abs(q2))
-	return  (delta / min) <= r
 end
 
 
