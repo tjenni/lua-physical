@@ -1412,7 +1412,7 @@ The quantity class is the main part of the library. Each physical Quantity and a
   \begin{description}
     \item |q| : |Q|, |number|, |object|, |nil|\\
 
-    \item Returns : |Q|\\
+    \item returns : |Q|\\
   \end{description}
 
   As an argument it takes |Q|, |number|, |object| or |nil|. If an instance of |Q| is given, a copy is made and returned. If a |number| or an instance |object| of another class is given, the function creates a dimensionless quantity with the |number| or the instance as a value. In the case |nil| is given, a dimensionless quantity with value 1 is returned.
@@ -1446,7 +1446,7 @@ The quantity class is the main part of the library. Each physical Quantity and a
   \item |dimension| : |D|\\
     An instance of the |D| class, which represents the dimension of the quantity.
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     The created |Q| instance.
   \end{description}
 
@@ -1479,7 +1479,7 @@ Q.defineBase("kg", "kilogram", M)
   \item |q| : |physical.Quantity|\\
     The definition of the derived quantity.
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     The created quantity.
   \end{description}
 
@@ -1559,7 +1559,7 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
   \item |r| : |number|\\
     maximum relative deviation of |self| and |q|
 
-  \item Returns : |bool|\\
+  \item returns : |bool|\\
     |true| if q is close to |self|, otherwise |false|
   \end{description}
 
@@ -1691,7 +1691,7 @@ tex.write(tostring(s:tosiunitx(nil,Q.siunitx_si)) )
 
   \item |qN| : |Q|, |N|, |number|\\
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     the smallest quantity of |q1|, ... , |qN|
   \end{description}
 
@@ -1724,7 +1724,7 @@ tex.write(tostring(s_1:min(s_2)))
 
   \item |qN| : |Q|, |N|, |number|\\
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     the biggest quantity of |q1|, ... , |qN|
   \end{description}
 
@@ -1753,7 +1753,7 @@ tex.write(tostring(s_1:max(s_2)))
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     the absolute value of |q|
   \end{description}
 
@@ -1788,7 +1788,7 @@ tex.write(tostring(U:abs()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     the square root of |q|
   \end{description}
 
@@ -1820,7 +1820,7 @@ tex.write(tostring(s))
   \item |base| : |Q|, |N|, |number|, |nil|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     logarithm  of |q| to the |base|
   \end{description}
 
@@ -1850,7 +1850,7 @@ tex.write(tostring(10 * (I/I_0):log(10.0) *_dB ))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     natural exponential of |q|
   \end{description}
 
@@ -1877,7 +1877,7 @@ tex.write(tostring(x:exp()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     sine of |q|
   \end{description}
 
@@ -1904,7 +1904,7 @@ tex.write(tostring(alpha:sin()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     cosine of |q|
   \end{description}
 
@@ -1931,7 +1931,7 @@ tex.write(tostring(alpha:cos()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     tangent of |q|
   \end{description}
 
@@ -1958,7 +1958,7 @@ tex.write(tostring(alpha:tan()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     inverse sine of |q|
   \end{description}
 
@@ -1985,7 +1985,7 @@ tex.write(tostring(x:asin():to(_deg)))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     inverse cosine of |q|
   \end{description}
 
@@ -2013,7 +2013,7 @@ tex.write(tostring(x:acos():to(_deg)))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     inverse tangent of |q|
   \end{description}
 
@@ -2044,7 +2044,7 @@ tex.write(tostring(x:atan():to(_deg)))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     hyperbolic sine of |q|
   \end{description}
 
@@ -2075,7 +2075,7 @@ tex.write(tostring(x:sinh()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     hyperbolic cosine of |q|
   \end{description}
 
@@ -2105,7 +2105,7 @@ tex.write(tostring(x:cosh()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     hyperbolic tangent of |q|
   \end{description}
 
@@ -2136,7 +2136,7 @@ tex.write(tostring(x:tanh()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     inverse hyperbolic sine of |q|
   \end{description}
 
@@ -2167,7 +2167,7 @@ tex.write(tostring(x:asinh()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument bigger or equal to one
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     inverse hyperbolic cosine of |q|
   \end{description}
 
@@ -2198,7 +2198,7 @@ tex.write(tostring(x:acosh()))
   \item |q| : |Q|, |N|, |number|\\
     dimensionless argument with magnitude smaller than one
 
-  \item Returns : |Q|\\
+  \item returns : |Q|\\
     inverse hyperbolic tangent of |q|
   \end{description}
 
@@ -2233,7 +2233,7 @@ tex.write(tostring(x:atanh()))
   \item |q| : |Dimension| or |string|, optional\\
     The name or symbol of the dimension. If |q| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
 
-  \item |return| : |Dimension|\\
+  \item returns : |Dimension|\\
     The created |Quantity| object
   \end{description}
 
@@ -2268,7 +2268,7 @@ The task of this class is keeping track of the unit term. The unit term is a fra
   \item |u| : |Unit|\\
     The unit object which will be copied.
 
-  \item |return| : |Unit|\\
+  \item returns : |Unit|\\
     The created |Unit| object
   \end{description}
 
@@ -2292,7 +2292,7 @@ The task of this class is keeping track of the unit term. The unit term is a fra
   \item |prefixname| : |String|\\
     The optional name of the prefix. 
 
-  \item |return| : |Unit|\\
+  \item returns : |Unit|\\
     The created |Unit| object
   \end{description}
 
@@ -2306,7 +2306,7 @@ The task of this class is keeping track of the unit term. The unit term is a fra
   The unit term will be compiled into a string, which the LaTeX package siunitx can understand.
 
   \begin{description}
-  \item |return| : |String|\\
+  \item returns : |String|\\
     The siunitx representation of the unit term.
   \end{description}
 
@@ -2319,9 +2319,15 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 %------------------------------------------------------------
 \subsection{physical.Number}
 
-It does arithmetics with gaussian error propagation. A number instance has a mean value called |x| and an uncertainty called |dx|.
+\begin{luacode}
+N.omitUncertainty = false
+N.seperateUncertainty = true
+N.format = N.DECIMAL
+\end{luacode}
 
-\method{Number}{new(n=nil)}
+It does arithmetics with gaussian error propagation. A number instance has a mean value called |x| and an uncertainty value called |dx|.
+
+\method{N}{new(n=nil)}
 \begin{quote}
   This is the copy Constructor. It copies a given number object. If |n| is |nil|, an instance representing number zero with uncertainty zero is created.
 
@@ -2329,107 +2335,209 @@ It does arithmetics with gaussian error propagation. A number instance has a mea
   \item |n| : |Number|\\
     The number object to be copied.
 
-  \item |return| : |Number|\\
+  \item returns : |Number|\\
     The created |Number| instance.
   \end{description}
+
+\begin{lstlisting}
+n = N(56,0.012)
+m = N(n)
+print(m)
+`
+\begin{luacode}
+n = N(56,0.012)
+m = N(n)
+tex.write(tostring(m))
+\end{luacode}
+`
+\end{lstlisting}
 
 \end{quote}
 
 
-\method{Number}{new(x, dx)}
+\method{N}{new(x, dx=nil)}
 \begin{quote}
-  This constructor, creates a new instance with mean value |x| and uncertainty |dx|.
+  This constructor, creates a new instance of |N| with mean value |x| and uncertainty |dx|. If |dx| is not given, the uncertainty is zero.
 
   \begin{description}
   \item |x| : |number|\\
     mean value
 
-  \item |dx| : |number|\\
+  \item |dx| : |number|, |nil|\\
     uncertainty value
 
-  \item |return| : |Number|\\
-    The created |Number| instance.
+  \item returns : |N|\\
+    The created |N| instance.
   \end{description}
 
-  \subtitle{Example}
-  \begin{lstlisting}
-  n = N(12,0.1)
-  print(n)
-  \end{lstlisting}
+\begin{lstlisting}
+n = N(56,0.012)
+print(n)
+`
+\begin{luacode}
+n = N(56,0.012)
+tex.write(tostring(n))
+\end{luacode}
+`
+\end{lstlisting}
 
 \end{quote}
 
-\method{Number}{new(str)}
+\method{N}{new(str)}
 \begin{quote}
-  This constructor creates a new instance from a string. It can parse strings of the form |3.4|, |3.4e-3|, |5.4e-3 +/- 2.4e-6|, |5.45(7)e-23|. 
+  This constructor creates a new instance of |N| from a string. It can parse strings of the form |"3.4"|, |"3.4e-3"|, |"5.4e-3 +/- 2.4e-6"| and |"5.45(7)e-23"|. 
 
-  \subtitle{Parameters / Return}
   \begin{description}
   \item |str| : |string|\\
     The number as a string.
 
-  \item |return| : |Number|\\
-    The created |Number| object
+  \item returns : |N|\\
+    The created |N| object
   \end{description}
 
-  \subtitle{Example}
-  \begin{lstlisting}
-  n_1 = N("12.3e-6")
-  print(n_1)
+\begin{lstlisting}
+n_1 = N("12.3e-3")
+print(n_1)
+`
+\begin{luacode}
+n_1 = N("12.3e-3")
+tex.write(tostring(n_1))
+\end{luacode}
+`
 
-  n_2 = N("12 +/- 0.1")
-  print(n_2)
+n_2 = N("12 +/- 0.1")
+print(n_2)
+`
+\begin{luacode}
+n_2 = N("12 +/- 0.1")
+tex.write(tostring(n_2))
+\end{luacode}
+`
 
-  n_3 = N("12.0(1)")
-  print(n_3)
-  \end{lstlisting}
+n_3 = N("12.0(1)")
+print(n_3)
+`
+\begin{luacode}
+n_3 = N("12.0(1)")
+tex.write(tostring(n_3))
+\end{luacode}
+`
+
+n_4 = N("15.0(12)")
+print(n_4)
+`
+\begin{luacode}
+n_4 = N("15.0(12)")
+tex.write(tostring(n_4))
+\end{luacode}
+`
+\end{lstlisting}
 \end{quote}
 
 
 
-\method{Number}{mean(n)}
+\method{N}{mean(n)}
 \begin{quote}
-  Returns the mean value
+  Returns the mean value of |n|.
 
   \subtitle{Parameters / Return}
   \begin{description}
-  \item |return| : |number|\\
-    The mean value
+  \item returns : |number|\\
+    The mean value of |n|
   \end{description}
+
+\begin{lstlisting}
+n = N(1.25,0.0023)
+print( n:mean() )
+`
+\begin{luacode}
+n = N(1.25,0.0023)
+tex.write(tostring(n:mean()))
+\end{luacode}
+`
+\end{lstlisting}
+
 \end{quote}
 
-\method{Number}{uncertainty(n)}
+\method{N}{uncertainty(n)}
 \begin{quote}
-  Returns the uncertainty value
+  Returns the uncertainty value of |n|.
 
-  \subtitle{Parameters / Return}
   \begin{description}
-  \item |return| : |number|\\
-    The uncertainty value
+  \item |n| : |N|
+
+  \item returns : |number|\\
+    The uncertainty value of |N|
   \end{description}
+
+\begin{lstlisting}
+n = N(1.25,0.0023)
+print( n:uncertainty() )
+`
+\begin{luacode}
+n = N(1.25,0.0023)
+tex.write(tostring(n:uncertainty()))
+\end{luacode}
+`
+\end{lstlisting}
+
 \end{quote}
 
 
-\method{Number}{abs(n)}
+\method{N}{abs(n)}
 \begin{quote}
-  Returns the absolute value of the number.
+  Returns the absolute value of |n|. The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \Delta x
+  \end{align*}
 
-  \subtitle{Parameters / Return}
   \begin{description}
-  \item |return| : |number|\\
-    The absolute value
+  \item |n| : |N|
+
+  \item returns : |N|\\
+    The absolute value of |n|
   \end{description}
+
+\begin{lstlisting}
+n = N(-10,1)
+print( n:abs() )
+`
+\begin{luacode}
+n = N(-10,1)
+tex.write(tostring(n:abs()))
+\end{luacode}
+`
+\end{lstlisting}
+
 \end{quote}
 
-\method{Number}{sqrt(n)}
+\method{N}{sqrt(n)}
 \begin{quote}
-  Returns the square root of the number.
+  Returns the square root of |n|. The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \frac{1}{2 \sqrt{x}} \cdot \Delta x
+  \end{align*}
 
-  \subtitle{Parameters / Return}
   \begin{description}
-  \item |return| : |number|\\
-    The square root
+  \item |n| : |N|
+
+  \item returns : |N| \\
+    The square root of |n|
   \end{description}
+
+\begin{lstlisting}
+n = N(25,1)
+print( n:sqrt() )
+`
+\begin{luacode}
+n = N(25,1)
+tex.write(tostring(n:sqrt()))
+\end{luacode}
+`
+\end{lstlisting}
+
 \end{quote}
 
 

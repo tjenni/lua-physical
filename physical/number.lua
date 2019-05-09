@@ -391,6 +391,7 @@ function Number.__add(n1,n2)
 	return m
 end
 
+
 -- subtract two numbers
 function Number.__sub(n1,n2)
 	local m = Number.new()
@@ -430,6 +431,7 @@ function Number.__unm(n1)
 	return m
 end
 
+
 -- multiplication
 function Number.__mul(n1,n2)
 	local m = Number.new()
@@ -444,11 +446,11 @@ function Number.__mul(n1,n2)
 		m._x = n1._x * n2
 		m._dx = n1._dx * n2
 
-	-- n1 an object
+	-- n1 is an object
 	elseif getmetatable(n1) ~= Number then
 		return n1.__mul(n1,n2)
 
-	-- n2 an object
+	-- n2 is an object
 	elseif getmetatable(n2) ~= Number then
 		return n2.__mul(n1,n2)
 
@@ -512,7 +514,7 @@ function Number.__div(n1,n2)
 end
 
 
--- division
+-- exponentiation
 function Number.__pow(n1,n2)
 	local m = Number.new()
 
@@ -542,10 +544,6 @@ function Number.__pow(n1,n2)
 
 	return m
 end
-
-
-
-
 
 
 -- calculate the absolute value
