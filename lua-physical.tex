@@ -487,7 +487,7 @@ This example shows, that the result has only two digits. If more digits are need
 
 Two physical quantities with identical dimensions can be added or subtracted. The library checks the validity of those operations and throws an error if two addends haven't the same dimensions.
 %
-\begin{lstlisting}[caption={Lua console: Addition and subtraction},label=lst:addition and subtraction]
+\begin{lstlisting}[caption={Addition and subtraction},label=lst:addition and subtraction]
 l_1 = 1 * _m
 l_2 = 2 * _cm
 t = 2 * _s
@@ -501,7 +501,7 @@ l_1 + l_2
 
 New physical quantities can be created by division and multiplication. As long as no division by zero is made, no errors should occur.
 %
-\begin{lstlisting}[caption=Lua console: Multiplication and Division,label=lst:multiplication and division]
+\begin{lstlisting}[caption=Multiplication and Division,label=lst:multiplication and division]
 l_1 = 1 * _m
 l_2 = 2 * _cm
 
@@ -515,7 +515,7 @@ l_2 = 2 * _cm
 
 Physical quantities can be exponentiated. The library doesn't check, if the result has units with non integer exponents.
 %
-\begin{lstlisting}[caption=Lua console: Exponentiation,label=lst:exponentiation]
+\begin{lstlisting}[caption=Exponentiation,label=lst:exponentiation]
 l = 5 * _m
 A = l^2
 
@@ -531,7 +531,7 @@ A^0.5
 
 Exponential functions an the logarithms should have dimensionless arguments. The library throws an error if that's not the case.
 %
-\begin{lstlisting}[caption=Lua console: Exponential function and logarithm,label=lst:exp and log]
+\begin{lstlisting}[caption=Exponential function and logarithm,label=lst:exp and log]
 N_0 = 1000 * _1
 lambda = Q.log(2)/(2*_h)
 t = 50 * _min
@@ -2220,6 +2220,7 @@ tex.write(tostring(x:atanh()))
 
 
 %------------------------------------------------------------
+\newpage
 \subsection{physical.Dimension}
 
  All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used to check equality and if addition or substraction is allowed.
@@ -2255,6 +2256,7 @@ tex.write(tostring(x:atanh()))
 
 
 %------------------------------------------------------------
+\newpage
 \subsection{physical.Unit}
 
 The task of this class is keeping track of the unit term. The unit term is a fraction of units. The units in the enumerator and denominator can have an exponent. 
@@ -2317,6 +2319,7 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 
 
 %------------------------------------------------------------
+\newpage
 \subsection{physical.Number}
 
 \begin{luacode}
@@ -2388,11 +2391,9 @@ tex.write(tostring(n))
   This constructor creates a new instance of |N| from a string. It can parse strings of the form |"3.4"|, |"3.4e-3"|, |"5.4e-3 +/- 2.4e-6"| and |"5.45(7)e-23"|. 
 
   \begin{description}
-  \item |str| : |string|\\
-    The number as a string.
+  \item |str| : |string|
 
-  \item returns : |N|\\
-    The created |N| object
+  \item returns : |N|
   \end{description}
 
 \begin{lstlisting}
@@ -2442,8 +2443,7 @@ tex.write(tostring(n_4))
 
   \subtitle{Parameters / Return}
   \begin{description}
-  \item returns : |number|\\
-    The mean value of |n|
+  \item returns : |number|
   \end{description}
 
 \begin{lstlisting}
@@ -2466,8 +2466,7 @@ tex.write(tostring(n:mean()))
   \begin{description}
   \item |n| : |N|
 
-  \item returns : |number|\\
-    The uncertainty value of |N|
+  \item returns : |number|
   \end{description}
 
 \begin{lstlisting}
@@ -2486,18 +2485,19 @@ tex.write(tostring(n:uncertainty()))
 
 \method{N}{abs(n)}
 \begin{quote}
-  Returns the absolute value of |n|. The uncertainty $\Delta y$ is calculated by the following expression.
-  %
-  \begin{align*}
-    \Delta y = \Delta x
-  \end{align*}
+  Returns the absolute value of |n|.
 
   \begin{description}
   \item |n| : |N|
 
-  \item returns : |N|\\
-    The absolute value of |n|
+  \item returns : |N|
   \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \Delta x
+  \end{align*}
 
 \begin{lstlisting}
 n = N(-10,1)
@@ -2512,20 +2512,22 @@ tex.write(tostring(n:abs()))
 
 \end{quote}
 
+
 \method{N}{sqrt(n)}
 \begin{quote}
-  Returns the square root of |n|. The uncertainty $\Delta y$ is calculated by the following expression.
-  %
-  \begin{align*}
-    \Delta y = \frac{1}{2 \sqrt{x}} \cdot \Delta x
-  \end{align*}
+  Returns the square root of |n|.
 
   \begin{description}
   \item |n| : |N|
 
-  \item returns : |N| \\
-    The square root of |n|
+  \item returns : |N|
   \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \frac{1}{2 \sqrt{x}} \cdot \Delta x
+  \end{align*}
 
 \begin{lstlisting}
 n = N(25,1)
@@ -2534,6 +2536,165 @@ print( n:sqrt() )
 \begin{luacode}
 n = N(25,1)
 tex.write(tostring(n:sqrt()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+\method{N}{log(n,base=nil)}
+\begin{quote}
+   Returns the logarithm of a given number |n| to the given base |base|. If no base is given, the natural logarithm of |n| is returned.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item |base| : |number|, |nil|
+
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \frac{1}{\mid x \cdot \log(b) \mid} \cdot \Delta x
+  \end{align*}
+
+\begin{lstlisting}
+n = N(25,1)
+print( n:log() )
+`
+\begin{luacode}
+n = N(25,1)
+print( n:log() )
+tex.write(tostring(n:log()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{N}{exp(n)}
+\begin{quote}
+  Returns the value of the natural exponential function of the given number.
+
+  \begin{description}
+  \item |q| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = e^x \cdot \Delta x
+  \end{align*}
+
+
+\begin{lstlisting}
+n = N(25,1)
+print( n:sqrt() )
+`
+\begin{luacode}
+n = N(25,1)
+tex.write(tostring(n:sqrt()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{N}{sin(n)}
+\begin{quote}
+  Returns the value of the sinus function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \mid \cos(x) \mid \cdot \Delta x
+  \end{align*}  
+
+
+\begin{lstlisting}
+n = N(3,0.1)
+print( n:sin() )
+`
+\begin{luacode}
+n = N(3,0.1)
+tex.write(tostring(n:sin()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+\method{N}{cos(n)}
+\begin{quote}
+  Returns the value of the cosine function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \mid \sin(x) \mid \cdot \Delta x
+  \end{align*}  
+
+
+\begin{lstlisting}
+n = N(0.5,0.01)
+print( n:cos() )
+`
+\begin{luacode}
+n = N(0.5,0.01)
+tex.write(tostring(n:cos()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+\method{N}{tan(n)}
+\begin{quote}
+  Returns the value of the tangent function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression.
+  %
+  \begin{align*}
+    \Delta y = \mid \frac{1}{\cos^2(x)} \mid \cdot \Delta x
+  \end{align*}  
+
+
+\begin{lstlisting}
+n = N(1.5,0.01)
+print( n:tan() )
+`
+\begin{luacode}
+n = N(1.5,0.01)
+tex.write(tostring(n:tan()))
 \end{luacode}
 `
 \end{lstlisting}

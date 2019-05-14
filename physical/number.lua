@@ -569,7 +569,7 @@ end
 -- calculate the natural logarithm
 function Number.log(n,base)
 	local m = Number.new()
-
+	
 	if base == nil then
 		m._x = math.log(n._x)
 		m._dx = n._dx / math.abs(n._x)
@@ -599,7 +599,7 @@ end
 -- sine
 function Number.sin(n)
 	local m = Number.new()
-
+	
 	m._x = math.sin(n._x)
 	m._dx = n._dx * math.abs(math.cos(n._x))
 
