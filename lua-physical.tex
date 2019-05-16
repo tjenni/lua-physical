@@ -2493,10 +2493,10 @@ tex.write(tostring(n:uncertainty()))
   \item returns : |N|
   \end{description}
 
-  The uncertainty $\Delta y$ is calculated by the following expression.
+  The uncertainty $\Delta y$ is calculated by the following expression
   %
   \begin{align*}
-    \Delta y = \Delta x
+    \Delta y = \Delta x \quad.
   \end{align*}
 
 \begin{lstlisting}
@@ -2523,10 +2523,10 @@ tex.write(tostring(n:abs()))
   \item returns : |N|
   \end{description}
 
-  The uncertainty $\Delta y$ is calculated by the following expression.
+  The uncertainty $\Delta y$ is calculated by the following expression
   %
   \begin{align*}
-    \Delta y = \frac{1}{2 \sqrt{x}} \cdot \Delta x
+    \Delta y = \frac{1}{2 \sqrt{x}} \cdot \Delta x \quad.
   \end{align*}
 
 \begin{lstlisting}
@@ -2555,10 +2555,10 @@ tex.write(tostring(n:sqrt()))
   \item returns : |N|
   \end{description}
 
-  The uncertainty $\Delta y$ is calculated by the following expression.
+  The uncertainty $\Delta y$ is calculated by the following expression
   %
   \begin{align*}
-    \Delta y = \frac{1}{\mid x \cdot \log(b) \mid} \cdot \Delta x
+    \Delta y = \frac{1}{\mid x \cdot \log(b) \mid} \cdot \Delta x \quad.
   \end{align*}
 
 \begin{lstlisting}
@@ -2587,10 +2587,10 @@ tex.write(tostring(n:log()))
   \item returns : |N|
   \end{description}
 
-  The uncertainty $\Delta y$ is calculated by the following expression.
+  The uncertainty $\Delta y$ is calculated by the following expression
   %
   \begin{align*}
-    \Delta y = e^x \cdot \Delta x
+    \Delta y = e^x \cdot \Delta x \quad.
   \end{align*}
 
 
@@ -2611,7 +2611,7 @@ tex.write(tostring(n:sqrt()))
 
 \method{N}{sin(n)}
 \begin{quote}
-  Returns the value of the sinus function of the given number.
+  Returns the value of the sine function of the given number.
 
   \begin{description}
   \item |n| : |N|
@@ -2619,10 +2619,10 @@ tex.write(tostring(n:sqrt()))
   \item returns : |N|
   \end{description}
 
-  The uncertainty $\Delta y$ is calculated by the following expression.
+  The uncertainty $\Delta y$ is calculated by the following expression
   %
   \begin{align*}
-    \Delta y = \mid \cos(x) \mid \cdot \Delta x
+    \Delta y = \mid \cos(x) \mid \cdot \Delta x \quad.
   \end{align*}  
 
 
@@ -2650,10 +2650,10 @@ tex.write(tostring(n:sin()))
   \item returns : |N|
   \end{description}
 
-  The uncertainty $\Delta y$ is calculated by the following expression.
+  The uncertainty $\Delta y$ is calculated by the following expression
   %
   \begin{align*}
-    \Delta y = \mid \sin(x) \mid \cdot \Delta x
+    \Delta y = \mid \sin(x) \mid \cdot \Delta x \quad.
   \end{align*}  
 
 
@@ -2681,10 +2681,10 @@ tex.write(tostring(n:cos()))
   \item returns : |N|
   \end{description}
 
-  The uncertainty $\Delta y$ is calculated by the following expression.
+  The uncertainty $\Delta y$ is calculated by the following expression
   %
   \begin{align*}
-    \Delta y = \mid \frac{1}{\cos^2(x)} \mid \cdot \Delta x
+    \Delta y = \mid \frac{1}{\cos^2(x)} \mid \cdot \Delta x \quad.
   \end{align*}  
 
 
@@ -2700,6 +2700,329 @@ tex.write(tostring(n:tan()))
 \end{lstlisting}
 
 \end{quote}
+
+
+\method{N}{asin(n)}
+\begin{quote}
+  Returns the value of the inverse sine function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  %
+  \begin{align*}
+    \Delta y = \frac{1}{\sqrt{1 - x^2}} \cdot \Delta x \quad.
+  \end{align*}  
+
+
+\begin{lstlisting}
+n = N(0.99,0.1)
+print( n:asin() )
+`
+\begin{luacode}
+n = N(0.99,0.1)
+tex.write(tostring(n:asin()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+\method{N}{acos(n)}
+\begin{quote}
+  Returns the value of the inverse cosine function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  %
+  \begin{align*}
+    \Delta y = \frac{1}{\sqrt{1 - x^2}} \cdot \Delta x \quad.
+  \end{align*}  
+
+
+\begin{lstlisting}
+n = N(0.99,0.1)
+print( n:acos() )
+`
+\begin{luacode}
+n = N(0.99,0.1)
+tex.write(tostring(n:acos()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+\method{N}{atan(n)}
+\begin{quote}
+  Returns the value of the inverse tangent function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+  
+  \item returns : |N|
+  \end{description}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  %
+  \begin{align*}
+    \Delta y = \frac{1}{\sqrt{1 + x^2}} \cdot \Delta x \quad.
+  \end{align*}  
+
+
+\begin{lstlisting}
+n = N(1,0.1)
+print( n:atan() )
+`
+\begin{luacode}
+n = N(1,0.1)
+tex.write(tostring(n:atan()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+\method{N}{sinh(q)}
+\begin{quote}
+  Returns the value of the hyperbolic sine function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  \begin{align*}
+    \sinh(x) = 0.5 \cdot e^x - 0.5 / e^x  \quad.
+  \end{align*}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  %
+  \begin{align*}
+    \Delta y = \left( 0.5 \cdot e^x + 0.5 / e^x \right) \cdot \Delta x \quad.
+  \end{align*} 
+
+
+\begin{lstlisting}
+n = N(1,0.1)
+print( n:sinh() )
+`
+\begin{luacode}
+n = N(1,0.1)
+tex.write(tostring(n:sinh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{N}{cosh(q)}
+\begin{quote}
+  Returns the value of the hyperbolic cosine function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  \begin{align*}
+    \cosh(x) = 0.5 \cdot e^x + 0.5 / e^x  \quad.
+  \end{align*}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  %
+  \begin{align*}
+    \Delta y = \left( 0.5 \cdot e^x - 0.5 / e^x \right) \cdot \Delta x \quad.
+  \end{align*} 
+
+\begin{lstlisting}
+n = N(1,0.1)
+print( n:cosh() )
+`
+\begin{luacode}
+n = N(1,0.1)
+tex.write(tostring(n:cosh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{N}{tanh(q)}
+\begin{quote}
+  Returns the value of the hyperbolic tangent function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  \begin{align*}
+    \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \quad.
+  \end{align*}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  \begin{align*}
+    \Delta y = \frac{1}{\left( 0.5 \cdot e^x + 0.5 / e^x \right)^2} \cdot \Delta x \quad.
+  \end{align*} 
+
+
+
+\begin{lstlisting}
+n = N(1,0.1)
+print( n:tanh() )
+`
+\begin{luacode}
+n = N(1,0.1)
+tex.write(tostring(n:tanh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
+\method{Q}{asinh(q)}
+\begin{quote}
+  Returns the value of the inverse hyperbolic sine function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  \begin{align*}
+    \text{asinh}(x) = \ln\left( x + \sqrt{x^2 + 1} \right)  \quad.
+  \end{align*}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  \begin{align*}
+    \Delta y = \frac{1}{\sqrt{x^2 + 1}} \cdot \Delta x \quad.
+  \end{align*} 
+
+
+\begin{lstlisting}
+n = N(1,0.1)
+print( n:asinh() )
+`
+\begin{luacode}
+n = N(1,0.1)
+tex.write(tostring(n:asinh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Q}{acosh(q)}
+\begin{quote}
+  Returns the value of the inverse hyperbolic cosine function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  \begin{align*}
+    \text{acosh}(x) = \ln\left( x + \sqrt{x^2 - 1} \right)  \quad, x > 1 \quad.
+  \end{align*}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  \begin{align*}
+    \Delta y = \frac{1}{\sqrt{x^2 - 1}} \cdot \Delta x \quad.
+  \end{align*} 
+
+  
+
+
+\begin{lstlisting}
+n = N(1,0.1)
+print( n:acosh() )
+`
+\begin{luacode}
+n = N(1,0.1)
+tex.write(tostring(n:acosh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+\method{Q}{atanh(q)}
+\begin{quote}
+  Returns the value of the inverse hyperbolic tangent function of the given number.
+
+  \begin{description}
+  \item |n| : |N|
+
+  \item returns : |N|
+  \end{description}
+
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  \begin{align*}
+    \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, -1 < x < 1 \quad.
+  \end{align*}
+
+  The uncertainty $\Delta y$ is calculated by the following expression
+  \begin{align*}
+    \Delta y = \frac{1}{\mid x^2 - 1 \mid} \cdot \Delta x \quad.
+  \end{align*} 
+
+
+
+\begin{lstlisting}
+n = N(1,0.1)
+print( n:atanh() )
+`
+\begin{luacode}
+n = N(1,0.1)
+tex.write(tostring(n:atanh()))
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
+
+
+
+
+
+
+
 
 
 
