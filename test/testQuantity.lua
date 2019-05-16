@@ -594,5 +594,16 @@ function TestQuantity:testLessThan()
    lu.assertTrue(l_D < l_max)
 end
 
+-- test less than zero
+function TestQuantity:testLessThanZero()
+   lu.assertTrue(1*_1 > 0)
+   lu.assertTrue(0*_1 > -1)
+   lu.assertTrue(-1*_1 < 0)
+
+   lu.assertTrue(0 < 1*_1)
+   lu.assertTrue(-1 < 0*_1)
+   lu.assertTrue(0 > -1*_1)
+end
+
 
 return TestQuantity
