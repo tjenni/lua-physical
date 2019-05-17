@@ -2226,16 +2226,41 @@ tex.write(tostring(x:atanh()))
  All physical quantities do have a physical dimension. For example the quantity \emph{Area} has the dimension $L^2$ (lenght to the power of two). In the SI-System there are seven base dimensions, from which all other dimensions are derived. Each dimension is represented by an $n$-tuple, where $n$ is the number of base dimensions. Each physical quantity has an associated dimension object. It is used to check equality and if addition or substraction is allowed.
 
 
-\method{Dimension}{new(q=nil)}
+\method{D}{new(d)}
 \begin{quote}
   Constructor of the |Dimension| class.
 
   \begin{description}
-  \item |q| : |Dimension| or |string|, optional\\
-    The name or symbol of the dimension. If |q| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
+  \item |d| : |Dimension| or |string|, |nil|\\
+    The name or symbol of the dimension.
 
-  \item returns : |Dimension|\\
-    The created |Quantity| object
+  \item returns : |D|\\
+    The created |D| instance
+  \end{description}
+
+  If |d| is a string, a copy of the perviously defined dimension is made. If |d| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created. 
+
+
+  \subtitle{Example}
+  \begin{lstlisting}
+  V_1 = D("Velocity")
+  L = D("L")
+  V_2 = D(L/T)
+  \end{lstlisting}
+\end{quote}
+
+
+\method{D}{defineBase(symbol, name)}
+\begin{quote}
+  Defines a base dimension.
+
+  \begin{description}
+  \item |symbol| : |string|\\
+
+  \item |name| : |string|\\
+    
+  \item returns : |D|\\
+    The created |D| instance
   \end{description}
 
 

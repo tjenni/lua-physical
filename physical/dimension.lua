@@ -42,30 +42,30 @@ Dimension._base = {}
 
 
 -- constructor
-function Dimension.new(o)
+function Dimension.new(d)
 
 	-- string
-	if type(o) == "string" then
-		return Dimension._index[o]
+	if type(d) == "string" then
+		return Dimension._index[d]
 	end
 
-	local d = {}
-	setmetatable(d, Dimension)
+	local e = {}
+	setmetatable(e, Dimension)
 	
 	-- copy constructor
-	if getmetatable(o) == Dimension then
+	if getmetatable(d) == Dimension then
 		for i=1, #Dimension._base do
-			d[i] = o[i] or 0
+			e[i] = d[i] or 0
 		end
 
 	-- create zero dimension
 	else
 		for i=1, #Dimension._base do
-			d[i] = 0
+			e[i] = 0
 		end
 	end
-
-	return d
+	
+	return e
 end
 
 
