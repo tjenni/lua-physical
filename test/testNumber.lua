@@ -171,9 +171,9 @@ function TestNumber:testToParenthesesNotation()
 
    N.format = N.DECIMAL
    lu.assertEquals( tostring(N(1,0.5)), "1.0(5)" )
+   lu.assertEquals( tostring(N(1.25,0.5)), "1.3(5)" )
    lu.assertEquals( tostring(N(100,13)), "100(13)" )
    lu.assertEquals( tostring(N(26076,45)), "26076(45)" )
-   lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
    lu.assertEquals( tostring(N(26076,0.01)), "26076.000(10)" )
    lu.assertEquals( tostring(N(1234.56789, 0.00011)), "1234.56789(11)" )
    lu.assertEquals( tostring(N(15200000, 23000)), "15200000(23000)" )
@@ -185,9 +185,9 @@ function TestNumber:testToParenthesesNotation()
    lu.assertEquals( tostring(N(15.2e-6, 1.2e-8)), "1.5200(12)e-5" )
    lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
    lu.assertEquals( tostring(N(15.2e-6, 0)), "1.52e-05" )
+   lu.assertEquals( tostring(N(16.25e-6, 5e-7)), "1.63(5)e-5" )
 
-
-   lu.assertEquals( tostring(N(1.9884e30, 2e26)/N(1.191e8,1.4e6)), "1.670(19)e22" )
+   lu.assertEquals( tostring(N(1.9884e30, 2e26)/N(1.191e8,1.4e6)), "1.67(2)e22" )
 end
 
 
@@ -201,6 +201,9 @@ function TestNumber:testToOmitUncertaintyNotation()
    lu.assertEquals( tostring(N(1, 0.5)), "1" )
    lu.assertEquals( tostring(N(1.2, 0.05)), "1.2" )
    lu.assertEquals( tostring(N(1.2, 0.005)), "1.20" )
+   lu.assertEquals( tostring(N(1.25, 0.05)), "1.3" )
+
+
 
    N.format = N.SCIENTIFIC
    lu.assertEquals( tostring(N(1.2e27, 0.05e27)), "1.2e27" )

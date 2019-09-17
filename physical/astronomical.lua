@@ -91,7 +91,7 @@ Astronomical.Moon = {
 Astronomical.Mars = {
 	
 	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
-	Mass = N(6.41688e23, 0.00065e23) * _kg,
+	Mass = N(6.41688e23, 0.00064e23) * _kg,
 	
 	--Source: http://asa.usno.navy.mil/static/files/2014/Astronomical_Constants_2014.pdf
 	EquatorialRadius = N(3396.19, 0.1) * _km

@@ -159,9 +159,33 @@ function Number._frexp(x)
 	local s = (x < 0 and -1) or 1
 	local m = s * x
 	local exp = math.floor(math.log(m,10))
-	m = s * m / 10^exp
+	m = s * m * 10^(-exp)
 
 	return m, exp
+end
+
+
+function Number._round(x,n)
+	local m = math.pow(10.0, n) 
+	local y = x * m
+
+	local half = 0.50000000000002
+
+	if y >= 0 then 
+		y = math.floor(y + half) 
+	else
+		y = math.ceil(y - half) 
+	end
+
+	return y / m
+end
+
+
+-- convert number to string
+-- x: number
+-- n: decimal places
+function Number._flt2str(x,n)
+	return string.format("%."..math.max(n,0).."f", Number._round(x,n) )
 end
 
 -- convert number to a number
@@ -171,7 +195,6 @@ end
 
 
 -- plus minus notation, i.e. (5.040 +/- 0.001)
-	
 function Number:toPlusMinusNotation(format)
 
 	if format == nil then
@@ -192,10 +215,10 @@ function Number:toPlusMinusNotation(format)
 	-- In the decimal format, the numbers are given as decimals, i.e. (0.02 +/- 0.001) 
 	if format == Number.DECIMAL then
 		if de - udigit >= 0 then
-			str = string.format("%.0f",self._x).." +/- "..string.format("%.0f",self._dx)
+			str = self._flt2str(self._x, 0).." +/- "..self._flt2str(self._dx, 0)
 		else
 			local digits = math.abs(-de + udigit)
-			str = string.format("%."..digits.."f",self._x).." +/- "..string.format("%."..digits.."f",self._dx)
+			str = self._flt2str(self._x, digits).." +/- "..self._flt2str(self._dx, digits)
 		end
 
 		str = "("..str..")"
@@ -208,10 +231,10 @@ function Number:toPlusMinusNotation(format)
 		de = de - e
 
 		if de >= 0 then
-			str = string.format("%.0f",m).." +/- "..string.format("%.0f",dm)
+			str = self._flt2str(m, 0).." +/- "..self._flt2str(dm, 0)
 		else
 			local digits = math.abs(-de + udigit)
-			str = string.format("%."..digits.."f",m).." +/- "..string.format("%."..digits.."f",dm)
+			str = self._flt2str(m, digits).." +/- "..self._flt2str(dm, digits)
 		end
 
 		str = "("..str..")"
@@ -238,12 +261,11 @@ function Number:toParenthesisNotation(format)
 	local m, e = self._frexp(self._x)
 	local dm, de = self._frexp(self._dx)
 
-
 	-- if the first digit of the uncetainty is a 1, give two digits of the uncertainty
 	local udigit = 0
-	if math.floor(dm) == 1 then
+	if self._round(dm, 0) == 1 then
 		udigit = 1
-		dm = math.floor(dm * 10)
+		dm = dm * 10
 		de = de - 1
 	end
 
@@ -251,19 +273,15 @@ function Number:toParenthesisNotation(format)
 
 	-- In the decimal format, the numbers are given as decimals, i.e. 0.00343(12)
 	if format == Number.DECIMAL then
-		
 		if de - udigit >= 0 then
-			str = string.format("%.0f",self._x).."("..string.format("%.0f",dm*10^de)..")"
+			str = self._flt2str(self._x, 0).."(".. self._flt2str(dm*10^de, 0) ..")"
 		else
-			local digits = math.abs(de)
-			str = string.format("%."..digits.."f",self._x).."("..string.format("%.0f",dm)..")"
+			str = self._flt2str(self._x, math.abs(de)).."(".. self._flt2str(dm, 0) ..")"
 		end
 
 	-- In the scientific format, the numbers are written with powers of ten, i.e. 3.43(12)e-3
 	elseif format == Number.SCIENTIFIC then
-
-		local digits = math.abs(de-e)
-		str = string.format("%."..digits.."f",m).."("..string.format("%.0f",dm)..")"
+		str = self._flt2str(m, math.abs(de-e)).."("..self._flt2str(dm, 0)..")"
 
 		if e ~= 0 then
 			str = str.."e"..e
@@ -286,17 +304,11 @@ function Number:toOmitUncertaintyNotation(format)
 	local str = ""
 
 	if Number.format == Number.DECIMAL then
-		if de >= 0 then
-			str = string.format("%.0f",self._x)
-		else
-			local digits = math.abs(de + 1)
-			str = string.format("%."..digits.."f",self._x)
-		end
+		str = self._flt2str(self._x, math.abs(de + 1))
 
 	elseif Number.format == Number.SCIENTIFIC then
-		local digits = math.abs(de - e + 1)
-		str = string.format("%."..digits.."f",m)
-
+		str = self._flt2str(m, math.abs(de + 1 - e))
+		
 		if e ~= 0 then
 			str = str.."e"..e
 		end
@@ -544,6 +556,10 @@ function Number.__pow(n1,n2)
 
 	return m
 end
+
+
+
+
 
 
 -- calculate the absolute value

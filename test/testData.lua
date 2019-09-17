@@ -126,53 +126,53 @@ end
 function TestData:testJupiter()
    local m = Data.Astronomical("Sun","Mass") / N(1.047348644e3,1.7e-5)
 
-   lu.assertEquals( tostring(Data.Astronomical("Jupiter","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Jupiter","Mass")) )
 end
 
 function TestData:testSaturn()
    local m = Data.Astronomical("Sun","Mass") / N(3.4979018e3,1e-4)
 
-   lu.assertEquals( tostring(Data.Astronomical("Saturn","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Saturn","Mass")) )
 end
 
 function TestData:testUranus()
    local m = Data.Astronomical("Sun","Mass") / N(2.290298e4,3e-2)
 
-   lu.assertEquals( tostring(Data.Astronomical("Uranus","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Uranus","Mass")) )
 end
 
 function TestData:testNeptune()
    local m = Data.Astronomical("Sun","Mass") / N(1.941226e4,3e-2)
 
-   lu.assertEquals( tostring(Data.Astronomical("Neptune","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Neptune","Mass")) )
 end
 
 function TestData:testPluto()
    local m = Data.Astronomical("Sun","Mass") / N(1.36566e8,2.8e4)
 
-   lu.assertEquals( tostring(Data.Astronomical("Pluto","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Pluto","Mass")) )
 end
 
 function TestData:testEris()
    local m = Data.Astronomical("Sun","Mass") / N(1.191e8,1.4e6)
-   lu.assertEquals( tostring(Data.Astronomical("Eris","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Eris","Mass")) )
 end
 
 function TestData:testCeres()
    local m = N(4.72e-10,3e-12) * Data.Astronomical("Sun","Mass")
-   lu.assertEquals( tostring(Data.Astronomical("Ceres","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Ceres","Mass")) )
 end
 
 function TestData:testPallas()
    local m = N(1.03e-10,3e-12) * Data.Astronomical("Sun","Mass")
 
-   lu.assertEquals( tostring(Data.Astronomical("Pallas","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Pallas","Mass")) )
 end
 
 function TestData:testVesta()
    local m = N(1.35e-10,3e-12) * Data.Astronomical("Sun","Mass")
 
-   lu.assertEquals( tostring(Data.Astronomical("Vesta","Mass")), tostring(m) )
+   lu.assertEquals(tostring(m), tostring(Data.Astronomical("Vesta","Mass")) )
 end
 
 
