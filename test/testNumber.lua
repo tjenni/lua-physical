@@ -185,7 +185,7 @@ function TestNumber:testToParenthesesNotation()
    lu.assertEquals( tostring(N(15.2e-6, 1.2e-8)), "1.5200(12)e-5" )
    lu.assertEquals( tostring(N(5, 0.01)), "5.000(10)" )
    lu.assertEquals( tostring(N(15.2e-6, 0)), "1.52e-05" )
-   lu.assertEquals( tostring(N(16.25e-6, 5e-7)), "1.63(5)e-5" )
+   lu.assertEquals( tostring(N(16.25e-6, 5e-7)), "1.62(5)e-5" )
 
    lu.assertEquals( tostring(N(1.9884e30, 2e26)/N(1.191e8,1.4e6)), "1.67(2)e22" )
 end

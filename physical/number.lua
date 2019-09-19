@@ -52,6 +52,9 @@ Number.SCIENTIFIC = 1
 
 Number.format = Number.SCIENTIFIC
 
+-- The rounding function uses this value to determine the rounding method
+-- if it is set to 0.5 the rounding method is "towards nearest, ties to even".
+Number.half = 0.5
 
 
 
@@ -164,17 +167,15 @@ function Number._frexp(x)
 	return m, exp
 end
 
-
+-- round a number x to a precision n
 function Number._round(x,n)
 	local m = math.pow(10.0, n) 
 	local y = x * m
 
-	local half = 0.50000000000002
-
 	if y >= 0 then 
-		y = math.floor(y + half) 
+		y = math.floor(y + Number.half) 
 	else
-		y = math.ceil(y - half) 
+		y = math.ceil(y - Number.half)
 	end
 
 	return y / m
