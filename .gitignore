@@ -1,0 +1,11 @@
+.DS_Store
+*.aux
+*.log
+*.blg
+*.idx
+*.ilg
+*.ind
+*.out
+*.gz
+*.toc
+*.bbl
