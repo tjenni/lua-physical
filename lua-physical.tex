@@ -62,7 +62,7 @@ Q = physical.Quantity
 
 % config siunitx
 \sisetup{
-	output-decimal-marker = {.}, 
+	output-decimal-marker = {.},
 	per-mode = symbol,
 	separate-uncertainty = true,
 	add-decimal-zero = true,
@@ -170,7 +170,7 @@ Q = physical.Quantity
 \newpage
 \section{Introduction}
 
-The author of this package is a physics teacher at the high school \emph{Kantonsschule Zug}, Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX{} does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\texttt{thomas.jenni (at) ksz.ch}).
+The author of this package is a physics teacher at the high school \emph{Kantonsschule Zug}, Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX{} does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\texttt{thomas.jenni (at) ksz.ch}).
 
 
 
@@ -181,7 +181,7 @@ The author of this package is a physics teacher at the high school \emph{Kantons
 
 This package is a pure Lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing physical quanties, the |siunitx| is supported. It's recommended to define a macro like |\q| to convert the lua quantity object to a |siunitx| expression.
 
-The following Latex preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
+The following \LaTeX{} preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
 \begin{lstlisting}[language=Tex, caption=basic preamble, label=lst:basic preamble]
   \usepackage{lua-physical}
@@ -189,7 +189,7 @@ The following Latex preamble loads the |lua-physical| package and creates a macr
 
   % configure siunitx
   \sisetup{
-    output-decimal-marker = {.}, 
+    output-decimal-marker = {.},
     per-mode = symbol,
     separate-uncertainty = true,
     add-decimal-zero = true,
@@ -212,7 +212,7 @@ The following Latex preamble loads the |lua-physical| package and creates a macr
 
 \subsection{Dependencies}
 
-In principle this library is standalone, but it is compatible with the |siunitx| package. Calculation results can be written to \LuaLaTeX{} directly by calling the |tosiunitx()| method. If the preamble above is used, the printing is done be the |\q{}| macro.
+In principle this library is standalone, but it is compatible with the |siunitx| package. Calculation results can be written to \LuaLaTeX{} directly by calling the |tosiunitx()| method. If the preamble above is used, the printing is done by the |\q{}| macro.
 
 
 \subsection{License}
@@ -234,7 +234,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 \label{ch:usage}
 %------------------------------------------------------------
 
-Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e. meter is |_m|, second is |_s|. All available units are listed in chapter \ref{ch:Supported Units}. The following example illustrates the use of this library.
+Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e.\ meter is |_m|, second is |_s|. All available units are listed in section~\ref{ch:Supported Units}. The following example illustrates the use of this library.
 
 \begin{lstlisting}[caption=Velocity of a car.,label=lst:Car Velocity]
 \begin{luacode}
@@ -263,7 +263,7 @@ $$
 $$
 \endleftbar
 
-In the above Listing \ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
+In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
 
 
 
@@ -271,18 +271,18 @@ In the above Listing \ref{lst:Car Velocity}, the variable |s| stands for displac
 %------------------------------------------------------------
 \subsection{Unit conversion}
 
-Very often, the result of a calculation has to be converted to another unit. In the following Listing \ref{lst:Volume of Cuboid}, the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
+Very often, the result of a calculation has to be converted to another unit. In listing~\ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
 
 \begin{lstlisting}[caption=Volume of a cuboid.,label=lst:Volume of Cuboid]
 \begin{luacode}
   a = 12 * _cm
   b = 150 * _mm
   c = 1.5 * _m
-  
+
   V = a*b*c
 \end{luacode}
 
-Find the volume of a rectangular cuboid with lengths $\q{a}$, 
+Find the volume of a rectangular cuboid with lengths $\q{a}$,
 $\q{b}$ and $\q{c}$.
 $$
   V= a \cdot b \cdot c
@@ -296,7 +296,7 @@ $$
   a = 12 * _cm
   b = 150 * _mm
   c = 1.5 * _m
-  
+
   V = a*b*c
 \end{luacode}
 
@@ -316,13 +316,13 @@ $$
 %------------------------------------------------------------
 \subsubsection{Temperature Conversion}
 
-Most physical units transform linearly. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin. 
+Most physical units transform linearly. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin.
 
-By default |_degC| and |_degF| units are temperature differences. If one wants to have it converted absolutely, it has to be done adding / subtracting  |_degC_0 = 273.15*_K| or |_degF_0 = (273.15 - 32*(5/9)) * _K|, 
+By default |_degC| and |_degF| units are temperature differences. If one wants to have it converted absolutely, it has to be done adding / subtracting  |_degC_0 = 273.15*_K| or |_degF_0 = (273.15 - 32*(5/9)) * _K|,
 the zero point temperatures of the scales.
 
 
-In the following problem, Listing \ref{lst:temperature conversion} , the task is to convert temperatures given in the unit degree Celsius and degree Fahrenheit to Kelvin. 
+In the following problem, listing~\ref{lst:temperature conversion}, the task is to convert temperatures given in the unit degree Celsius and degree Fahrenheit to Kelvin.
 
 \begin{lstlisting}[caption=Temperature conversion.,label=lst:temperature conversion]
 \begin{luacode}
@@ -392,14 +392,14 @@ In the following problem, Listing \ref{lst:temperature conversion} , the task is
 %------------------------------------------------------------
 \subsection{Uncertainty Propagation}
 
-The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see Listing \ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
+The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing~\ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
 
-For the uncertainty propagation the gaussian formula 
+For the uncertainty propagation the gaussian formula
 $$
   \Delta f = \sqrt{ \left(\frac{\partial f}{x_1} \cdot \Delta x_1\right)^2 + \dots + \left(\frac{\partial f}{x_n} \cdot \Delta x_2 \right)^2 }
 $$
 is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to change linear, if quantities $x_i$ are changed in the range of their uncertainties.
- 
+
 
 
 \begin{lstlisting}[caption=Uncertainty in area calculation.,label=lst:rectangular area]
@@ -412,7 +412,7 @@ is used. This formula is a good estimation for the uncertainty $\Delta f$, if th
 
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
 $$
-  A = a \cdot b 
+  A = a \cdot b
   = \q{a} \cdot \q{b}
   = \uuline{\q{A}}
 $$
@@ -428,7 +428,7 @@ $$
 \leftbar
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
 $$
-  A = a \cdot b 
+  A = a \cdot b
   = \q{a} \cdot \q{b}
   = \uuline{\q{A}}
 $$
@@ -437,7 +437,7 @@ $$
 
 Instead of printing the uncertainties, one can use the uncertainty calculation to provide significant digits and omit it.
 
-In the following problem, listing \ref{lst:volume of ideal gas} , the task is to find the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. In order to do the calculation, one has to convert |T|, which is given as an absolute temperature in degree celsius to the base unit Kelvin first. By setting |N.omitUncertainty = true|, all uncertainties are not printed.
+In the following problem, listing~\ref{lst:volume of ideal gas}, the task is to find the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. In order to do the calculation, one has to convert |T|, which is given as an absolute temperature in degree celsius to the base unit Kelvin first. By setting |N.omitUncertainty = true|, all uncertainties are not printed.
 
 \begin{lstlisting}[caption=Volume of an ideal gas.,label=lst:volume of ideal gas]
 \begin{luacode}
@@ -445,7 +445,7 @@ In the following problem, listing \ref{lst:volume of ideal gas} , the task is to
   p = N(1.013,0.0001) * _bar
   n = N(1,0.01) * _mol
   T = N(30,0.1) * _degC
-  
+
   V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
 \end{luacode}
 
@@ -463,7 +463,7 @@ $$
   p = N(1.013,0.0001) * _bar
   n = N(1,0.01) * _mol
   T = N(30,0.1) * _degC
-  
+
   V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
 \end{luacode}
 
@@ -555,11 +555,11 @@ N_0 * Q.exp(-lambda * t)
 \label{ch:Supported Units}
 %------------------------------------------------------------
 
-All supported units are listed in this chapter. Subchapter \ref{ch:base units} lists the seven base units of the International System of Units (SI). In subchapter \ref{ch:constants}  mathematical and physical constants are defined. The subchapter \ref{ch:coherent derived units} contains all coherent derived units from the SI system and \ref{ch:non-si accepted} those which are accepted to use with the SI.
+All supported units are listed in this section. Subsection~\ref{ch:base units} lists the seven base units of the International System of Units (SI). In subsection~\ref{ch:constants}  mathematical and physical constants are defined. The subsection~\ref{ch:coherent derived units} contains all coherent derived units from the SI system and \ref{ch:non-si accepted} those which are accepted to use with the SI.
 
-The subchapter \ref{ch:nominal astronomical units} lists nominal astronomical units, which are proposed by \cite{iau16}.
+The subsection~\ref{ch:nominal astronomical units} lists nominal astronomical units, which are proposed by \cite{iau16}.
 
-Subchapter \ref{ch:non-si} lists units, which are common but outside of the SI system. The subchapters \ref{ch:imperial units} and \ref{ch:us customary units} are dedicated to imperial and U.S. customary units. The last subchapter \ref{ch:currencies} containts international currencies.
+Subsection~\ref{ch:non-si} lists units, which are common but outside of the SI system. The subsections~\ref{ch:imperial units} and \ref{ch:us customary units} are dedicated to imperial and U.S. customary units. The last subsection~\ref{ch:currencies} containts international currencies.
 
 
 \renewcommand{\arraystretch}{1.5}
@@ -567,7 +567,7 @@ Subchapter \ref{ch:non-si} lists units, which are common but outside of the SI s
 %------------------------------------------------------------
 \subsection{Prefixes}
 
-All SI units have prefixed versions, i.e. |_us| microsecond, |_cm| centimeter, |_mN| millinewton, see table \ref{tab:SI prefixes}. Some units of data processing, like |_bit| have prefixes which are powers of 2. They are called binary or IEC prefixes, see table \ref{tab:IEC prefixes}. \cite[121]{bipm06}
+All SI units have prefixed versions, i.e.\ |_us| microsecond, |_cm| centimeter, |_mN| millinewton, see table~\ref{tab:SI prefixes}. Some units of data processing, like |_bit| have prefixes which are powers of 2. They are called binary or IEC prefixes, see table~\ref{tab:IEC prefixes} \cite[121]{bipm06}.
 
 \begin{table}[H]
 \centering
@@ -686,18 +686,18 @@ The |lua-physical| library has nine base quantities. These are the seven basis u
 number \protect\footnotemark &
 -- &
 |_1| &
-$\mathrm{1}$ & 
+$\mathrm{1}$ &
 The dimensionless number one.  \\
 
 time &
-second & 
-|_s| & 
-$\mathrm{T}$ & 
+second &
+|_s| &
+$\mathrm{T}$ &
 The SI unit of time. It is defined by taking the fixed numerical value of the caesium frequency $\Delta \nu_{Cs}$, the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom, to be \num{9192631770} when expressed in the unit $\qu{_s^-1}$. \\
 
 length &
-meter & 
-|_m| & 
+meter &
+|_m| &
 $\mathrm{L}$ &
 The SI unit of length. It is defined by taking the fixed numercial value of the speed of light in vacuum $c$ to be $\num{299792458}$ when expressed in the unit of $\q{_m/_s}$. \\
 
@@ -724,47 +724,47 @@ The SI unit of length. It is defined by taking the fixed numercial value of the 
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
 
 mass &
-kilogram  &  
-|_kg| & 
-$\mathrm{M}$ & 
+kilogram  &
+|_kg| &
+$\mathrm{M}$ &
 The SI unit of mass. It is defined by taking the fixed numerical value of the Planck constant $h$ to be $\qs{(_h_P/(_J*_s)):to()}$ when expressed in $\qu{_m^2*_kg/_s}$.\\
 
 electric \newline current &
-ampere & 
-|_A| & 
-$\mathrm{I}$ & 
+ampere &
+|_A| &
+$\mathrm{I}$ &
 The SI unit of electric current. It is defined by taking the fixed numerical value of the elementary charge $e$ to be $\qs{(_e/_C):to()}$ when expressed in $\qu{_A*_s}$.\\
 
 thermodynamic \newline temperature &
-kelvin  & 
+kelvin  &
 |_K| &
-$\mathrm{K}$ \protect\footnotemark & 
+$\mathrm{K}$ \protect\footnotemark &
 The SI unit of the thermodynamic temperature. It is defineed by taking the fixed numerical value of the Boltzmann constant $k_B$ to be $\qs{(_k_B/(_J/_K)):to()}$ when expressed in $\q{_kg*_m^2*_s^-2*_K^-1}$\\
 
 amount of \newline substance &
-mole  & 
-|_mol| &  
-$\mathrm{N}$ & 
+mole  &
+|_mol| &
+$\mathrm{N}$ &
 The SI unit of amount of substance. One mole contains exactly $\qs{(_N_A*_mol):to()}$ elementary entities. This number is the fixed numerical value of the Avogadro constant $N_A$ when expressed in $\qu{1/_mol}$.\\
 
 
 luminous \newline intensity &
-candela & 
-|_cd| & 
-$\mathrm{J}$ & 
+candela &
+|_cd| &
+$\mathrm{J}$ &
 The SI unit of luminous intensity in a given direction. It is defined by taking the fixed numerical value of the luminous efficacy of monochromatic radiation of frequency $\qs{540e12 * _Hz}$, $K_{cd}$, to be $683$ when expressed in the unit $\qu{_cd*_sr*_kg^-1*_m^-2*_s^3}$.\\
 
 
 information &
-bit & 
-|_bit| & 
+bit &
+|_bit| &
 $\mathrm{B}$ &
 The smallest amount of information. \\
 
 
 currency &
-euro & 
-|_EUR| & 
+euro &
+|_EUR| &
 $\mathrm{C}$ &
 The value of the currency Euro. \\\hline
 
@@ -789,7 +789,7 @@ All physical constants are taken from the NIST webpage \cite{nist19}.
 
 % print table row constant
 \newcommand{\printconstant}[2]{
-  \directlua{tex.print(#1.unit.name)} & 
+  \directlua{tex.print(#1.unit.name)} &
   |#1| &
   \mbox{|#2|}\index[unit]{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
 }
@@ -862,13 +862,13 @@ All physical constants are taken from the NIST webpage \cite{nist19}.
 \subsection{Coherent derived units in the SI}
 \label{ch:coherent derived units}
 
-All units in this section are coherent derived units from the SI base units with special names, \cite[118]{bipm06}. 
+All units in this section are coherent derived units from the SI base units with special names, \cite[118]{bipm06}.
 
 % lua function for printing dimension names.
 \begin{luacode}
 function getdim(q)
   local str = q.dimension:__tostring()
-  
+
   str = string.gsub(str,"%[","")
   str = string.gsub(str,"%]","")
 
@@ -907,7 +907,7 @@ end
   }{
     #1
   } &
-  \directlua{tex.print(#2.unit.name)} & 
+  \directlua{tex.print(#2.unit.name)} &
   |#2| &
   \mbox{|#3|}\index[unit]{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
 }
@@ -951,7 +951,7 @@ end
 }
 
 \footnotetext[4]{
-  The unit \texttt{\_degC} is by default interpreted as a temperature difference. 
+  The unit \texttt{\_degC} is by default interpreted as a temperature difference.
 }
 
 
@@ -1125,7 +1125,7 @@ The unit Bel is only available with prefix decibel, because |_B| is the unit byt
 }
 
 \footnotetext[1]{
-  The desktop publishing point or PostScript point is $1/72$ of an international inch. 
+  The desktop publishing point or PostScript point is $1/72$ of an international inch.
 }
 
 
@@ -1163,7 +1163,7 @@ The unit Bel is only available with prefix decibel, because |_B| is the unit byt
 }
 
 \footnotetext[1]{
-  The unit \texttt{\_degF} is by default interpreted as a temperature difference. 
+  The unit \texttt{\_degF} is by default interpreted as a temperature difference.
 }
 
 
@@ -1316,7 +1316,7 @@ International currency which are pegged to other currencies.
   \printcurrency{BZD}{0.5 * _USD}
   \printcurrency{CUC}{1 * _USD}
   \printcurrency{CUP}{(1/24) * _CUC}
-  
+
 }
 
 \currencytable{
@@ -1334,7 +1334,7 @@ International currency which are pegged to other currencies.
   \printcurrency{KYD}{1.2 * _USD}
   \printcurrency{LBP}{(1/1507.5) * _USD}
   \printcurrency{MOP}{(1/1.03) * _HKD}
-  
+
 }
 
 \currencytable{
@@ -1388,7 +1388,7 @@ International currency which are pegged to other currencies.
 % set listings language to lua
 \lstset{language=Lua}
 
-In this chapter, the following shortcuts will be used.
+In this section, the following shortcuts will be used.
 \begin{lstlisting}
 local D = physical.Dimension
 local U = physical.Unit
@@ -1450,9 +1450,9 @@ The quantity class is the main part of the library. Each physical Quantity and a
     The created |Q| instance.
   \end{description}
 
-  The function creates a global variable of the created base quantity. The name consist of an underscore concatenated with the |symbol| argument, i.e. the symbol |m| becomes the global variable |_m|.
+  The function creates a global variable of the created base quantity. The name consist of an underscore concatenated with the |symbol| argument, i.e.\ the symbol |m| becomes the global variable |_m|.
 
-  The |name| is used for example in the siunitx conversion function, e.g |meter| will be converted to |\meter|. 
+  The |name| is used for example in the siunitx conversion function, e.g |meter| will be converted to |\meter|.
 
   Each quantity has a dimension associated with it. The argument |dimension| allows any dimension to be associated to base quantities.
 
@@ -1483,9 +1483,9 @@ Q.defineBase("kg", "kilogram", M)
     The created quantity.
   \end{description}
 
-  The function creates a global variable of the created base quantity. The name consist of an underscore concatenated with the |symbol| argument, i.e. the symbol |N| becomes the global variable |_N|.
+  The function creates a global variable of the created base quantity. The name consist of an underscore concatenated with the |symbol| argument, i.e.\ the symbol |N| becomes the global variable |_N|.
 
-  The |name| is used for example in the siunitx conversion function, e.g |newton| will be converted to |\newton|. 
+  The |name| is used for example in the siunitx conversion function, e.g |newton| will be converted to |\newton|.
 
   \begin{lstlisting}
 Q.define("L", "liter", _dm^3)
@@ -1554,7 +1554,7 @@ Q.addPrefix({"n","u","m","k","M","G"},{_m,_s,_A})
   \begin{description}
   \item |self| : |Q|, |N|, |number|
 
-  \item |q| : |Q|, |N|, |number| 
+  \item |q| : |Q|, |N|, |number|
 
   \item |r| : |number|\\
     maximum relative deviation of |self| and |q|
@@ -1630,7 +1630,7 @@ tex.write(tostring(T:to()) )
 
 \method{Q}{tosiunitx(self,param,mode=Q.siunitx\_SI)}
 \begin{quote}
-  Converts the quantity into a |siunitx| string. 
+  Converts the quantity into a |siunitx| string.
 
   \begin{description}
   \item |self| : |Q|
@@ -2035,7 +2035,7 @@ tex.write(tostring(x:atan():to(_deg)))
 
 \method{Q}{sinh(q)}
 \begin{quote}
-  Returns the value of the hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Returns the value of the hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
   $$
     \sinh(x) = 0.5 \cdot e^x - 0.5 / e^x  \quad.
   $$
@@ -2066,7 +2066,7 @@ tex.write(tostring(x:sinh()))
 
 \method{Q}{cosh(q)}
 \begin{quote}
-  Returns the value of the hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Returns the value of the hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
   $$
     \cosh(x) = 0.5 \cdot e^x + 0.5 / e^x  \quad.
   $$
@@ -2096,7 +2096,7 @@ tex.write(tostring(x:cosh()))
 
 \method{Q}{tanh(q)}
 \begin{quote}
-  Returns the value of the hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Returns the value of the hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
   $$
     \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \quad.
   $$
@@ -2127,7 +2127,7 @@ tex.write(tostring(x:tanh()))
 
 \method{Q}{asinh(q)}
 \begin{quote}
-  Returns the value of the inverse hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Returns the value of the inverse hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
   $$
     \text{asinh}(x) = \ln\left( x + \sqrt{x^2 + 1} \right)  \quad.
   $$
@@ -2158,7 +2158,7 @@ tex.write(tostring(x:asinh()))
 
 \method{Q}{acosh(q)}
 \begin{quote}
-  Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
   $$
     \text{acosh}(x) = \ln\left( x + \sqrt{x^2 - 1} \right)  \quad, x > 1 \quad.
   $$
@@ -2189,7 +2189,7 @@ tex.write(tostring(x:acosh()))
 
 \method{Q}{atanh(q)}
 \begin{quote}
-  Returns the value of the inverse hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Returns the value of the inverse hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
   $$
     \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, -1 < x < 1 \quad.
   $$
@@ -2238,7 +2238,7 @@ tex.write(tostring(x:atanh()))
     The created |D| instance
   \end{description}
 
-  If |d| is a string, a copy of the perviously defined dimension is made. If |d| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created. 
+  If |d| is a string, a copy of the perviously defined dimension is made. If |d| is a dimension, a copy of it is made. If no argument ist given, a dimension \emph{zero} is created.
 
 
   \subtitle{Example}
@@ -2258,7 +2258,7 @@ tex.write(tostring(x:atanh()))
   \item |symbol| : |string|\\
 
   \item |name| : |string|\\
-    
+
   \item returns : |D|\\
     The created |D| instance
   \end{description}
@@ -2284,7 +2284,7 @@ tex.write(tostring(x:atanh()))
 \newpage
 \subsection{physical.Unit}
 
-The task of this class is keeping track of the unit term. The unit term is a fraction of units. The units in the enumerator and denominator can have an exponent. 
+The task of this class is keeping track of the unit term. The unit term is a fraction of units. The units in the enumerator and denominator can have an exponent.
 
 
 \method{Unit}{new(u=nil)}
@@ -2304,7 +2304,7 @@ The task of this class is keeping track of the unit term. The unit term is a fra
 
 \method{Unit}{new(symbol, name, prefixsymbol=nil, prefixname=nil)}
 \begin{quote}
-  Constructor. A new |Unit| object with symbol is created. The prefixsymbol and prefixname are optional. 
+  Constructor. A new |Unit| object with symbol is created. The prefixsymbol and prefixname are optional.
 
   \begin{description}
   \item |symbol| : |String|\\
@@ -2314,10 +2314,10 @@ The task of this class is keeping track of the unit term. The unit term is a fra
     The name of the unit.
 
   \item |prefixsymbol| : |String|\\
-    The optional symbol of the prefix. 
+    The optional symbol of the prefix.
 
   \item |prefixname| : |String|\\
-    The optional name of the prefix. 
+    The optional name of the prefix.
 
   \item returns : |Unit|\\
     The created |Unit| object
@@ -2413,7 +2413,7 @@ tex.write(tostring(n))
 
 \method{N}{new(str)}
 \begin{quote}
-  This constructor creates a new instance of |N| from a string. It can parse strings of the form |"3.4"|, |"3.4e-3"|, |"5.4e-3 +/- 2.4e-6"| and |"5.45(7)e-23"|. 
+  This constructor creates a new instance of |N| from a string. It can parse strings of the form |"3.4"|, |"3.4e-3"|, |"5.4e-3 +/- 2.4e-6"| and |"5.45(7)e-23"|.
 
   \begin{description}
   \item |str| : |string|
@@ -2648,7 +2648,7 @@ tex.write(tostring(n:sqrt()))
   %
   \begin{align*}
     \Delta y = \mid \cos(x) \mid \cdot \Delta x \quad.
-  \end{align*}  
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2679,7 +2679,7 @@ tex.write(tostring(n:sin()))
   %
   \begin{align*}
     \Delta y = \mid \sin(x) \mid \cdot \Delta x \quad.
-  \end{align*}  
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2710,7 +2710,7 @@ tex.write(tostring(n:cos()))
   %
   \begin{align*}
     \Delta y = \mid \frac{1}{\cos^2(x)} \mid \cdot \Delta x \quad.
-  \end{align*}  
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2741,7 +2741,7 @@ tex.write(tostring(n:tan()))
   %
   \begin{align*}
     \Delta y = \frac{1}{\sqrt{1 - x^2}} \cdot \Delta x \quad.
-  \end{align*}  
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2772,7 +2772,7 @@ tex.write(tostring(n:asin()))
   %
   \begin{align*}
     \Delta y = \frac{1}{\sqrt{1 - x^2}} \cdot \Delta x \quad.
-  \end{align*}  
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2795,7 +2795,7 @@ tex.write(tostring(n:acos()))
 
   \begin{description}
   \item |n| : |N|
-  
+
   \item returns : |N|
   \end{description}
 
@@ -2803,7 +2803,7 @@ tex.write(tostring(n:acos()))
   %
   \begin{align*}
     \Delta y = \frac{1}{\sqrt{1 + x^2}} \cdot \Delta x \quad.
-  \end{align*}  
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2830,7 +2830,7 @@ tex.write(tostring(n:atan()))
   \item returns : |N|
   \end{description}
 
-  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used
   \begin{align*}
     \sinh(x) = 0.5 \cdot e^x - 0.5 / e^x  \quad.
   \end{align*}
@@ -2839,7 +2839,7 @@ tex.write(tostring(n:atan()))
   %
   \begin{align*}
     \Delta y = \left( 0.5 \cdot e^x + 0.5 / e^x \right) \cdot \Delta x \quad.
-  \end{align*} 
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2867,7 +2867,7 @@ tex.write(tostring(n:sinh()))
   \item returns : |N|
   \end{description}
 
-  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used
   \begin{align*}
     \cosh(x) = 0.5 \cdot e^x + 0.5 / e^x  \quad.
   \end{align*}
@@ -2876,7 +2876,7 @@ tex.write(tostring(n:sinh()))
   %
   \begin{align*}
     \Delta y = \left( 0.5 \cdot e^x - 0.5 / e^x \right) \cdot \Delta x \quad.
-  \end{align*} 
+  \end{align*}
 
 \begin{lstlisting}
 n = N(1,0.1)
@@ -2903,7 +2903,7 @@ tex.write(tostring(n:cosh()))
   \item returns : |N|
   \end{description}
 
-  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used
   \begin{align*}
     \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \quad.
   \end{align*}
@@ -2911,7 +2911,7 @@ tex.write(tostring(n:cosh()))
   The uncertainty $\Delta y$ is calculated by the following expression
   \begin{align*}
     \Delta y = \frac{1}{\left( 0.5 \cdot e^x + 0.5 / e^x \right)^2} \cdot \Delta x \quad.
-  \end{align*} 
+  \end{align*}
 
 
 
@@ -2941,7 +2941,7 @@ tex.write(tostring(n:tanh()))
   \item returns : |N|
   \end{description}
 
-  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used
   \begin{align*}
     \text{asinh}(x) = \ln\left( x + \sqrt{x^2 + 1} \right)  \quad.
   \end{align*}
@@ -2949,7 +2949,7 @@ tex.write(tostring(n:tanh()))
   The uncertainty $\Delta y$ is calculated by the following expression
   \begin{align*}
     \Delta y = \frac{1}{\sqrt{x^2 + 1}} \cdot \Delta x \quad.
-  \end{align*} 
+  \end{align*}
 
 
 \begin{lstlisting}
@@ -2977,7 +2977,7 @@ tex.write(tostring(n:asinh()))
   \item returns : |N|
   \end{description}
 
-  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used
   \begin{align*}
     \text{acosh}(x) = \ln\left( x + \sqrt{x^2 - 1} \right)  \quad, x > 1 \quad.
   \end{align*}
@@ -2985,9 +2985,9 @@ tex.write(tostring(n:asinh()))
   The uncertainty $\Delta y$ is calculated by the following expression
   \begin{align*}
     \Delta y = \frac{1}{\sqrt{x^2 - 1}} \cdot \Delta x \quad.
-  \end{align*} 
+  \end{align*}
 
-  
+
 
 
 \begin{lstlisting}
@@ -3015,7 +3015,7 @@ tex.write(tostring(n:acosh()))
   \item returns : |N|
   \end{description}
 
-  Since Lua doesn't implement the hyperbolic functions, the following formula is used 
+  Since Lua doesn't implement the hyperbolic functions, the following formula is used
   \begin{align*}
     \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, -1 < x < 1 \quad.
   \end{align*}
@@ -3023,7 +3023,7 @@ tex.write(tostring(n:acosh()))
   The uncertainty $\Delta y$ is calculated by the following expression
   \begin{align*}
     \Delta y = \frac{1}{\mid x^2 - 1 \mid} \cdot \Delta x \quad.
-  \end{align*} 
+  \end{align*}
 
 
 
