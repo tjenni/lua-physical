@@ -24,7 +24,7 @@ SOFTWARE.
 
 local lu = require("luaunit")
 
-package.path = "../?.lua;" .. package.path
+package.path = "../physical/?.lua;" .. package.path
 local physical = require("physical")
 
 local N = physical.Number

@@ -89,9 +89,9 @@ Q = physical.Quantity
   keywordstyle=\ttfamily\bfseries\color{black},
   basicstyle=\ttfamily\footnotesize,
   commentstyle=\itshape\color{gray},
+  columns=flexible,
   stringstyle=\ttfamily,
   tabsize=2,
-  numbers=right,
   showstringspaces=false,
   breaklines=true,
   breakindent=30pt,
@@ -152,7 +152,7 @@ Q = physical.Quantity
 
 \lstset{language=[LaTex]Tex}
 
-\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 1.0.1}
+\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 1.0.2}
 \author{Thomas Jenni}
 \date{\today}
 \maketitle
@@ -184,7 +184,6 @@ This package is a pure Lua library. Therefore one has to require it explicitly b
 The following \LaTeX{} preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
 \begin{lstlisting}[language=Tex, caption=basic preamble, label=lst:basic preamble]
-  \usepackage{lua-physical}
   \usepackage{siunitx}
 
   % configure siunitx
@@ -244,9 +243,9 @@ Given the basic preamble, units can be used in lua code directly. By convention,
 \end{luacode}
 
 A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
-$$
+\begin{align}
 	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \uuline{\q{v}}
-$$
+\end{align}
 \end{lstlisting}
 
 \begin{luacode}
@@ -258,9 +257,9 @@ $$
 
 \leftbar
 A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
-$$
+\begin{align}
   v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \uuline{\q{v}}
-$$
+\end{align}
 \endleftbar
 
 In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
@@ -284,12 +283,12 @@ Very often, the result of a calculation has to be converted to another unit. In 
 
 Find the volume of a rectangular cuboid with lengths $\q{a}$,
 $\q{b}$ and $\q{c}$.
-$$
+\begin{align}
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
   = \uuline{\q{V:to(_dm^3)}}
-$$
+\end{align}
 \end{lstlisting}
 
 \begin{luacode}
@@ -302,12 +301,12 @@ $$
 
 \leftbar
 Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
-$$
+\begin{align}
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
   = \uuline{\q{V:to(_dm^3)}}
-$$
+\end{align}
 \endleftbar
 
 
@@ -395,9 +394,9 @@ In the following problem, listing~\ref{lst:temperature conversion}, the task is 
 The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing~\ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
 
 For the uncertainty propagation the gaussian formula
-$$
+\begin{align}
   \Delta f = \sqrt{ \left(\frac{\partial f}{x_1} \cdot \Delta x_1\right)^2 + \dots + \left(\frac{\partial f}{x_n} \cdot \Delta x_2 \right)^2 }
-$$
+\end{align}
 is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to change linear, if quantities $x_i$ are changed in the range of their uncertainties.
 
 
@@ -411,11 +410,11 @@ is used. This formula is a good estimation for the uncertainty $\Delta f$, if th
 \end{luacode}
 
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
-$$
+\begin{align}
   A = a \cdot b
   = \q{a} \cdot \q{b}
   = \uuline{\q{A}}
-$$
+\end{align}
 \end{lstlisting}
 
 \begin{luacode}
@@ -427,11 +426,11 @@ $$
 
 \leftbar
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
-$$
+\begin{align}
   A = a \cdot b
   = \q{a} \cdot \q{b}
   = \uuline{\q{A}}
-$$
+\end{align}
 \endleftbar
 
 
@@ -450,11 +449,11 @@ In the following problem, listing~\ref{lst:volume of ideal gas}, the task is to 
 \end{luacode}
 
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
-$$
+\begin{align}
   V=\frac{ \q{n} \cdot \q{_R} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
   = \q{V}
   = \uuline{\q{V}}
-$$
+\end{align}
 \end{lstlisting}
 
 
@@ -470,10 +469,10 @@ $$
 \leftbar
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
 
-$$
+\begin{align}
   V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
   = \uuline{\q{V}}
-$$
+\end{align}
 \endleftbar
 
 This example shows, that the result has only two digits. If more digits are needed, the uncertainties of the given quantities should be smaller.
@@ -2036,9 +2035,9 @@ tex.write(tostring(x:atan():to(_deg)))
 \method{Q}{sinh(q)}
 \begin{quote}
   Returns the value of the hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  $$
+  \begin{align}
     \sinh(x) = 0.5 \cdot e^x - 0.5 / e^x  \quad.
-  $$
+  \end{align}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2067,9 +2066,9 @@ tex.write(tostring(x:sinh()))
 \method{Q}{cosh(q)}
 \begin{quote}
   Returns the value of the hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  $$
+  \begin{align}
     \cosh(x) = 0.5 \cdot e^x + 0.5 / e^x  \quad.
-  $$
+  \end{align}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2097,9 +2096,9 @@ tex.write(tostring(x:cosh()))
 \method{Q}{tanh(q)}
 \begin{quote}
   Returns the value of the hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  $$
+  \begin{align}
     \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \quad.
-  $$
+  \end{align}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2128,9 +2127,9 @@ tex.write(tostring(x:tanh()))
 \method{Q}{asinh(q)}
 \begin{quote}
   Returns the value of the inverse hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  $$
+  \begin{align}
     \text{asinh}(x) = \ln\left( x + \sqrt{x^2 + 1} \right)  \quad.
-  $$
+  \end{align}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2159,9 +2158,9 @@ tex.write(tostring(x:asinh()))
 \method{Q}{acosh(q)}
 \begin{quote}
   Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  $$
+  \begin{align}
     \text{acosh}(x) = \ln\left( x + \sqrt{x^2 - 1} \right)  \quad, x > 1 \quad.
-  $$
+  \end{align}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2190,9 +2189,9 @@ tex.write(tostring(x:acosh()))
 \method{Q}{atanh(q)}
 \begin{quote}
   Returns the value of the inverse hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  $$
+  \begin{align}
     \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, -1 < x < 1 \quad.
-  $$
+  \end{align}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -3052,6 +3051,8 @@ tex.write(tostring(n:atanh()))
 %------------------------------------------------------------
 \newpage
 \section{Change History}
+
+V1.0.2 \quad (2020/09/07) Minor release. Path issues resolved. Docs corrected.
 
 V1.0.1 \quad (2020/09/05) Minor release. Files renamed. 
 
