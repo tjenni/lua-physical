@@ -24,7 +24,7 @@ SOFTWARE.
 
 local lu = require("luaunit")
 
-package.path = "../physical/?.lua;" .. package.path
+package.path = "../src/?.lua;" .. package.path
 
 local physical = require("physical")
 
