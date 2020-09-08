@@ -170,10 +170,13 @@ Q = physical.Quantity
 \newpage
 \section{Introduction}
 
-The author of this package is a physics teacher at the high school \emph{Kantonsschule Zug}, Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX{} does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com or directly to the author (\texttt{thomas.jenni (at) ksz.ch}).
+The author of this package is a physics teacher at the high school \emph{Kantonsschule Zug}, Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX{} does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com.
 
 
 
+\subsection{Dependencies}
+
+In principle this library is standalone, but it is compatible with the |siunitx| package. Calculation results can be written to \LuaLaTeX{} directly by calling the |tosiunitx()| method. If the preamble in the next section is used, the printing is done by the |\q{}| macro.
 
 
 
@@ -184,40 +187,69 @@ This package is a pure Lua library. Therefore one has to require it explicitly b
 The following \LaTeX{} preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
 \begin{lstlisting}[language=Tex, caption=basic preamble, label=lst:basic preamble]
-  \usepackage{siunitx}
+\usepackage{siunitx}
 
-  % configure siunitx
-  \sisetup{
-    output-decimal-marker = {.},
-    per-mode = symbol,
-    separate-uncertainty = true,
-    add-decimal-zero = true,
-    exponent-product = \cdot,
-    round-mode = off
-  }
+% configure siunitx
+\sisetup{
+  output-decimal-marker = {.},
+  per-mode = symbol,
+  separate-uncertainty = true,
+  add-decimal-zero = true,
+  exponent-product = \cdot,
+  round-mode = off
+}
 
-  % load the lua-physical package
-  \begin{luacode*}
-    physical = require("physical")
-    N = physical.Number
-  \end{luacode*}
+% load the lua-physical package
+\begin{luacode*}
+  physical = require("physical")
+  N = physical.Number
+\end{luacode*}
 
-  % print a physical quantity
-  \newcommand{\q}[1]{%
-    \directlua{tex.print(physical.Quantity.tosiunitx(#1,"scientific-notation=fixed,exponent-to-prefix=false"))}%
-  }
+
+
+% print a physical quantity
+\newcommand{\q}[1]{%
+  \directlua{
+    tex.print(
+      physical.Quantity.tosiunitx(
+        #1,
+        "scientific-notation=fixed,
+        exponent-to-prefix=false"
+      )
+    )
+  }%
+}
+
+% print the numeric part of a physical quantity
+\newcommand{\qm}[1]{%
+  \directlua{
+    tex.print(
+      physical.Quantity.__tonumber(#1)
+    )
+  }%
+}
+
+
+% print the unit of a physical quantity
+\newcommand{\qu}[1]{%
+  \directlua{
+    tex.print(
+      physical.Quantity.tosiunitx(
+        #1,
+        nil,
+        2
+      )
+    )
+  }%
+}
 \end{lstlisting}
 
-
-\subsection{Dependencies}
-
-In principle this library is standalone, but it is compatible with the |siunitx| package. Calculation results can be written to \LuaLaTeX{} directly by calling the |tosiunitx()| method. If the preamble above is used, the printing is done by the |\q{}| macro.
 
 
 \subsection{License}
 This code is freely distributable under the terms of the MIT license.\\
 
-Copyright (c) 2019 Thomas Jenni\\
+Copyright (c) 2020 Thomas Jenni\\
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\\
 
@@ -243,9 +275,9 @@ Given the basic preamble, units can be used in lua code directly. By convention,
 \end{luacode}
 
 A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
-\begin{align}
+\begin{equation*}
 	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \uuline{\q{v}}
-\end{align}
+\end{equation*}
 \end{lstlisting}
 
 \begin{luacode}
@@ -257,9 +289,9 @@ A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
 
 \leftbar
 A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
-\begin{align}
+\begin{equation*}
   v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \uuline{\q{v}}
-\end{align}
+\end{equation*}
 \endleftbar
 
 In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
@@ -270,7 +302,9 @@ In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displac
 %------------------------------------------------------------
 \subsection{Unit conversion}
 
-Very often, the result of a calculation has to be converted to another unit. In listing~\ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
+Very often, the result of a calculation has to be converted to another unit. In listing~\ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly. With the |\qu{}| macro of the basic preamble, the unit of a physical quantity can be printed.
+
+\pagebreak
 
 \begin{lstlisting}[caption=Volume of a cuboid.,label=lst:Volume of Cuboid]
 \begin{luacode}
@@ -282,13 +316,14 @@ Very often, the result of a calculation has to be converted to another unit. In 
 \end{luacode}
 
 Find the volume of a rectangular cuboid with lengths $\q{a}$,
-$\q{b}$ and $\q{c}$.
-\begin{align}
+$\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
+
+\begin{equation*}
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
   = \uuline{\q{V:to(_dm^3)}}
-\end{align}
+\end{equation*}
 \end{lstlisting}
 
 \begin{luacode}
@@ -300,13 +335,14 @@ $\q{b}$ and $\q{c}$.
 \end{luacode}
 
 \leftbar
-Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
-\begin{align}
+Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
+
+\begin{equation*}
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
   = \uuline{\q{V:to(_dm^3)}}
-\end{align}
+\end{equation*}
 \endleftbar
 
 
@@ -394,9 +430,9 @@ In the following problem, listing~\ref{lst:temperature conversion}, the task is 
 The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing~\ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
 
 For the uncertainty propagation the gaussian formula
-\begin{align}
+\begin{equation*}
   \Delta f = \sqrt{ \left(\frac{\partial f}{x_1} \cdot \Delta x_1\right)^2 + \dots + \left(\frac{\partial f}{x_n} \cdot \Delta x_2 \right)^2 }
-\end{align}
+\end{equation*}
 is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to change linear, if quantities $x_i$ are changed in the range of their uncertainties.
 
 
@@ -410,11 +446,11 @@ is used. This formula is a good estimation for the uncertainty $\Delta f$, if th
 \end{luacode}
 
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
-\begin{align}
+\begin{equation*}
   A = a \cdot b
   = \q{a} \cdot \q{b}
   = \uuline{\q{A}}
-\end{align}
+\end{equation*}
 \end{lstlisting}
 
 \begin{luacode}
@@ -426,11 +462,11 @@ Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
 
 \leftbar
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
-\begin{align}
+\begin{equation*}
   A = a \cdot b
   = \q{a} \cdot \q{b}
   = \uuline{\q{A}}
-\end{align}
+\end{equation*}
 \endleftbar
 
 
@@ -449,11 +485,11 @@ In the following problem, listing~\ref{lst:volume of ideal gas}, the task is to 
 \end{luacode}
 
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
-\begin{align}
+\begin{equation*}
   V=\frac{ \q{n} \cdot \q{_R} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
   = \q{V}
   = \uuline{\q{V}}
-\end{align}
+\end{equation*}
 \end{lstlisting}
 
 
@@ -469,10 +505,10 @@ An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. C
 \leftbar
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
 
-\begin{align}
+\begin{equation*}
   V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
   = \uuline{\q{V}}
-\end{align}
+\end{equation*}
 \endleftbar
 
 This example shows, that the result has only two digits. If more digits are needed, the uncertainties of the given quantities should be smaller.
@@ -2035,9 +2071,9 @@ tex.write(tostring(x:atan():to(_deg)))
 \method{Q}{sinh(q)}
 \begin{quote}
   Returns the value of the hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  \begin{align}
+  \begin{equation*}
     \sinh(x) = 0.5 \cdot e^x - 0.5 / e^x  \quad.
-  \end{align}
+  \end{equation*}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2066,9 +2102,9 @@ tex.write(tostring(x:sinh()))
 \method{Q}{cosh(q)}
 \begin{quote}
   Returns the value of the hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  \begin{align}
+  \begin{equation*}
     \cosh(x) = 0.5 \cdot e^x + 0.5 / e^x  \quad.
-  \end{align}
+  \end{equation*}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2096,9 +2132,9 @@ tex.write(tostring(x:cosh()))
 \method{Q}{tanh(q)}
 \begin{quote}
   Returns the value of the hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  \begin{align}
+  \begin{equation*}
     \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \quad.
-  \end{align}
+  \end{equation*}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2127,9 +2163,9 @@ tex.write(tostring(x:tanh()))
 \method{Q}{asinh(q)}
 \begin{quote}
   Returns the value of the inverse hyperbolic sine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  \begin{align}
+  \begin{equation*}
     \text{asinh}(x) = \ln\left( x + \sqrt{x^2 + 1} \right)  \quad.
-  \end{align}
+  \end{equation*}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2158,9 +2194,9 @@ tex.write(tostring(x:asinh()))
 \method{Q}{acosh(q)}
 \begin{quote}
   Returns the value of the inverse hyperbolic cosine function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  \begin{align}
+  \begin{equation*}
     \text{acosh}(x) = \ln\left( x + \sqrt{x^2 - 1} \right)  \quad, x > 1 \quad.
-  \end{align}
+  \end{equation*}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
@@ -2189,9 +2225,9 @@ tex.write(tostring(x:acosh()))
 \method{Q}{atanh(q)}
 \begin{quote}
   Returns the value of the inverse hyperbolic tangent function of the given quantity. The quantity has to be dimensionless. Since Lua doesn't implement the hyperbolic functions, the following formula is used
-  \begin{align}
+  \begin{equation*}
     \text{atanh}(x) = \ln\left( \frac{1 + x}{1 - x} \right)  \quad, -1 < x < 1 \quad.
-  \end{align}
+  \end{equation*}
 
   \begin{description}
   \item |q| : |Q|, |N|, |number|\\
