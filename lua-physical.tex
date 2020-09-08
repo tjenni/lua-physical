@@ -85,7 +85,7 @@ Q = physical.Quantity
 }
 
 \lstset{
-  numberstyle=\footnotesize\color{green!50!black},
+  numberstyle=\footnotesize\color{black!50!white},
   keywordstyle=\ttfamily\bfseries\color{black},
   basicstyle=\ttfamily\footnotesize,
   commentstyle=\itshape\color{gray},
@@ -106,7 +106,7 @@ Q = physical.Quantity
   frameround=tttt,
   framexleftmargin=15pt,
   framexrightmargin=20pt,
-  rulecolor=\color{green!50!black},
+  rulecolor=\color{black!50!white},
   mathescape=false,
   captionpos=t,
   escapechar=`,
@@ -127,7 +127,7 @@ Q = physical.Quantity
 % left bar
 \newenvironment{leftbar}
 {%
-\begin{tcolorbox}[colframe=green!50!black, colback=white, arc=5pt, boxrule=0.5pt,]%
+\begin{tcolorbox}[colframe=black!50!white, colback=white, arc=5pt, boxrule=0.5pt,]%
 }
 {%
 \end{tcolorbox}%
@@ -187,6 +187,7 @@ This package is a pure Lua library. Therefore one has to require it explicitly b
 The following \LaTeX{} preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
 \begin{lstlisting}[language=Tex, caption=basic preamble, label=lst:basic preamble]
+\usepackage{luacode}
 \usepackage{siunitx}
 
 % configure siunitx
@@ -213,12 +214,26 @@ The following \LaTeX{} preamble loads the |lua-physical| package and creates a m
     tex.print(
       physical.Quantity.tosiunitx(
         #1,
-        "scientific-notation=fixed,
-        exponent-to-prefix=false"
+        "scientific-notation=fixed,exponent-to-prefix=false"
       )
     )
   }%
 }
+
+
+% print a physical quantity in scientific notation
+\newcommand{\qs}[1]{%
+  \directlua{
+    tex.print(
+      physical.Quantity.tosiunitx(
+        #1,
+        "scientific-notation=true,exponent-to-prefix=false,
+         round-integer-to-decimal=true"
+      )
+    )
+  }%
+}
+
 
 % print the numeric part of a physical quantity
 \newcommand{\qm}[1]{%
@@ -237,7 +252,7 @@ The following \LaTeX{} preamble loads the |lua-physical| package and creates a m
       physical.Quantity.tosiunitx(
         #1,
         nil,
-        2
+        physical.Quantity.siunitx_si
       )
     )
   }%
@@ -245,6 +260,7 @@ The following \LaTeX{} preamble loads the |lua-physical| package and creates a m
 \end{lstlisting}
 
 
+\pagebreak
 
 \subsection{License}
 This code is freely distributable under the terms of the MIT license.\\
@@ -275,8 +291,9 @@ Given the basic preamble, units can be used in lua code directly. By convention,
 \end{luacode}
 
 A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
+%
 \begin{equation*}
-	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \uuline{\q{v}}
+	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \underline{\q{v}}
 \end{equation*}
 \end{lstlisting}
 
@@ -289,8 +306,9 @@ A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
 
 \leftbar
 A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
+%
 \begin{equation*}
-  v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \uuline{\q{v}}
+  v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \underline{\q{v}}
 \end{equation*}
 \endleftbar
 
@@ -317,12 +335,12 @@ Very often, the result of a calculation has to be converted to another unit. In 
 
 Find the volume of a rectangular cuboid with lengths $\q{a}$,
 $\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
-
+%
 \begin{equation*}
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
-  = \uuline{\q{V:to(_dm^3)}}
+  = \underline{\q{V:to(_dm^3)}}
 \end{equation*}
 \end{lstlisting}
 
@@ -336,12 +354,12 @@ $\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
 
 \leftbar
 Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
-
+%
 \begin{equation*}
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
-  = \uuline{\q{V:to(_dm^3)}}
+  = \underline{\q{V:to(_dm^3)}}
 \end{equation*}
 \endleftbar
 
@@ -446,10 +464,11 @@ is used. This formula is a good estimation for the uncertainty $\Delta f$, if th
 \end{luacode}
 
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
+%
 \begin{equation*}
   A = a \cdot b
   = \q{a} \cdot \q{b}
-  = \uuline{\q{A}}
+  = \underline{\q{A}}
 \end{equation*}
 \end{lstlisting}
 
@@ -462,10 +481,11 @@ Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
 
 \leftbar
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
+%
 \begin{equation*}
   A = a \cdot b
   = \q{a} \cdot \q{b}
-  = \uuline{\q{A}}
+  = \underline{\q{A}}
 \end{equation*}
 \endleftbar
 
@@ -485,10 +505,11 @@ In the following problem, listing~\ref{lst:volume of ideal gas}, the task is to 
 \end{luacode}
 
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
+%
 \begin{equation*}
   V=\frac{ \q{n} \cdot \q{_R} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
   = \q{V}
-  = \uuline{\q{V}}
+  = \underline{\q{V}}
 \end{equation*}
 \end{lstlisting}
 
@@ -504,10 +525,10 @@ An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. C
 
 \leftbar
 An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
-
+%
 \begin{equation*}
   V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
-  = \uuline{\q{V}}
+  = \underline{\q{V}}
 \end{equation*}
 \endleftbar
 
