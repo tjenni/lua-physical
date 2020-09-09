@@ -46,9 +46,9 @@ Quantity._base = {}
 Quantity._prefixes = {}
 
 -- modes for the function tosiunitx()
-Quantity.siunitx_SI = 0
-Quantity.siunitx_num = 1
-Quantity.siunitx_si = 2
+Quantity.SIUNITX_SI = 0
+Quantity.SIUNITX_num = 1
+Quantity.SIUNITX_si = 2
 
 
 -- constructor
@@ -416,20 +416,20 @@ end
 -- convert quantity to an siunitx expression
 function Quantity:tosiunitx(param,mode)
 
-	mode = mode or self.siunitx_SI
+	mode = mode or self.SIUNITX_SI
 	param = param or ""
 
 	if param ~= "" then
 		param = "["..param.."]"
 	end
 
-	if mode == Quantity.siunitx_SI then
+	if mode == Quantity.SIUNITX_SI then
 		return "\\SI"..param.."{"..tostring(self.value).."}".."{"..self.unit:tosiunitx().."}"
 
-	elseif mode == Quantity.siunitx_num then
+	elseif mode == Quantity.SIUNITX_num then
 		return "\\num"..param.."{"..tostring(self.value).."}"
 
-	elseif mode == Quantity.siunitx_si then
+	elseif mode == Quantity.SIUNITX_si then
 		return "\\si"..param.."{"..self.unit:tosiunitx().."}"
 
 	else

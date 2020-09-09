@@ -252,7 +252,7 @@ The following \LaTeX{} preamble loads the |lua-physical| package and creates a m
       physical.Quantity.tosiunitx(
         #1,
         nil,
-        physical.Quantity.siunitx_si
+        physical.Quantity.SIUNITX_si
       )
     )
   }%
@@ -1696,7 +1696,7 @@ tex.write(tostring(T:to()) )
   \item |mode| : |number|
   \end{description}
 
-  If |mode| is equal |Q.siunitx_SI|, which is the default, the quantity is converted to an \textbackslash SI\{\}\{\} macro. If mode is |Q.siunitx_num|, the quantity is converted to \textbackslash num\{\} and if it is |Q.siunitx_si| the macro \textbackslash si\{\} is printed.
+  If |mode| is equal |Q.SIUNITX_SI|, which is the default, the quantity is converted to an \textbackslash SI\{\}\{\} macro. If mode is |Q.SIUNITX_num|, the quantity is converted to \textbackslash num\{\} and if it is |Q.SIUNITX_si| the macro \textbackslash si\{\} is printed.
 
 \begin{lstlisting}
 s = 1.9 * _km
@@ -1709,17 +1709,17 @@ tex.write(tostring(s:tosiunitx()) )
 \end{luacode}
 `
 
-print( s:tosiunitx(nil,Q.siunitx_num) )
+print( s:tosiunitx(nil,Q.SIUNITX_num) )
 `
 \begin{luacode}
-tex.write(tostring(s:tosiunitx(nil,Q.siunitx_num)) )
+tex.write(tostring(s:tosiunitx(nil,Q.SIUNITX_num)) )
 \end{luacode}
 `
 
-print( s:tosiunitx(nil,Q.siunitx_si) )
+print( s:tosiunitx(nil,Q.SIUNITX_si) )
 `
 \begin{luacode}
-tex.write(tostring(s:tosiunitx(nil,Q.siunitx_si)) )
+tex.write(tostring(s:tosiunitx(nil,Q.SIUNITX_si)) )
 \end{luacode}
 `
 \end{lstlisting}
