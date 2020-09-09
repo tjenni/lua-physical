@@ -219,48 +219,8 @@ The following \LaTeX{} preamble loads the |lua-physical| package and creates a m
     )
   }%
 }
-
-
-% print a physical quantity in scientific notation
-\newcommand{\qs}[1]{%
-  \directlua{
-    tex.print(
-      physical.Quantity.tosiunitx(
-        #1,
-        "scientific-notation=true,exponent-to-prefix=false,
-         round-integer-to-decimal=true"
-      )
-    )
-  }%
-}
-
-
-% print the numeric part of a physical quantity
-\newcommand{\qm}[1]{%
-  \directlua{
-    tex.print(
-      physical.Quantity.__tonumber(#1)
-    )
-  }%
-}
-
-
-% print the unit of a physical quantity
-\newcommand{\qu}[1]{%
-  \directlua{
-    tex.print(
-      physical.Quantity.tosiunitx(
-        #1,
-        nil,
-        physical.Quantity.SIUNITX_si
-      )
-    )
-  }%
-}
 \end{lstlisting}
 
-
-\pagebreak
 
 \subsection{License}
 This code is freely distributable under the terms of the MIT license.\\
@@ -320,7 +280,7 @@ In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displac
 %------------------------------------------------------------
 \subsection{Unit conversion}
 
-Very often, the result of a calculation has to be converted to another unit. In listing~\ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly. With the |\qu{}| macro of the basic preamble, the unit of a physical quantity can be printed.
+Very often, the result of a calculation has to be converted to another unit. In listing~\ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
 
 \pagebreak
 
@@ -334,7 +294,7 @@ Very often, the result of a calculation has to be converted to another unit. In 
 \end{luacode}
 
 Find the volume of a rectangular cuboid with lengths $\q{a}$,
-$\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
+$\q{b}$ and $\q{c}$.
 %
 \begin{equation*}
   V= a \cdot b \cdot c
@@ -353,7 +313,7 @@ $\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
 \end{luacode}
 
 \leftbar
-Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$. Convert the result to $\qu{_dm^3}$.
+Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}$.
 %
 \begin{equation*}
   V= a \cdot b \cdot c
