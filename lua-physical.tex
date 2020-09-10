@@ -176,21 +176,21 @@ The author of this package is a physics teacher at the high school \emph{Kantons
 
 \subsection{Dependencies}
 
-In principle this library is standalone, but it is compatible with the |siunitx| package. Calculation results can be written to \LuaLaTeX{} directly by calling the |tosiunitx()| method. If the preamble in the next section is used, the printing is done by the |\q{}| macro.
+This is a standalone library. However, it is compatible with the |siunitx| package. The results of calculations can be written to \LuaLaTeX{} directly by calling the |physical.Quantity.tosiunitx()| method. It is recommended to use a macro for this purpose. The preamble in the next section, simplifies the printing of quantities by the |\q{}| macro.
 
 
 
 \section{Loading}
 
-This package is a pure Lua library. Therefore one has to require it explicitly by calling |require("physical")|. For printing physical quanties, the |siunitx| is supported. It's recommended to define a macro like |\q| to convert the lua quantity object to a |siunitx| expression.
+This Lua library can be loaded by calling |require("physical")|. The following \LuaLaTeX{} preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 
-The following \LaTeX{} preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
 \nopagebreak
+
 \begin{lstlisting}[language=Tex, caption=basic preamble, label=lst:basic preamble]
 \usepackage{luacode}
 \usepackage{siunitx}
 
-% configure siunitx
+% configure siunitx (siunitx package)
 \sisetup{
   output-decimal-marker = {.},
   per-mode = symbol,
@@ -200,13 +200,16 @@ The following \LaTeX{} preamble loads the |lua-physical| package and creates a m
   round-mode = off
 }
 
+% declare the unitless unit (siunitx package)
+\DeclareSIUnit\number{}
+
 % load the lua-physical package
 \begin{luacode*}
   physical = require("physical")
   N = physical.Number
+
+  N.omitUncertainty = true
 \end{luacode*}
-
-
 
 % print a physical quantity
 \newcommand{\q}[1]{%
@@ -219,6 +222,33 @@ The following \LaTeX{} preamble loads the |lua-physical| package and creates a m
     )
   }%
 }
+
+% print the unit in scientific notation
+\newcommand{\qs}[1]{%
+  \directlua{
+    tex.print(
+      physical.Quantity.tosiunitx(
+        #1,
+        "scientific-notation=true,exponent-to-prefix=false,
+          round-integer-to-decimal=true"
+      )
+    )
+  }%
+}
+
+% print the unit of a quantity
+\newcommand{\qu}[1]{%
+  \directlua{
+    tex.print(
+      physical.Quantity.tosiunitx(
+        #1,
+        nil,
+        physical.Quantity.SIUNITX_si
+      )
+    )
+  }%
+}
+
 \end{lstlisting}
 
 
@@ -250,7 +280,7 @@ Given the basic preamble, units can be used in lua code directly. By convention,
 	v = s/t
 \end{luacode}
 
-A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
+A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
 %
 \begin{equation*}
 	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \underline{\q{v}}
@@ -261,7 +291,7 @@ A car travels $\q{s}$ in $\q{t}$. calculate its velocity.
   s = 10 * _m
   t = 2 * _s
 
-  v = s/t
+  v = s / t
 \end{luacode}
 
 \leftbar
@@ -272,7 +302,14 @@ A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
 \end{equation*}
 \endleftbar
 
-In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new physical quantities are created. In the problem above, the velocity |v| is calculated by dividing |s| by |t|. The instance |v| has the derived unit \si{\m\per\s}. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly.
+
+
+
+
+
+
+
+In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new derived quantities are created. In the example problem above, the velocity |v| is calculated by dividing |s| by |t| and has therefore the unit |_m/_s|. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly. 
 
 
 
@@ -280,9 +317,44 @@ In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displac
 %------------------------------------------------------------
 \subsection{Unit conversion}
 
-Very often, the result of a calculation has to be converted to another unit. In listing~\ref{lst:Volume of Cuboid} the task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths, the unit of the result is \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. The conversion function is called |to()| and is available on all physical quantitiy instances. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example here, it's not clear what unit the result sould have. Therefore the user has always to give the target unit explicitly.
+It is often the case, that the result of a calculation has to be converted to another unit. Lets assume, that in the problem of listing~\ref{lst:Car Velocity}, the velocity should be determined in |_km/_h|.
 
-\pagebreak
+
+\begin{lstlisting}[caption=Velocity of a car.,label=lst:Car Velocity2]
+\begin{luacode}
+  s = 10 * _m
+  t = 2 * _s
+  v = (s / t):to(_km/_h)
+\end{luacode}
+
+A car travels $\q{s}$ in $\q{t}$. Calculate its velocity in $\qu{_km/_h}$.
+%
+\begin{equation*}
+  v = \frac{s}{t} = \frac{\q{s}}{\q{t}} =  \underline{\q{v}}
+\end{equation*}
+\end{lstlisting}
+
+
+\begin{luacode}
+  s = 10 * _m
+  t = 2 * _s
+
+  v = (s / t):to(_km/_h)
+\end{luacode}
+
+\leftbar
+A car travels $\q{s}$ in $\q{t}$. Calculate its velocity in $\qu{_km/_h}$.
+%
+\begin{equation*}
+  v = \frac{s}{t} = \frac{\q{s}}{\q{t}} =  \underline{\q{v}}
+\end{equation*}
+\endleftbar
+
+
+It is the function |:to()|, which does the unit convertion. This function is available on all physical quantities. If no argument is given, the quantity is converted to base units.
+
+Another example is given in listing~\ref{lst:Volume of Cuboid}. The task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths. The result has the unit \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example problem, it's not clear what unit the volume should have. Is it |_m^3|, |_cm^3| or |_L| (liter) ? The user has to give that convertion explicitly.
+
 
 \begin{lstlisting}[caption=Volume of a cuboid.,label=lst:Volume of Cuboid]
 \begin{luacode}
@@ -290,7 +362,7 @@ Very often, the result of a calculation has to be converted to another unit. In 
   b = 150 * _mm
   c = 1.5 * _m
 
-  V = a*b*c
+  V = ( a * b * c ):to(_dm^3)
 \end{luacode}
 
 Find the volume of a rectangular cuboid with lengths $\q{a}$,
@@ -300,7 +372,7 @@ $\q{b}$ and $\q{c}$.
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
-  = \underline{\q{V:to(_dm^3)}}
+  = \underline{\q{V}}
 \end{equation*}
 \end{lstlisting}
 
@@ -309,7 +381,7 @@ $\q{b}$ and $\q{c}$.
   b = 150 * _mm
   c = 1.5 * _m
 
-  V = a*b*c
+  V = ( a * b * c ):to(_dm^3)
 \end{luacode}
 
 \leftbar
@@ -319,7 +391,7 @@ Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}
   V= a \cdot b \cdot c
   = \q{a} \cdot \q{b} \cdot \q{c}
   = \q{V}
-  = \underline{\q{V:to(_dm^3)}}
+  = \underline{\q{V}}
 \end{equation*}
 \endleftbar
 
@@ -405,7 +477,7 @@ In the following problem, listing~\ref{lst:temperature conversion}, the task is 
 %------------------------------------------------------------
 \subsection{Uncertainty Propagation}
 
-The package supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing~\ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
+The |lua-physical| library supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing~\ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
 
 For the uncertainty propagation the gaussian formula
 \begin{equation*}
@@ -417,10 +489,12 @@ is used. This formula is a good estimation for the uncertainty $\Delta f$, if th
 
 \begin{lstlisting}[caption=Uncertainty in area calculation.,label=lst:rectangular area]
 \begin{luacode}
+  N.omitUncertainty = false
+
   a = N(2,0.1) * _m
   b = N(3,0.1) * _m
 
-  A = (a*b):to(_m^2)
+  A = ( a * b ):to(_m^2)
 \end{luacode}
 
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
@@ -433,10 +507,12 @@ Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
 \end{lstlisting}
 
 \begin{luacode}
+  N.omitUncertainty = false
+
   a = N(2,0.1) * _m
   b = N(3,0.1) * _m
 
-  A = (a*b):to(_m^2)
+  A = ( a * b ):to(_m^2)
 \end{luacode}
 
 \leftbar
