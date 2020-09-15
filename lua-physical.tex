@@ -72,6 +72,8 @@ Q = physical.Quantity
 
 \DeclareSIUnit\fahrenheit{\ensuremath{{}^{\circ}}F}
 
+\DeclareSIUnit\inch{in}
+
 % config listings
 \lstdefinelanguage{lua}
 {
@@ -159,7 +161,7 @@ Q = physical.Quantity
 
 
 \begin{abstract}
-\noindent |lua-physical| is a pure Lua library, which provides functions and objects for the computation of physical quantities. A physical quantity is the product of a numerical value and a physical unit. The package has been written, to simplify the creation physics problem sets. The package provides units of the SI and the imperial system. Furthermore, an almost complete set of international currencies are supported, however without realtime exchange rates. In order to display the numbers with measurement uncertainties, the package is able to perform gaussian error propagation.
+\noindent |lua-physical| is a pure Lua library, which provides functions and objects for the computation of physical quantities. The package has been written, to simplify the creation physics problem sets. The package provides units of the SI and the imperial system. In order to display the numbers with measurement uncertainties, the package is able to perform gaussian error propagation.
 \end{abstract}
 
 
@@ -170,19 +172,19 @@ Q = physical.Quantity
 \newpage
 \section{Introduction}
 
-The author of this package is a physics teacher at the high school \emph{Kantonsschule Zug}, Switzerland. The main use of this package is to write physics problem sets. \LuaLaTeX{} does make it possible to integrate physical calculations directly. The package has been in use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com.
+The author of this package is a physics teacher at the high school \emph{Kantonsschule Zug}, Switzerland. The main use of this package is to write physics problem sets. It is possible to integrate physical calculations directly into \LuaLaTeX{}. The package has been in  use since 2016. Many bugs have been found and fixed. Nevertheless it still is possible, that some were not found yet. Therefore the author recommends not to use this package in industry or science. If one does so, it's the responsability of the user to check results for plausability. If the user finds some bugs, they can be reported at github.com.
 
 
 
 \subsection{Dependencies}
 
-This is a standalone library. However, it is compatible with the |siunitx| package. The results of calculations can be written to \LuaLaTeX{} directly by calling the |physical.Quantity.tosiunitx()| method. It is recommended to use a macro for this purpose. The preamble in the next section, simplifies the printing of quantities by the |\q{}| macro.
+This is a standalone library. However, it is compatible with the |siunitx| package. The results of calculations can be printed to \LuaLaTeX{} by calling the |physical.Quantity.tosiunitx()| method. It is recommended to use a macro for this purpose. The preamble in the next section, simplifies the printing of quantities by the macros |\q{}|, |\qs{}| and |\qu{}|.
 
 
 
 \section{Loading}
 
-This Lua library can be loaded by calling |require("physical")|. The following \LuaLaTeX{} preamble loads the |lua-physical| package and creates a macro |\q| for printing physical quantities.
+By calling |require("physical")| the |lua-physical| library is loaded. The following \LuaLaTeX{} preamble loads the |lua-physical| package, does some configuration of the |siunitx| package and defines the macros |\q{}|, |\qs{}| and |\qu{}| for printing physical quantities.
 
 \nopagebreak
 
@@ -190,7 +192,13 @@ This Lua library can be loaded by calling |require("physical")|. The following \
 \usepackage{luacode}
 \usepackage{siunitx}
 
-% configure siunitx (siunitx package)
+% initialize the lua-physical package
+\begin{luacode*}
+  physical = require("physical")
+  N = physical.Number
+\end{luacode*}
+
+% configure the siunitx package
 \sisetup{
   output-decimal-marker = {.},
   per-mode = symbol,
@@ -203,15 +211,7 @@ This Lua library can be loaded by calling |require("physical")|. The following \
 % declare the unitless unit (siunitx package)
 \DeclareSIUnit\number{}
 
-% load the lua-physical package
-\begin{luacode*}
-  physical = require("physical")
-  N = physical.Number
-
-  N.omitUncertainty = true
-\end{luacode*}
-
-% print a physical quantity
+% print a quantity using the \SI{}{} macro.
 \newcommand{\q}[1]{%
   \directlua{
     tex.print(
@@ -223,7 +223,7 @@ This Lua library can be loaded by calling |require("physical")|. The following \
   }%
 }
 
-% print the unit in scientific notation
+% print a quantity in scientific notation using \SI{}{} macro.
 \newcommand{\qs}[1]{%
   \directlua{
     tex.print(
@@ -236,7 +236,7 @@ This Lua library can be loaded by calling |require("physical")|. The following \
   }%
 }
 
-% print the unit of a quantity
+% print the unit of a quantity using the \si{} macro
 \newcommand{\qu}[1]{%
   \directlua{
     tex.print(
@@ -251,7 +251,7 @@ This Lua library can be loaded by calling |require("physical")|. The following \
 
 \end{lstlisting}
 
-
+\pagebreak
 \subsection{License}
 This code is freely distributable under the terms of the MIT license.\\
 
@@ -271,19 +271,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 \label{ch:usage}
 %------------------------------------------------------------
 
-Given the basic preamble, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e.\ meter is |_m|, second is |_s|. All available units are listed in section~\ref{ch:Supported Units}. The following example illustrates the use of this library.
+Given the basic preamble~\ref{lst:basic preamble}, units can be used in lua code directly. By convention, all units have an underscore in front of them, i.e.\ meter is |_m|, second is |_s|. For a complete list of all available units, see section~\ref{ch:Supported Units}. The following example illustrates the use of this library.
 
 \begin{lstlisting}[caption=Velocity of a car.,label=lst:Car Velocity]
 \begin{luacode}
-  s = 10 * _m
+  d = 10 * _m
 	t = 2 * _s
-	v = s/t
+	v = d / t
 \end{luacode}
 
-A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
+A car travels $\q{d}$ in $\q{t}$. Calculate its velocity.
 %
 \begin{equation*}
-	v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \underline{\q{v}}
+	v=\frac{d}{t} = \frac{\q{d}}{\q{t}} = \underline{\q{v}}
 \end{equation*}
 \end{lstlisting}
 
@@ -309,7 +309,7 @@ A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
 
 
 
-In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If mathematical operations are done on them, new derived quantities are created. In the example problem above, the velocity |v| is calculated by dividing |s| by |t| and has therefore the unit |_m/_s|. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly. 
+In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displacement and has the unit meter |_m|, the variable |t| stands for time and is given in seconds |_s|. If physical quantities are divided or multiplied, derived quantities are created. In the example problem above, the velocity |v| has the unit |_m/_s|. By using the macro |\q{}| all quantities can be printed to the \LuaLaTeX{} code directly. 
 
 
 
@@ -317,43 +317,40 @@ In the above listing~\ref{lst:Car Velocity}, the variable |s| stands for displac
 %------------------------------------------------------------
 \subsection{Unit conversion}
 
-It is often the case, that the result of a calculation has to be converted to another unit. Lets assume, that in the problem of listing~\ref{lst:Car Velocity}, the velocity should be determined in |_km/_h|.
+It is often the case, that the result of a calculation has to be converted to other units. Lets assume, that in the problem of listing~\ref{lst:Car Velocity}, the velocity should be determined in |_km/_h|. This can be done using the |:to()| method, which is available on all quantity objects, see ~\ref{lst:Car Velocity2}.
 
 
-\begin{lstlisting}[caption=Velocity of a car.,label=lst:Car Velocity2]
+\begin{lstlisting}[caption=Velocity of a car in kilometers per hour.,label=lst:Car Velocity2]
 \begin{luacode}
-  s = 10 * _m
+  d = 10 * _m
   t = 2 * _s
   v = (s / t):to(_km/_h)
 \end{luacode}
 
-A car travels $\q{s}$ in $\q{t}$. Calculate its velocity in $\qu{_km/_h}$.
+A car travels $\q{d}$ in $\q{t}$. Calculate its velocity in $\qu{_km/_h}$.
 %
 \begin{equation*}
-  v = \frac{s}{t} = \frac{\q{s}}{\q{t}} =  \underline{\q{v}}
+  v = \frac{d}{t} = \frac{\q{d}}{\q{t}} =  \underline{\q{v}}
 \end{equation*}
 \end{lstlisting}
 
 
 \begin{luacode}
-  s = 10 * _m
+  d = 10 * _m
   t = 2 * _s
 
-  v = (s / t):to(_km/_h)
+  v = (d / t):to(_km/_h)
 \end{luacode}
 
 \leftbar
-A car travels $\q{s}$ in $\q{t}$. Calculate its velocity in $\qu{_km/_h}$.
+A car travels $\q{d}$ in $\q{t}$. Calculate its velocity in $\qu{_km/_h}$.
 %
 \begin{equation*}
-  v = \frac{s}{t} = \frac{\q{s}}{\q{t}} =  \underline{\q{v}}
+  v = \frac{d}{t} = \frac{\q{d}}{\q{t}} =  \underline{\q{v}}
 \end{equation*}
 \endleftbar
 
-
-It is the function |:to()|, which does the unit convertion. This function is available on all physical quantities. If no argument is given, the quantity is converted to base units.
-
-Another example is given in listing~\ref{lst:Volume of Cuboid}. The task is to calculate the volume of a cuboid. The length of the edges are given in different units. The volume is calculated by multipling all three lengths. The result has the unit \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example problem, it's not clear what unit the volume should have. Is it |_m^3|, |_cm^3| or |_L| (liter) ? The user has to give that convertion explicitly.
+Another example is given in listing~\ref{lst:Volume of Cuboid}. The task is to calculate the volume of a cuboid. The length of the edges are given in different units. The result of the multiplication has the unit \si{\cm\mm\m}. If the unit \si{\cm\cubed} is preferred, it has to be converted explicitly. At first this looks a bit cumbersome. The reason of this behaviour is, that the software is not able to guess the unit of the result. In many cases, like in the example problem, it's not clear what unit the volume should have. Is it |_m^3|, |_cm^3| or |_L|? The user has to give that convertion explicitly.
 
 
 \begin{lstlisting}[caption=Volume of a cuboid.,label=lst:Volume of Cuboid]
@@ -396,12 +393,48 @@ Find the volume of a rectangular cuboid with lengths $\q{a}$, $\q{b}$ and $\q{c}
 \endleftbar
 
 
+The |siunitx| package has definitions or all SI units plus some non-SI units. If a quantity has a unit, which is not defined by the |siunitx| package, it has to be declared using the |\DeclareSIUnit| macro.
+
+\begin{lstlisting}[caption=Non-SI units.,label=lst:Non-SI units]
+% add this declaration to the preamble
+\DeclareSIUnit\inch{in}
+
+
+% document
+\begin{luacode}
+  l = 12 * _in
+\end{luacode}
+
+Convert $\q{l}$ to the unit $\qu{_cm}$.
+%
+\begin{equation*}
+  l = \q{l} \cdot \frac{\q{_in:to(_cm)}}{\qu{_in}} = \q{l:to(_cm)}
+\end{equation*}
+\end{lstlisting}
+
+\begin{luacode}
+  l = 12 * _in
+\end{luacode}
+
+\leftbar
+Convert $\q{l}$ (inches) to the unit $\qu{_cm}$.
+%
+\begin{equation*}
+  l = \q{l} \cdot \frac{\q{_in:to(_cm)}}{\qu{_in}} = \underline{ \q{l:to(_cm)} }
+\end{equation*}
+\endleftbar
+
+
+
+
+
+
 
 
 %------------------------------------------------------------
 \subsubsection{Temperature Conversion}
 
-Most physical units transform linearly. Exceptions are the unit degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin.
+Most physical units transform linearly. Exceptions are temperature units lie degree Celsius |_degC| and degree Fahrenheit |_degF|. These units are ambigous and can be interpreted as temperature differences or as an absolute temperatures. In the latter case, the conversion to base units is not a linear, but an affine transformation. This is because degree Celsius and degree Fahrenheit scales have their zero points at different temperatures compared to the unit Kelvin.
 
 By default |_degC| and |_degF| units are temperature differences. If one wants to have it converted absolutely, it has to be done adding / subtracting  |_degC_0 = 273.15*_K| or |_degF_0 = (273.15 - 32*(5/9)) * _K|,
 the zero point temperatures of the scales.
@@ -474,17 +507,105 @@ In the following problem, listing~\ref{lst:temperature conversion}, the task is 
 
 
 
+
+
+
 %------------------------------------------------------------
 \subsection{Uncertainty Propagation}
 
-The |lua-physical| library supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created, see listing~\ref{lst:rectangular area}. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. If the proposed preamble \ref{lst:basic preamble} is used, the uncertainty is by default seperated from the mean value by a plus-minus sign.
+The |lua-physical| library supports uncertainty propagation. To create a number with an uncertainty, an instance of |physical.Number| has to be created. It has to be remembered, that |N| is a alias for |physical.Number|. The first argument of the constructor |N(mean, uncertainty)| is the mean value and the second one the uncertainty of the measurement. 
 
 For the uncertainty propagation the gaussian formula
 \begin{equation*}
   \Delta f = \sqrt{ \left(\frac{\partial f}{x_1} \cdot \Delta x_1\right)^2 + \dots + \left(\frac{\partial f}{x_n} \cdot \Delta x_2 \right)^2 }
 \end{equation*}
-is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to change linear, if quantities $x_i$ are changed in the range of their uncertainties.
+is used. This formula is a good estimation for the uncertainty $\Delta f$, if the quantities $x_1, \dots, x_n$ the function $f$ depends on, have no correlation. Further, the function $f$ has to change linearly, if quantities $x_i$ are changed in the range of their uncertainties.
 
+
+The example in listing~\ref{lst:Time of flight} shows the usage of |N()|. At the defintion of the distance and the speed of light, the constants are given with full precision, i.e. The distance |_au| is $\q{_au:to(_km)}$ and |_c| is $\q{_c:to(_km/_s)}$. By multipling these quantities with $|N(1,0.0001)|$ the precision is reduced. The uncertainty propagation takes care of rounding the resulting time |t| to the correct precision. For printing, the macro |\qs{}| for scientific notation is used.
+
+\begin{lstlisting}[caption=Time of flight.,label=lst:Time of flight]
+
+\begin{luacode}
+  d = N(1,0.0001) * ( _au ):to(_km)
+  v = N(1,0.0001) * ( _c ):to(_km/_s)
+  t = ( d/v ):to(_min)
+\end{luacode}
+
+Calculate the time, a lightray travels from the surface of the sun to the earth.
+The mean distance from the sun to the eart is $\qs{d}$. The speed of light is $\qs{v}$.
+%
+\begin{equation*}
+  t = \frac{d}{v} = \frac{\q{d}}{\q{v}} = \underline{\q{t}}
+\end{equation*}
+\end{lstlisting}
+
+\begin{luacode}
+  N.omitUncertainty = true
+  d = N(1,0.0001) * ( _au ):to(_km)
+  v = N(1,0.0001) * ( _c ):to(_km/_s)
+  t = ( d/v ):to(_min)
+\end{luacode}
+
+\leftbar
+Calculate the time, a lightray travels from the surface of the sun to the earth.
+The mean distance from the sun to the eart is $\qs{d}$. The speed of light is $\qs{v}$.
+%
+\begin{equation*}
+  t = \frac{d}{v} = \frac{\qs{d}}{\qs{v}} = \underline{\q{t}}
+\end{equation*}
+\endleftbar
+
+Another example is given in listing~\ref{lst:volume of ideal gas}, the task is to find the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and absolute temperature |T| in degree celsius |_degC|. 
+
+\begin{lstlisting}[caption=Volume of an ideal gas.,label=lst:volume of ideal gas]
+\begin{luacode}
+  N.omitUncertainty = true
+
+  p = N(1.013,0.0001) * _bar
+  n = N(1,0.01) * _mol
+  T = N(30,0.1) * _degC
+
+  V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
+\end{luacode}
+
+An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
+%
+\begin{equation*}
+  V=\frac{ \q{n} \cdot \q{_R} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
+  = \q{V}
+  = \underline{\q{V}}
+\end{equation*}
+\end{lstlisting}
+
+
+\begin{luacode}
+  N.omitUncertainty = true
+
+  p = N(1.013,0.0001) * _bar
+  n = N(1,0.01) * _mol
+  T = N(30,0.1) * _degC
+
+  V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
+\end{luacode}
+
+\leftbar
+An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
+%
+\begin{equation*}
+  V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
+  = \underline{\q{V}}
+\end{equation*}
+\endleftbar
+
+This example shows, that the result has only two digits. If more digits are needed, the uncertainties of the given quantities should be made smaller.
+
+
+
+%------------------------------------------------------------
+\subsubsection{Print the Uncertainty explicitly}
+
+It is possible to print the uncertainty explicitly. By default the parameter |N.omitUncertainty| is set to |true|. In listing~\ref{lst:rectangular area} it is set to |false| and the uncertainty is printed.
 
 
 \begin{lstlisting}[caption=Uncertainty in area calculation.,label=lst:rectangular area]
@@ -526,49 +647,8 @@ Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
 \endleftbar
 
 
-Instead of printing the uncertainties, one can use the uncertainty calculation to provide significant digits and omit it.
-
-In the following problem, listing~\ref{lst:volume of ideal gas}, the task is to find the volume of an ideal gas. Given are pressure |p| in |_bar|, amount of substance |n| in |_mol| and temperature |T| in degree celsius |_degC|. In order to do the calculation, one has to convert |T|, which is given as an absolute temperature in degree celsius to the base unit Kelvin first. By setting |N.omitUncertainty = true|, all uncertainties are not printed.
-
-\begin{lstlisting}[caption=Volume of an ideal gas.,label=lst:volume of ideal gas]
-\begin{luacode}
-  N.omitUncertainty = true
-  p = N(1.013,0.0001) * _bar
-  n = N(1,0.01) * _mol
-  T = N(30,0.1) * _degC
-
-  V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
-\end{luacode}
-
-An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
-%
-\begin{equation*}
-  V=\frac{ \q{n} \cdot \q{_R} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
-  = \q{V}
-  = \underline{\q{V}}
-\end{equation*}
-\end{lstlisting}
 
 
-\begin{luacode}
-  N.omitUncertainty = true
-  p = N(1.013,0.0001) * _bar
-  n = N(1,0.01) * _mol
-  T = N(30,0.1) * _degC
-
-  V = ( n * _R * (T + _degC_0):to(_K) / p ):to(_L)
-\end{luacode}
-
-\leftbar
-An ideal gas ($\q{n}$) has a pressure of $\q{p}$ and a temperature of $\q{T}$. Calculate the volume of the gas.
-%
-\begin{equation*}
-  V=\frac{ \q{n} \cdot \q{(_R*N(1,0.001)):to(_J/(_mol*_K))} \cdot \q{(T + _degC_0):to(_K)} }{ \q{p} }
-  = \underline{\q{V}}
-\end{equation*}
-\endleftbar
-
-This example shows, that the result has only two digits. If more digits are needed, the uncertainties of the given quantities should be smaller.
 
 
 
@@ -1474,6 +1554,8 @@ International currency which are pegged to other currencies.
 
 % shortcut for method definitions
 \newcommand{\method}[2]{\subsection*{|#1.#2|}\index[lua]{\texttt{#1.#2}}}
+
+\newcommand{\variable}[2]{\subsection*{|#1.#2|}\index[lua]{\texttt{#1.#2}}}
 
 \newcommand{\subtitle}[1]{\noindent \\\textbf{#1}}
 
@@ -2445,11 +2527,109 @@ N.seperateUncertainty = true
 N.format = N.DECIMAL
 \end{luacode}
 
-It does arithmetics with gaussian error propagation. A number instance has a mean value called |x| and an uncertainty value called |dx|.
+This class enhances the Lua number with an uncertainty and gaussian error propagation. A number instance has a mean value called |x| and an uncertainty value called |dx|.
+
+
+
+\variable{N}{omitUncertainty=true}
+\begin{quote}
+This variable controls, wether the uncertainty |dx| is printed or not. The default value is |true|, i.e. the uncertainty is omitted.
+\end{quote}
+
+\begin{lstlisting}
+n = N(45,0.012)
+
+N.omitUncertainty = false
+print(n)
+`
+\begin{luacode}
+n = N(45,0.012)
+
+N.omitUncertainty = false
+tex.write(tostring(n))
+\end{luacode}
+`
+
+N.omitUncertainty = true
+print(n)
+`
+\begin{luacode}
+N.omitUncertainty = true
+tex.write(tostring(n))
+\end{luacode}
+`
+\end{lstlisting}
+
+
+\variable{N}{seperateUncertainty=true}
+\begin{quote}
+This variable controls, how the uncertainty is printed. If set to |false|, the parenthesis notation is used. If set to |true| the plus minus notation is used. The default value is |true|.
+\end{quote}
+
+\begin{lstlisting}
+n = N(56,0.025)
+
+N.seperateUncertainty = false
+print(n)
+`
+\begin{luacode}
+n = N(56,0.025)
+
+N.omitUncertainty = false
+N.seperateUncertainty = false
+
+tex.write(tostring(n))
+\end{luacode}
+`
+
+N.seperateUncertainty = true
+print(n)
+`
+\begin{luacode}
+N.seperateUncertainty = true
+tex.write(tostring(n))
+\end{luacode}
+`
+\end{lstlisting}
+
+
+\variable{N}{format=N.SCIENTIFIC}
+\begin{quote}
+This variable controls, how the number is printed. If set to |N.SCIENTIFIC|, scientific notation is used. If set to |N.DECIMAL| the decimal notation is used. The default value is |N.SCIENTIFIC|.
+\end{quote}
+
+\begin{lstlisting}
+n = N(12000000,0.1)
+
+N.format = N.SCIENTIFIC
+print(n)
+`
+\begin{luacode}
+n = N(12000000,0.1)
+
+N.omitUncertainty = true
+
+N.format = N.SCIENTIFIC
+
+tex.write(tostring(n))
+\end{luacode}
+`
+
+N.format = N.DECIMAL
+print(n)
+`
+\begin{luacode}
+N.format = N.DECIMAL
+tex.write(tostring(n))
+\end{luacode}
+`
+\end{lstlisting}
+
+
 
 \method{N}{new(n=nil)}
 \begin{quote}
-  This is the copy Constructor. It copies a given number object. If |n| is |nil|, an instance representing number zero with uncertainty zero is created.
+  This is the copy Constructor for the |Number| class. It copies a given number object. If |n| is |nil|, an instance representing number zero with uncertainty zero is created.
 
   \begin{description}
   \item |n| : |Number|\\
@@ -2806,11 +2986,11 @@ tex.write(tostring(n:cos()))
 
 
 \begin{lstlisting}
-n = N(1.5,0.01)
+n = N(1.5,0.001)
 print( n:tan() )
 `
 \begin{luacode}
-n = N(1.5,0.01)
+n = N(1.5,0.001)
 tex.write(tostring(n:tan()))
 \end{luacode}
 `
@@ -2837,11 +3017,11 @@ tex.write(tostring(n:tan()))
 
 
 \begin{lstlisting}
-n = N(0.99,0.1)
+n = N(0.99,0.001)
 print( n:asin() )
 `
 \begin{luacode}
-n = N(0.99,0.1)
+n = N(0.99,0.001)
 tex.write(tostring(n:asin()))
 \end{luacode}
 `
@@ -2868,11 +3048,11 @@ tex.write(tostring(n:asin()))
 
 
 \begin{lstlisting}
-n = N(0.99,0.1)
+n = N(0.99,0.001)
 print( n:acos() )
 `
 \begin{luacode}
-n = N(0.99,0.1)
+n = N(0.99,0.001)
 tex.write(tostring(n:acos()))
 \end{luacode}
 `
@@ -2899,11 +3079,11 @@ tex.write(tostring(n:acos()))
 
 
 \begin{lstlisting}
-n = N(1,0.1)
+n = N(1,0.001)
 print( n:atan() )
 `
 \begin{luacode}
-n = N(1,0.1)
+n = N(1,0.001)
 tex.write(tostring(n:atan()))
 \end{luacode}
 `
@@ -2935,11 +3115,11 @@ tex.write(tostring(n:atan()))
 
 
 \begin{lstlisting}
-n = N(1,0.1)
+n = N(1,0.001)
 print( n:sinh() )
 `
 \begin{luacode}
-n = N(1,0.1)
+n = N(1,0.001)
 tex.write(tostring(n:sinh()))
 \end{luacode}
 `
@@ -2971,11 +3151,11 @@ tex.write(tostring(n:sinh()))
   \end{align*}
 
 \begin{lstlisting}
-n = N(1,0.1)
+n = N(1,0.001)
 print( n:cosh() )
 `
 \begin{luacode}
-n = N(1,0.1)
+n = N(1,0.001)
 tex.write(tostring(n:cosh()))
 \end{luacode}
 `
@@ -3008,11 +3188,11 @@ tex.write(tostring(n:cosh()))
 
 
 \begin{lstlisting}
-n = N(1,0.1)
+n = N(1,0.001)
 print( n:tanh() )
 `
 \begin{luacode}
-n = N(1,0.1)
+n = N(1,0.001)
 tex.write(tostring(n:tanh()))
 \end{luacode}
 `
@@ -3045,11 +3225,11 @@ tex.write(tostring(n:tanh()))
 
 
 \begin{lstlisting}
-n = N(1,0.1)
+n = N(1,0.001)
 print( n:asinh() )
 `
 \begin{luacode}
-n = N(1,0.1)
+n = N(1,0.001)
 tex.write(tostring(n:asinh()))
 \end{luacode}
 `
@@ -3083,11 +3263,11 @@ tex.write(tostring(n:asinh()))
 
 
 \begin{lstlisting}
-n = N(1,0.1)
+n = N(2,0.001)
 print( n:acosh() )
 `
 \begin{luacode}
-n = N(1,0.1)
+n = N(2,0.001)
 tex.write(tostring(n:acosh()))
 \end{luacode}
 `
@@ -3120,11 +3300,11 @@ tex.write(tostring(n:acosh()))
 
 
 \begin{lstlisting}
-n = N(1,0.1)
+n = N(-0.5,0.0001)
 print( n:atanh() )
 `
 \begin{luacode}
-n = N(1,0.1)
+n = N(-0.5,0.0001)
 tex.write(tostring(n:atanh()))
 \end{luacode}
 `
@@ -3153,13 +3333,16 @@ tex.write(tostring(n:atanh()))
 \vspace{1em}
 }
 
+\vhist{V1.0.4}{2020/09/15}{Minor release}{ 
+  Changed default value of |Number.omitUncertainty| and |Number.seperateUncertainty| to |true|. Documentation added.
+}
 
 \vhist{V1.0.3}{2020/09/09}{Minor release}{ 
   Changed foldername |physical| to |src|. Changed Classvariables |Q.siunitx\_SI|, |Q.siunitx\_num| and |Q.siunitx\_si| to uppercase |Q.SIUNITX\_SI|, |Q.SIUNITX\_num| and |Q.SIUNITX\_si|.
 }
 
 \vhist{V1.0.2}{2020/09/07}{Minor release}{ 
-  Path issues resolved. Docs corrected.
+  Path issues resolved. Documentation added.
 }
 
 \vhist{V1.0.1}{2020/09/05}{Minor release}{ 

@@ -39,12 +39,12 @@ setmetatable(Number, {
 -- allows to set a default uncertainty, i.e. (5.6) will become (5.60 +/- 0.05)
 Number.defaultUncertainty = 0.5
 
--- Switch for writing uncertainty or not
-Number.omitUncertainty = false
+-- Switch for writing the uncertainty or not
+Number.omitUncertainty = true
 
 -- If true, the plus-minus notation will be used, otherwise the uncertainty 
 -- will be appended to the value in parentheses.
-Number.seperateUncertainty = false
+Number.seperateUncertainty = true
 
 -- number format "decimal" or "scientific"
 Number.DECIMAL = 0
