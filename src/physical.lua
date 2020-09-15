@@ -3,8 +3,8 @@
 lua-physical
 
 Author: Thomas Jenni 
-Version: 1.0.3
-Date: 2020-09-09
+Version: 1.0.4
+Date: 2020-09-15
 
 License: MIT
 
