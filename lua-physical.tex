@@ -950,6 +950,55 @@ The value of the currency Euro. \\\hline
 
 
 
+% lua function for printing dimension names.
+\begin{luacode}
+function getdim(q)
+  local str = q.dimension:__tostring()
+
+  str = string.gsub(str,"%[","")
+  str = string.gsub(str,"%]","")
+
+  return str
+end
+
+function strtoidx(str)
+  local s,n = string.gsub(str,"%_","\\_")
+  return s
+end
+\end{luacode}
+
+% print unit table
+\newcommand{\unittable}[1]{
+  \begin{table}[H]
+  \centering
+  \begin{tabularx}{\linewidth}{%
+    >{\setlength\hsize{1\hsize}}X%
+    l%
+    l%
+    >{\setlength\hsize{1\hsize}}X%
+  }
+  \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
+
+  #1
+
+  \hline
+  \end{tabularx}
+  \end{table}
+}
+
+% print unit table row
+\newcommand{\printunit}[3][]{
+  \ifthenelse{\equal{#1}{}}{
+    \directlua{tex.print(getdim(#2))}
+  }{
+    #1
+  } &
+  \directlua{tex.print(#2.unit.name)} &
+  |#2| &
+  \mbox{|#3|}\index[unit]{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
+}
+
+
 
 %------------------------------------------------------------
 \newpage
@@ -962,7 +1011,7 @@ All physical constants are taken from the NIST webpage \cite{nist19}.
 \newcommand{\printconstant}[2]{
   \directlua{tex.print(#1.unit.name)} &
   |#1| &
-  \mbox{|#2|}\index[unit]{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print( strtoidx("#1") )}}}\\
+  \mbox{|#2|}\index[unit]{\directlua{tex.print(#1.unit.name)} \texttt{\directlua{tex.print(strtoidx("#1"))}}}\\
 }
 
 \begin{table}[H]
@@ -1034,55 +1083,6 @@ All physical constants are taken from the NIST webpage \cite{nist19}.
 \label{ch:coherent derived units}
 
 All units in this section are coherent derived units from the SI base units with special names, \cite[118]{bipm06}.
-
-% lua function for printing dimension names.
-\begin{luacode}
-function getdim(q)
-  local str = q.dimension:__tostring()
-
-  str = string.gsub(str,"%[","")
-  str = string.gsub(str,"%]","")
-
-  return str
-end
-
-function strtoidx(str)
-  local s,n = string.gsub(str,"%_","\\_")
-  return s
-end
-\end{luacode}
-
-% print unit table
-\newcommand{\unittable}[1]{
-  \begin{table}[H]
-  \centering
-  \begin{tabularx}{\linewidth}{%
-    >{\setlength\hsize{1\hsize}}X%
-    l%
-    l%
-    >{\setlength\hsize{1\hsize}}X%
-  }
-  \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Definition} \\\hline
-
-  #1
-
-  \hline
-  \end{tabularx}
-  \end{table}
-}
-
-% print unit table row
-\newcommand{\printunit}[3][]{
-  \ifthenelse{\equal{#1}{}}{
-    \directlua{tex.print(getdim(#2))}
-  }{
-    #1
-  } &
-  \directlua{tex.print(#2.unit.name)} &
-  |#2| &
-  \mbox{|#3|}\index[unit]{\directlua{tex.print(#2.unit.name)} \texttt{\directlua{tex.print( strtoidx("#2") )}}} \\
-}
-
 \unittable{
   \printunit[Plane Angle\protect\footnotemark]{_rad}{_1}
   \printunit[Solid Angle\protect\footnotemark]{_sr}{_rad^2}
@@ -1175,6 +1175,11 @@ The nominal values of solar, terrestrial and jovial quantities are taken from IA
 }
 
 
+
+The mass of the sun is proposed to be used as the astronomical mass unit.
+\unittable{
+  \printunit[Mass]{_M_S}{N(1.98847e30,0.00007e30) * _kg}
+}
 
 
 %------------------------------------------------------------

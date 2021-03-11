@@ -276,6 +276,8 @@ Q.define("t", "tonne", 1e3 * _kg)
 -- https://arxiv.org/pdf/1605.09788.pdf
 -- https://arxiv.org/pdf/1510.07674.pdf
 
+Q.define("mag", "magnitude", _1)
+
 Q.define("R_S_nom", "nomsolradius", 6.957e8 * _m)
 Q.define("S_S_nom", "nomsolirradiance", 1361 * _W/_m^2)
 Q.define("L_S_nom", "nomsolluminosity", 3.828e26 * _W)
@@ -289,6 +291,8 @@ Q.define("GM_E_nom", "nomterrmassparameter", 3.986004e14 * _m^3*_s^-2)
 Q.define("Re_J_nom", "nomjoveqradius", 7.1492e7 * _m)
 Q.define("Rp_J_nom", "nomjovpolradius", 6.6854e7 * _m)
 Q.define("GM_J_nom", "nomjovmassparameter", 1.2668653e17 * _m^3*_s^-2)
+
+Q.define("M_S", "solmass", N(1.98847e30,0.00007e30) * _kg)
 
 
 
