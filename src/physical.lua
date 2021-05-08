@@ -3,8 +3,8 @@
 lua-physical
 
 Author: Thomas Jenni 
-Version: 1.0.4
-Date: 2020-09-15
+Version: 1.0.5
+Date: 2021-05-08
 
 License: MIT
 
@@ -31,16 +31,14 @@ SOFTWARE.
 
 -- Source: http://kiki.to/blog/2014/04/12/rule-5-beware-of-multiple-files/
 
-local prefix = ''
+local Dimension = require('physical-dimension')
+local Unit = require('physical-unit')
+local Quantity = require('physical-quantity')
+local Number = require('physical-number')
 
-local Dimension = require(prefix..'physical-dimension')
-local Unit = require(prefix..'physical-unit')
-local Quantity = require(prefix..'physical-quantity')
-local Number = require(prefix..'physical-number')
+require('physical-definition')
 
-require(prefix..'physical-definition')
-
-local Data = require(prefix..'physical-data')
+local Data = require('physical-data')
 
 local m = {
 	Dimension = Dimension,
