@@ -31,14 +31,16 @@ SOFTWARE.
 
 -- Source: http://kiki.to/blog/2014/04/12/rule-5-beware-of-multiple-files/
 
-local Dimension = require('physical-dimension')
-local Unit = require('physical-unit')
-local Quantity = require('physical-quantity')
-local Number = require('physical-number')
+local prefix = ''
 
-require('physical-definition')
+local Dimension = require(prefix..'physical-dimension')
+local Unit = require(prefix..'physical-unit')
+local Quantity = require(prefix..'physical-quantity')
+local Number = require(prefix..'physical-number')
 
-local Data = require('physical-data')
+require(prefix..'physical-definition')
+
+local Data = require(prefix..'physical-data')
 
 local m = {
 	Dimension = Dimension,

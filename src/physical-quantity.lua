@@ -424,10 +424,18 @@ function Quantity:tosiunitx(param,mode)
 	end
 
 	if mode == Quantity.SIUNITX_SI then
-		return "\\SI"..param.."{"..tostring(self.value).."}".."{"..self.unit:tosiunitx().."}"
+		if type(self.value) == "number" then
+			return "\\SI"..param.."{"..tostring(self.value).."}".."{"..self.unit:tosiunitx().."}"
+		else
+			return "\\SI"..param.."{"..self.value:tosiunitx().."}".."{"..self.unit:tosiunitx().."}"
+		end
 
 	elseif mode == Quantity.SIUNITX_num then
-		return "\\num"..param.."{"..tostring(self.value).."}"
+		if type(self.value) == "number" then
+			return "\\num"..param.."{"..tostring(self.value).."}"
+		else
+			return "\\num"..param.."{"..self.value:tosiunitx().."}"
+		end
 
 	elseif mode == Quantity.SIUNITX_si then
 		return "\\si"..param.."{"..self.unit:tosiunitx().."}"

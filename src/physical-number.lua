@@ -196,10 +196,18 @@ end
 
 
 -- plus minus notation, i.e. (5.040 +/- 0.001)
-function Number:toPlusMinusNotation(format)
+function Number:toPlusMinusNotation(format, parenthesis, pmsign)
 
 	if format == nil then
 		format = Number.format
+	end
+
+	if parenthesis == nil then
+		parenthesis = true
+	end
+
+	if pmsign == nil then
+		pmsign = " +/- "
 	end
 
 	local m, e = self._frexp(self._x)
@@ -216,13 +224,15 @@ function Number:toPlusMinusNotation(format)
 	-- In the decimal format, the numbers are given as decimals, i.e. (0.02 +/- 0.001) 
 	if format == Number.DECIMAL then
 		if de - udigit >= 0 then
-			str = self._flt2str(self._x, 0).." +/- "..self._flt2str(self._dx, 0)
+			str = self._flt2str(self._x, 0)..pmsign..self._flt2str(self._dx, 0)
 		else
 			local digits = math.abs(-de + udigit)
-			str = self._flt2str(self._x, digits).." +/- "..self._flt2str(self._dx, digits)
+			str = self._flt2str(self._x, digits)..pmsign..self._flt2str(self._dx, digits)
 		end
 
-		str = "("..str..")"
+		if parenthesis then
+			str = "("..str..")"
+		end
 	
 	-- In the scientific format, the numbers are written with powers of ten, i.e. (2.0 +/- 0.1) e-2
 	elseif format == Number.SCIENTIFIC then
@@ -232,13 +242,15 @@ function Number:toPlusMinusNotation(format)
 		de = de - e
 
 		if de >= 0 then
-			str = self._flt2str(m, 0).." +/- "..self._flt2str(dm, 0)
+			str = self._flt2str(m, 0)..pmsign..self._flt2str(dm, 0)
 		else
 			local digits = math.abs(-de + udigit)
-			str = self._flt2str(m, digits).." +/- "..self._flt2str(dm, digits)
+			str = self._flt2str(m, digits)..pmsign..self._flt2str(dm, digits)
 		end
 
-		str = "("..str..")"
+		if parenthesis then
+			str = "("..str..")"
+		end
 
 		if e ~= 0 then
 			str = str.."e"..e
@@ -340,6 +352,24 @@ function Number:__tostring()
 
 end
 
+
+-- convert number to a string
+function Number:tosiunitx()
+
+	if self._dx == 0 then
+		return tostring(self._x)
+
+	elseif Number.omitUncertainty then
+		return self:toOmitUncertaintyNotation()
+
+	elseif Number.seperateUncertainty then
+		return self:toPlusMinusNotation(Number.format, false, "+-")
+
+	else
+		return self:toParenthesisNotation()
+	end 
+
+end
 
 -- equal
 -- Two physical numbers are equal if they have the same value and uncertainty

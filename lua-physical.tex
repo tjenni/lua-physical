@@ -42,7 +42,7 @@
 
 % lua code and lua-physical command definitions
 \begin{luacode}
-physical = require("physical")
+physical = require('src.physicalx')
 N = physical.Number
 Q = physical.Quantity
 \end{luacode}
@@ -69,6 +69,8 @@ Q = physical.Quantity
 	exponent-product = \cdot,
 	round-mode=off
 }
+
+\DeclareSIUnit\unitless{}
 
 \DeclareSIUnit\fahrenheit{\ensuremath{{}^{\circ}}F}
 
@@ -154,7 +156,7 @@ Q = physical.Quantity
 
 \lstset{language=[LaTex]Tex}
 
-\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 1.0.4}
+\title{The \textsc{lua-physical} library \\\ \\\normalsize Version 1.0.5}
 \author{Thomas Jenni}
 \date{\today}
 \maketitle
@@ -209,7 +211,7 @@ By calling |require("physical")| the |lua-physical| library is loaded. The follo
 }
 
 % declare the unitless unit (siunitx package)
-\DeclareSIUnit\number{}
+\DeclareSIUnit\unitless{}
 
 % print a quantity using the \SI{}{} macro.
 \newcommand{\q}[1]{%
@@ -635,7 +637,6 @@ Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
   A = ( a * b ):to(_m^2)
 \end{luacode}
 
-\leftbar
 Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
 %
 \begin{equation*}
@@ -643,11 +644,6 @@ Calculate the area of a rectangle with lengths $\q{a}$ and $\q{b}$.
   = \q{a} \cdot \q{b}
   = \underline{\q{A}}
 \end{equation*}
-\endleftbar
-
-
-
-
 
 
 
@@ -710,10 +706,6 @@ t = 50 * _min
 N_0 * Q.exp(-lambda * t)
 749.15353843834 * _1
 \end{lstlisting}
-
-
-
-
 
 
 
@@ -836,6 +828,12 @@ yobi & |Yi| & |1208925819614629174706176| \\
 
 
 
+
+
+
+
+
+
 %------------------------------------------------------------
 \subsection{Base Units}
 \label{ch:base units}
@@ -855,7 +853,7 @@ The |lua-physical| library has nine base quantities. These are the seven basis u
 \thead{Quantity} & \thead{Unit} & \thead{Symbol} & \thead{Dim.} & \thead{Definition} \\\hline
 
 number \protect\footnotemark &
--- &
+unitless &
 |_1| &
 $\mathrm{1}$ &
 The dimensionless number one.  \\
@@ -878,7 +876,7 @@ The SI unit of length. It is defined by taking the fixed numercial value of the 
 \end{table}
 
 \footnotetext[1]{
-  The number one is a unit with dimension zero. Stricly speaking it is not a base unit.
+  The number one is a unit with dimension zero. It is not a base unit stricty speaking.
 }
 
 
@@ -1177,9 +1175,9 @@ The nominal values of solar, terrestrial and jovial quantities are taken from IA
 
 
 The mass of the sun is proposed to be used as the astronomical mass unit.
-\unittable{
-  \printunit[Mass]{_M_S}{N(1.98847e30,0.00007e30) * _kg}
-}
+%\unittable{
+%  \printunit[Mass]{_M_S}{N(1.98847e30,0.00007e30) * _kg}
+%}
 
 
 %------------------------------------------------------------
@@ -2737,6 +2735,38 @@ tex.write(tostring(n_4))
 \end{quote}
 
 
+\method{N}{tosiunitx()}
+\begin{quote}
+  Converts the number to an siunitx string. 
+
+  \subtitle{Parameters / Return}
+  \begin{description}
+  \item returns : |string|
+  \end{description}
+
+\begin{lstlisting}
+N.omitUncertainty = false
+N.seperateUncertainty = true
+
+n = N(5.25,0.0045)
+print( n:tosiunitx() )
+`
+\begin{luacode}
+N.omitUncertainty = false
+N.seperateUncertainty = true
+
+n = N(1.25,0.0023)
+tex.write(tostring(n:tosiunitx()))
+
+N.omitUncertainty = true
+N.seperateUncertainty = false
+\end{luacode}
+`
+\end{lstlisting}
+
+\end{quote}
+
+
 
 \method{N}{mean(n)}
 \begin{quote}
@@ -3337,6 +3367,12 @@ tex.write(tostring(n:atanh()))
 \vspace{1em}
 }
 
+\vhist{V1.0.5}{2021/05/08}{Minor release}{ 
+  The unitmacro |\textbackslash number|  had some collision with other packages. The unitless unit has been renamed from |\textbackslash number| to |\textbackslash unitless|.  The declaration in the preamble  |\textbackslash DeclareSIUnit\textbackslash number\{\}|  has therefore to be replaced with |\textbackslash DeclareSIUnit\textbackslash unitless\{\}|. \\
+  \ \\
+  The parsing of uncertainty values in the package |siunitx| has changed. It was incompatible with the output of |Number.\_\_tostring()|. To mitigate this issue a new method |Number.tosiunitx()| has been added.
+}
+
 \vhist{V1.0.4}{2020/09/15}{Minor release}{ 
   Changed default value of |Number.omitUncertainty| and |Number.seperateUncertainty| to |true|. Documentation added.
 }
@@ -3380,6 +3416,11 @@ tex.write(tostring(n:atanh()))
 \addcontentsline{toc}{section}{Index of Lua Classes and Methods}
 \indexprologue{}
 \printindex[lua]
+
+
+
+
+
 
 
 \end{document}

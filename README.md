@@ -2,9 +2,9 @@
 
 Author: Thomas Jenni
 
-Version: 1.0.4
+Version: 1.0.5
 
-Date: 2020-09-15
+Date: 2021-05-08
 
 License: MIT
 

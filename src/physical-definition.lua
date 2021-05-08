@@ -119,7 +119,7 @@ Q.definePrefix("Ki", "kibi", 1024)
 local IEC_prefixes = {"Ki","Mi","Gi","Ti","Pi","Ei","Zi","Yi"}
 
 -- define the dimensionless base quantity for real numbers
-Q.define("1", "number", Q(1))
+Q.define("1", "unitless", Q(1))
 
 -- define SI base units
 Q.defineBase("m", "meter", L)
