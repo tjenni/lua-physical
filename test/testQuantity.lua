@@ -50,10 +50,10 @@ end
 
 TestQuantity = {}
 
--- Quantity.new(o=nil)
+-- Quantity.new(q)
 function TestQuantity:testEmptyConstructor()
    local q = Q()
-   lu.assertEquals( q.value, 1 )
+   lu.assertEquals( q.value, nil )
 end
 function TestQuantity:testNumberConstructor()
    local q = Q(42)
@@ -65,19 +65,6 @@ function TestQuantity:testCopyConstructor()
    lu.assertEquals( q.value, 73 )
    lu.assertTrue( q.dimension == _m.dimension )
 end
-
-
--- Quantity.defineBase(symbol,name,dimension)
-
-
-
-
-
--- Quantity.define(symbol, name, o, tobase, frombase)
-
-
-
-
 
 
 

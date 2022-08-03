@@ -43,7 +43,7 @@ TestNumber = {}
 
 -- test the default constructor
 function TestNumber:testNewDefault()
-   local n = N()
+   local n = N(0)
    lu.assertEquals( n._x, 0 )
    lu.assertEquals( n._dx, 0 )
 end

@@ -67,7 +67,7 @@ function Quantity.new(q)
 	-- create a dimensionless Quantity
 	else
 		p.dimension = D.new()
-		p.value = q or 1
+		p.value = q
 		p.basefactor = 1
 		p.unit = U()
 	end

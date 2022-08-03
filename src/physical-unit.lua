@@ -77,8 +77,8 @@ function Unit.new(...)
 		u._term = {{{u,1}},{}}
 
 	else
-		error("Wrong number of arguments. Cannot create the unit.")
-
+		error("Cannot create physical.Unit. Wrong number of arguments.")
+		return nil
 	end
 
 	return u

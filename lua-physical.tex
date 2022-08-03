@@ -1,6 +1,6 @@
 %!TEX program = lualatex
 
-% Copyright (c) 2020 Thomas Jenni
+% Copyright (c) 2022 Thomas Jenni
 
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 \usepackage{hyperref}
 \usepackage{luacode}
 \usepackage{listings}
-\usepackage{siunitx}
+\usepackage{siunitx}[=2021-04-09]
 \usepackage{tabularx}
 \usepackage{float}
 \usepackage{ulem}
@@ -42,7 +42,7 @@
 
 % lua code and lua-physical command definitions
 \begin{luacode}
-physical = require('src.physicalx')
+physical = require('src.physical')
 N = physical.Number
 Q = physical.Quantity
 \end{luacode}
@@ -62,12 +62,12 @@ Q = physical.Quantity
 
 % config siunitx
 \sisetup{
-	output-decimal-marker = {.},
-	per-mode = symbol,
-	separate-uncertainty = true,
-	add-decimal-zero = true,
-	exponent-product = \cdot,
-	round-mode=off
+  output-decimal-marker = {.},
+  per-mode = symbol,
+  separate-uncertainty = true,
+  add-decimal-zero = true,
+  exponent-product = \cdot,
+  round-mode=off
 }
 
 \DeclareSIUnit\unitless{}
@@ -167,7 +167,6 @@ Q = physical.Quantity
 \end{abstract}
 
 
-
 \tableofcontents
 
 
@@ -181,6 +180,7 @@ The author of this package is a physics teacher at the high school \emph{Kantons
 \subsection{Dependencies}
 
 This is a standalone library. However, it is compatible with the |siunitx| package. The results of calculations can be printed to \LuaLaTeX{} by calling the |physical.Quantity.tosiunitx()| method. It is recommended to use a macro for this purpose. The preamble in the next section, simplifies the printing of quantities by the macros |\q{}|, |\qs{}| and |\qu{}|.
+
 
 
 
@@ -278,14 +278,14 @@ Given the basic preamble~\ref{lst:basic preamble}, units can be used in lua code
 \begin{lstlisting}[caption=Velocity of a car.,label=lst:Car Velocity]
 \begin{luacode}
   d = 10 * _m
-	t = 2 * _s
-	v = d / t
+  t = 2 * _s
+  v = d / t
 \end{luacode}
 
 A car travels $\q{d}$ in $\q{t}$. Calculate its velocity.
 %
 \begin{equation*}
-	v=\frac{d}{t} = \frac{\q{d}}{\q{t}} = \underline{\q{v}}
+  v=\frac{d}{t} = \frac{\q{d}}{\q{t}} = \underline{\q{v}}
 \end{equation*}
 \end{lstlisting}
 
@@ -303,9 +303,6 @@ A car travels $\q{s}$ in $\q{t}$. Calculate its velocity.
   v=\frac{s}{t} = \frac{\q{s}}{\q{t}} = \underline{\q{v}}
 \end{equation*}
 \endleftbar
-
-
-
 
 
 
@@ -504,10 +501,6 @@ In the following problem, listing~\ref{lst:temperature conversion}, the task is 
   \q{theta_5} &\mathrel{\widehat{=}} \q{theta_6}
 \end{align*}
 \endleftbar
-
-
-
-
 
 
 
@@ -824,13 +817,6 @@ yobi & |Yi| & |1208925819614629174706176| \\
 \label{tab:IEC prefixes}
 
 \end{table}
-
-
-
-
-
-
-
 
 
 
@@ -1384,6 +1370,9 @@ In the U.S., the length units are bound  to the meter differently than in the im
 
 
 
+
+
+
 %------------------------------------------------------------
 \newpage
 \subsection{International Currencies}
@@ -1537,18 +1526,6 @@ International currency which are pegged to other currencies.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 %------------------------------------------------------------
 \newpage
 \section{Lua Documentation}
@@ -1581,7 +1558,7 @@ The term |number| refers to a lua integer or a lua float number. By |string| a l
 The quantity class is the main part of the library. Each physical Quantity and all units are represented by an instance of this class.
 
 
-\method{Q}{new(q=nil)}
+\method{Q}{new(q)}
 \begin{quote}
   Copy Constuctor
 
@@ -1591,7 +1568,7 @@ The quantity class is the main part of the library. Each physical Quantity and a
     \item returns : |Q|\\
   \end{description}
 
-  As an argument it takes |Q|, |number|, |object| or |nil|. If an instance of |Q| is given, a copy is made and returned. If a |number| or an instance |object| of another class is given, the function creates a dimensionless quantity with the |number| or the instance as a value. In the case |nil| is given, a dimensionless quantity with value 1 is returned.
+  As an argument it takes |Q|, |number|, |object| or |nil|. If an instance of |Q| is given, a copy is made and returned. If a |number| or an instance |object| of another class is given, the function creates a dimensionless quantity with the |number| or the instance as a value. In the case |nil| is given, a dimensionless quantity with value |nil| is returned.
 
   \begin{lstlisting}
   print( Q() )
@@ -1604,6 +1581,21 @@ The quantity class is the main part of the library. Each physical Quantity and a
   73 * _m
   \end{lstlisting}
 \end{quote}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2629,10 +2621,10 @@ tex.write(tostring(n))
 
 
 
-\method{N}{new(n=nil)}
+\method{N}{new(n)}
 \begin{quote}
-  This is the copy Constructor for the |Number| class. It copies a given number object. If |n| is |nil|, an instance representing number zero with uncertainty zero is created.
-
+  This is the copy Constructor for the |Number| class. It copies a given number object.
+  
   \begin{description}
   \item |n| : |Number|\\
     The number object to be copied.
@@ -3367,6 +3359,11 @@ tex.write(tostring(n:atanh()))
 \vspace{1em}
 }
 
+\vhist{V1.0.6}{2022/08/03}{Minor release}{ 
+  Changed default behavior of the constructor |Q.new(q)|. In case if |q| is |nil|, now a dimensionless quantity with value nil is created. 
+  Before this release, a quantity with value 1 was created. That led to confusions in case of misspelled variables.
+}
+
 \vhist{V1.0.5}{2021/05/08}{Minor release}{ 
   The unitmacro |\textbackslash number|  had some collision with other packages. The unitless unit has been renamed from |\textbackslash number| to |\textbackslash unitless|.  The declaration in the preamble  |\textbackslash DeclareSIUnit\textbackslash number\{\}|  has therefore to be replaced with |\textbackslash DeclareSIUnit\textbackslash unitless\{\}|. \\
   \ \\
@@ -3416,11 +3413,6 @@ tex.write(tostring(n:atanh()))
 \addcontentsline{toc}{section}{Index of Lua Classes and Methods}
 \indexprologue{}
 \printindex[lua]
-
-
-
-
-
 
 
 \end{document}

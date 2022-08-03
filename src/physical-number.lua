@@ -135,10 +135,8 @@ function Number.new(x, dx)
 		
 	-- default
 	else
-		n._x = 0
-		n._dx = 0
-
-		return n
+		error("Cannot create physical.Number. Wrong number of arguments.")
+		return nil
 	end
 
 end
@@ -408,7 +406,7 @@ end
 
 -- add two numbers
 function Number.__add(n1,n2)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	if type(n1) == "number" then
 		m._x = n1 + n2._x
@@ -437,7 +435,7 @@ end
 
 -- subtract two numbers
 function Number.__sub(n1,n2)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	if type(n1) == "number" then
 		m._x = n1 - n2._x
@@ -466,7 +464,7 @@ end
 
 -- unary minus
 function Number.__unm(n1)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = -n1._x
 	m._dx = n1._dx
@@ -477,7 +475,7 @@ end
 
 -- multiplication
 function Number.__mul(n1,n2)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	-- n1 float , n2 number
 	if type(n1) == "number" then
@@ -518,7 +516,7 @@ end
 
 -- division
 function Number.__div(n1,n2)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	-- n1 float , n2 number
 	if type(n1) == "number" then
@@ -559,7 +557,7 @@ end
 
 -- exponentiation
 function Number.__pow(n1,n2)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	-- n1 float , n2 number
 	if type(n1) == "number" then
@@ -595,7 +593,7 @@ end
 
 -- calculate the absolute value
 function Number.abs(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.abs(n._x)
 	m._dx = n._dx
@@ -605,7 +603,7 @@ end
 
 -- calculate the square root
 function Number.sqrt(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.sqrt(n._x)
 	m._dx = n._dx / (2*math.sqrt(n._x))
@@ -615,7 +613,7 @@ end
 
 -- calculate the natural logarithm
 function Number.log(n,base)
-	local m = Number.new()
+	local m = Number.new(0)
 	
 	if base == nil then
 		m._x = math.log(n._x)
@@ -631,7 +629,7 @@ end
 
 -- calculate the exponential function
 function Number.exp(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.exp(n._x)
 	m._dx = n._dx * math.exp(n._x)
@@ -645,7 +643,7 @@ end
 
 -- sine
 function Number.sin(n)
-	local m = Number.new()
+	local m = Number.new(0)
 	
 	m._x = math.sin(n._x)
 	m._dx = n._dx * math.abs(math.cos(n._x))
@@ -655,7 +653,7 @@ end
 
 -- cosine
 function Number.cos(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.cos(n._x)
 	m._dx = n._dx * math.abs(math.sin(n._x))
@@ -665,7 +663,7 @@ end
 
 -- tangent
 function Number.tan(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.tan(n._x)
 	m._dx = n._dx * math.abs(1/math.cos(n._x)^2)
@@ -679,7 +677,7 @@ end
 
 -- invers sine
 function Number.asin(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.asin(n._x)
 	m._dx = n._dx * 1 / math.sqrt(1 - n._x^2)
@@ -689,7 +687,7 @@ end
 
 -- inverse cosine
 function Number.acos(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.acos(n._x)
 	m._dx = n._dx * 1 / math.sqrt(1 - n._x^2)
@@ -699,7 +697,7 @@ end
 
 -- inverse tangent
 function Number.atan(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = math.atan(n._x)
 	m._dx = n._dx / (1 + n._x^2)
@@ -713,7 +711,7 @@ end
 
 -- hyperbolic sine
 function Number.sinh(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = 0.5 * math.exp(n._x) - 0.5 / math.exp(n._x)
 	m._dx = n._dx * (0.5 * math.exp(n._x) + 0.5 / math.exp(n._x))
@@ -723,7 +721,7 @@ end
 
 -- hyperbolic cosine
 function Number.cosh(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = 0.5 * math.exp(n._x) + 0.5 / math.exp(n._x)
 	m._dx = n._dx * (0.5 * math.exp(n._x) - 0.5 / math.exp(n._x))
@@ -733,7 +731,7 @@ end
 
 -- hyperbolic tangent
 function Number.tanh(n)
-	local m = Number.new()
+	local m = Number.new(0)
 
 	m._x = (math.exp(n._x) - math.exp(-n._x)) / (math.exp(n._x) + math.exp(-n._x))
 	m._dx = n._dx / (0.5 * math.exp(n._x) + 0.5 / math.exp(n._x))^2
@@ -748,7 +746,7 @@ end
 -- inverse hyperbolic sine
 -- (-inf < n < +inf)
 function Number.asinh(n)
-	local m = Number.new()
+	local m = Number.new(1)
 
 	m._x = math.log(n._x + math.sqrt(n._x^2 + 1))
 	m._dx = n._dx / math.sqrt(n._x^2 + 1)
@@ -759,7 +757,7 @@ end
 -- inverse hyperbolic cosine
 -- (1 < n)
 function Number.acosh(n)
-	local m = Number.new()
+	local m = Number.new(1)
 
 	m._x = math.log(n._x + math.sqrt(n._x^2 - 1))
 	m._dx = n._dx / math.sqrt(n._x^2 - 1)
@@ -770,7 +768,7 @@ end
 -- inverse hyperbolic tangent
 -- (-1 < n < 1)
 function Number.atanh(n)
-	local m = Number.new()
+	local m = Number.new(1)
 
 	m._x = 0.5 * math.log((1 + n._x)/(1 - n._x))
 	m._dx = n._dx / math.abs(n._x^2 - 1)
