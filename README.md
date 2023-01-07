@@ -103,7 +103,7 @@ Since Latex now supports lua, this library is able to generate latex output. It 
 > physical = require("physical")
 > E = 210 * _MeV
 > print(E:tosiunitx())
-\SI{210}{\mega\electronvolt}
+\qty{210}{\mega\electronvolt}
 ```
 
 

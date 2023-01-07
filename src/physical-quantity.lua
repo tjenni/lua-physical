@@ -46,9 +46,9 @@ Quantity._base = {}
 Quantity._prefixes = {}
 
 -- modes for the function tosiunitx()
-Quantity.SIUNITX_SI = 0
+Quantity.SIUNITX_qty = 0
 Quantity.SIUNITX_num = 1
-Quantity.SIUNITX_si = 2
+Quantity.SIUNITX_unit = 2
 
 
 -- constructor
@@ -416,18 +416,18 @@ end
 -- convert quantity to an siunitx expression
 function Quantity:tosiunitx(param,mode)
 
-	mode = mode or self.SIUNITX_SI
+	mode = mode or self.SIUNITX_qty
 	param = param or ""
 
 	if param ~= "" then
 		param = "["..param.."]"
 	end
 
-	if mode == Quantity.SIUNITX_SI then
+	if mode == Quantity.SIUNITX_qty then
 		if type(self.value) == "number" then
-			return "\\SI"..param.."{"..tostring(self.value).."}".."{"..self.unit:tosiunitx().."}"
+			return "\\qty"..param.."{"..tostring(self.value).."}".."{"..self.unit:tosiunitx().."}"
 		else
-			return "\\SI"..param.."{"..self.value:tosiunitx().."}".."{"..self.unit:tosiunitx().."}"
+			return "\\qty"..param.."{"..self.value:tosiunitx().."}".."{"..self.unit:tosiunitx().."}"
 		end
 
 	elseif mode == Quantity.SIUNITX_num then
@@ -437,8 +437,8 @@ function Quantity:tosiunitx(param,mode)
 			return "\\num"..param.."{"..self.value:tosiunitx().."}"
 		end
 
-	elseif mode == Quantity.SIUNITX_si then
-		return "\\si"..param.."{"..self.unit:tosiunitx().."}"
+	elseif mode == Quantity.SIUNITX_unit then
+		return "\\unit"..param.."{"..self.unit:tosiunitx().."}"
 
 	else
 		error("Error: Unknown mode '"..tostring(mode).."'.")

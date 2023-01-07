@@ -245,7 +245,7 @@ By calling |require("physical")| the |lua-physical| library is loaded. The follo
       physical.Quantity.tosiunitx(
         #1,
         nil,
-        physical.Quantity.SIUNITX_si
+        physical.Quantity.SIUNITX_unit
       )
     )
   }%
@@ -1808,7 +1808,7 @@ tex.write(tostring(T:to()) )
   \item |mode| : |number|
   \end{description}
 
-  If |mode| is equal |Q.SIUNITX_SI|, which is the default, the quantity is converted to an \textbackslash SI\{\}\{\} macro. If mode is |Q.SIUNITX_num|, the quantity is converted to \textbackslash num\{\} and if it is |Q.SIUNITX_si| the macro \textbackslash si\{\} is printed.
+  If |mode| is equal |Q.SIUNITX_qty|, which is the default, the quantity is converted to an \textbackslash qty\{\}\{\} macro. If mode is |Q.SIUNITX_num|, the quantity is converted to \textbackslash num\{\} and if it is |Q.SIUNITX_unit| the macro \textbackslash unit\{\} is printed.
 
 \begin{lstlisting}
 s = 1.9 * _km
@@ -1828,10 +1828,10 @@ tex.write(tostring(s:tosiunitx(nil,Q.SIUNITX_num)) )
 \end{luacode}
 `
 
-print( s:tosiunitx(nil,Q.SIUNITX_si) )
+print( s:tosiunitx(nil,Q.SIUNITX_unit) )
 `
 \begin{luacode}
-tex.write(tostring(s:tosiunitx(nil,Q.SIUNITX_si)) )
+tex.write(tostring(s:tosiunitx(nil,Q.SIUNITX_unit)) )
 \end{luacode}
 `
 \end{lstlisting}
@@ -3357,6 +3357,13 @@ tex.write(tostring(n:atanh()))
 \hangindent2em
 #4
 \vspace{1em}
+}
+
+\vhist{V1.0.7}{2023/01/07}{Minor release}{ 
+  Since the |siunitx| package has changed some macro names, the changes have been applied.
+  The Constants |Quantity.SIUNTI\_SI| and |Quantity.SIUNTI\_si| have been renamed to |Quantity.SIUNTI\_qty| and
+  |Quantity.SIUNTI\_unit|. The function |Quantity.tosiunitx()| now returns |\textbackslash qty| and 
+  |\textbackslash unit| instead of |\textbackslash SI| and |\textbackslash si|.
 }
 
 \vhist{V1.0.6}{2022/08/03}{Minor release}{ 

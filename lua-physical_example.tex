@@ -30,10 +30,10 @@
 \sisetup{
 	output-decimal-marker = {.}, 
 	per-mode = symbol,
-	separate-uncertainty = false,
-	add-decimal-zero = true,
+	uncertainty-mode = compact,
+	minimum-decimal-digits = 1,
 	exponent-product = \cdot,
-	round-mode=off
+	round-mode=none
 }
 
 % empty unit
@@ -43,7 +43,7 @@
 
 % init lua-physical
 \begin{luacode}
-physical = require("physical")
+physical = require("src/physical")
 N = physical.Number
 \end{luacode}
 

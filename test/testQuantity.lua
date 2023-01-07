@@ -82,19 +82,19 @@ end
 function TestQuantity:testToSIUnitX()
    N.seperateUncertainty = false
    
-   lu.assertEquals( (5 * _m):tosiunitx(), "\\SI{5}{\\meter}" )
-   lu.assertEquals( (5 * _m):tosiunitx("x=1"), "\\SI[x=1]{5}{\\meter}" )
+   lu.assertEquals( (5 * _m):tosiunitx(), "\\qty{5}{\\meter}" )
+   lu.assertEquals( (5 * _m):tosiunitx("x=1"), "\\qty[x=1]{5}{\\meter}" )
 
    lu.assertEquals( (5 * _m):tosiunitx("x=5",1), "\\num[x=5]{5}" )
-   lu.assertEquals( (5 * _m):tosiunitx("x=5",2), "\\si[x=5]{\\meter}" )
+   lu.assertEquals( (5 * _m):tosiunitx("x=5",2), "\\unit[x=5]{\\meter}" )
 
-   lu.assertEquals( (5 * _m^2):tosiunitx(), "\\SI{5.0}{\\meter\\tothe{2}}" )
+   lu.assertEquals( (5 * _m^2):tosiunitx(), "\\qty{5.0}{\\meter\\tothe{2}}" )
 
-   lu.assertEquals( (56 * _km):tosiunitx(), "\\SI{56}{\\kilo\\meter}" )
-   lu.assertEquals( (5 * _km/_h):tosiunitx(), "\\SI{5.0}{\\kilo\\meter\\per\\hour}" )
-   lu.assertEquals( (4.81 * _J / (_kg * _K) ):tosiunitx(), "\\SI{4.81}{\\joule\\per\\kilogram\\per\\kelvin}" )
+   lu.assertEquals( (56 * _km):tosiunitx(), "\\qty{56}{\\kilo\\meter}" )
+   lu.assertEquals( (5 * _km/_h):tosiunitx(), "\\qty{5.0}{\\kilo\\meter\\per\\hour}" )
+   lu.assertEquals( (4.81 * _J / (_kg * _K) ):tosiunitx(), "\\qty{4.81}{\\joule\\per\\kilogram\\per\\kelvin}" )
 
-   lu.assertEquals( (N(2.7,0.04) * _g/_cm^3):tosiunitx(), "\\SI{2.70(4)}{\\gram\\per\\centi\\meter\\tothe{3}}" )
+   lu.assertEquals( (N(2.7,0.04) * _g/_cm^3):tosiunitx(), "\\qty{2.70(4)}{\\gram\\per\\centi\\meter\\tothe{3}}" )
 end
 
 
