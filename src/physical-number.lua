@@ -310,15 +310,17 @@ end
 function Number:toOmitUncertaintyNotation(format)
 
 	local m, e = self._frexp(self._x)
-	local dm, de = self._frexp(self._dx)
+	local _, de = self._frexp(self._dx)
 
 	local str = ""
 
 	if Number.format == Number.DECIMAL then
-		str = self._flt2str(self._x, math.abs(de + 1))
+		-- Keep the value's last shown decimal at the same place as the
+		-- uncertainty's first significant digit.
+		str = self._flt2str(self._x, math.max(0, -de))
 
 	elseif Number.format == Number.SCIENTIFIC then
-		str = self._flt2str(m, math.abs(de + 1 - e))
+		str = self._flt2str(m, math.max(0, e - de))
 		
 		if e ~= 0 then
 			str = str.."e"..e
@@ -779,5 +781,4 @@ end
 
 
 return Number
-
 

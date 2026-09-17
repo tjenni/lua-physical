@@ -198,15 +198,17 @@ function TestNumber:testToOmitUncertaintyNotation()
    N.omitUncertainty = true
 
    N.format = N.DECIMAL
-   lu.assertEquals( tostring(N(1, 0.5)), "1" )
-   lu.assertEquals( tostring(N(1.2, 0.05)), "1.2" )
-   lu.assertEquals( tostring(N(1.2, 0.005)), "1.20" )
-   lu.assertEquals( tostring(N(1.25, 0.05)), "1.3" )
+   lu.assertEquals( tostring(N(1, 0.5)), "1.0" )
+   lu.assertEquals( tostring(N(1.2, 0.05)), "1.20" )
+   lu.assertEquals( tostring(N(1.2, 0.005)), "1.200" )
+   lu.assertEquals( tostring(N(1.25, 0.05)), "1.25" )
+   lu.assertEquals( tostring(N(145, 0.1)), "145.0" )
+   lu.assertEquals( tostring(N(1.9706, 0.01975)), "1.97" )
 
 
 
    N.format = N.SCIENTIFIC
-   lu.assertEquals( tostring(N(1.2e27, 0.05e27)), "1.2e27" )
+   lu.assertEquals( tostring(N(1.2e27, 0.05e27)), "1.20e27" )
 
 end
 
